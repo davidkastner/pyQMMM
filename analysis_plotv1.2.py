@@ -1,3 +1,13 @@
+'''
+See more here: https://github.com/davidkastner/pdb-utilities/blob/main/README.md
+DESCRIPTION
+   Generates plots for the common data files energy, water density, RMSD and RoG
+   Author: David Kastner
+   Massachusetts Institute of Technology
+   kastner (at) mit . edu
+SEE ALSO
+'''
+
 #Imports packages and dependencies
 import pandas as pd
 import matplotlib.pyplot as plt
