@@ -12,3 +12,6 @@ This script was written to simplify the process of generating PDB ensembles. It 
 
 ## Renumerate v1.3
 Many Amber preprocessing functions such as pdb4amber will restart residue number at one. While this can be useful when preparing files, it can be frustrating when the protein sequences does not start at one. This is very common as many proteins crystallize better without their N-terminus. When you execute this script, it will ask the user for the name of the PDB that got renumbered inappropriately and what the first residue should be. The script will then correct the number of the residues to start at the residue prompted by the user.
+
+## Renumber Waters v1.1
+CPPTRAJ is a powerful tool for working with Amber outputs. However, it will renumber any residues after 9999 starting at 0 in the output PDBs. This is a problem when trying to work with the PDB because the residue IDs are no longer unique and selecting ID 1 will now select residue 1 and water 1. This script fixes this problem by continue the numbering. It will replace the residue 0 that follows 9999 with 10000. Run the script from the same directory as the PDB you would like to renumber and the script will prompt you for the information it needs such as the name of the file.
