@@ -1,7 +1,7 @@
 '''
 See more here: https://github.com/davidkastner/pdb-utilities/blob/main/README.md
 DESCRIPTION
-   Reunubers waters that restart after reaching 9999
+   Reunumbers waters that restart after reaching 9999
    Author: David Kastner
    Massachusetts Institute of Technology
    kastner (at) mit . edu
