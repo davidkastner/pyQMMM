@@ -4,8 +4,8 @@ def renumerate():
     Often crystal structures start with a non-one residue position.
     '''
     print('So your PDB numbers are shifted?')
-    offset = input('What number is your first residue? ')
     pdb_loc = input('Which PDB file is off? ')
+    offset = input('What number is your first residue? ')
 
     with open('shifted_pdb.pdb', 'w') as shifted_pdb:
         with open(pdb_loc, 'r') as original:
