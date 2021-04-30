@@ -1,8 +1,15 @@
+'''
+See more here: https://github.com/davidkastner/pdb-utilities/blob/main/README.md
+DESCRIPTION
+   Allows you to change the starting residue of a PDB file
+   Author: David Kastner
+   Massachusetts Institute of Technology
+   kastner (at) mit . edu
+SEE ALSO
+   renumerate.py
+'''
+
 def renumerate():
-    '''
-    Requests information about a PDB whose number got reset to one by Amber.
-    Often crystal structures start with a non-one residue position.
-    '''
     print('So your PDB numbers are shifted?')
     pdb_loc = input('Which PDB file is off? ')
     offset = input('What number is your first residue? ')
