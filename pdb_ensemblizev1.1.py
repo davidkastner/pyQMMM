@@ -1,19 +1,18 @@
+'''
+See more here: https://github.com/davidkastner/pdb-utilities/blob/main/README.md
+DESCRIPTION
+   Combines separate PDBs into a single ensemble.
+   Author: David Kastner
+   Massachusetts Institute of Technology
+   kastner (at) mit . edu
+SEE ALSO
+   renumerate.py
+'''
+
 import os
 import shutil
 
 def pdb_ensemblize():
-    '''
-    Combines separate PDBs into a single ensemble.
-
-    Parameters
-    ----------
-    Does not require any parameters
-
-    Returns
-    -------
-    Creates a new PDB called ensemble.pdb
-        Creates a directory called ensemble for the new PDB
-    '''
     model_count = 1
     dir = 'ensemble'
     if os.path.exists(dir):
