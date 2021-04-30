@@ -10,5 +10,5 @@ Electron support for individual atoms is a powerful software that can be used to
 ## PDB Ensemblizer v1.1
 This script was written to simplify the process of generating PDB ensembles. It will search the directory that it is executed from for all PDBs. It will then combine the PDBs and format the resulting file as an ensemble. The final file is then saved in a folder that the script creates called *ensemble*.
 
-## Renumerate v1.1
-
+## Renumerate v1.3
+Many Amber preprocessing functions such as pdb4amber will restart residue number at one. While this can be useful when preparing files, it can be frustrating when the protein sequences does not start at one. This is very common as many proteins crystallize better without their N-terminus. When you execute this script, it will ask the user for the name of the PDB that got renumbered inappropriately and what the first residue should be. The script will then correct the number of the residues to start at the residue prompted by the user.
