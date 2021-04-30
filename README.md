@@ -1,7 +1,7 @@
 # pdb-utilities
 Useful scripts for working with PDB files
 ---
-**Analysis Plot v1.2**
+##**Analysis Plot v1.2**
 ---
 **EDIA Chains v1.1**
 ---
