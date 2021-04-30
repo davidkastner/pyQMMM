@@ -1,8 +1,14 @@
-#https://proteins.plus/
-#EDIA is a powerful tool for evaluating the quality of crystal structures.
-#However, the output looks at individual residues or atoms
-#This script takes EDIA output and cacluates the average chain EDIA scores
-#The chain with the highest EDIA score is likely the best one to use
+'''
+See more here: https://github.com/davidkastner/pdb-utilities/blob/main/README.md
+DESCRIPTION
+   The output for EDIA is only for individual residues or atoms
+   This script takes EDIA output and cacluates the average chain EDIA scores
+   Author: David Kastner
+   Massachusetts Institute of Technology
+   kastner (at) mit . edu
+SEE ALSO
+   https://proteins.plus/
+'''
 
 #Import packages and dependencies
 import numpy as numpy
