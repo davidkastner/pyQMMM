@@ -18,22 +18,19 @@ def dat2df(dat_file):
   df = pd.read_csv(dat_file, sep='\s+', header=None, skiprows=1, index_col=0)
   return df
 
-#Generate the plot
 def get_plot(final_df):
   clusters = [0,1,2,3,4]
-  colors = ['#e63946','#a8dadc','#457b9d','#1d3557','#f1faee']
+  colors = ['#e63946','#a8dadc','#457b9d','#1d3557','#800000']
   label = ['Cluster 1', 'Cluster 2', 'Cluster 3', 'Cluster 4', 'Other']
 
-#Associate each point with the color of its cluster
   for cluster, color in zip(clusters,colors):
     indicesToKeep = final_df['Cluster'] == cluster if cluster != 4 else final_df['Cluster'] >= cluster
     plt.scatter(final_df.loc[indicesToKeep, 'Frame']
               , final_df.loc[indicesToKeep, 'RMSD']
               , edgecolors = color
-              , s = 15
+              , s = 9
               , facecolors='none'
-              , label = label[cluster if cluster < 4 else 4]
-              , alpha = .15)
+              , label = label[cluster if cluster < 4 else 4])
 
   plt.rc('axes', linewidth=2.5)
   plt.title('Clustered Poses by RMSD', fontsize=18)
