@@ -13,16 +13,17 @@ import matplotlib.pyplot as plt
 import os.path
 from pathlib import Path
 
+#Define functions
 #Converts a dat file to csv
 def dat2df(dat_file):
   df = pd.read_csv(dat_file, sep='\s+', header=None, skiprows=1, index_col=0)
   return df
 
+#Takes the dataframe with the cluster data and produces a figure
 def get_plot(final_df):
   clusters = [0,1,2,3,4]
   colors = ['#e63946','#a8dadc','#457b9d','#1d3557','#800000']
   label = ['Cluster 1', 'Cluster 2', 'Cluster 3', 'Cluster 4', 'Other']
-
   for cluster, color in zip(clusters,colors):
     indicesToKeep = final_df['Cluster'] == cluster if cluster != 4 else final_df['Cluster'] >= cluster
     plt.scatter(final_df.loc[indicesToKeep, 'Frame']
@@ -31,7 +32,7 @@ def get_plot(final_df):
               , s = 9
               , facecolors='none'
               , label = label[cluster if cluster < 4 else 4])
-
+  #Figure settings
   plt.rc('axes', linewidth=2.5)
   plt.title('Clustered Poses by RMSD', fontsize=18)
   plt.ylabel('RMSD (Å)', fontsize=16)
@@ -45,7 +46,7 @@ def get_plot(final_df):
 #Welcome user and print some instructions
 print('Welcome to ClusterRMSD')
 print('-----------------------\n')
-print('This script will search your directory for the following output:')
+print('This script will search your directory for the following input:')
 print('+ CCPTraj RMSD file > rmsd.dat')
 print('+ List of frames assigned clusters > cnumvtime.dat')
 print('+ Root mean square deviation > rmsd.dat')
