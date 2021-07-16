@@ -1,5 +1,5 @@
-# pdb-utilities
->Useful scripts for working with PDB files
+# md-utilities
+>Useful scripts for working with PDB files for molecular dynamics simulations.
 
 ## Quick Plotter v1.2
 Executes four key analyses that should be performed after any MD simulation. It checks the RMSD, the radius of gyration, the density of the water box, and the total energy as a function of time or frames. Execute this script in the same folder where you ran your MD simualtion. It will search your current directory for four files: rmsd.dat, rog.dat, summary.DENSITY, and summary.ETOT. The first two can be obtained using the CPPTraj tool in Amber and the last two can be obtained by running the Amber process_mdout.perl script in AmberTools. The script will create three pdf figures corresponding to each of the data files in a folder named *figures*.
