@@ -37,14 +37,14 @@ def get_plot(df, yaxis, title, color, saveloc):
 print('Welcome to Quick Plotter')
 print('-----------------------\n')
 print('This script will search your directory for the following output:')
-print('+ Energy levels > energy.dat')
-print('+ Water density of solvent box > density.dat')
+print('+ Energy levels > summary.ETOT')
+print('+ Water density of solvent box > summary.DENSITY')
 print('+ Root mean square deviation > rmsd.dat')
 print('+ Radius of gyration > rog.dat')
 print('------------------------\n')
 
 #Files, titles, labels, colors, etc.
-expected_dat = ['energy.dat','density.dat','rmsd.dat','rog.dat']
+expected_dat = ['summary.ETOT','summary.DENSITY','rmsd.dat','rog.dat']
 xaxes = ['Energy (kcal/mol)','Density (1.0 g/cm$^3$)','RMSD (Å)','Radius of gyration (Å)']
 titles = ['Energy over time',
           'Density over time',
