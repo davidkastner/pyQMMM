@@ -34,7 +34,7 @@ def get_plot(df, yaxis, title, color, saveloc):
   plt.show()
 
 #Welcome user and print some instructions
-print('Welcome to QuickPlotter')
+print('Welcome to Quick Plotter')
 print('-----------------------\n')
 print('This script will search your directory for the following output:')
 print('+ Energy levels > energy.dat')
