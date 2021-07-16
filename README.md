@@ -1,7 +1,7 @@
 # pdb-utilities
 >Useful scripts for working with PDB files
 
-## Analysis Plotter v1.2
+## Quick Plotter v1.2
 This script helps simplify four key analyses that should be performed after any MD simulation finishes. It can be very helpful to check the RMSD, the radius of gyration, the density of the water box, and the total energy as a function of time or frames. Execute this script in the same folder where you ran your MD simualtion and performed your analysis. It will search your current directory from four files: rmsd.dat, rog.dat, density.dat, and energy.dat. The first two can be obtained using the CPPTraj tool in Amber and the last two can be obtained very easily by running the classic Amber process_mdout.perl script. The script will drop three pdf figures corresponding to each of the data files in a folder named *figures*.
 
 ## EDIA Chains v1.1
