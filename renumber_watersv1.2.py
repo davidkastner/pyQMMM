@@ -52,6 +52,7 @@ with open(new_pdb, 'w') as correct_waters:
       change_end = i + 1 #Tracks number of lines for user output
       correct_waters.write(''.join(line_list))
 
+#Print important statistics for the user
 print('Renumbered lines {} to {}.'.format(change_start, change_end))
 print('There were {} misnumbered waters.'.format(incorrect_waters_count))
 print('Your new file is named {}.'.format(new_pdb))
