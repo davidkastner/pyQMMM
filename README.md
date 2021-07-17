@@ -1,4 +1,4 @@
-# md-utilities
+# protein-utilities
 >Useful scripts for working with PDB files for molecular dynamics simulations.
 
 ## Quick Plotter v1.2
