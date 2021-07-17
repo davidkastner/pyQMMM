@@ -10,7 +10,7 @@ Electron support for individual atoms (EDIA) is an application that can evaluate
 ## PDB Ensemblizer v1.1
 Generates a PDB ensembles. It will search the directory that it is executed from for all PDBs. It will then combine the PDBs and format the resulting file as an ensemble. The final file is then saved in a folder that the script will create called ```ensemble```.
 
-## Renumerate v1.3
+## Renumber Residues v1.4
 Renumbers a PDB file starting at a specific number. Many Amber preprocessing functions such as pdb4amber will restart residue numbers at one. While this can be useful when preparing files, it can be frustrating when the protein sequence does not start at one. This is very common as many proteins crystallize better without their N-terminus. When you execute this script, it will ask the user for the name of the PDB that needs renumbering and what the first residue should be. The script will then correct the number of the residues to start at the residue prompted by the user.
 
 ## Renumber Waters v1.1
