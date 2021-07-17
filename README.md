@@ -19,7 +19,7 @@ Renumbers waters if they pass 9999 so that they continue passed 10000 rather tha
 ## Movie Prep v1.0
 The Movie Prep script takes the output of a TeraChem geometry optimization and prepares a folder for Chimera's MD Movie plugin. The output of a TeraChem optimization is an ensemble of xyz optimization frames all inside the same file. However, Chimera's MD Movie needs each of the xyz frames to be in its own file. To this end, the script will create a new directory called ```movie``` and will fill it with individual xyz files pulled from the TeraChem output ```optim.xyz``` file. The name of each file will be ordered consecutively ```1.xyz, 2.xyz, 3.xyz, etc.```.
 
-## ClusterRMSD v1.0
+## Cluster RMSD v1.0
 Almost all MD processing packages can perform clustering and RMSD calculations. ClusterRMSD will take the two and merge them together into a single useful plot. The plot depicts frames on the x-axis and RMSD on the y-axis. It then will color code each point based on which cluster it belongs to. This type of analysis can be useful in helping distinguish how a trajectory evolves over time and what are the main poses that dominate a given trajectory.
 
 ## Mask Maker v1.0
