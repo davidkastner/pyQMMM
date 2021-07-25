@@ -36,7 +36,7 @@ def get_plot(df, yaxis, title, color, saveloc):
 #Welcome user and print some instructions
 print('Welcome to Quick Plotter')
 print('-----------------------\n')
-print('This script will search your directory for the following output:')
+print('This script will search your directory for the following input:')
 print('+ Energy levels > summary.ETOT')
 print('+ Water density of solvent box > summary.DENSITY')
 print('+ Root mean square deviation > rmsd.dat')
