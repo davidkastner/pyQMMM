@@ -1,3 +1,7 @@
+'''
+Takes the ppm image output from VMD and converts them to PNGs.
+These can then be merged in blender to create a movie of the trajectory.
+'''
 import os
 
 directory = './'
