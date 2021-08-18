@@ -47,7 +47,6 @@ def get_plot(final_df):
 print('Welcome to ClusterRMSD')
 print('-----------------------\n')
 print('This script will search your directory for the following input:')
-print('+ CCPTraj RMSD file > rmsd.dat')
 print('+ List of frames assigned clusters > cnumvtime.dat')
 print('+ Root mean square deviation > rmsd.dat')
 print('------------------------\n')
