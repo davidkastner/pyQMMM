@@ -26,3 +26,4 @@ Almost all MD processing packages can perform clustering and RMSD calculations. 
 Selects a subset of residues from a PDB. This subset is referred to as a mask. The primary use case scenario for this is when using charge shift analysis (SCA) you will need to select a reference mask for tracking the atoms in the xyz file produced by TeraChem. This script does not perform any type of capping since link atoms should be ignored when performing CSA.
 
 ## Hydro Optimizer v1.0
+Takes an xyz file and returns a list of the indices of all the heavy atoms. This is useful when you are unsure of the positioning of the hydrogens in your file. The list that is generated can be copied into the $constraint_freeze section of TeraChem to optimize the positions of the hydrogens.
