@@ -24,3 +24,5 @@ Almost all MD processing packages can perform clustering and RMSD calculations. 
 
 ## Mask Maker v1.0
 Selects a subset of residues from a PDB. This subset is referred to as a mask. The primary use case scenario for this is when using charge shift analysis (SCA) you will need to select a reference mask for tracking the atoms in the xyz file produced by TeraChem. This script does not perform any type of capping since link atoms should be ignored when performing CSA.
+
+## Hydro Optimizer v1.0
