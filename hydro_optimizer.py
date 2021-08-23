@@ -1,7 +1,7 @@
 '''
 Docs: https://github.com/davidkastner/md-utilities/hyscore-plotter/blob/main/README.md
 DESCRIPTION
-   Creates a list with the indices of all hydrogen atoms in an xyz.
+   Creates a list with the indices of all heavy atoms in an xyz.
    This is useful if you want to only optimize the hydrogen positions.
    Author: David Kastner
    Massachusetts Institute of Technology
@@ -58,9 +58,9 @@ def find_heavy_atoms(file):
     heavy_atoms = ','.join(heavy_atoms_list)
     print(heavy_atoms)
 
-############################### HYDRO FINDER ########E##########################
-# Introduce user to HydroFinder functionality
-print('WELCOME TO HYDRO FINDER')
+############################### HYDRO OPTIMIZER ###################################
+# Introduce user to Hydro Optimizer functionality
+print('WELCOME TO HYDRO OPTIMIZER')
 print('--------------------------\n')
 print('Takes an .xyz file and returns the index of all hydrogens as a list.')
 print('This script will search the current directory for the following input:')
