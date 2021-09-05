@@ -1,0 +1,25 @@
+[Labels]
+title = Evaluation of HYSCORE Parameters
+xlabel = Fe-H distance (Å)
+ylabel = H-Fe-O angle (°)
+
+[Plot_1]
+width_min = 3.2
+width_max = 3.6
+height_min = 25
+height_max = 45
+size_group = 1
+
+[Plot_2]
+width_min = 3.2
+width_max = 3.6
+height_min = 25
+height_max = 45
+size_group = 1
+
+[Plot_3]
+width_min = 3.2
+width_max = 3.6
+height_min = 25
+height_max = 45
+size_group = 2
