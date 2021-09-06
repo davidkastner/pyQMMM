@@ -33,7 +33,7 @@ def renumber(pdb_name, offset):
                 # Write out the new line
                 shifted_pdb.write(' '.join(line_list))
 
-def renumber_residues()
+def renumber_residues():
     ############################## REUNUMBER RESIDUES ##############################
     # Introduce user to Renumber Residues functionality
     print('\n--------------------------')
