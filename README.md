@@ -1,3 +1,7 @@
+![Graphical Summary of README](docs/images/header.png)
+
+---
+
 # protein-utilities
 >Useful scripts for working with PDB files for molecular dynamics simulations.
 
