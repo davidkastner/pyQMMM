@@ -43,33 +43,34 @@ def get_plot(final_df):
   plt.savefig('clus_rmsd.pdf', bbox_inches='tight')
   plt.show()
 
-#Welcome user and print some instructions
-print('Welcome to ClusterRMSD')
-print('-----------------------\n')
-print('This script will search your directory for the following input:')
-print('+ List of frames assigned clusters > cnumvtime.dat')
-print('+ Root mean square deviation > rmsd.dat')
-print('------------------------\n')
+def cluster_rmsd():
+    #Welcome user and print some instructions
+    print('Welcome to ClusterRMSD')
+    print('-----------------------\n')
+    print('This script will search your directory for the following input:')
+    print('+ List of frames assigned clusters > cnumvtime.dat')
+    print('+ Root mean square deviation > rmsd.dat')
+    print('------------------------\n')
 
 
-#Check for required files
-expected_dat = ['rmsd.dat','cnumvtime.dat']
+    #Check for required files
+    expected_dat = ['rmsd.dat','cnumvtime.dat']
 
-#Check the users directory for analyzeable files
-for dat in expected_dat:
-  data_file = Path(dat)
-  if data_file.exists():
-    print('Found {}'.format(dat))
-  else:
-    print('No {}'.format(dat))
-    print('Please add {} to your directory'.format(dat))
-    exit()
+    #Check the users directory for analyzeable files
+    for dat in expected_dat:
+      data_file = Path(dat)
+      if data_file.exists():
+        print('Found {}'.format(dat))
+      else:
+        print('No {}'.format(dat))
+        print('Please add {} to your directory'.format(dat))
+        exit()
 
-rmsd_df = dat2df(expected_dat[0])
-clus_df = dat2df(expected_dat[1])
+    rmsd_df = dat2df(expected_dat[0])
+    clus_df = dat2df(expected_dat[1])
 
-final_df = pd.concat([rmsd_df,clus_df], axis=1)
-final_df.columns = ['RMSD', 'Cluster']
-final_df['Frame'] = final_df.index
+    final_df = pd.concat([rmsd_df,clus_df], axis=1)
+    final_df.columns = ['RMSD', 'Cluster']
+    final_df['Frame'] = final_df.index
 
-get_plot(final_df)
+    get_plot(final_df)

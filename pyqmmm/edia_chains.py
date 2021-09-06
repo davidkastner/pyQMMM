@@ -136,24 +136,25 @@ for chain in chain_list:
   #Store it in the df_means dataframe
   df_res_se.loc[chain] = [std_err_res_ediam, std_err_res_edia]
 
-#Rank order the chains by EDIA score
-sorted_res_df = df_res_means.sort_values(by='EDIA', ascending=False)
-print('Your sorted results for specific residues:')
-print(sorted_res_df)
-print('-------------------')
-print()
+edia_chains():
+    #Rank order the chains by EDIA score
+    sorted_res_df = df_res_means.sort_values(by='EDIA', ascending=False)
+    print('Your sorted results for specific residues:')
+    print(sorted_res_df)
+    print('-------------------')
+    print()
 
-#Plot the findings
-plt.rc('axes', linewidth=2.5)
-fig, ax = plt.subplots()
-df_res_means.plot.bar(yerr=df_res_se, ax=ax, capsize=4, rot=0, color=colors)
-plt.title('Chain Comparison for Select Residues', fontsize=18)
-plt.ylabel('EDIA Score', fontsize=16)
-plt.xlabel('Chains', fontsize=16)
-plt.xticks(rotation=0)
-plt.tick_params(labelsize=14)
-plt.legend(fontsize=12, loc='lower right')
-plt.savefig('chain_res_comp.pdf', bbox_inches = 'tight')
-print('Figure has been created.')
-print('-------------------')
-print()
+    #Plot the findings
+    plt.rc('axes', linewidth=2.5)
+    fig, ax = plt.subplots()
+    df_res_means.plot.bar(yerr=df_res_se, ax=ax, capsize=4, rot=0, color=colors)
+    plt.title('Chain Comparison for Select Residues', fontsize=18)
+    plt.ylabel('EDIA Score', fontsize=16)
+    plt.xlabel('Chains', fontsize=16)
+    plt.xticks(rotation=0)
+    plt.tick_params(labelsize=14)
+    plt.legend(fontsize=12, loc='lower right')
+    plt.savefig('chain_res_comp.pdf', bbox_inches = 'tight')
+    print('Figure has been created.')
+    print('-------------------')
+    print()

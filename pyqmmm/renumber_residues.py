@@ -33,14 +33,15 @@ def renumber(pdb_name, offset):
                 # Write out the new line
                 shifted_pdb.write(' '.join(line_list))
 
-############################## REUNUMBER RESIDUES ##############################
-# Introduce user to Renumber Residues functionality
-print('\n--------------------------')
-print('WELCOME TO RENUMBER RESIDUES')
-print('--------------------------\n')
-print('Renumbers all residues in a PDB from an integar of your choice.')
-print('------------------------\n')
+def renumber_residues()
+    ############################## REUNUMBER RESIDUES ##############################
+    # Introduce user to Renumber Residues functionality
+    print('\n--------------------------')
+    print('WELCOME TO RENUMBER RESIDUES')
+    print('--------------------------\n')
+    print('Renumbers all residues in a PDB from an integar of your choice.')
+    print('------------------------\n')
 
-pdb_name = input('Which PDB would you like to renumber (e.g., 1OS7)? ')
-offset = input('What number should your first residue be? ')
-renumber(pdb_name, offset)
+    pdb_name = input('Which PDB would you like to renumber (e.g., 1OS7)? ')
+    offset = input('What number should your first residue be? ')
+    renumber(pdb_name, offset)

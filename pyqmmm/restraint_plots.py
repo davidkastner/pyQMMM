@@ -363,23 +363,24 @@ def graph_datasets(x_data, y_data, z_data, labels, plot_params, show_crosshairs)
 
 ############################## HYSCORE PLOTTER #################################
 # Introduce user to HyScore Eval functionality
-print('\n--------------------------')
-print('WELCOME TO HYSCORE PLOTTER')
-print('--------------------------\n')
-print('Generates a series of KDE plots for hyscore-guided simulations.')
-print('This the goal of HYSCORE PLOTTER is to:')
-print('+ Vizualize a simulation against two order parameters')
-print('+ Compare the results to the experimentally expected values')
-print('------------------------\n')
+def restraint_plots():
+    print('\n--------------------------')
+    print('WELCOME TO HYSCORE PLOTTER')
+    print('--------------------------\n')
+    print('Generates a series of KDE plots for hyscore-guided simulations.')
+    print('This the goal of HYSCORE PLOTTER is to:')
+    print('+ Vizualize a simulation against two order parameters')
+    print('+ Compare the results to the experimentally expected values')
+    print('------------------------\n')
 
-show_crosshairs = input('Would you like crosshairs (y/n)?  ') == 'y'
+    show_crosshairs = input('Would you like crosshairs (y/n)?  ') == 'y'
 
-# Get filenames from output directory
-filenames = combine_inp()
+    # Get filenames from output directory
+    filenames = combine_inp()
 
-# Get coordinates from config file
-labels, plot_params = config()
+    # Get coordinates from config file
+    labels, plot_params = config()
 
-# Execute the main functions and generate plot
-x_data, y_data, z_data = collect_xyz_data(filenames)
-graph_datasets(x_data, y_data, z_data, labels, plot_params, show_crosshairs)
+    # Execute the main functions and generate plot
+    x_data, y_data, z_data = collect_xyz_data(filenames)
+    graph_datasets(x_data, y_data, z_data, labels, plot_params, show_crosshairs)
