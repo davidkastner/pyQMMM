@@ -1,7 +1,7 @@
 '''
 See more here: https://github.com/davidkastner/quick-csa/blob/main/README.md
 DESCRIPTION
-   Creates a "mask" from a PDB file only containing user-specified residues.
+   Performs charge shift analysis (CSA) form TeraChem output.
    Author: David Kastner
    Massachusetts Institute of Technology
    kastner (at) mit . edu
