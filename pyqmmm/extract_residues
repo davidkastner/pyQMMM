@@ -1,0 +1,10 @@
+pdb_file = '6l6x_v125.pdb'
+previous = ''
+with open(pdb_file, 'r') as pdb:
+    for line in pdb:
+        residue = line[17:20] + line[23:32].strip()
+        if residue == previous:
+            pass
+        else:
+            print(residue)
+        previous = residue
