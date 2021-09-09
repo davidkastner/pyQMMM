@@ -11,7 +11,6 @@ SEE ALSO
 ################################ DEPENDENCIES ##################################
 import os
 import sys
-import glob
 import shutil
 ################################## FUNCTIONS ###################################
 
@@ -30,10 +29,13 @@ Returns
 
 def clean_dir():
     # Asks the user for the name of the pdb that they would like to process
-    pdb_name = input('What is the name of your pdb (e.g., 1OS7.pdb)? ')
+    pdb_name = input('What is the name of your pdb (e.g., 1OS7, 6EDH, etc.)? ')
+    extension = pdb_name[-4:]
+    if extension != '.pdb':
+        pdb_name = '{}.pdb'.format(pdb_name)
+
     # Directory and required file names for the file system
     file_system = ['./1_input', './2_temp', './3_out']
-
     # Create the three file system for the user for cleaner file management
     file_system_exists = False
     for dir in file_system:
@@ -62,14 +64,14 @@ def file_mover(file_system_exists, pdb_name):
     required_files = [pdb_name, 'apo_list',
                       'holo_list', 'apo_charge.xls', 'holo_charge.xls']
     for file in required_files:
-        file_already_exists = False
+        file_already_moved = False
         if file_system_exists:
             if os.path.isfile('./1_input/{}'.format(file)):
-                file_already_exists = True
+                file_already_moved = True
 
-        if file_already_exists == False:
+        if file_already_moved == False:
             if os.path.isfile('./{}'.format(file)):
-                shutil.move(file, './1_input/{}'.format(file))
+                shutil.move('./{}'.format(file), './1_input/{}'.format(file))
             else:
                 print('{} is not in your current directory'.format(file))
 
@@ -114,12 +116,12 @@ type : str
 
 def mask_maker(mask, pdb_name, type):
 
-    print('Creating the {} mask...'.format(type))
+    print('Creating the {} mask'.format(type))
     # Create a list from the users input
     # The code for Mask Maker begins here
     res_type_array = []
     new_pdb = '{}_mask'.format(type)
-    with open('./2_interm/{}'.format(new_pdb), 'w') as new_mask:
+    with open('./2_temp/{}'.format(new_pdb), 'w') as new_mask:
         with open('./1_input/{}'.format(pdb_name), 'r') as original:
             for line in original:
                 # Start checking once we reach the ATOM section
@@ -139,11 +141,11 @@ def mask_maker(mask, pdb_name, type):
     print('Extracted {} residues'.format(len(set(res_type_array)), type))
     print('Your new file is named {}\n'.format(new_pdb))
     # Make temporary empty link files
-    open('./2_interm/{}_link_atoms'.format(type), 'w')  # TODO: add section
+    open('./2_temp/{}_link_atoms'.format(type), 'w')  # TODO: add section
 
 
 '''
-Collect the charges from the charge_mull.xls file.
+Collect the charges from the charge.xls file.
 Parameters
 ----------
 type : str
@@ -152,10 +154,9 @@ type : str
 
 
 def collect_charges(type):
-
     # Open the mask atoms and link atoms files
-    mask_atoms = open('./2_interm/{}_mask'.format(type), 'r').readlines()
-    link_atoms = open('./2_interm/{}_link_atoms'.format(type), 'r').readlines()
+    mask_atoms = open('./2_temp/{}_mask'.format(type), 'r').readlines()
+    link_atoms = open('./2_temp/{}_link_atoms'.format(type), 'r').readlines()
 
     # Initialize variables and lists
     prev_res_index = 0
@@ -164,7 +165,7 @@ def collect_charges(type):
     tot_charge_link = []
     res_list_link = []
     mull_charges = open(
-        './1_input/{}_charge_mull.xls'.format(type), 'r').readlines()
+        './1_input/{}_charge.xls'.format(type), 'r').readlines()
 
     # Loop through each atom in mask file and get residue name and its index
     for index, line in enumerate(mask_atoms):
@@ -181,7 +182,7 @@ def collect_charges(type):
             tot_charge_link.append(0.0)
             prev_res_index = res_index
 
-        # Create running list of all charges in charge_mull.xls
+        # Create running list of all charges in charge.xls
         curr_mull_charges = float(mull_charges[index].split()[2])
         tot_charge[-1] += curr_mull_charges
         tot_charge_link[-1] += curr_mull_charges
@@ -203,8 +204,8 @@ def collect_charges(type):
 
     # Create files for link and mulliken residue data
     # Write residues to files
-    mull = open('./2_interm/{}.mullres'.format(type), 'w')
-    link = open('./2_interm/{}.linkres'.format(type), 'w')
+    mull = open('./2_temp/{}.mullres'.format(type), 'w')
+    link = open('./2_temp/{}.linkres'.format(type), 'w')
 
     for res in range(len(res_list)):
         mull.write('{} {}\n'.format(res_list[res], tot_charge[res]))
@@ -227,8 +228,8 @@ res_diff : list
 
 
 def get_res_diff():
-    holo_mull = open('./2_interm/holo.mullres', 'r').readlines()
-    apo_mull = open('./2_interm/apo.mullres', 'r').readlines()
+    holo_mull = open('./2_temp/holo.mullres', 'r').readlines()
+    apo_mull = open('./2_temp/apo.mullres', 'r').readlines()
 
     # Loop thorugh the mullres files and get the holo residues
     holo_residues = []
@@ -263,10 +264,10 @@ def charge_diff():
     # Get the differences in the charges for the holo and apo structures
     res_diff = get_res_diff()
     # Open recently created holo and apo charge files
-    holo_mull = open('./2_interm/holo.mullres', 'r').readlines()
-    holo_link = open('./2_interm/holo.linkres', 'r').readlines()
-    apo_mull = open('./2_interm/apo.mullres', 'r').readlines()
-    apo_link = open('./2_interm/apo.linkres', 'r').readlines()
+    holo_mull = open('./2_temp/holo.mullres', 'r').readlines()
+    holo_link = open('./2_temp/holo.linkres', 'r').readlines()
+    apo_mull = open('./2_temp/apo.mullres', 'r').readlines()
+    apo_link = open('./2_temp/apo.linkres', 'r').readlines()
 
     # Initialize variables
     diff_charge = []
@@ -292,12 +293,12 @@ def charge_diff():
             diff_charge_link.append(diff_link)
 
     # Create final files with the differences in charges for all residues
-    diff_all = open('./3_output/all.diffmullres', 'w')
-    diff_link_all = open('./3_output/all.difflinkmullres', 'w')
+    diff_all = open('./3_out/all.diffmullres', 'w')
+    diff_link_all = open('./3_out/all.difflinkmullres', 'w')
 
     # Create final files with the differences in charges for differences > 0.05
-    diff_cutoff = open('./3_output/cutoff.diffmullres', 'w')
-    diff_link_cutoff = open('./3_output/cutoff.difflinkmullres', 'w')
+    diff_cutoff = open('./3_out/cutoff.diffmullres', 'w')
+    diff_link_cutoff = open('./3_out/cutoff.difflinkmullres', 'w')
 
     # Write the final charge differences out to a new file
     for res in range(len(apo_mull)):
@@ -305,52 +306,83 @@ def charge_diff():
         diff_link_all.write('{} {}\n'.format(
             res_list_link[res], diff_charge_link[res]))
 
+    # Check if the absolute value is greater than our cutoff of 0.05
+    cutoff = 0.05
     for res in range(len(apo_mull)):
-        if abs(diff_charge[res]) >= 0.05:
+        if abs(diff_charge[res]) >= cutoff:
             diff_cutoff.write('{} {}\n'.format(
                 res_list[res], diff_charge[res]))
-        if abs(diff_charge_link[res]) >= 0.05:
+        if abs(diff_charge_link[res]) >= cutoff:
             diff_link_cutoff.write('{} {}\n'.format(
                 res_list_link[res], diff_charge_link[res]))
 
-# Simple program description for the user
+
+'''
+Introduces the user to Quick CSA and provides information on how it is run.
+Also contains information about the required files and the naming conventions.
+Parameters
+----------
+Returns
+-------
+'''
 
 
-def program_intro():
-    # Introduce user to Quick CSA functionality
-    print('WELCOME TO QUICK CSA')
-    print('--------------------------\n')
-    print('Calculates the charge shift from the apo and holo TeraChem output.')
-    print('Quick CSA will look for the following files in current directory:')
+def quick_csa_intro():
+    print('\n.----------------------.')
+    print('| WELCOME TO QUICK CSA |')
+    print('.----------------------.\n')
+    print('Calculate the charge shift from apo and holo charge data.')
+    print('Quick CSA looks for the following files in the current directory:\n')
     print('+ The complete PDB of the protein of interest')
     print('   - Quick CSA will look for the extension .pdb')
     print('+ A list of the residues for the apo and holo regions')
-    print('   - Apo list file should be called apo_mask')
-    print('   - Holo list file should be called holo_mask')
+    print('   - Apo list file should be called apo_list')
+    print('   - Holo list file should be called holo_list')
     print('+ The TeraChem charge output files')
     print('   - Apo file should be called apo_charge.xls')
-    print('   - Holo file should be called holo_cahrge.xls')
-    print('--------------------------\n')
+    print('   - Holo file should be called holo_cahrge.xls\n')
+
+
+'''
+The central funtion for the Quick CSA program that handles the other functions.
+This function is also provided as a module in the pyQM/MM package.
+Parameters
+----------
+Returns
+-------
+'''
 
 
 def quick_csa():
+    # Introduce user to Quick CSA
+    quick_csa_intro()
+
+    # Get the user's full PDB
+    print('CALCULATION')
+    print('-----------')
     pdb_name = clean_dir()
 
     # Get mask arrays from user-provided input difflinkmullres
-    apo_mask = get_mask_res('apo')
-    holo_mask = get_mask_res('holo')
-
-    # Create apo and holo mask files
-    mask_maker(apo_mask, pdb_name, 'apo')
-    mask_maker(holo_mask, pdb_name, 'holo')
-
-    # Create list of residues with their associated charges for apo and holo_link
-    collect_charges('apo')
-    collect_charges('holo')
+    mask_list = ['apo', 'holo']
+    for mask_name in mask_list:
+        mask = get_mask_res(mask_name)
+        # Create apo and holo mask files
+        mask_maker(mask, pdb_name, mask_name)
+        # Create list of residues with their associated charges for apo and holo_link
+        collect_charges(mask_name)
 
     # Create the final output file with the charge differences for all residues
     # Create output files for only the residues with a charge differences > 0.050.
     charge_diff()
 
+    # Print the user's results
+    print('RESULTS')
+    print('-------')
+    with open('./3_out/cutoff.diffmullres', 'r') as results:
+        print(results.read())
 
-quick_csa()
+
+# Execute the Quick CSA when run as a script but not if used as a pyQM/MM module
+if __name__ == "__main__":
+    quick_csa()
+
