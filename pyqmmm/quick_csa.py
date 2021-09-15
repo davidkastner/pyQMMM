@@ -44,7 +44,6 @@ def clean_dir():
             file_mover(file_system_exists, pdb_name)
         else:
             os.mkdir(dir)
-
     return pdb_name
 
 
@@ -385,4 +384,3 @@ def quick_csa():
 # Execute the Quick CSA when run as a script but not if used as a pyQM/MM module
 if __name__ == "__main__":
     quick_csa()
-
