@@ -41,9 +41,10 @@ def clean_dir():
     for dir in file_system:
         if os.path.isdir(dir):
             file_system_exists = True
-            file_mover(file_system_exists, pdb_name)
         else:
             os.mkdir(dir)
+    file_mover(file_system_exists, pdb_name)
+    
     return pdb_name
 
 
@@ -62,6 +63,8 @@ Returns
 def file_mover(file_system_exists, pdb_name):
     required_files = [pdb_name, 'apo_list',
                       'holo_list', 'apo_charge.xls', 'holo_charge.xls']
+    print(file_system_exists)
+    print('hi')
     for file in required_files:
         file_already_moved = False
         if file_system_exists:
