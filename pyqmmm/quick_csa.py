@@ -63,8 +63,6 @@ Returns
 def file_mover(file_system_exists, pdb_name):
     required_files = [pdb_name, 'apo_list',
                       'holo_list', 'apo_charge.xls', 'holo_charge.xls']
-    print(file_system_exists)
-    print('hi')
     for file in required_files:
         file_already_moved = False
         if file_system_exists:
