@@ -384,3 +384,7 @@ def restraint_plots():
     # Execute the main functions and generate plot
     x_data, y_data, z_data = collect_xyz_data(filenames)
     graph_datasets(x_data, y_data, z_data, labels, plot_params, show_crosshairs)
+   
+# Execute the Quick CSA when run as a script but not if used as a pyQM/MM module
+if __name__ == "__main__":
+    restraint_plots()
