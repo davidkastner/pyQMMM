@@ -21,7 +21,6 @@ import matplotlib.cm as cm
 import matplotlib.ticker as ticker
 import matplotlib.colors as mplc
 import matplotlib.cm as cm
-from tqdm import tqdm
 from scipy.stats import gaussian_kde
 from matplotlib.patches import Rectangle
 ################################## FUNCTIONS ###################################
