@@ -54,6 +54,9 @@ def get_plot(df):
     plt.colorbar(shrink=0.55)
     plt.ylabel('Residue Number', fontweight='bold')
     plt.xlabel('Residue Number', fontweight='bold')
+    plt.xticks([1,50,100,150,200,250])
+    plt.yticks([1,50,100,150,200,250])
+    plt.savefig('dccm.pdf', bbox_inches='tight', dpi=300)
     plt.show()
 
 '''
