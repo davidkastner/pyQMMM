@@ -24,10 +24,10 @@ Returns
 -------
 '''
 def get_dccm():
-    df = pd.read_csv("dccm.csv", index_col=None)
+    df = pd.read_csv("cij.csv", index_col=None)
     df = df.iloc[:,1:]
-    df.columns = (x for x in range(1,284))
-    df.index = (x for x in range(1,284))
+    df.columns = (x for x in range(1,len(df)+1))
+    df.index = (x for x in range(1,len(df)+1))
     return df
 
 '''
@@ -51,12 +51,12 @@ def get_plot(df):
     plt.rcParams['mathtext.default'] = 'regular'
     plt.figure(figsize=(7, 7), linewidth = 10)
 
-    plt.imshow(df, cmap="RdBu_r")
+    plt.imshow(df, cmap="seismic", vmax=1,vmin=-1)
     plt.colorbar(shrink=0.55)
     plt.ylabel('Residue Number', fontweight='bold')
     plt.xlabel('Residue Number', fontweight='bold')
-    plt.xticks([1,50,100,150,200,250])
-    plt.yticks([1,50,100,150,200,250])
+    plt.xticks([1,100,200,300,400,500,600,700])
+    plt.yticks([1,100,200,300,400,500,600,700])
     plt.savefig('dccm.pdf', bbox_inches='tight', dpi=300)
     plt.show()
 
