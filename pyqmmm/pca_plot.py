@@ -5,8 +5,9 @@ import pandas as pd
 import seaborn as sns
 ################################## FUNCTIONS ###################################
 def get_df():
-    df = pd.read_csv("pc.csv", index_col=None)
+    df = pd.read_csv("pc_23.csv", index_col=None)
     df = df.iloc[:,1:]
+    print(df)
     return df
 
 def get_plot(df):
@@ -23,8 +24,8 @@ def get_plot(df):
     plt.rcParams['mathtext.default'] = 'regular'
 
     plt.figure(figsize=(7, 7))
-    plt.ylabel('PC2', fontweight='bold')
-    plt.xlabel('PC1', fontweight='bold')
+    plt.ylabel('PC2 (8.7%)', fontweight='bold')
+    plt.xlabel('PC1 (32.1%)', fontweight='bold')
 
     plt.scatter(df.V1, df.V2, c=df.index, cmap="RdBu")
     plt.savefig('pc.pdf', bbox_inches='tight', dpi=300)
