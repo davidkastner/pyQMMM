@@ -21,7 +21,6 @@ import matplotlib.cm as cm
 import matplotlib.ticker as ticker
 import matplotlib.colors as mplc
 import matplotlib.cm as cm
-from tqdm import tqdm
 from scipy.stats import gaussian_kde
 from matplotlib.patches import Rectangle
 ################################## FUNCTIONS ###################################
@@ -233,7 +232,7 @@ hyscore_kde.png : PNG
     A PNG depicting the KDE analysis at 300 dpi.
 '''
 
-def get_plot_limits(x_data, y_data):
+def get_plot_limits(x_data, y_data, plot_params):
     # size group extremes
     group_curr_max_min = {}
     xlims = []
@@ -285,7 +284,7 @@ hyscore_kde.png : PNG
 
 
 def graph_datasets(x_data, y_data, z_data, labels, plot_params, show_crosshairs):
-    cmap = mpl.cm.Oranges(np.linspace(0, 1, 20))
+    cmap = mpl.cm.Blues(np.linspace(0, 1, 20))
     cmap = mpl.colors.ListedColormap(cmap[5:, :-1])
     
     # Lab styling graph properties
@@ -307,14 +306,10 @@ def graph_datasets(x_data, y_data, z_data, labels, plot_params, show_crosshairs)
     
     # Titles and axes titles
     fig.text(0.5, -0.03, labels['xlabel'], ha='center')
-    # If using a two panel figure
-    fig.text(0.0325, 0.5, labels['ylabel'], va='center', rotation='vertical')
-    # If using a three panel figure
-    # fig.text(0.06, 0.5, labels['ylabel'], va='center', rotation='vertical')
-    
-    # plt.ylabel(labels['ylabel'], fontweight='bold')
+    plt.ylabel(labels['ylabel'], fontweight='bold')
+
     # Get x and y limits
-    xlims, ylims = get_plot_limits(x_data,y_data)
+    xlims, ylims = get_plot_limits(x_data,y_data,plot_params)
 
     # Loop through the the data associated with each plot
     for i in range(len(x_data)):
@@ -367,23 +362,28 @@ def graph_datasets(x_data, y_data, z_data, labels, plot_params, show_crosshairs)
 
 ############################## HYSCORE PLOTTER #################################
 # Introduce user to HyScore Eval functionality
-print('\n--------------------------')
-print('WELCOME TO HYSCORE PLOTTER')
-print('--------------------------\n')
-print('Generates a series of KDE plots for hyscore-guided simulations.')
-print('This the goal of HYSCORE PLOTTER is to:')
-print('+ Vizualize a simulation against two order parameters')
-print('+ Compare the results to the experimentally expected values')
-print('------------------------\n')
+def restraint_plots():
+    print('\n--------------------------')
+    print('WELCOME TO HYSCORE PLOTTER')
+    print('--------------------------\n')
+    print('Generates a series of KDE plots for hyscore-guided simulations.')
+    print('This the goal of HYSCORE PLOTTER is to:')
+    print('+ Vizualize a simulation against two order parameters')
+    print('+ Compare the results to the experimentally expected values')
+    print('------------------------\n')
 
-show_crosshairs = input('Would you like crosshairs (y/n)?  ') == 'y'
+    show_crosshairs = input('Would you like crosshairs (y/n)?  ') == 'y'
 
-# Get filenames from output directory
-filenames = combine_inp()
+    # Get filenames from output directory
+    filenames = combine_inp()
 
-# Get coordinates from config file
-labels, plot_params = config()
+    # Get coordinates from config file
+    labels, plot_params = config()
 
-# Execute the main functions and generate plot
-x_data, y_data, z_data = collect_xyz_data(filenames)
-graph_datasets(x_data, y_data, z_data, labels, plot_params, show_crosshairs)
+    # Execute the main functions and generate plot
+    x_data, y_data, z_data = collect_xyz_data(filenames)
+    graph_datasets(x_data, y_data, z_data, labels, plot_params, show_crosshairs)
+
+# Execute the Quick CSA when run as a script but not if used as a pyQM/MM module
+if __name__ == "__main__":
+    restraint_plots()
