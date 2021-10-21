@@ -237,6 +237,7 @@ hyscore_kde.png : PNG
 def get_plot_limits(x_data, y_data, plot_params):
     # size group extremes
     group_curr_max_min = {}
+    size_group_list = []
     xlims = []
     ylims = []
     for i in range(len(x_data)):
@@ -247,10 +248,14 @@ def get_plot_limits(x_data, y_data, plot_params):
         width_max = plot_params[i]['width_max']
         size_group = plot_params[i]['size_group']
         patch_params = [height_min, height_max, width_min, width_max]
+        
+        # Save the size groups in the order that they come up as reference
+        size_group_list.append(size_group)
 
         # Get the min and max values for the axis
         xlim, ylim = compare_patch_limits(x_data[i], y_data[i], patch_params)
 
+        # Set the size group so panels indicated in the config file match
         if size_group not in group_curr_max_min:
             group_curr_max_min[size_group] = [xlim, ylim]
         else:
@@ -268,8 +273,13 @@ def get_plot_limits(x_data, y_data, plot_params):
             xlim = [xlim_min, xlim_max]
             ylim = [ylim_min, ylim_max]
             group_curr_max_min[size_group] = [xlim,ylim]
+    
+    # We have the max and min for each size group and can now return them
+    for size in size_group_list:  
+        [xlim,ylim] = group_curr_max_min[size]  
         xlims.append(xlim)
         ylims.append(ylim)
+        
     return xlims, ylims
 
 
@@ -300,9 +310,8 @@ def graph_datasets(x_data, y_data, z_data, labels, plot_params, show_crosshairs)
     plt.rcParams['mathtext.default'] = 'regular'
     
     # Plot subfigures
-    fig, ax = plt.subplots(1, len(x_data), sharey=True, sharex=False, figsize=(len(x_data)*4,4))
+    fig, ax = plt.subplots(1, len(x_data), sharey=True, figsize=(len(x_data)*4,4))
     fig.subplots_adjust(wspace=0)
-    #fig.colorbar(cm.ScalarMappable(norm=None, cmap=cmap))
 
     # Titles and axes titles
     fig.text(0.5, -0.03, labels['xlabel'], ha='center')
@@ -310,12 +319,18 @@ def graph_datasets(x_data, y_data, z_data, labels, plot_params, show_crosshairs)
     if len(plot_params) == 1:
         plt.ylabel(labels['ylabel'], fontweight='bold')
     elif len(plot_params) == 3:
-        fig.text(0.065, 0.13, labels['ylabel'], ha='center', rotation='vertical')
+        fig.text(0.07, 0.22, labels['ylabel'], ha='center', rotation='vertical')
     elif len(plot_params) == 4:
         fig.text(0.08, 0.22, labels['ylabel'], ha='center', rotation='vertical')
 
     # Get x and y limits
     xlims, ylims = get_plot_limits(x_data,y_data,plot_params)
+    
+    # Y-axis is the same so we set it before entering the Loop
+    ymin = min(ylims)[0]
+    ymax = max(ylims)[1]
+    ymax_spread = [ymin,ymax]
+    plt.ylim(ymax_spread)
 
     # Loop through the the data associated with each plot
     for i in range(len(x_data)):
@@ -347,9 +362,7 @@ def graph_datasets(x_data, y_data, z_data, labels, plot_params, show_crosshairs)
         # Create a scatter plot
         axes = ax[i] if len(x_data) > 1 else ax
         axes.scatter(x_data[i], y_data[i], c=z_data[i], s=40, vmin=0, vmax=0.30, cmap=cmap)
-        axes.set_autoscale_on(False)
         axes.set_xlim(xlim)
-        axes.set_ylim(ylim)
 
         if show_crosshairs:
             # Calculate the dimensions for the patch and define patch
@@ -377,17 +390,17 @@ def graph_datasets(x_data, y_data, z_data, labels, plot_params, show_crosshairs)
                           right=False)
         axes.tick_params(which='minor', length=5, color='k', width=2.5)
 
-    plt.savefig('./3_out/hyscore_kde.pdf', bbox_inches='tight')
+    plt.savefig('./3_out/restraints_kde.pdf', bbox_inches='tight')
 
 
 ############################## HYSCORE PLOTTER #################################
 # Introduce user to HyScore Eval functionality
 def restraint_plots():
     print('\n--------------------------')
-    print('WELCOME TO HYSCORE PLOTTER')
+    print('WELCOME TO RESTRAINT PLOTS')
     print('--------------------------\n')
     print('Generates a series of KDE plots for hyscore-guided simulations.')
-    print('This the goal of HYSCORE PLOTTER is to:')
+    print('This the goal of RESTRAINT PLOTS is to:')
     print('+ Vizualize a simulation against two order parameters')
     print('+ Compare the results to the experimentally expected values')
     print('------------------------\n')
