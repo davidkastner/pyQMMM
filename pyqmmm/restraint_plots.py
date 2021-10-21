@@ -327,9 +327,11 @@ def graph_datasets(x_data, y_data, z_data, labels, plot_params, show_crosshairs)
     xlims, ylims = get_plot_limits(x_data,y_data,plot_params)
     
     # Y-axis is the same so we set it before entering the Loop
+    # Here we use list comprehensions to find the max and min of a list of lists
     ymax = max([i for lis in ylims for i in lis])
     ymin = min([i for lis in ylims for i in lis])
     
+    # Plot the spread of the ymax and ymin values
     ymax_spread = [ymin,ymax]
     plt.ylim(ymax_spread)
 
