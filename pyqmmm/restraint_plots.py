@@ -23,7 +23,6 @@ import matplotlib.colors as mplc
 import matplotlib.cm as cm
 from scipy.stats import gaussian_kde
 from matplotlib.patches import Rectangle
-from matplotlib.ticker import MaxNLocator
 ################################## FUNCTIONS ###################################
 '''
 Parses the config file for the users parameters
