@@ -23,6 +23,7 @@ import matplotlib.colors as mplc
 import matplotlib.cm as cm
 from scipy.stats import gaussian_kde
 from matplotlib.patches import Rectangle
+from matplotlib.ticker import MaxNLocator
 ################################## FUNCTIONS ###################################
 '''
 Parses the config file for the users parameters
@@ -60,6 +61,8 @@ def config():
             for key, _ in config.items(section):
                 if key == 'size_group':
                     plot_dict[key] = config.getint(section, key)
+                if key == 'color':
+                    plot_dict[key] = config.get(section, key)
                 else:
                     plot_dict[key] = config.getfloat(section, key)
             plot_params.append(plot_dict)
@@ -284,9 +287,7 @@ hyscore_kde.png : PNG
 
 
 def graph_datasets(x_data, y_data, z_data, labels, plot_params, show_crosshairs):
-    cmap = mpl.cm.Blues(np.linspace(0, 1, 20))
-    cmap = mpl.colors.ListedColormap(cmap[5:, :-1])
-    
+
     # Lab styling graph properties
     font = {'family': 'sans-serif', 'weight': 'bold', 'size': 18}
     plt.rc('font', **font)
@@ -300,19 +301,37 @@ def graph_datasets(x_data, y_data, z_data, labels, plot_params, show_crosshairs)
     plt.rcParams['mathtext.default'] = 'regular'
     
     # Plot subfigures
-    fig, ax = plt.subplots(1, len(x_data), sharey=True, figsize=(len(x_data)*4,4))
+    fig, ax = plt.subplots(1, len(x_data), sharey=True, sharex=False, figsize=(len(x_data)*4,4))
     fig.subplots_adjust(wspace=0)
-    fig.colorbar(cm.ScalarMappable(norm=None, cmap=cmap))
-    
+    #fig.colorbar(cm.ScalarMappable(norm=None, cmap=cmap))
+
     # Titles and axes titles
     fig.text(0.5, -0.03, labels['xlabel'], ha='center')
-    plt.ylabel(labels['ylabel'], fontweight='bold')
+    # The y-axis title must be set manually until version 3.4
+    if len(plot_params) == 1:
+        plt.ylabel(labels['ylabel'], fontweight='bold')
+    elif len(plot_params) == 3:
+        fig.text(0.065, 0.13, labels['ylabel'], ha='center', rotation='vertical')
+    elif len(plot_params) == 4:
+        fig.text(0.08, 0.22, labels['ylabel'], ha='center', rotation='vertical')
 
     # Get x and y limits
     xlims, ylims = get_plot_limits(x_data,y_data,plot_params)
 
     # Loop through the the data associated with each plot
     for i in range(len(x_data)):
+        
+        # Parse the config dictionary for the color of each plot
+        color = plot_params[i]['color']
+        if color == 'blue':
+            cmap = mpl.cm.Blues(np.linspace(0, 1, 20))
+        elif color == 'orange':
+            cmap = mpl.cm.Oranges(np.linspace(0, 1, 20))
+        elif color == 'red':
+            cmap = mpl.cm.Reds(np.linspace(0, 1, 20))
+        elif color == 'grey':
+            cmap = mpl.cm.Greys(np.linspace(0, 1, 20))
+        cmap = mpl.colors.ListedColormap(cmap[5:, :-1])
 
         # Set the max and min values of the current plot as variables
         height_min = plot_params[i]['height_min']
@@ -357,7 +376,7 @@ def graph_datasets(x_data, y_data, z_data, labels, plot_params, show_crosshairs)
                           right=False)
         axes.tick_params(which='minor', length=5, color='k', width=2.5)
 
-    plt.savefig('./3_out/hyscore_kde.png', bbox_inches='tight', dpi=300)
+    plt.savefig('./3_out/hyscore_kde.pdf', bbox_inches='tight')
 
 
 ############################## HYSCORE PLOTTER #################################
