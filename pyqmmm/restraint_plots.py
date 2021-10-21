@@ -396,14 +396,14 @@ def graph_datasets(x_data, y_data, z_data, labels, plot_params, show_crosshairs)
 ############################## HYSCORE PLOTTER #################################
 # Introduce user to HyScore Eval functionality
 def restraint_plots():
-    print('\n--------------------------')
-    print('WELCOME TO RESTRAINT PLOTS')
-    print('--------------------------\n')
+    print('\n+--------------------------+')
+    print('|WELCOME TO RESTRAINT PLOTS|')
+    print('+--------------------------+\n')
     print('Generates a series of KDE plots for hyscore-guided simulations.')
     print('This the goal of RESTRAINT PLOTS is to:')
     print('+ Vizualize a simulation against two order parameters')
     print('+ Compare the results to the experimentally expected values')
-    print('------------------------\n')
+    print('\n')
 
     show_crosshairs = input('Would you like crosshairs (y/n)?  ') == 'y'
 
