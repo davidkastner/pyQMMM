@@ -330,6 +330,8 @@ def graph_datasets(x_data, y_data, z_data, labels, plot_params, show_crosshairs)
             cmap = mpl.cm.Reds(np.linspace(0, 1, 20))
         elif color == 'grey':
             cmap = mpl.cm.Greys(np.linspace(0, 1, 20))
+        elif color == 'green':
+            cmap = mpl.cm.Greens(np.linspace(0, 1, 20))
         cmap = mpl.colors.ListedColormap(cmap[5:, :-1])
 
         # Set the max and min values of the current plot as variables
