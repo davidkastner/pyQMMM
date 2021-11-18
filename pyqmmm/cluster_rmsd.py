@@ -37,7 +37,7 @@ def get_plot(final_df):
   colors = ['#e63946','#a8dadc','#457b9d','#1d3557','#800000']
   label = ['Cluster 1', 'Cluster 2', 'Cluster 3', 'Cluster 4', 'Other']
 
-  for cluster, color in zip(clusters[:3],colors[:3]):
+  for cluster, color in zip(clusters[:4],colors[:4]):
     indicesToKeep = final_df['Cluster'] == cluster if cluster != 4 else final_df['Cluster'] >= cluster
     plt.scatter(final_df.loc[indicesToKeep, 'Frame']
               , final_df.loc[indicesToKeep, 'RMSD']
