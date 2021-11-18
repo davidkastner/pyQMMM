@@ -393,7 +393,7 @@ def graph_datasets(x_data, y_data, z_data, labels, plot_params, show_crosshairs)
                           right=False)
         axes.tick_params(which='minor', length=5, color='k', width=2.5)
 
-    plt.savefig('./3_out/restraints_kde.pdf', bbox_inches='tight')
+    plt.savefig('./3_out/restraints_kde.png', dpi=600, bbox_inches='tight')
 
 
 ############################## HYSCORE PLOTTER #################################
