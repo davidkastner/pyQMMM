@@ -91,9 +91,8 @@ def get_scan_spins(final_scan_position):
     # Write the spin data for the final step of each scan step to a file
     with open('./scan_spin', 'w') as scan_spin_file:
         for index,section in enumerate(sections):
-            scan_spin_file.write('Scanned {}\n'.format(index + 1))
             scan_spin_file.write(section) 
-            scan_spin_file.write('\n')
+            scan_spin_file.write('End scan {}\n'.format(index + 1))
 
     return sections
                 
@@ -141,9 +140,8 @@ def get_scan_charges(final_scan_position):
     # Write the charge data for the final step of each scan step to a file
     with open('./scan_charge', 'w') as scan_charge_file:
         for index,section in enumerate(sections):
-            scan_charge_file.write('Scanned {}\n'.format(index + 1))
             scan_charge_file.write(section) 
-            scan_charge_file.write('\n')
+            scan_charge_file.write('End scan {}\n'.format(index + 1))
 
     return sections
 
