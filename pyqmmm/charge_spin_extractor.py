@@ -40,7 +40,7 @@ def get_spins(atoms):
     net_spins = []
     net_spin = 0
     scan_step_count = 0
-    with open('./scan_spin', 'r') as scan_spin_file:
+    with open('./src/scan_spin', 'r') as scan_spin_file:
         for line in scan_spin_file:
             line_list = line.split()
             if line_list[0] in atoms:
@@ -51,7 +51,7 @@ def get_spins(atoms):
                 net_spins.append('{} {}\n'.format(scan_step_count, net_spin))
                 net_spin = 0
     
-    with open('./select_spin', 'w') as select_spin_file:
+    with open('./src/select_spin', 'w') as select_spin_file:
         for pair in net_spins:
             select_spin_file.write(pair)
 
@@ -67,7 +67,7 @@ def get_charges(atoms):
     net_charges = []
     net_charge = 0
     scan_step_count = 0
-    with open('./scan_charge', 'r') as scan_charge_file:
+    with open('./src/scan_charge', 'r') as scan_charge_file:
         for line in scan_charge_file:
             line_list = line.split()
             if line_list[0] in atoms:
@@ -78,7 +78,7 @@ def get_charges(atoms):
                 net_charges.append('{} {}\n'.format(scan_step_count, net_charge))
                 net_charge = 0
     
-    with open('./select_charge', 'w') as select_charge_file:
+    with open('./src/select_charge', 'w') as select_charge_file:
         for pair in net_charges:
             select_charge_file.write(pair)
 
