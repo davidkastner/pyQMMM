@@ -9,7 +9,7 @@ DESCRIPTION
    Massachusetts Institute of Technology
    kastner (at) mit . edu
 SEE ALSO
-   
+   charge_spin_extractor.py
 '''
 
 ################################## FUNCTIONS ###################################
@@ -145,9 +145,9 @@ def get_scan_charges(final_scan_position):
 
     return sections
 
-def charge_spin_extractor():
+def scan_data_organizer():
     print('\n.----------------------------------.')
-    print('| WELCOME TO CHARGE-SPIN EXTRACTOR |')
+    print('| WELCOME TO SCAN DATA ORGANIZER |')
     print('.----------------------------------.\n')
     print('Remember to use the ml_prop keyword when running your TeraChem scan')
     print('Execute this script from the directory where this job was run\n')
@@ -158,4 +158,4 @@ def charge_spin_extractor():
     get_scan_charges(final_scan_position)
 
 if __name__ == "__main__":
-    charge_spin_extractor()
+    scan_data_organizer()
