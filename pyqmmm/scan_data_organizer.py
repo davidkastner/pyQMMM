@@ -68,7 +68,7 @@ def get_scan_spins(final_scan_position):
     sections = []
     current_section = 0
     section_found = False
-    with open('./src/mullpop', 'r') as spins:
+    with open('./scr/mullpop', 'r') as spins:
         for line in spins:
             if line[29:42] == 'Spin-Averaged':
                 current_section += 1
@@ -89,7 +89,7 @@ def get_scan_spins(final_scan_position):
         sections.append(section_content)
 
     # Write the spin data for the final step of each scan step to a file
-    with open('./src/scan_spin', 'w') as scan_spin_file:
+    with open('./scr/scan_spin', 'w') as scan_spin_file:
         for index,section in enumerate(sections):
             scan_spin_file.write(section) 
             scan_spin_file.write('End scan {}\n'.format(index + 1))
@@ -110,13 +110,12 @@ charge_pairs : dictionary
     The scan step number as the key and the charge section as the key
 '''
 def get_scan_charges(final_scan_position):
-    print(final_scan_position)
     section_count = 0
     section_content = ''
     sections = []
     current_section = 0
     section_found = False
-    with open('./src/charge_mull.xls', 'r') as charges:
+    with open('./scr/charge_mull.xls', 'r') as charges:
         for line in charges:
             line_content = line.split()
             if line_content[0] == '1':
@@ -138,7 +137,7 @@ def get_scan_charges(final_scan_position):
         sections.append(section_content)
 
     # Write the charge data for the final step of each scan step to a file
-    with open('./src/scan_charge', 'w') as scan_charge_file:
+    with open('./scr/scan_charge', 'w') as scan_charge_file:
         for index,section in enumerate(sections):
             scan_charge_file.write(section) 
             scan_charge_file.write('End scan {}\n'.format(index + 1))
