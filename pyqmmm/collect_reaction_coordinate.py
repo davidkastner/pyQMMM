@@ -45,7 +45,7 @@ def get_reaction_coordinate(atoms):
     atom_count = 0
     coords_list = []
     dist_list = []
-    with open('scan_optim.xyz', 'r') as scan_optim:
+    with open('./scr/scan_optim.xyz', 'r') as scan_optim:
         for line in scan_optim:
             if line[:9] == 'Converged':
                 atom_count = 0
