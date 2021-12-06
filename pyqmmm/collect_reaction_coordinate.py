@@ -10,6 +10,7 @@ SEE ALSO
 '''
 ################################ DEPENDENCIES ##################################
 from scipy.spatial import distance
+import numpy as np
 
 ################################## FUNCTIONS ###################################
 '''
@@ -20,8 +21,8 @@ atoms : list
     list of atoms indices
 '''
 def user_input():
-    # What two atoms define your reaction coordinate distance
-    my_atoms = input('What atoms define your reaction coordinate (e.g., 49,70)?')
+    # What atoms define your reaction coordinate
+    my_atoms = input('What atoms define your reaction coordinate?')
 
     # Convert user input to a list even if it is hyphenated
     temp = [(lambda sub: range(sub[0], sub[-1] + 1))(list(map(int, ele.split('-')))) for ele in my_atoms.split(',')] 
@@ -35,13 +36,12 @@ Parameters
 ----------
 atoms : list
     List of two atoms defining a reaction coordiante distance
-
 Returns
 -------
 reaction_coordinates : list
     List of values mapping to the distance that two atoms have moved.
 '''
-def get_reaction_coordinate(atoms):
+def get_distance(atoms):
     atom_count = 0
     coords_list = []
     dist_list = []
@@ -61,6 +61,44 @@ def get_reaction_coordinate(atoms):
             atom_count += 1
 
     return dist_list
+
+'''
+Calculates an optional y-axis reaction coordinate at each step of the scan.
+Parameters
+----------
+yaxis_atoms : list
+    List of two atoms defining the y-axis reaction coordinate angle
+Returns
+-------
+reaction_coordinates : list
+    List of values mapping to the distance that two atoms have moved.
+'''
+def get_angle(atoms):
+    atom_index = 0
+    coords_list = []
+    angle_list = []
+    with open('scan_optim.xyz', 'r') as scan_optim:
+        for line in scan_optim:
+            if line[:9] == 'Converged':
+                atom_index = 0
+            if atom_index in atoms:
+                line_elements = line.split()
+                coords = line_elements[1:4]
+                coords_list.append(list(map(float, coords)))
+
+                if len(coords_list) and len(coords_list) % 3 == 0:    
+                    a = np.array(coords_list[-1])
+                    b = np.array(coords_list[-2])
+                    c = np.array(coords_list[-3])
+                    ba = a - b       
+                    bc = c - b 
+                    cosine_angle = np.dot(ba, bc) / (np.linalg.norm(ba) * np.linalg.norm(bc))
+                    angle = np.arccos(cosine_angle)
+                    angle_degrees = np.degrees(angle)
+                    angle_list.append(angle_degrees)
+            atom_index += 1
+
+    return angle_list
 
 '''
 Loop through the file, collect optimized energies.
@@ -94,10 +132,10 @@ dist_list : list
 energy_list : list
     List of all energies mapping to each step of the reacitno coordinate
 '''    
-def get_reaction_dat(dist_list, energy_list):
-    with open('./rc.dat', 'w') as dat_file:
-        for dist,energy in zip(dist_list,energy_list):
-            dat_file.write('{} {}\n'.format(dist, energy))
+def get_reaction_dat(xaxis_list, yaxis_list, extension):
+    with open('./rc_{}.dat'.format(extension), 'w') as dat_file:
+        for x,y in zip(xaxis_list, yaxis_list):
+            dat_file.write('{} {}\n'.format(x, y))
 
 # General function handler
 def reaction_coordinate_collector():
@@ -105,12 +143,19 @@ def reaction_coordinate_collector():
     print('| WELCOME TO REACTION COORDINATE COLLECTOR |')
     print('.------------------------------------------.\n')
     print('Run this script in the same directory where you ran your TeraChem job.')
-    print('Extracts energies and a reaction coordiante.\n')
+    print('Computes energy against a distance coordinate.\n')
+    print('Optionally computes an angle coordinate against distance.\n')
 
-    atoms = user_input()
-    dist_list = get_reaction_coordinate(atoms)
+    # Energy against a distance coordinate
+    dist_atoms = user_input()
+    dist_list = get_distance(dist_atoms)
     energy_list = get_opt_energies()
-    get_reaction_dat(dist_list, energy_list)
+    get_reaction_dat(dist_list, energy_list, 'energy')
+
+    # Angle against a distance coordinate 
+    angle_atoms = user_input()
+    angle_list = get_angle(angle_atoms)
+    get_reaction_dat(dist_list, angle_list, 'angle')
 
 if __name__ == "__main__":
     reaction_coordinate_collector()
