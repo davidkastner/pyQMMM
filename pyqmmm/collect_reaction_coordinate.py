@@ -96,7 +96,6 @@ energy_list : list
     List of all energies mapping to each step of the reacitno coordinate
 '''    
 def get_reaction_dat(dist_list, energy_list):
-    print(len(dist_list), len(energy_list))
     with open('./rc.dat', 'w') as dat_file:
         for dist,energy in zip(dist_list,energy_list):
             dat_file.write('{} {}\n'.format(dist, energy))
