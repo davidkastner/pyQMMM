@@ -45,7 +45,7 @@ def get_reaction_coordinate(atoms):
     atom_count = 0
     coords_list = []
     dist_list = []
-    with open('./scr/scan_optim.xyz', 'r') as scan_optim:
+    with open('./src/scan_optim.xyz', 'r') as scan_optim:
         for line in scan_optim:
             if line[:9] == 'Converged':
                 atom_count = 0
@@ -74,15 +74,14 @@ energy_list : list
 def get_opt_energies():
     energy_list = []
     with open('./qmscript.out', 'r') as out_file:
-        first_energy = True
+        first_energy = None
         for line in out_file:
             if line[6:22] == 'Optimized Energy':
                 energy = float(line[26:42])
-                if first_energy == True:
+                if first_energy == None:
                     first_energy = energy
                 relative_energy = (energy - first_energy) * 627.5
                 energy_list.append(relative_energy)
-                first_energy = False
 
     return energy_list
 
@@ -96,6 +95,7 @@ energy_list : list
     List of all energies mapping to each step of the reacitno coordinate
 '''    
 def get_reaction_dat(dist_list, energy_list):
+    print(len(dist_list), len(energy_list))
     with open('./rc.dat', 'w') as dat_file:
         for dist,energy in zip(dist_list,energy_list):
             dat_file.write('{} {}\n'.format(dist, energy))
