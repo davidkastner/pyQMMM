@@ -77,7 +77,7 @@ def get_angle(atoms):
     atom_index = 0
     coords_list = []
     angle_list = []
-    with open('scan_optim.xyz', 'r') as scan_optim:
+    with open('./scr/scan_optim.xyz', 'r') as scan_optim:
         for line in scan_optim:
             if line[:9] == 'Converged':
                 atom_index = 0
