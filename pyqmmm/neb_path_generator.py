@@ -277,7 +277,7 @@ def get_plot(dist_diff_list, energy_list):
     plt.rc('axes', linewidth=2.5)
     plt.ylabel('relative energy (kcal/mol)', fontsize=16)
     plt.xlabel('difference of distance (Å)', fontsize=16)
-    plt.plot(dist_diff_list, energy_list)
+    plt.plot(dist_diff_list, energy_list, marker='o')
     plt.tick_params(labelsize=14)
     plt.savefig('./plot.pdf', bbox_inches='tight')
     plt.show()
