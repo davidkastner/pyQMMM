@@ -154,7 +154,7 @@ master_list : list
 
 
 def get_dist_diff(master_list):
-    for index, dict_entry in enumerate(master_list):
+    for index, dict in enumerate(master_list):
         x1 = master_list[index]['coord1_dist']
         x2 = master_list[index]['coord2_dist']
         dist_diff = round(x2 - x1, 8)
@@ -174,40 +174,29 @@ Returns
 '''
 
 
-def get_bins(master_list, image_count):
+def get_bins(master_list, scan_master_list, image_count):
     # Get all the differences of distances and add them to a new list
     dist_diff_list = []
     for dict in master_list:
         dist_diff_list.append(dict['dist_diff'])
-    # Find the min and max difference of distances to determine bins
+    # Find the min and max from scan_geom.xyz
     min_dist_diff = min(dist_diff_list)
     max_dist_diff = max(dist_diff_list)
 
-    bin_categories = np.linspace(
-        min_dist_diff, max_dist_diff, image_count, dtype=float)
+    # Divided the total difference of distances into equal parts
+    bin_categories = np.linspace(min_dist_diff, max_dist_diff, image_count)
+    
     # Find the corresponding bin for each frame
     for index, dist_diff in enumerate(dist_diff_list):
-        bin_index = check_bins(dist_diff, bin_categories)
+        for i, bin_category in enumerate(bin_categories):
+            if i + 1 == len(bin_categories):
+                if dist_diff >= bin_category:
+                    bin_index = i
+            elif dist_diff >= bin_category and dist_diff <= bin_categories[i + 1]:
+                bin_index = i
         master_list[index]['bin'] = bin_index + 1
 
     return master_list, min_dist_diff, max_dist_diff
-
-
-'''
-Checks to find the corresponding bin for each frame.
-Parameters
-----------
-
-Returns
--------
-
-'''
-
-
-def check_bins(dist_diff, bin_categories):
-    for index, bin_category in enumerate(bin_categories):
-        if dist_diff <= bin_categories[index]:
-            return index
 
 
 def find_lowest_energy(master_list):
@@ -307,22 +296,22 @@ def neb_image_generator():
     master_list = get_dist_diff(master_list)
     print('Step 2: {} frames have been parsed and stored.'.format(len(master_list)))
 
-    # 3) Assign bins to each of the frames
-    master_list, min_dist_diff, max_dist_diff = get_bins(
-        master_list, image_count)
-    print('Step 3: Your max value is {} and your min value is {}.'.format(
-        min_dist_diff, max_dist_diff))
-
-    # 4) Find the frame in each bin with the lowest energy
-    frame_indices = find_lowest_energy(master_list)
-    print('Step 4: Your binned frames: {}'.format(frame_indices))
-
-    # 5) Find the TS frame in scan_optim.xyz
-    scan_master_list = get_frames(
-        coord1, coord2, scan_master_list, './scr/scan_optim.xyz')
+    # 3) Find the TS frame in scan_optim.xyz
+    scan_master_list = get_frames(coord1, coord2, scan_master_list, './scr/scan_optim.xyz')
     scan_master_list = get_dist_diff(scan_master_list)
     ts_dict, index = get_ts(scan_master_list)
-    print('Step 5: The TS was found in frame {}.'.format(index))
+    print('Step 3: The TS was found in frame {}.'.format(index))
+
+    # 4) Assign bins to each of the frames
+    master_list, min_dist_diff, max_dist_diff = get_bins(
+        master_list, scan_master_list, image_count)
+    print('Step 4: Your max value is {} and your min value is {}.'.format(
+        min_dist_diff, max_dist_diff))
+
+    # 5) Find the frame in each bin with the lowest energy
+    frame_indices = find_lowest_energy(master_list)
+    print('Step 5: Your binned frames: {}'.format(frame_indices))
+
 
     # 6) Create a dictionary with only the final selected frames and the TS
     final_master_list = get_final_master(frame_indices, master_list, ts_dict)
@@ -332,6 +321,7 @@ def neb_image_generator():
     # 7) Generate plot of the distance difference vs relative energy
     dist_diff_list, energy_list = get_dist_energy_lists(final_master_list)
     get_plot(dist_diff_list, energy_list)
+    print(dist_diff_list)
     print('Step 7: The line plot plot.pdf was generated.')
 
 
