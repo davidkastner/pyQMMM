@@ -258,10 +258,10 @@ def get_final_master(frame_indices, master_list, ts_dict):
     return final_master_list
 
 
-def get_neb_traj(final_master_list):
-    with open('./neb_traj.xyz', 'w') as neb_traj:
+def get_neb_path(final_master_list):
+    with open('./neb_path.xyz', 'w') as neb_path:
         for dict in final_master_list:
-            neb_traj.write(dict['frame_contents'])
+            neb_path.write(dict['frame_contents'])
 
 
 def get_dist_energy_lists(final_master_list):
@@ -326,8 +326,8 @@ def neb_image_generator():
 
     # 6) Create a dictionary with only the final selected frames and the TS
     final_master_list = get_final_master(frame_indices, master_list, ts_dict)
-    get_neb_traj(final_master_list)
-    print('Step 6: The file neb_traj.xyz was generated.')
+    get_neb_path(final_master_list)
+    print('Step 6: The file neb_path.xyz was generated.')
 
     # 7) Generate plot of the distance difference vs relative energy
     dist_diff_list, energy_list = get_dist_energy_lists(final_master_list)
