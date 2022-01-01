@@ -11,7 +11,7 @@ SEE ALSO
 ################################ DEPENDENCIES ##################################
 from scipy.spatial import distance
 import numpy as np
-
+import matplotlib.pyplot as plt
 ################################## FUNCTIONS ###################################
 
 '''
@@ -61,16 +61,17 @@ reaction_coordinates : list
 '''
 
 
-def get_frames(coord1, coord2, master_list):
+def get_frames(coord1, coord2, master_list, file):
     # Variables that measure our progress in parsing the optim.xyz file
-    frame_contents = []
+    frame_contents = ''
     line_count = 0
     frame_count = 0
     section_length_flag = False
     xyz_coord1_list = []
     xyz_coord2_list = []
+    energy_position = 4 if 'scan' in file else 0
     # Loop through optim.xyz and collect distances, energies and frame contents
-    with open('./optim.xyz', 'r') as optim:
+    with open(file, 'r') as optim:
         for line in optim:
             # We need to know how long each section is but only count once
             if section_length_flag == False:
@@ -78,7 +79,7 @@ def get_frames(coord1, coord2, master_list):
                 section_length_flag = True
             # The second line will have the energy
             if line_count == 1:
-                energy = float(line.split(' ')[0])
+                energy = float(line.split()[energy_position])
                 dict_new = {}
                 master_list.append(dict_new)
                 master_list[frame_count]['energy'] = energy
@@ -91,12 +92,12 @@ def get_frames(coord1, coord2, master_list):
             if line_count == section_length:
                 line_count = 0
                 master_list[frame_count]['frame_contents'] = frame_contents
-                frame_contents = []
+                frame_contents = ''
                 frame_count += 1
                 xyz_coord1_list = []
                 xyz_coord2_list = []
 
-            frame_contents.append(line)
+            frame_contents += line
             line_count += 1
 
     return master_list
@@ -138,7 +139,148 @@ def get_dist(frame_count, master_list, line, line_count, coord, xyz_coord_list, 
 
     return xyz_coord_list, master_list
 
-# General function handler
+
+'''
+Calculate all difference of distances and add them to the master_list.
+Parameters
+----------
+master_list : list
+    List of dictionaries keyed by frame
+Returns
+-------
+master_list : list
+    Updated list of dictionaries keyed by frame
+'''
+
+
+def get_dist_diff(master_list):
+    for index, dict_entry in enumerate(master_list):
+        x1 = master_list[index]['coord1_dist']
+        x2 = master_list[index]['coord2_dist']
+        dist_diff = round(x2 - x1, 8)
+        master_list[index]['dist_diff'] = dist_diff
+
+    return master_list
+
+
+'''
+Assign bins to all frames.
+Parameters
+----------
+
+Returns
+-------
+
+'''
+
+
+def get_bins(master_list, image_count):
+    # Get all the differences of distances and add them to a new list
+    dist_diff_list = []
+    for dict in master_list:
+        dist_diff_list.append(dict['dist_diff'])
+    # Find the min and max difference of distances to determine bins
+    min_dist_diff = min(dist_diff_list)
+    max_dist_diff = max(dist_diff_list)
+
+    bin_categories = np.linspace(
+        min_dist_diff, max_dist_diff, image_count, dtype=float)
+    # Find the corresponding bin for each frame
+    for index, dist_diff in enumerate(dist_diff_list):
+        bin_index = check_bins(dist_diff, bin_categories)
+        master_list[index]['bin'] = bin_index + 1
+
+    return master_list, min_dist_diff, max_dist_diff
+
+
+'''
+Checks to find the corresponding bin for each frame.
+Parameters
+----------
+
+Returns
+-------
+
+'''
+
+
+def check_bins(dist_diff, bin_categories):
+    for index, bin_category in enumerate(bin_categories):
+        if dist_diff <= bin_categories[index]:
+            return index
+
+
+def find_lowest_energy(master_list):
+    bin_mins = {}
+    for index, dict in enumerate(master_list):
+        if dict['bin'] not in bin_mins:
+            bin_mins[dict['bin']] = {}
+            bin_mins[dict['bin']]['energy'] = dict['energy']
+            bin_mins[dict['bin']]['index'] = index
+            continue
+
+        curr_bin_min = bin_mins[dict['bin']]['energy']
+        if curr_bin_min > dict['energy']:
+            bin_mins[dict['bin']]['energy'] = dict['energy']
+            bin_mins[dict['bin']]['index'] = index
+
+    frame_indices = [value['index'] for key, value in bin_mins.items()]
+
+    return frame_indices
+
+
+def get_ts(scan_master_list):
+    max_energy = None
+    max_energy_index = 0
+    for index, dict in enumerate(scan_master_list):
+        if max_energy == None:
+            max_energy = scan_master_list[index]['energy']
+            max_energy_index = index
+        elif max_energy <= scan_master_list[index]['energy']:
+            max_energy = scan_master_list[index]['energy']
+            max_energy_index = index
+
+    ts_dict = scan_master_list[max_energy_index]
+
+    return ts_dict, max_energy_index
+
+
+def get_final_master(frame_indices, master_list, ts_dict):
+    final_master_list = []
+    # Loop through master list and remove the binned frames
+    for i, index in enumerate(frame_indices):
+        final_master_list.append(master_list[index])
+        if i + 1 > len(frame_indices) - 1:
+            continue
+        if master_list[index]['dist_diff'] < ts_dict['dist_diff'] and master_list[frame_indices[i + 1]]['dist_diff'] > ts_dict['dist_diff']:
+            final_master_list.append(ts_dict)
+
+    return final_master_list
+
+
+def get_neb_traj(final_master_list):
+    with open('./neb_traj.xyz', 'w') as neb_traj:
+        for dict in final_master_list:
+            neb_traj.write(dict['frame_contents'])
+
+
+def get_dist_energy_lists(final_master_list):
+    dist_diff_list = []
+    energy_list = []
+    for index, dict in enumerate(final_master_list):
+        dist_diff_list.append(final_master_list[index]['dist_diff'])
+        energy_list.append(final_master_list[index]['energy'])
+    return dist_diff_list, energy_list
+
+
+def get_plot(dist_diff_list, energy_list):
+    plt.rc('axes', linewidth=2.5)
+    plt.ylabel('relative energy (kcal/mol)', fontsize=16)
+    plt.xlabel('difference of distance (Å)', fontsize=16)
+    plt.plot(dist_diff_list, energy_list)
+    plt.tick_params(labelsize=14)
+    plt.savefig('./plot.pdf', bbox_inches='tight')
+    plt.show()
 
 
 def neb_image_generator():
@@ -150,18 +292,48 @@ def neb_image_generator():
 
     # This list will be populated with dictionaries for each frame
     master_list = []
-    # Get the two reaction coordinates and the preferred number of images
-    #coord1,coord2,image_count = user_input()
+    scan_master_list = []
+
+    # 1) Get the two reaction coordinates and the preferred number of images
+    # coord1,coord2,image_count = user_input()
     coord1 = [123, 128]
     coord2 = [128, 138]
     image_count = 20
+    print('Step 1: Your atom indices are {} and {} and you want {} frames.'.format(
+        coord1, coord2, image_count))
 
-    # Get the distances for the first reaction coordinate
-    master_list = get_frames(coord1, coord2, master_list)
-    print(master_list[1000]['energy'])
-    print(master_list[1000]['coord1_dist'])
-    print(master_list[1000]['coord2_dist'])
-    print(master_list[1000])
+    # 2) Get the distances and differences of distances
+    master_list = get_frames(coord1, coord2, master_list, './optim.xyz')
+    master_list = get_dist_diff(master_list)
+    print('Step 2: {} frames have been parsed and stored.'.format(len(master_list)))
+
+    # 3) Assign bins to each of the frames
+    master_list, min_dist_diff, max_dist_diff = get_bins(
+        master_list, image_count)
+    print('Step 3: Your max value is {} and your min value is {}.'.format(
+        min_dist_diff, max_dist_diff))
+
+    # 4) Find the frame in each bin with the lowest energy
+    frame_indices = find_lowest_energy(master_list)
+    print('Step 4: Your binned frames: {}'.format(frame_indices))
+
+    # 5) Find the TS frame in scan_optim.xyz
+    scan_master_list = get_frames(
+        coord1, coord2, scan_master_list, './scan_optim.xyz')
+    scan_master_list = get_dist_diff(scan_master_list)
+    ts_dict, index = get_ts(scan_master_list)
+    print('Step 5: The TS was found in frame {}.'.format(index))
+
+    # 6) Create a dictionary with only the final selected frames and the TS
+    final_master_list = get_final_master(frame_indices, master_list, ts_dict)
+    print('Step 6: The file neb_traj.xyz was generated.')
+
+    # 7) Print the frame sections to a new file
+    get_neb_traj(final_master_list)
+
+    # 8) Generate plot of the distance difference vs relative energy
+    dist_diff_list, energy_list = get_dist_energy_lists(final_master_list)
+    get_plot(dist_diff_list, energy_list)
 
 
 if __name__ == "__main__":
