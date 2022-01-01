@@ -303,7 +303,7 @@ def neb_image_generator():
         coord1, coord2, image_count))
 
     # 2) Get the distances and differences of distances
-    master_list = get_frames(coord1, coord2, master_list, './optim.xyz')
+    master_list = get_frames(coord1, coord2, master_list, './scr/optim.xyz')
     master_list = get_dist_diff(master_list)
     print('Step 2: {} frames have been parsed and stored.'.format(len(master_list)))
 
@@ -319,21 +319,20 @@ def neb_image_generator():
 
     # 5) Find the TS frame in scan_optim.xyz
     scan_master_list = get_frames(
-        coord1, coord2, scan_master_list, './scan_optim.xyz')
+        coord1, coord2, scan_master_list, './scr/scan_optim.xyz')
     scan_master_list = get_dist_diff(scan_master_list)
     ts_dict, index = get_ts(scan_master_list)
     print('Step 5: The TS was found in frame {}.'.format(index))
 
     # 6) Create a dictionary with only the final selected frames and the TS
     final_master_list = get_final_master(frame_indices, master_list, ts_dict)
+    get_neb_traj(final_master_list)
     print('Step 6: The file neb_traj.xyz was generated.')
 
-    # 7) Print the frame sections to a new file
-    get_neb_traj(final_master_list)
-
-    # 8) Generate plot of the distance difference vs relative energy
+    # 7) Generate plot of the distance difference vs relative energy
     dist_diff_list, energy_list = get_dist_energy_lists(final_master_list)
     get_plot(dist_diff_list, energy_list)
+    print('Step 7: The line plot plot.pdf was generated.')
 
 
 if __name__ == "__main__":
