@@ -43,7 +43,7 @@ def user_input():
     coord2 = [b for a in temp for b in a]
     # How many images should be in the NEB path
     image_count = int(
-        input('What atoms define your second reaction coordinate?'))
+        input('Into how many bins would you like to divide the data?')) + 1
 
     return coord1, coord2, image_count
 
@@ -131,6 +131,7 @@ def get_dist(frame_count, master_list, line, line_count, coord, xyz_coord_list, 
         line_elements = line.split()
         xyz_coords = line_elements[1:]
         xyz_coord_list.append(list(map(float, xyz_coords)))
+        # Calculate the Euclidean distance for the coordinates of two atoms
         if len(xyz_coord_list) and len(xyz_coord_list) % 2 == 0:
             atom_1 = tuple(xyz_coord_list[-1])
             atom_2 = tuple(xyz_coord_list[-2])
@@ -154,9 +155,11 @@ master_list : list
 
 
 def get_dist_diff(master_list):
+    # Calculate the difference of distances
     for index, dict in enumerate(master_list):
         x1 = master_list[index]['coord1_dist']
         x2 = master_list[index]['coord2_dist']
+        # We will cut sig figs at 8 so all data matches
         dist_diff = round(x2 - x1, 8)
         master_list[index]['dist_diff'] = dist_diff
 
@@ -184,30 +187,30 @@ def get_bins(master_list, scan_master_list, image_count):
     max_dist_diff = max(dist_diff_list)
 
     # Divided the total difference of distances into equal parts
-    bin_categories = np.linspace(min_dist_diff, max_dist_diff, image_count)
-    
-    # Find the corresponding bin for each frame
+    bin_categories = list(np.linspace(min_dist_diff, max_dist_diff, image_count))
+    print(bin_categories)
+    # Find the bin for each frame, less than the previous and more than the next
     for index, dist_diff in enumerate(dist_diff_list):
         for i, bin_category in enumerate(bin_categories):
-            if i + 1 == len(bin_categories):
-                if dist_diff >= bin_category:
-                    bin_index = i
-            elif dist_diff >= bin_category and dist_diff <= bin_categories[i + 1]:
-                bin_index = i
-        master_list[index]['bin'] = bin_index + 1
+            if dist_diff >= bin_category and dist_diff <= bin_categories[i + 1]:
+                master_list[index]['bin'] = i + 1
+
+                break
 
     return master_list, min_dist_diff, max_dist_diff
 
 
 def find_lowest_energy(master_list):
     bin_mins = {}
+    # Create a dictionary of dictionary to store all the energy values
     for index, dict in enumerate(master_list):
         if dict['bin'] not in bin_mins:
             bin_mins[dict['bin']] = {}
             bin_mins[dict['bin']]['energy'] = dict['energy']
             bin_mins[dict['bin']]['index'] = index
             continue
-
+        
+        # We only want the frame from each bin with the smallest energy
         curr_bin_min = bin_mins[dict['bin']]['energy']
         if curr_bin_min > dict['energy']:
             bin_mins[dict['bin']]['energy'] = dict['energy']
@@ -221,14 +224,17 @@ def find_lowest_energy(master_list):
 def get_ts(scan_master_list):
     max_energy = None
     max_energy_index = 0
+    # We need to get the transition state from scan_optim.xyz
     for index, dict in enumerate(scan_master_list):
+        # Since our starting list is empty, we will handle first case separately
         if max_energy == None:
             max_energy = scan_master_list[index]['energy']
             max_energy_index = index
+        # Look for the largest energy
         elif max_energy <= scan_master_list[index]['energy']:
             max_energy = scan_master_list[index]['energy']
             max_energy_index = index
-
+    # Extract the dictionary corresponding ot the TS frame
     ts_dict = scan_master_list[max_energy_index]
 
     return ts_dict, max_energy_index
@@ -243,6 +249,7 @@ def get_final_master(frame_indices, master_list, ts_dict):
             continue
         if master_list[index]['dist_diff'] < ts_dict['dist_diff'] and master_list[frame_indices[i + 1]]['dist_diff'] > ts_dict['dist_diff']:
             final_master_list.append(ts_dict)
+    final_master_list = sorted(final_master_list, key = lambda i: i['dist_diff'])
 
     return final_master_list
 
@@ -292,7 +299,7 @@ def neb_image_generator():
         coord1, coord2, image_count))
 
     # 2) Get the distances and differences of distances
-    master_list = get_frames(coord1, coord2, master_list, './scr/optim.xyz')
+    master_list = get_frames(coord1, coord2, master_list, './scr/scan_optim.xyz')
     master_list = get_dist_diff(master_list)
     print('Step 2: {} frames have been parsed and stored.'.format(len(master_list)))
 
