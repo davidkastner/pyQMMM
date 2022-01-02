@@ -145,9 +145,9 @@ def get_scan_charges(final_scan_position):
     return sections
 
 def scan_data_organizer():
-    print('\n.----------------------------------.')
-    print('| WELCOME TO SCAN DATA ORGANIZER |')
-    print('.----------------------------------.\n')
+    print('\n.---------------------------------.')
+    print('| WELCOME TO PES DATA ORGANIZER |')
+    print('.---------------------------------.\n')
     print('Remember to use the ml_prop keyword when running your TeraChem scan')
     print('Execute this script from the directory where this job was run\n')
 
