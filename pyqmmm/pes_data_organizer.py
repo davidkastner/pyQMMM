@@ -4,12 +4,16 @@ DESCRIPTION
    By default, TeraChem scans only print the charge and spin of the final frame.
    We change this by using the ml_prop keyword. Now every optimization will print.
    However, we only need the charge and spin at the end of each optimization.
-   This script will return the the charge, spin, spin and coordiantes into a readable format.
+   This script will return the the charge and spin into a readable format.
+   The coordinates are already piped nicely to scan_optim.xyz.
+
    Author: David Kastner
    Massachusetts Institute of Technology
    kastner (at) mit . edu
+
 SEE ALSO
    charge_spin_extractor.py
+   
 '''
 
 ################################## FUNCTIONS ###################################
@@ -143,6 +147,7 @@ def get_scan_charges(final_scan_position):
             scan_charge_file.write('End scan {}\n'.format(index + 1))
 
     return sections
+
 
 def scan_data_organizer():
     print('\n.---------------------------------.')

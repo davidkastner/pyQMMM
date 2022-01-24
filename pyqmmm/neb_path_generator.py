@@ -49,7 +49,7 @@ def user_input():
 
 
 '''
-Get each one of the frames on store them.
+Get each one of the frames and store them.
 Parameters
 ----------
 dict : dictionary
