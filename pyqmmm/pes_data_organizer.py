@@ -4,7 +4,7 @@ DESCRIPTION
    By default, TeraChem scans only print the charge and spin of the final frame.
    We change this by using the ml_prop keyword. Now every optimization will print.
    However, we only need the charge and spin at the end of each optimization.
-   This script will return the the charge and spin data in a readable format.
+   This script will return the the charge, spin, spin and coordiantes into a readable format.
    Author: David Kastner
    Massachusetts Institute of Technology
    kastner (at) mit . edu
