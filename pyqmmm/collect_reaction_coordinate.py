@@ -29,9 +29,10 @@ def user_input(rc_request):
     # What atoms define your reaction coordinate
     request = input('Atoms in your {} RC? (e.g., 1_2): '.format(rc_request))
 
-    # Convert user input to a list even if it is hyphenated
-    temp = [(lambda sub: range(sub[0], sub[-1] + 1))(list(map(int, ele.split('-')))) for ele in request.split('_')] 
-    atoms = [b for a in temp for b in a] 
+    # Check if RC is requested and onvert to a list even if it is hyphenated
+    if request != '':
+        temp = [(lambda sub: range(sub[0], sub[-1] + 1))(list(map(int, ele.split('-')))) for ele in request.split('_')] 
+        atoms = [b for a in temp for b in a] 
 
     return atoms, request
 
@@ -115,7 +116,8 @@ energy_list : list
     Returns a list of the energies extracted from the .out file.
 '''    
 def get_opt_energies():
-    energy_list = []
+    DE_list = []
+    E_list = []
     with open('./qmscript.out', 'r') as out_file:
         first_energy = None
         for line in out_file:
@@ -124,9 +126,12 @@ def get_opt_energies():
                 if first_energy == None:
                     first_energy = energy
                 relative_energy = (energy - first_energy) * 627.5
-                energy_list.append(relative_energy)
+                absolute_energy = energy * 627.5
+                DE_list.append(relative_energy)
+                E_list.append(absolute_energy)
 
-    return energy_list
+    # Return lists of relative and absolute energies
+    return DE_list, E_list
 
 '''
 Combine reaction coordinate and energy list and write them to a .dat file
@@ -148,20 +153,23 @@ def reaction_coordinate_collector():
     print('| WELCOME TO REACTION COORDINATE COLLECTOR |')
     print('.------------------------------------------.\n')
     print('Run this script in the same directory as the TeraChem job.')
-    print('Computes energy against multiple distance coordinates.\n')
-    print('Optionally computes an angle coordinate against distance (OFF).\n')
+    print('Computes energy (kcal/mol) against two distance coordinates.\n')
+    print('If you only have one RC, leave a prompt empty.\n')
+    print('Optionally computes an angle coordinate against distance.\n')
 
     # Energy against a distance coordinate
     dist_atoms, request = user_input('first')
-    dist_list = get_distance(dist_atoms)
-    energy_list = get_opt_energies()
-    get_reaction_dat(dist_list, energy_list, request)
+    if request != '':
+        dist_list = get_distance(dist_atoms)
+        DE_list, E_list = get_opt_energies()
+        get_reaction_dat(dist_list, E_list, request)
 
     # Energy against a distance coordinate
     dist_atoms, request = user_input('second')
-    dist_list = get_distance(dist_atoms)
-    energy_list = get_opt_energies()
-    get_reaction_dat(dist_list, energy_list, request)
+    if request != '':
+        dist_list = get_distance(dist_atoms)
+        DE_list, E_list = get_opt_energies()
+        get_reaction_dat(dist_list, E_list, request)
 
     # # Angle against a distance coordinate 
     # angle_atoms = user_input()
