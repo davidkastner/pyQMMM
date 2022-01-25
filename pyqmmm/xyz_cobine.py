@@ -27,6 +27,8 @@ frames : list
     List of lists containing the frames the user wants from each file
 '''
 def requested_frames():
+    request = ''
+    while 
     # What frames would you like from the first .xyz file
     request = input('Frames from first file? (e.g., 1_2): ')
 
