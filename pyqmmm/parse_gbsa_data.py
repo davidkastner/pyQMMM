@@ -2,7 +2,7 @@
 See more here: https://github.com/davidkastner/quick-csa/blob/main/README.md
 DESCRIPTION
     Generates GBSA data and processes and plots the output.
-    
+
     Author: David Kastner
     Massachusetts Institute of Technology
     kastner (at) mit . edu
@@ -130,8 +130,6 @@ def parse_gbsa_data():
     print('\nGetting total energies...')
     total_energy_dict = get_total_energy(df)
     print(total_energy_dict)
-
-    #
 
 
 if __name__ == "__main__":

@@ -39,9 +39,9 @@ def renumber(pdb_name, offset):
 
 def renumber_residues():
     # Introduce user to Renumber Residues functionality
-    print('\n--------------------------')
-    print('WELCOME TO RENUMBER RESIDUES')
-    print('--------------------------\n')
+    print('\n.-------------------.')
+    print('| RENUMBER RESIDUES |')
+    print('.-------------------.\n')
     print('Renumbers all residues in a PDB from an integar of your choice.')
     print('------------------------\n')
 

@@ -41,9 +41,9 @@ def get_plot(df, yaxis, title, color, saveloc):
 
 def plot_md_vitals():
     # Welcome user and print some instructions
-    print('\n.--------------------.\n')
+    print('\n.----------------.\n')
     print('| PLOT MD VITALS |')
-    print('---------------------.\n')
+    print('-----------------.\n')
     print('This script will search your directory for the following input:')
     print('+ Energy levels > summary.ETOT')
     print('+ Water density of solvent box > summary.DENSITY')

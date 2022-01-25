@@ -16,6 +16,7 @@ import glob
 import sys
 import pandas as pd
 import numpy as np
+
 ################################# FUNCTIONS ####################################
 
 '''
@@ -50,9 +51,9 @@ def user_input(curr_rc_list):
 
 
 def stitch_reaction_paths():
-    print('\n.----------------------------------.')
-    print('| WELCOME TO STITCH REACTION PATHS |')
-    print('.----------------------------------.\n')
+    print('\n.-----------------------.')
+    print('| STITCH REACTION PATHS |')
+    print('.-----------------------.\n')
     print('Name the forward scan trajectory forward.xyz.')
     print('Name the reverse scan trajectory reverse.xyz.')
     print('Combines the two trajectories and save it as a new file.\n')

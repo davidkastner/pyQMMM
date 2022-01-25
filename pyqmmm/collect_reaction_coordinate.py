@@ -161,9 +161,9 @@ def get_reaction_dat(xaxis_list, yaxis_list, extension):
 
 
 def reaction_coordinate_collector():
-    print('\n.------------------------------------------.')
-    print('| WELCOME TO REACTION COORDINATE COLLECTOR |')
-    print('.------------------------------------------.\n')
+    print('\n.------------------------------.')
+    print('| COLLECT REACTION COORDINATES |')
+    print('.------------------------------.\n')
     print('Run this script in the same directory as the TeraChem job.')
     print('Computes energy (kcal/mol) against two distance coordinates.\n')
     print('If you only have one RC, leave a prompt empty.\n')

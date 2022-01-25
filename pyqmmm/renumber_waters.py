@@ -10,7 +10,7 @@ DESCRIPTION
 '''
 
 
-def renumber_waters:
+def renumber_waters():
     # Introduce user to the function
     print('WELCOME TO RENUMBER WATERS')
     print('--------------------------\n')

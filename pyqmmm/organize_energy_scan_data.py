@@ -154,11 +154,11 @@ def get_scan_charges(final_scan_position):
 
 
 def scan_data_organizer():
-    print('\n.---------------------------------.')
-    print('| WELCOME TO PES DATA ORGANIZER |')
-    print('.---------------------------------.\n')
-    print('Remember to use the ml_prop keyword when running your TeraChem scan')
-    print('Execute this script from the directory where this job was run\n')
+    print('\n.---------------------------.')
+    print('| ORGANIZE ENERGY SCAN DATA |')
+    print('.---------------------------.\n')
+    print('Use the ml_prop keyword when running your TeraChem scan.')
+    print('Execute this script from the directory where this job was run.\n')
 
     final_scan_position, scan_step_pairs = get_iteration_pairs()
     get_scan_spins(final_scan_position)

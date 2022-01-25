@@ -304,9 +304,9 @@ def clean_up(pdb_name):
 
 
 def automate_modeller(aa_lookup):
-    print('\n.----------------------------.')
-    print('|WELCOME TO AUTOMATE MODELLER|')
-    print('.----------------------------.\n')
+    print('\n.-------------------.')
+    print('| AUTOMATE MODELLER |')
+    print('.-------------------.\n')
     print('Automates the process of replacing missing residues with Modeller.\n')
 
     # Step 1: Get the name of the PDB and also its location
