@@ -23,8 +23,8 @@ import numpy as np
 Get the request frames for each file from the user.
 Returns
 -------
-atoms : list
-    list of atoms indices
+frames : list
+    List of lists containing the frames the user wants from each file
 '''
 def requested_frames():
     # What frames would you like from the first .xyz file
