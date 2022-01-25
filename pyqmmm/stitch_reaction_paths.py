@@ -8,16 +8,14 @@ DESCRIPTION
    Author: David Kastner
    Massachusetts Institute of Technology
    kastner (at) mit . edu
-SEE ALSO
-    collect_reaction_coordinate.py
-    neb_path_generator.py
+
 '''
-################################ DEPENDENCIES ################################## 
+################################ DEPENDENCIES ##################################
 import glob
 import sys
 import pandas as pd
 import numpy as np
-################################# FUNCTIONS #################################### 
+################################# FUNCTIONS ####################################
 
 '''
 Get the user's linear combination of restraints.
@@ -33,13 +31,14 @@ second : list
     List of atoms indices corresponding to the second reaction coordinate
 '''
 
+
 def user_input(curr_rc_list):
     for curr_rc in curr_rc_list:
         # What atoms define the reaction coordinate (RC)
         rxn_rc = input('What atoms define your {} rxn coord?'.format(curr_rc))
         # Convert user input to a list even if it is hyphenated
         temp = [(lambda sub: range(sub[0], sub[-1] + 1))
-            (list(map(int, ele.split('-')))) for ele in raw.split(',')]
+                (list(map(int, ele.split('-')))) for ele in raw.split(',')]
         # Save the RC lists to the corresponding variables
         if curr_rc == 'first':
             first = [b for a in temp for b in a]
@@ -47,7 +46,6 @@ def user_input(curr_rc_list):
             second = [b for a in temp for b in a]
 
     return first, second
-
 
 
 def stitch_reaction_paths():
@@ -60,6 +58,7 @@ def stitch_reaction_paths():
 
     # This list will be populated with dictionaries for each frame
     user_input(['first', 'second']):
+
 
 if __name__ == "__main__":
     stitch_reaction_paths()

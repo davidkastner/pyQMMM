@@ -5,8 +5,7 @@ DESCRIPTION
     Author: David Kastner
     Massachusetts Institute of Technology
     kastner (at) mit . edu
-SEE ALSO
-    collect_reaction_coordinate.py
+
 '''
 ################################ DEPENDENCIES ##################################
 from scipy.spatial import distance
@@ -187,7 +186,8 @@ def get_bins(master_list, scan_master_list, image_count):
     max_dist_diff = max(dist_diff_list)
 
     # Divided the total difference of distances into equal parts
-    bin_categories = list(np.linspace(min_dist_diff, max_dist_diff, image_count))
+    bin_categories = list(np.linspace(
+        min_dist_diff, max_dist_diff, image_count))
     print(bin_categories)
     # Find the bin for each frame, less than the previous and more than the next
     for index, dist_diff in enumerate(dist_diff_list):
@@ -209,7 +209,7 @@ def find_lowest_energy(master_list):
             bin_mins[dict['bin']]['energy'] = dict['energy']
             bin_mins[dict['bin']]['index'] = index
             continue
-        
+
         # We only want the frame from each bin with the smallest energy
         curr_bin_min = bin_mins[dict['bin']]['energy']
         if curr_bin_min > dict['energy']:
@@ -249,7 +249,7 @@ def get_final_master(frame_indices, master_list, ts_dict):
             continue
         if master_list[index]['dist_diff'] < ts_dict['dist_diff'] and master_list[frame_indices[i + 1]]['dist_diff'] > ts_dict['dist_diff']:
             final_master_list.append(ts_dict)
-    final_master_list = sorted(final_master_list, key = lambda i: i['dist_diff'])
+    final_master_list = sorted(final_master_list, key=lambda i: i['dist_diff'])
 
     return final_master_list
 
@@ -299,12 +299,14 @@ def neb_image_generator():
         coord1, coord2, image_count))
 
     # 2) Get the distances and differences of distances
-    master_list = get_frames(coord1, coord2, master_list, './scr/scan_optim.xyz')
+    master_list = get_frames(
+        coord1, coord2, master_list, './scr/scan_optim.xyz')
     master_list = get_dist_diff(master_list)
     print('Step 2: {} frames have been parsed and stored.'.format(len(master_list)))
 
     # 3) Find the TS frame in scan_optim.xyz
-    scan_master_list = get_frames(coord1, coord2, scan_master_list, './scr/scan_optim.xyz')
+    scan_master_list = get_frames(
+        coord1, coord2, scan_master_list, './scr/scan_optim.xyz')
     scan_master_list = get_dist_diff(scan_master_list)
     ts_dict, index = get_ts(scan_master_list)
     print('Step 3: The TS was found in frame {}.'.format(index))
@@ -318,7 +320,6 @@ def neb_image_generator():
     # 5) Find the frame in each bin with the lowest energy
     frame_indices = find_lowest_energy(master_list)
     print('Step 5: Your binned frames: {}'.format(frame_indices))
-
 
     # 6) Create a dictionary with only the final selected frames and the TS
     final_master_list = get_final_master(frame_indices, master_list, ts_dict)

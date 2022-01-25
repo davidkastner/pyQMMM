@@ -5,8 +5,7 @@ DESCRIPTION
    Author: David Kastner, Heather Kulik, PhD
    Massachusetts Institute of Technology
    kastner (at) mit . edu
-SEE ALSO
-   mask_maker.py
+
 '''
 ################################ DEPENDENCIES ##################################
 import os
@@ -44,7 +43,7 @@ def clean_dir():
         else:
             os.mkdir(dir)
     file_mover(file_system_exists, pdb_name)
-    
+
     return pdb_name
 
 

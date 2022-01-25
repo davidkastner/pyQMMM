@@ -5,10 +5,11 @@ DESCRIPTION
    Author: David Kastner
    Massachusetts Institute of Technology
    kastner (at) mit . edu
-SEE ALSO
-   renumerate.py
+
 '''
 ################################## FUNCTIONS ###################################
+
+
 def renumber(pdb_name, offset):
    # Create a new pdb and read in the user's PDB
     with open('{}_shifted.pdb'.format(pdb_name), 'w') as shifted_pdb:
@@ -18,7 +19,7 @@ def renumber(pdb_name, offset):
                 line_list = line.split(' ')
                 count = 0
                # Find the residue count, always the second numerical value
-                for index,entry in enumerate(line_list):
+                for index, entry in enumerate(line_list):
                     if entry.isnumeric():
                         count += 1
                     if count == 2:
@@ -32,6 +33,7 @@ def renumber(pdb_name, offset):
                         break
                 # Write out the new line
                 shifted_pdb.write(' '.join(line_list))
+
 
 def renumber_residues():
     ############################## REUNUMBER RESIDUES ##############################

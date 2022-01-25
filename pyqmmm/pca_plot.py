@@ -4,11 +4,14 @@ import numpy as np
 import pandas as pd
 import seaborn as sns
 ################################## FUNCTIONS ###################################
+
+
 def get_df():
     df = pd.read_csv("pc_23.csv", index_col=None)
-    df = df.iloc[:,1:]
+    df = df.iloc[:, 1:]
     print(df)
     return df
+
 
 def get_plot(df):
     font = {'family': 'sans-serif', 'weight': 'bold', 'size': 18}
@@ -30,10 +33,12 @@ def get_plot(df):
     plt.scatter(df.V1, df.V2, c=df.index, cmap="RdBu")
     plt.savefig('pc.pdf', bbox_inches='tight', dpi=300)
 
+
 def pca_plot():
     df = get_df()
     get_plot(df)
-    
+
+
 # Execute the DCCM Mapper function when run as a script
 if __name__ == "__main__":
     pca_plot()

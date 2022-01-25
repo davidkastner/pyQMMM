@@ -6,8 +6,7 @@ DESCRIPTION
    Author: David Kastner
    Massachusetts Institute of Technology
    kastner (at) mit . edu
-SEE ALSO
-    N/A
+
 '''
 ################################ DEPENDENCIES ##################################
 import os
@@ -24,6 +23,7 @@ file : str
     The name of the .xyz that we will loop through
 '''
 
+
 def get_xyz_file():
     files = os.listdir('.')
     count = 0
@@ -35,8 +35,9 @@ def get_xyz_file():
     if count > 1:
         print('More than one .xyz found')
         sys.exit()
-    print('Using {}'.format(current_file))       
+    print('Using {}'.format(current_file))
     return current_file
+
 
 '''
 Search the user's xyz file for the index of all hydrogen atoms.
@@ -49,14 +50,16 @@ Returns
 N/A
 '''
 
+
 def find_heavy_atoms(file):
     heavy_atoms_list = []
     with open(file, 'r') as xyz_file:
-        for index,line in enumerate(list(xyz_file)[2:]):
+        for index, line in enumerate(list(xyz_file)[2:]):
             if line[0] != 'H':
                 heavy_atoms_list.append(str(index + 1))
     heavy_atoms = ','.join(heavy_atoms_list)
     print(heavy_atoms)
+
 
 ############################### HYDRO OPTIMIZER ###################################
 # Introduce user to Hydro Optimizer functionality

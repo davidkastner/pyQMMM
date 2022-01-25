@@ -10,9 +10,6 @@ DESCRIPTION
    Author: David Kastner
    Massachusetts Institute of Technology
    kastner (at) mit . edu
-
-SEE ALSO
-   charge_spin_extractor.py
    
 '''
 
@@ -31,6 +28,8 @@ Returns
 iteraction_pairs : dictionary
     The scan step number as the key and iterations as the value
 '''
+
+
 def get_iteration_pairs():
     # Read in the TeraChem output, the charge, and the spin
     opt_count = 0
@@ -44,15 +43,16 @@ def get_iteration_pairs():
                 scan_count += 1
                 scan_step_pairs[scan_count] = opt_count
                 opt_count = 0
-    
+
     # Convert dictionary to additive list
     final_scan_position = []
     running_count = 0
-    for key,value in scan_step_pairs.items():
+    for key, value in scan_step_pairs.items():
         running_count += value
         final_scan_position.append(running_count)
 
     return final_scan_position, scan_step_pairs
+
 
 '''
 Extracts spin sections from mullpop for each scan and stores them as a dict.
@@ -66,6 +66,8 @@ Returns
 spin_pairs : dictionary
     The scan step number as the key and the spin section as the key
 '''
+
+
 def get_scan_spins(final_scan_position):
     section_count = 0
     section_content = ''
@@ -87,19 +89,19 @@ def get_scan_spins(final_scan_position):
             # Combine all lines of a final section into a single string
             if section_found:
                 section_content += line
-    
+
     # Add the last section of the file to the list of sections
     if section_found:
         sections.append(section_content)
 
     # Write the spin data for the final step of each scan step to a file
     with open('./scr/scan_spin', 'w') as scan_spin_file:
-        for index,section in enumerate(sections):
-            scan_spin_file.write(section) 
+        for index, section in enumerate(sections):
+            scan_spin_file.write(section)
             scan_spin_file.write('End scan {}\n'.format(index + 1))
 
     return sections
-                
+
 
 '''
 Extracts charges from charge_mull.xls for each scan and stores them as a dict.
@@ -113,6 +115,8 @@ Returns
 charge_pairs : dictionary
     The scan step number as the key and the charge section as the key
 '''
+
+
 def get_scan_charges(final_scan_position):
     section_count = 0
     section_content = ''
@@ -135,15 +139,15 @@ def get_scan_charges(final_scan_position):
             # Combine all lines of a final section into a single string
             if section_found:
                 section_content += line
-    
+
     # Add the last section of the file to the list of sections
     if section_found:
         sections.append(section_content)
 
     # Write the charge data for the final step of each scan step to a file
     with open('./scr/scan_charge', 'w') as scan_charge_file:
-        for index,section in enumerate(sections):
-            scan_charge_file.write(section) 
+        for index, section in enumerate(sections):
+            scan_charge_file.write(section)
             scan_charge_file.write('End scan {}\n'.format(index + 1))
 
     return sections
@@ -156,10 +160,10 @@ def scan_data_organizer():
     print('Remember to use the ml_prop keyword when running your TeraChem scan')
     print('Execute this script from the directory where this job was run\n')
 
-
     final_scan_position, scan_step_pairs = get_iteration_pairs()
     get_scan_spins(final_scan_position)
     get_scan_charges(final_scan_position)
+
 
 if __name__ == "__main__":
     scan_data_organizer()

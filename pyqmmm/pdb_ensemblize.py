@@ -5,12 +5,12 @@ DESCRIPTION
    Author: David Kastner
    Massachusetts Institute of Technology
    kastner (at) mit . edu
-SEE ALSO
-   renumerate.py
+
 '''
 
 import os
 import shutil
+
 
 def pdb_ensemblize():
     model_count = 1
@@ -31,5 +31,6 @@ def pdb_ensemblize():
                         elif line[:3] == 'TER':
                             ensemble.write(line + 'ENDMDL\n')
                     model_count += 1
+
 
 pdb_ensemblize()
