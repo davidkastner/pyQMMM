@@ -85,9 +85,9 @@ def get_charges(atoms):
 
 # General function handler
 def charge_spin_extractor():
-    print('\n.----------------------------------.')
-    print('| WELCOME TO CHARGE-SPIN EXTRACTOR |')
-    print('.----------------------------------.\n')
+    print('\n.-----------------------.')
+    print('| CHARGE-SPIN EXTRACTOR |')
+    print('.-----------------------.\n')
     print('First run pes_data_organizer.py')
     print('Extracts summed charge and spin for user specified atoms\n')
 

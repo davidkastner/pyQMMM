@@ -1,17 +1,17 @@
 '''
 See more here: https://github.com/davidkastner/pdb-utilities/blob/main/README.md
 DESCRIPTION
-   Creates a "mask" from a PDB file only containing user-specified residues.
+   Extract specific residues from a PDB file and save them as a new file.
    Author: David Kastner
    Massachusetts Institute of Technology
    kastner (at) mit . edu
-SEE ALSO
-   renumerate.py, renumber_waters.py
+
 '''
 
 #Introduce user to the function
-print('WELCOME TO MASK MAKER')
-print('--------------------------\n')
+print('\n.-----------------------.')
+print('| EXTRACT PDB RESIDUES |')
+print('.-----------------------.\n')
 print('You want to select a specific selection of residues from your PDB?')
 pdb_name = input('Which PDB in this directory are we selecting from?: ')
 raw_mask = input('Enter the residues as a list (1,2,3,etc.)?: ')

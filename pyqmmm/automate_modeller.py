@@ -5,8 +5,7 @@ DESCRIPTION
    Author: David Kastner
    Massachusetts Institute of Technology
    kastner (at) mit . edu
-SEE ALSO
-    quick-csa
+
 '''
 ################################ DEPENDENCIES ##################################
 import numpy as np
@@ -16,12 +15,14 @@ import os.path
 import shutil
 from modeller import *
 from modeller.automodel import *
+
 ################################## CONSTANTS ###################################
 aa_lookup = {'CYS':'C', 'ASP':'D', 'SER':'S', 'GLN':'Q', 'LYS':'K',
              'ILE':'I', 'PRO':'P', 'THR':'T', 'PHE':'F', 'ASN':'N', 
              'GLY':'G', 'HIS':'H', 'LEU':'L', 'ARG':'R', 'TRP':'W', 
              'ALA':'A', 'VAL':'V', 'GLU':'E', 'TYR':'Y', 'MET':'M',
               None:'-'}
+
 ################################## FUNCTIONS ###################################
 '''
 Identify the user's primary PDB file.
@@ -273,16 +274,13 @@ def clean_up(pdb_name):
             shutil.move(os.path.join('./', file), os.path.join('./2_temp', file))
     return
 
-'''
-All the functions can be strung together in steps.
-Parameters
-----------
-N/A
-Returns
--------
-N/A
-'''
-def workflow(aa_lookup):
+# Introduce user to Automodeller functionality
+def automate_modeller(aa_lookup):
+   print('\n.----------------------------.')
+   print('|WELCOME TO AUTOMATE MODELLER|')
+   print('.----------------------------.\n')
+   print('Automates the process of replacing missing residues with Modeller.\n')
+   
     # Step 1: Get the name of the PDB and also its location
     pdb_name, pdb_file = get_pdb_name()
 
@@ -307,11 +305,7 @@ def workflow(aa_lookup):
     # Step 8: Clean up the mess left behind by Modeller
     clean_up(pdb_name)  
     return
-################################ AUTOMODELLER ##################################
-# Introduce user to Automodeller functionality
-print('\n-----------------------')
-print('WELCOME TO AUTOMODELLER')
-print('-----------------------')
-print('Automates the process of replacing missing residues with Modeller.\n')
 
-workflow(aa_lookup) 
+
+if __name__ == "__main__":
+    automate_modeller()
