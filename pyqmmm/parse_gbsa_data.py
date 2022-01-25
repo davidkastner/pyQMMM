@@ -1,4 +1,3 @@
-from os import defpath
 '''
 See more here: https://github.com/davidkastner/quick-csa/blob/main/README.md
 DESCRIPTION
@@ -12,6 +11,7 @@ DESCRIPTION
 import pandas as pd
 import numpy as np
 import time
+from os import defpath
 import glob
 
 ################################## VARIABLES ###################################
@@ -112,10 +112,10 @@ def plot_individuals(df):
 # General function handler
 
 
-def analyze_gbsa():
-    print('\n.-------------------------.')
-    print('| WELCOME TO GBSA ANALYSIS|')
-    print('.-------------------------.\n')
+def parse_gbsa_data():
+    print('\n.-----------------.')
+    print('| PARSE GBSA DATA |')
+    print('.-----------------.\n')
     print('Run this in the same directory as your GBSA output')
     print('Remember to update variables section for your system')
     # Give the user time to read description
@@ -134,4 +134,4 @@ def analyze_gbsa():
 
 
 if __name__ == "__main__":
-    analyze_gbsa()
+    parse_gbsa_data()

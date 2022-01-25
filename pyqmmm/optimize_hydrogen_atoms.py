@@ -12,6 +12,7 @@ DESCRIPTION
 import os
 import sys
 ################################## FUNCTIONS ###################################
+
 '''
 Check the current dir for an .xyz file and let user know if one exists.
 Parameters
@@ -61,16 +62,21 @@ def find_heavy_atoms(file):
     print(heavy_atoms)
 
 
-############################### HYDRO OPTIMIZER ###################################
-# Introduce user to Hydro Optimizer functionality
-print('WELCOME TO HYDRO OPTIMIZER')
-print('--------------------------\n')
-print('Takes an .xyz file and returns the index of all hydrogens as a list.')
-print('This script will search the current directory for the following input:')
-print('+ An xyz file')
-print('------------------------\n')
+def optimize_hdyrogen_atoms():
+    # Introduce user to Hydro Optimizer functionality
+    print('\n.-------------------------.')
+    print('| OPTIMIZE HYDROGEN ATOMS |')
+    print('.-------------------------.\n')
+    print('Takes an .xyz file and returns the index of all hydrogens as a list.')
+    print('This script will search the current directory for the following input:')
+    print('+ An xyz file')
+    print('------------------------\n')
 
-# Gets the name of the xyz file in the current directory
-file = get_xyz_file()
-# Gets a list of the heavy atoms to freeze
-find_heavy_atoms(file)
+    # Gets the name of the xyz file in the current directory
+    file = get_xyz_file()
+    # Gets a list of the heavy atoms to freeze
+    find_heavy_atoms(file)
+
+
+if __name__ == "__main__":
+    optimize_hdyrogen_atoms()
