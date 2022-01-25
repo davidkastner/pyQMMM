@@ -1,10 +1,11 @@
 '''
 See more here: https://github.com/davidkastner/pdb-utilities/blob/main/README.md
 DESCRIPTION
-   Plots RMSD and colors points based on their corresponding clusters
-   Author: David Kastner
-   Massachusetts Institute of Technology
-   kastner (at) mit . edu
+    Plots RMSD and colors points based on their corresponding clusters.
+
+    Author: David Kastner
+    Massachusetts Institute of Technology
+    kastner (at) mit . edu
    
 '''
 

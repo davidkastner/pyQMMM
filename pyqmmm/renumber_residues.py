@@ -1,12 +1,14 @@
 '''
 See more here: https://github.com/davidkastner/pdb-utilities/blob/main/README.md
 DESCRIPTION
-   Allows you to change the starting residue of a PDB file
-   Author: David Kastner
-   Massachusetts Institute of Technology
-   kastner (at) mit . edu
+    Allows you to change the starting residue of a PDB file.
+
+    Author: David Kastner
+    Massachusetts Institute of Technology
+    kastner (at) mit . edu
 
 '''
+
 ################################## FUNCTIONS ###################################
 
 
@@ -36,7 +38,6 @@ def renumber(pdb_name, offset):
 
 
 def renumber_residues():
-    ############################## REUNUMBER RESIDUES ##############################
     # Introduce user to Renumber Residues functionality
     print('\n--------------------------')
     print('WELCOME TO RENUMBER RESIDUES')
@@ -47,3 +48,7 @@ def renumber_residues():
     pdb_name = input('Which PDB would you like to renumber (e.g., 1OS7)? ')
     offset = input('What number should your first residue be? ')
     renumber(pdb_name, offset)
+
+
+if __name__ == "__main__":
+    renumber_residues()

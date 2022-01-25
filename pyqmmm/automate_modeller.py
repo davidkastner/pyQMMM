@@ -1,11 +1,13 @@
 '''
 Docs: https://github.com/davidkastner/pdb-utilities/automodeller.py
 DESCRIPTION
-   Automates the process of replacing missing residues with Modeller.
-   Author: David Kastner
-   Massachusetts Institute of Technology
-   kastner (at) mit . edu
+    Automates the process of replacing missing residues with Modeller.
+
+    Author: David Kastner
+    Massachusetts Institute of Technology
+    kastner (at) mit . edu
 '''
+
 ################################ DEPENDENCIES ##################################
 import numpy as np
 import glob

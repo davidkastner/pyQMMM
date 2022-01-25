@@ -1,18 +1,24 @@
 '''
 See more here: https://github.com/davidkastner/pdb-utilities/blob/main/README.md
 DESCRIPTION
-   Combines separate PDBs into a single ensemble.
-   Author: David Kastner
-   Massachusetts Institute of Technology
-   kastner (at) mit . edu
+    Combines separate PDBs into a single ensemble.
+
+    Author: David Kastner
+    Massachusetts Institute of Technology
+    kastner (at) mit . edu
 
 '''
 
+################################ DEPENDENCIES ##################################
 import os
 import shutil
 
+################################## FUNCTIONS ###################################
 
-def pdb_ensemblize():
+# Creates an ensemble from individual PDB files
+
+
+def create_pdb_ensemble():
     model_count = 1
     dir = 'ensemble'
     if os.path.exists(dir):
@@ -33,4 +39,5 @@ def pdb_ensemblize():
                     model_count += 1
 
 
-pdb_ensemblize()
+if __name__ == "__main__":
+    create_pdb_ensemble()

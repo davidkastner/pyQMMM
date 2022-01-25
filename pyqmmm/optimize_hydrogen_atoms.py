@@ -1,16 +1,18 @@
 '''
 Docs: https://github.com/davidkastner/md-utilities/hyscore-plotter/blob/main/README.md
 DESCRIPTION
-   Creates a list with the indices of all heavy atoms in an xyz.
-   This is useful if you want to only optimize the hydrogen positions.
-   Author: David Kastner
-   Massachusetts Institute of Technology
-   kastner (at) mit . edu
+    Creates a list with the indices of all heavy atoms in an xyz.
+    This is useful if you want to only optimize the hydrogen positions.
+
+    Author: David Kastner
+    Massachusetts Institute of Technology
+    kastner (at) mit . edu
 
 '''
 ################################ DEPENDENCIES ##################################
 import os
 import sys
+
 ################################## FUNCTIONS ###################################
 
 '''

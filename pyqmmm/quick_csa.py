@@ -1,16 +1,18 @@
 '''
 See more here: https://github.com/davidkastner/quick-csa/blob/main/README.md
 DESCRIPTION
-   Performs charge shift analysis (CSA) form TeraChem output.
-   Author: David Kastner, Heather Kulik, PhD
-   Massachusetts Institute of Technology
-   kastner (at) mit . edu
+    Performs charge shift analysis (CSA) form TeraChem output.
+
+    Author: David Kastner, Heather Kulik, PhD
+    Massachusetts Institute of Technology
+    kastner (at) mit . edu
 
 '''
 ################################ DEPENDENCIES ##################################
 import os
 import sys
 import shutil
+
 ################################## FUNCTIONS ###################################
 
 '''

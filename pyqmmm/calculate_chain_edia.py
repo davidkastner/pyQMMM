@@ -1,11 +1,13 @@
 '''
 See more here: https://github.com/davidkastner/pdb-utilities/blob/main/README.md
 DESCRIPTION
-   The output for EDIA is only for individual residues or atoms
-   This script takes EDIA output and cacluates the average chain EDIA scores
-   Author: David Kastner
-   Massachusetts Institute of Technology
-   kastner (at) mit . edu
+    The output for EDIA is only for individual residues or atoms
+    This script takes EDIA output and cacluates the average chain EDIA scores
+
+    Author: David Kastner
+    Massachusetts Institute of Technology
+    kastner (at) mit . edu
+
 '''
 
 # Import packages and dependencies

@@ -2,6 +2,7 @@
 See more here: https://github.com/davidkastner/quick-csa/blob/main/README.md
 DESCRIPTION
     Generates GBSA data and processes and plots the output.
+    
     Author: David Kastner
     Massachusetts Institute of Technology
     kastner (at) mit . edu

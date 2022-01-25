@@ -11,14 +11,12 @@ DESCRIPTION
     Massachusetts Institute of Technology
     kastner (at) mit . edu
 
-SEE ALSO
-    energy_collector.py
-    collect_reaction_coordinate.py
 '''
 ################################ DEPENDENCIES ##################################
 import numpy as np
 
 ################################## FUNCTIONS ###################################
+
 '''
 Get the request frames for each file from the user.
 Returns
@@ -66,10 +64,11 @@ def store_frames():
     # General function handler
 
 
-def xyz_combine():
-    print('\N.------------------.')
-    print('| COMBINE XYZ FILES|')
-    print('.------------------.\n')
+def combine_xyz_files():
+    # Welcome the user to the file and introduce basic functionality
+    print('\n.-------------------.')
+    print('| COMBINE XYZ FILES |')
+    print('.-------------------.\n')
     print('Add both xyz trajectories to the current directory.')
     print('You can combine as many xyz files as you need.')
     print('Leave the prompt blank when you are done.\n')
@@ -79,4 +78,4 @@ def xyz_combine():
 
 
 if __name__ == "__main__":
-    xyz_combine()
+    combine_xyz_files()

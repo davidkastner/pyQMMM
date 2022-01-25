@@ -1,12 +1,14 @@
 '''
 Docs: https://github.com/davidkastner/hyscore-plotter/blob/main/README.md
 DESCRIPTION
-   Creates a series of KDE plots based on HYSCORE-guided simulations.
-   Author: David Kastner
-   Massachusetts Institute of Technology
-   kastner (at) mit . edu
+    Creates a series of KDE plots based on HYSCORE-guided simulations.
+
+    Author: David Kastner
+    Massachusetts Institute of Technology
+    kastner (at) mit . edu
 
 '''
+
 ################################ DEPENDENCIES ##################################
 import numpy as np
 import time
@@ -22,7 +24,9 @@ import matplotlib.colors as mplc
 import matplotlib.cm as cm
 from scipy.stats import gaussian_kde
 from matplotlib.patches import Rectangle
+
 ################################## FUNCTIONS ###################################
+
 '''
 Parses the config file for the users parameters
 Parameters
@@ -399,12 +403,11 @@ def graph_datasets(x_data, y_data, z_data, labels, plot_params, show_crosshairs)
     plt.savefig('./3_out/restraints_kde.png', dpi=600, bbox_inches='tight')
 
 
-############################## HYSCORE PLOTTER #################################
-# Introduce user to HyScore Eval functionality
-def restraint_plots():
-    print('\n+--------------------------+')
-    print('|WELCOME TO RESTRAINT PLOTS|')
-    print('+--------------------------+\n')
+def plot_restraint_kdes():
+    # Introduce user to HyScore Eval functionality
+    print('\n.---------------------.')
+    print('| PLOT RESTRAINT KDES |')
+    print('.---------------------.\n')
     print('Generates a series of KDE plots for hyscore-guided simulations.')
     print('This the goal of RESTRAINT PLOTS is to:')
     print('+ Vizualize a simulation against two order parameters')
@@ -428,4 +431,4 @@ def restraint_plots():
 
 # Execute the Quick CSA when run as a script but not if used as a pyQM/MM module
 if __name__ == "__main__":
-    restraint_plots()
+    plot_restraint_kdes()

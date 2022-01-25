@@ -1,11 +1,12 @@
 '''
 See more here: https://github.com/davidkastner/quick-csa/blob/main/README.md
 DESCRIPTION
-   Searches through the job output for a TeraChem job and collects the energies
-   into a CSV file that can be read in later as a pandas dataframe.
-   Author: David Kastner
-   Massachusetts Institute of Technology
-   kastner (at) mit . edu
+    Searches through the job output for a TeraChem job.
+    Collects the energies into a CSV file as a pandas dataframe.
+
+    Author: David Kastner
+    Massachusetts Institute of Technology
+    kastner (at) mit . edu
 
 '''
 ################################ DEPENDENCIES ##################################
@@ -15,8 +16,8 @@ import plotly.io as pio
 import plotly.graph_objs as go
 import plotly.express as px
 from plotly.offline import download_plotlyjs, init_notebook_mode, plot, iplot
-################################# FUNCTIONS ####################################
 
+################################# FUNCTIONS ####################################
 '''
 Loop through the file, collect optimized energies.
 
@@ -198,4 +199,5 @@ def plot_energy_profile():
 
 
 # Collect energies into .csv file and create a dataframe
-plot_energy_profile()
+if __name__ == "__main__":
+    plot_energy_profile()

@@ -1,10 +1,11 @@
 '''
 Docs: https://github.com/davidkastner/pyqmmm/dccm_mapper/blob/main/README.md
 DESCRIPTION
-   Reads in DCCM data and formats it into the Kulik Lab standard format.
-   Author: David Kastner
-   Massachusetts Institute of Technology
-   kastner (at) mit . edu
+    Reads in DCCM data and formats it into the Kulik Lab standard format.
+
+    Author: David Kastner
+    Massachusetts Institute of Technology
+    kastner (at) mit . edu
 
 '''
 
