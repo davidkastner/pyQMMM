@@ -56,36 +56,37 @@ def get_plot(final_df):
     plt.show()
 
 
-# Welcome user and print some instructions
-print('Welcome to ClusterRMSD')
-print('-----------------------\n')
-print('This script will search your directory for the following output:')
-print('+ CCPTraj RMSD file > rmsd.dat')
-print('+ List of frames assigned clusters > cnumvtime.dat')
-print('+ Root mean square deviation > rmsd.dat')
-print('------------------------\n')
+def color_code_rmsd_clusters():
+    # Welcome user and print some instructions
+    print('\n.--------------------------.')
+    print('| COLOR CODE RMSD CLUSTERS |')
+    print('.--------------------------.\n')
+    print('This script will search your directory for the following output:')
+    print('+ CCPTraj RMSD file > rmsd.dat')
+    print('+ List of frames assigned clusters > cnumvtime.dat')
+    print('+ Root mean square deviation > rmsd.dat\n')
 
+    # Check for required files
+    expected_dat = ['rmsd.dat', 'cnumvtime.dat']
 
-# Check for required files
-expected_dat = ['rmsd.dat', 'cnumvtime.dat']
+    # Check the users directory for analyzeable files
+    for dat in expected_dat:
+        data_file = Path(dat)
+        if data_file.exists():
+            print('Found {}'.format(dat))
+        else:
+            print('No {}'.format(dat))
+            print('Please add {} to your directory'.format(dat))
+            exit()
 
-# Check the users directory for analyzeable files
-for dat in expected_dat:
-    data_file = Path(dat)
-    if data_file.exists():
-        print('Found {}'.format(dat))
-    else:
-        print('No {}'.format(dat))
-        print('Please add {} to your directory'.format(dat))
-        exit()
+    rmsd_df = dat2df(expected_dat[0])
+    clus_df = dat2df(expected_dat[1])
 
-rmsd_df = dat2df(expected_dat[0])
-clus_df = dat2df(expected_dat[1])
+    final_df = pd.concat([rmsd_df, clus_df], axis=1)
+    final_df.columns = ['RMSD', 'Cluster']
+    final_df['Frame'] = final_df.index
 
-final_df = pd.concat([rmsd_df, clus_df], axis=1)
-final_df.columns = ['RMSD', 'Cluster']
-final_df['Frame'] = final_df.index
 
 # Execute the function when run as a script but not if used as a pyQM/MM module
 if __name__ == "__main__":
-    get_plot(final_df)
+    color_code_rmsd_clusters()

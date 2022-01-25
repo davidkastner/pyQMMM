@@ -10,49 +10,12 @@ DESCRIPTION
 '''
 ################################ DEPENDENCIES ##################################
 import glob
-import sys
 import pandas as pd
 import plotly.io as pio
 import plotly.graph_objs as go
 import plotly.express as px
 from plotly.offline import download_plotlyjs, init_notebook_mode, plot, iplot
 ################################# FUNCTIONS ####################################
-
-'''
-Find the .out file in the current directory.
-
-Parameters
-----------
-
-Returns
--------
-'''
-
-
-def out_file_handler():
-    # Get a list of all the .out files in the current directory
-    out_list = glob.glob(r'./*.out')
-    energy_lists = []
-    for out_file in out_list:
-        energy_list = get_energies(out_file)
-        energy_lists.append(energy_list)
-
-    # Send a list of energy lists to the plotting function
-    get_scatter_plot(energy_lists)
-
-
-def get_energies(file_path):
-    # Ask the user what type of calculation they would like performed
-    calc_type = input(
-        'Would you like final (f) or converged (c) energies for {}?: '.format(file_path))
-    if calc_type == 'f':
-        return get_final_energies(file_path)
-    elif calc_type == 'c':
-        return get_opt_energies(file_path)
-    else:
-        print('Not a valid calculation type')
-        return get_energies(file_path)
-
 
 '''
 Loop through the file, collect optimized energies.
@@ -202,13 +165,37 @@ def get_scatter_plot(energy_lists):
     iplot(fig)
 
 
-############################## ENERGY COLLECTOR ###############################
-# Introduce user to Energy Collector functionality
-print('WELCOME TO ENERGY COLLECTOR')
-print('--------------------------\n')
-print('Collects the final energies from a TeraChem scan into a CSV file.')
-print('The script assumes the .out file is in the current directory.')
-print('--------------------------\n')
+def get_energies(file_path):
+    # Ask the user what type of calculation they would like performed
+    calc_type = input(
+        'Would you like final (f) or converged (c) energies for {}?: '.format(file_path))
+    if calc_type == 'f':
+        return get_final_energies(file_path)
+    elif calc_type == 'c':
+        return get_opt_energies(file_path)
+    else:
+        print('Not a valid calculation type')
+        return get_energies(file_path)
+
+
+def plot_energy_profile():
+    print('\n.---------------------.')
+    print('| PLOT ENERGY PROFILE |')
+    print('.---------------------.\n')
+    print('Collects the final energies from a TeraChem scan into a CSV file.')
+    print('The script assumes the .out file is in the current directory.')
+    print('--------------------------\n')
+
+    # Get a list of all the .out files in the current directory
+    out_list = glob.glob(r'./*.out')
+    energy_lists = []
+    for out_file in out_list:
+        energy_list = get_energies(out_file)
+        energy_lists.append(energy_list)
+
+    # Send a list of energy lists to the plotting function
+    get_scatter_plot(energy_lists)
+
 
 # Collect energies into .csv file and create a dataframe
-out_file_handler()
+plot_energy_profile()
