@@ -11,6 +11,7 @@ DESCRIPTION
 from scipy.spatial import distance
 import numpy as np
 import matplotlib.pyplot as plt
+
 ################################## FUNCTIONS ###################################
 
 '''
@@ -279,10 +280,10 @@ def get_plot(dist_diff_list, energy_list):
     plt.show()
 
 
-def neb_image_generator():
-    print('\n.--------------------------------.')
-    print('| WELCOME TO NEB IMAGE GENERATOR |')
-    print('.--------------------------------.\n')
+def generate_rough_neb_path():
+    print('.-------------------------.')
+    print('| GENERATE ROUGH NEB PATH |')
+    print('.-------------------------.\n')
     print('Run this script in the same directory as the TeraChem job.')
     print('Identifies the best set of images for an initial NEB path.\n')
 
@@ -334,4 +335,4 @@ def neb_image_generator():
 
 
 if __name__ == "__main__":
-    neb_image_generator()
+    generate_rough_neb_path()
