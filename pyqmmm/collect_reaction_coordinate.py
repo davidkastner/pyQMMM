@@ -25,7 +25,7 @@ atoms : list
 '''
 
 
-def user_input(rc_request):
+def request_rc(rc_request):
     # What atoms define your reaction coordinate
     request = input('Atoms in your {} RC? (e.g., 1_2): '.format(rc_request))
 
@@ -170,21 +170,21 @@ def reaction_coordinate_collector():
     print('Optionally computes an angle coordinate against distance.\n')
 
     # Energy against a distance coordinate
-    dist_atoms, request = user_input('first')
+    dist_atoms, request = request_rc('first')
     if request != '':
         dist_list = get_distance(dist_atoms)
         DE_list, E_list = get_opt_energies()
         get_reaction_dat(dist_list, E_list, request)
 
     # Energy against a distance coordinate
-    dist_atoms, request = user_input('second')
+    dist_atoms, request = request_rc('second')
     if request != '':
         dist_list = get_distance(dist_atoms)
         DE_list, E_list = get_opt_energies()
         get_reaction_dat(dist_list, E_list, request)
 
     # # Angle against a distance coordinate
-    # angle_atoms = user_input()
+    # angle_atoms = request_rc()
     # angle_list = get_angle(angle_atoms)
     # get_reaction_dat(dist_list, angle_list, 'angle')
 

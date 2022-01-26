@@ -143,124 +143,41 @@ def multiframe_xyz_to_list(xyz_filename):
 
 
 '''
-Get each one of the frames and store them.
-Parameters
-----------
-dict : dictionary
-    List of two atoms defining a reaction coordiante distance
-Returns
--------
-reaction_coordinates : list
-    List of values mapping to the distance that two atoms have moved.
-'''
-
-
-def get_frames(coord1, coord2, master_list, file):
-    # Variables that measure our progress in parsing the optim.xyz file
-    frame_contents = ''
-    line_count = 0
-    frame_count = 0
-    section_length_flag = False
-    xyz_coord1_list = []
-    xyz_coord2_list = []
-    energy_position = 4 if 'scan' in file else 0
-    # Loop through optim.xyz and collect distances, energies and frame contents
-    with open(file, 'r') as optim:
-        for line in optim:
-            # We need to know how long each section is but only count once
-            if section_length_flag == False:
-                section_length = int(line.strip()) + 2
-                section_length_flag = True
-            # The second line will have the energy
-            if line_count == 1:
-                energy = float(line.split()[energy_position])
-                dict_new = {}
-                master_list.append(dict_new)
-                master_list[frame_count]['energy'] = energy
-            # Calculate the distances and add them to the master list
-            xyz_coord1_list, master_list = get_dist(
-                frame_count, master_list, line, line_count, coord1, xyz_coord1_list, 'coord1_dist')
-            xyz_coord2_list, master_list = get_dist(
-                frame_count, master_list, line, line_count, coord2, xyz_coord2_list, 'coord2_dist')
-            # At the end of the section reset the frame-specific variables
-            if line_count == section_length:
-                line_count = 0
-                master_list[frame_count]['frame_contents'] = frame_contents
-                frame_contents = ''
-                frame_count += 1
-                xyz_coord1_list = []
-                xyz_coord2_list = []
-
-            frame_contents += line
-            line_count += 1
-
-    return master_list
-
+Combines two xyz files into one.
 
 '''
-Get the distance between two atoms of a reaction coordinate
-Parameters
-----------
-frame_count : int
-    Keeps track of what frame we are on
-master_list : list
-    List of dictionaries keyed by frame
-line : object
-    The line in the file that we are iterating over
-coord : list
-    The two numbers that define the current coordinate of interest
-dict_key : string
-    The name of the key we will assign the distance value to
-Returns
--------
-master_list : list
-    Updated list of dictionaries keyed by frame
-'''
-
-
-def get_dist(frame_count, master_list, line, line_count, coord, xyz_coord_list, dict_key):
-    # Get the distance between each atom for coordinate 2
-    current_atom = line_count - 1
-    if current_atom in coord:
-        line_elements = line.split()
-        xyz_coords = line_elements[1:]
-        xyz_coord_list.append(list(map(float, xyz_coords)))
-        # Calculate the Euclidean distance for the coordinates of two atoms
-        if len(xyz_coord_list) and len(xyz_coord_list) % 2 == 0:
-            atom_1 = tuple(xyz_coord_list[-1])
-            atom_2 = tuple(xyz_coord_list[-2])
-            coord_dist = distance.euclidean(atom_1, atom_2)
-            master_list[frame_count][dict_key] = coord_dist
-
-    return xyz_coord_list, master_list
-
-
-'''
-Calculate all difference of distances and add them to the master_list.
-Parameters
-----------
-master_list : list
-    List of dictionaries keyed by frame
-Returns
--------
-master_list : list
-    Updated list of dictionaries keyed by frame
-'''
-
-
-def get_dist_diff(master_list):
-    # Calculate the difference of distances
-    for index, dict in enumerate(master_list):
-        x1 = master_list[index]['coord1_dist']
-        x2 = master_list[index]['coord2_dist']
-        # We will cut sig figs at 8 so all data matches
-        dist_diff = round(x2 - x1, 8)
-        master_list[index]['dist_diff'] = dist_diff
-
-    return master_list
 
 
 def combine_xyz_files():
+    # Find xyz trajectories in the current directory
+    combined_filename = 'combined.xyz'
+    xyz_filename_list = get_xyz_filenames()
+    # For each xyz file convert to a list with only the requested frames
+    combined_xyz_list = []
+    for file in xyz_filename_list:
+        requested_frames = request_frames(file)
+        # The user can skip files by with enter which returns an empty string
+        if requested_frames == '' or file == combined_filename:
+            continue
+        # Convert the xyz files to a list
+        xyz_list = multiframe_xyz_to_list(file)
+        requested_xyz_list = [frame for index, frame in enumerate(
+            xyz_list) if index + 1 in requested_frames]
+        # Ask the user if they want the frames reversed for a given xyz file
+        reverse = input('Any key to reverse {} else Return: '.format(file))
+        if reverse:
+            requested_xyz_list.reverse()
+        combined_xyz_list += requested_xyz_list
+    # Write the combined trajectories out to a new file called combined.xyz
+    with open(combined_filename, 'w') as combined_file:
+        for entry in combined_xyz_list:
+            combined_file.write(entry)
+    print('Your combined xyz was written to {}'.format(combined_filename))
+
+    perform_rc_analysis = input('Any key to perform RC analysis: ')
+
+
+def analyze_combined_xyz():
     # Welcome the user to the file and introduce basic functionality
     print('\n.-------------------.')
     print('| COMBINE XYZ FILES |')
@@ -268,32 +185,12 @@ def combine_xyz_files():
     print('Searches current directory for xyz trajectory files.')
     print('You can combine as many xyz files as you need.')
     print('Name your xyz file as 1.xyz, 2.xyz, etc.')
-    print('Leave the prompt blank when you are done.\n')
+    print('Leave the prompt blank to ignore an xyz file.\n')
 
-    # Search through all xyz's in the current directory and get the trajectories
-    xyz_filename_list = get_xyz_filenames()
-    # For each xyz file convert to a list a select the requested frames
-    combined_xyz_list = []
-    for file in xyz_filename_list:
-        requested_frames = request_frames(file)
-        # The user can skip files by with enter which returns an empty string
-        if requested_frames == '':
-            continue
-        # Convert the xyz files to a list
-        xyz_list = multiframe_xyz_to_list(file)
-        requested_xyz_list = [frame for index, frame in enumerate(
-            xyz_list) if index + 1 in requested_frames]
+    # STEP 1: Combine two different xyz files
+    combine_xyz_files()
 
-        # Ask the user if they want the frames reversed for a given xyz file
-        reverse = input('Any key to reverse {} else Return: '.format(file))
-        if reverse:
-            requested_xyz_list.reverse()
-
-        combined_xyz_list += requested_xyz_list
-
-    with open('combined.xyz', 'w') as combined_file:
-        for entry in combined_xyz_list:
-            combined_file.write(entry)
+    # STEP 2: Perform reaction coordinate analysis
 
 
 if __name__ == "__main__":
