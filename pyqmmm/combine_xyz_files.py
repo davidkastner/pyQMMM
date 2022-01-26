@@ -31,7 +31,7 @@ trajectory_list : list
 '''
 
 
-def get_xyz_trajectories():
+def get_xyz_filenames():
     # Get all xyz files and sort them
     file_list = glob.glob('./*.xyz')
     sorted(file_list)
@@ -58,6 +58,8 @@ def get_xyz_trajectories():
         if trajectory == True:
             xyz_filename_list.append(file)
 
+        print('We found these .xyz files: {}'.format(xyz_filename_list))
+
     return xyz_filename_list
 
 
@@ -65,36 +67,33 @@ def get_xyz_trajectories():
 Get the request frames for each file from the user.
 Parameters
 ----------
-xyz_filename_list : list
-    A list of all xyz trajectory files names as strings
+xyz_filename : str
+    The filename of the current xyz trajectory of interest
 
 Returns
 -------
 frames : list
-    List of lists containing the frames the user wants from each file in order
+    The frames the user requested to be extracted from the xyz trajectory
 '''
 
 
-def request_frames(xyz_filename_list):
-    # Save the requests with its associated file as some may be empty requests
-    file_request_dict = {}
-
+def request_frames(xyz_filename):
     # What frames would you like from the first .xyz file?
-    for file in xyz_filename_list:
-        request = input('Frames from {}? (e.g., 1,3-5): '.format(file))
+    request = input('Frames from {}? (e.g., 1,3-5): '.format(xyz_filename))
 
-        if request != '':
-         # Check the request and convert it to a list even if it is hyphenated
-            temp = [(lambda sub: range(sub[0], sub[-1] + 1))
-                    (list(map(int, ele.split('-')))) for ele in request.split('-')]
-            frames = [b for a in temp for b in a]
-            file_request_dict[file] = frames
+    if request != '':
+        # Check the request and convert it to a list even if it is hyphenated
+        temp = [(lambda sub: range(sub[0], sub[-1] + 1))
+                (list(map(int, ele.split('-')))) for ele in request.split('-')]
+        frames = [b for a in temp for b in a]
 
-    return file_request_dict
+    print('For {} you requested frames {}.'.format(xyz_filename, frames))
+
+    return frames
 
 
 '''
-Turns a xyz trajectory file into a list of lists where each element is a frame.
+Turns an xyz trajectory file into a list of lists where each element is a frame.
 Parameters
 ----------
 xyz_filename : string
@@ -109,7 +108,7 @@ trajectory_list : list
 
 def multiframe_xyz_to_list(xyz_filename):
     # Variables that measure our progress in parsing the optim.xyz file
-    xyz_list = []  # List of lists containing all frames
+    xyz_as_list = []  # List of lists containing all frames
     frame_contents = ''
     line_count = 0
     frame_count = 0
@@ -131,9 +130,11 @@ def multiframe_xyz_to_list(xyz_filename):
             frame_contents += line
             line_count += 1
 
-        xyz_list.append(frame_contents)
+        xyz_as_list.append(frame_contents)
 
-    return xyz_list
+    print('We found {} frames in {}.'.format(len(xyz_as_list, xyz_filename)))
+
+    return xyz_as_list
 
 
 def combine_xyz_files():
@@ -147,12 +148,23 @@ def combine_xyz_files():
     print('Leave the prompt blank when you are done.\n')
 
     # Search through all xyz's in the current directory and get the trajectories
-    xyz_filename_list = get_xyz_trajectories()
+    xyz_filename_list = get_xyz_filenames()
+    # For each xyz file convert to a list a select the requested frames
+    combined_xyz_list = []
+    for file in xyz_filename_list:
+        xyz_list = multiframe_xyz_to_list(file)
+        requested_frames = request_frames(file)[1, 2, 3, 8]
+        requested_xyz_list = [frame for index, frame in enumerate(
+            xyz_list) if index + 1 in requested_frames]
+        # Ask the user if they want the frames reversed for a given xyz file
+        reverse_bool = input('True to reverse {}, else Return.'.format(file))
+        if reverse_bool == True:
+            requested_xyz_list = requested_xyz_list.reverse()
+        combined_xyz_list += requested_xyz_list
 
-    # Find out what frames the user wants combined
-    file_request_dict = request_frames(xyz_filename_list)
-
-    #
+    with open('combined.xyz', 'w') as combined_file:
+        for entry in xyz_list:
+            combined_file.write(entry)
 
 
 if __name__ == "__main__":
