@@ -1,7 +1,7 @@
 '''
 Docs: https://github.com/davidkastner/pyQMMM/blob/main/pyqmmm/README.md
 DESCRIPTION
-    After performing a TeraChem PES, the coordinates are found in scan_optim.xyz.
+    After performing a TeraChem PES, the coordinates are found in the xyz file.
     Using this file we can extract reaction coordinates against energies.
     This is can then be graphed in your plotter of choice such as XMGrace.
     The output is a .dat file with energies in column 1 and the RC in column 2.
@@ -39,7 +39,7 @@ def request_rc(rc_request):
 
 
 '''
-Calculates the reaction coordinate at each step of the scan from scan_optim.xyz.
+Calculates the reaction coordinate at each step of the scan in xyz file.
 Parameters
 ----------
 atoms : list
@@ -51,11 +51,11 @@ reaction_coordinates : list
 '''
 
 
-def get_distance(atoms):
+def get_distance(atoms, xyz_file):
     atom_count = 0
     coords_list = []
     dist_list = []
-    with open('./scr/scan_optim.xyz', 'r') as scan_optim:
+    with open(xyz_file, 'r') as scan_optim:
         for line in scan_optim:
             if line[:9] == 'Converged':
                 atom_count = 0
@@ -83,11 +83,11 @@ def get_distance(atoms):
 # reaction_coordinates : list
 #     List of values mapping to the distance that two atoms have moved.
 # '''
-# def get_angle(atoms):
+# def get_angle(atoms, xyz_file):
 #     atom_index = 0
 #     coords_list = []
 #     angle_list = []
-#     with open('./scr/scan_optim.xyz', 'r') as scan_optim:
+#     with open(xyz_file, 'r') as scan_optim:
 #         for line in scan_optim:
 #             if line[:9] == 'Converged':
 #                 atom_index = 0
@@ -112,7 +112,7 @@ def get_distance(atoms):
 
 
 '''
-Loop through the file, collect optimized energies.
+Loop through the xyz file and collect optimized energies.
 Returns
 -------
 energy_df : dataframe
@@ -122,14 +122,15 @@ energy_list : list
 '''
 
 
-def get_opt_energies():
+def get_opt_energies(xyz_file):
     DE_list = []
     E_list = []
-    with open('./qmscript.out', 'r') as out_file:
+    with open(xyz_file, 'r') as file:
         first_energy = None
-        for line in out_file:
-            if line[6:22] == 'Optimized Energy':
-                energy = float(line[26:42])
+        for line in file:
+            if line[:9] == 'Converged':
+                line = line.split()
+                energy = float(line[4])
                 if first_energy == None:
                     first_energy = energy
                 relative_energy = (energy - first_energy) * 627.5
@@ -157,30 +158,30 @@ def get_reaction_dat(xaxis_list, yaxis_list, extension):
         for x, y in zip(xaxis_list, yaxis_list):
             dat_file.write('{} {}\n'.format(x, y))
 
-# General function handler
 
-
-def reaction_coordinate_collector():
-    print('\n.------------------------------.')
-    print('| COLLECT REACTION COORDINATES |')
-    print('.------------------------------.\n')
+def collect_reaction_coordinate():
+    print('\n.-----------------------------.')
+    print('| COLLECT REACTION COORDINATE |')
+    print('.-----------------------------.\n')
     print('Run this script in the same directory as the TeraChem job.')
-    print('Computes energy (kcal/mol) against two distance coordinates.\n')
-    print('If you only have one RC, leave a prompt empty.\n')
+    print('Computes energy (kcal/mol) against two distance coordinates.')
+    print('If you only have one RC, leave a prompt empty.')
     print('Optionally computes an angle coordinate against distance.\n')
+
+    xyz_file = input('What xyz file would you like to analyze? ')
 
     # Energy against a distance coordinate
     dist_atoms, request = request_rc('first')
     if request != '':
-        dist_list = get_distance(dist_atoms)
-        DE_list, E_list = get_opt_energies()
+        dist_list = get_distance(dist_atoms, xyz_file)
+        DE_list, E_list = get_opt_energies(xyz_file)
         get_reaction_dat(dist_list, E_list, request)
 
     # Energy against a distance coordinate
     dist_atoms, request = request_rc('second')
     if request != '':
-        dist_list = get_distance(dist_atoms)
-        DE_list, E_list = get_opt_energies()
+        dist_list = get_distance(dist_atoms, xyz_file)
+        DE_list, E_list = get_opt_energies(xyz_file)
         get_reaction_dat(dist_list, E_list, request)
 
     # # Angle against a distance coordinate
@@ -190,4 +191,4 @@ def reaction_coordinate_collector():
 
 
 if __name__ == "__main__":
-    reaction_coordinate_collector()
+    collect_reaction_coordinate()

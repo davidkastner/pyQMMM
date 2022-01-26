@@ -17,7 +17,7 @@ import glob
 import matplotlib.pyplot as plt
 from scipy.spatial import distance
 import numpy as np
-
+import collect_reaction_coordinate
 ################################## FUNCTIONS ###################################
 
 '''
@@ -83,6 +83,8 @@ frames : list
 
 def request_frames(xyz_filename):
     # What frames would you like from the first .xyz file?
+    if xyz_filename == 'combined.xyz_filename':
+        return
     request = input('Which frames do you want from {}?: '.format(xyz_filename))
     # Continue if the user did not want that file processed and pressed enter
     if request == '':
@@ -157,7 +159,7 @@ def combine_xyz_files():
     for file in xyz_filename_list:
         requested_frames = request_frames(file)
         # The user can skip files by with enter which returns an empty string
-        if requested_frames == '' or file == combined_filename:
+        if requested_frames == '':
             continue
         # Convert the xyz files to a list
         xyz_list = multiframe_xyz_to_list(file)
@@ -174,8 +176,6 @@ def combine_xyz_files():
             combined_file.write(entry)
     print('Your combined xyz was written to {}'.format(combined_filename))
 
-    perform_rc_analysis = input('Any key to perform RC analysis: ')
-
 
 def analyze_combined_xyz():
     # Welcome the user to the file and introduce basic functionality
@@ -191,7 +191,9 @@ def analyze_combined_xyz():
     combine_xyz_files()
 
     # STEP 2: Perform reaction coordinate analysis
+    perform_rc_analysis = input('Any key to perform analyze RC, else Retrun: ')
+    collect_reaction_coordinate.collect_reaction_coordinate()
 
 
 if __name__ == "__main__":
-    combine_xyz_files()
+    analyze_combined_xyz()
