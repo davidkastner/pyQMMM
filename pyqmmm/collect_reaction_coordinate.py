@@ -12,8 +12,10 @@ DESCRIPTION
 
 '''
 ################################ DEPENDENCIES ##################################
+from math import comb
 from scipy.spatial import distance
 import numpy as np
+import os
 
 ################################## FUNCTIONS ###################################
 '''
@@ -168,7 +170,14 @@ def collect_reaction_coordinate():
     print('If you only have one RC, leave a prompt empty.')
     print('Optionally computes an angle coordinate against distance.\n')
 
-    xyz_file = input('What xyz file would you like to analyze? ')
+    # Preprocessed combined.xyz files take priority so check if one exists
+    combined_xyz = './combined.xyz'
+    combined_xyz_exists = os.path.exists(combined_xyz)
+    if combined_xyz_exists:
+        xyz_file = combined_xyz
+        print('Will use found combined.xyz file')
+    else:
+        xyz_file = input('What xyz file would you like to use?')
 
     # Energy against a distance coordinate
     dist_atoms, request = request_rc('first')

@@ -18,6 +18,7 @@ import matplotlib.pyplot as plt
 from scipy.spatial import distance
 import numpy as np
 import collect_reaction_coordinate
+
 ################################## FUNCTIONS ###################################
 
 '''
