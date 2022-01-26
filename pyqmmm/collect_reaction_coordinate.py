@@ -156,7 +156,7 @@ energy_list : list
 
 
 def get_reaction_dat(xaxis_list, yaxis_list, extension):
-    with open('./rc_{}.dat'.format(extension), 'w') as dat_file:
+    with open('./{}.dat'.format(extension), 'w') as dat_file:
         for x, y in zip(xaxis_list, yaxis_list):
             dat_file.write('{} {}\n'.format(x, y))
 
@@ -179,24 +179,30 @@ def collect_reaction_coordinate():
     else:
         xyz_file = input('What xyz file would you like to use?')
 
-    # Energy against a distance coordinate
-    dist_atoms, request = request_rc('first')
-    if request != '':
-        dist_list = get_distance(dist_atoms, xyz_file)
-        DE_list, E_list = get_opt_energies(xyz_file)
-        get_reaction_dat(dist_list, E_list, request)
+    DE_list, E_list = get_opt_energies(xyz_file)
+    # Energy against first distance coordinate
+    rc1_dist_atoms, rc1_request = request_rc('first')
+    if rc1_request != '':
+        rc1_dist_list = get_distance(rc1_dist_atoms, xyz_file)
+        get_reaction_dat(rc1_dist_list, E_list, 'rc1_v_energy')
 
-    # Energy against a distance coordinate
-    dist_atoms, request = request_rc('second')
-    if request != '':
-        dist_list = get_distance(dist_atoms, xyz_file)
-        DE_list, E_list = get_opt_energies(xyz_file)
-        get_reaction_dat(dist_list, E_list, request)
+    # Energy against second distance coordinate
+    rc2_dist_atoms, rc2_request = request_rc('second')
+    if rc2_request != '':
+        rc2_dist_list = get_distance(rc2_dist_atoms, xyz_file)
+        get_reaction_dat(rc2_dist_list, E_list, 'rc2_v_energy')
 
-    # # Angle against a distance coordinate
-    # angle_atoms = request_rc()
-    # angle_list = get_angle(angle_atoms)
-    # get_reaction_dat(dist_list, angle_list, 'angle')
+    # Calculate differences of differences
+    rc1_dist_list = np.array(rc1_dist_list)
+    rc2_dist_list = np.array(rc2_dist_list)
+    # Check to see which coordinate is larger
+    if rc1_dist_list[0] > rc2_dist_list[0]:
+        diff_dist_list = rc2_dist_list - rc1_dist_list
+    else:
+        diff_dist_list = rc1_dist_list - rc2_dist_list
+    get_reaction_dat(diff_dist_list, E_list, 'dd_v_energy.dat')
+    get_reaction_dat(diff_dist_list, rc1_dist_list, 'dd_v_rc1')
+    get_reaction_dat(diff_dist_list, rc2_dist_list, 'dd_v_rc2')
 
 
 if __name__ == "__main__":
