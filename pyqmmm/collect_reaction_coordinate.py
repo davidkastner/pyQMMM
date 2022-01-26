@@ -136,7 +136,7 @@ def get_opt_energies(xyz_file):
                 if first_energy == None:
                     first_energy = energy
                 relative_energy = (energy - first_energy) * 627.5
-                absolute_energy = energy * 627.5
+                absolute_energy = energy
                 DE_list.append(relative_energy)
                 E_list.append(absolute_energy)
 
