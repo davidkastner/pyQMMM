@@ -137,7 +137,8 @@ for chain in chain_list:
     # Store it in the df_means dataframe
     df_res_se.loc[chain] = [std_err_res_ediam, std_err_res_edia]
 
-edia_chains():
+
+def calculate_chain_edia():
     # Rank order the chains by EDIA score
     sorted_res_df = df_res_means.sort_values(by='EDIA', ascending=False)
     print('Your sorted results for specific residues:')
@@ -159,4 +160,7 @@ edia_chains():
     plt.savefig('chain_res_comp.pdf', bbox_inches='tight')
     print('Figure has been created.')
     print('-------------------')
-    print()
+
+
+if __name__ == "__main__":
+    calculate_chain_edia()

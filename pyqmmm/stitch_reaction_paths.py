@@ -59,7 +59,7 @@ def stitch_reaction_paths():
     print('Combines the two trajectories and save it as a new file.\n')
 
     # This list will be populated with dictionaries for each frame
-    user_input(['first', 'second']):
+    user_input(['first', 'second'])
 
 
 if __name__ == "__main__":
