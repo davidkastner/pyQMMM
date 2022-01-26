@@ -2,10 +2,11 @@
 Docs: https://github.com/davidkastner/pyQMMM/blob/main/pyqmmm/README.md
 DESCRIPTION
     Reaction path calculations often need to be restarted from a later point.
-    For example, when rerunning a scan of the peak to get higher resolution TS.
+    For example, rerunning a scan of the peak to get higher a resolution TS.
     Afterwards, the .xyz files of the two scans need to be stitched together.
     Here, users can specify the frames from each file that need to be combined.
-    The script will generate a new combined file.
+    Returns the difference of distances against energy as a .dat file,
+    and both reaction coordinates against the difference of distances coord.
 
     Author: David Kastner
     Massachusetts Institute of Technology
@@ -81,9 +82,10 @@ frames : list
 '''
 
 
-def request_frames(xyz_filename):
+def request_frame_info(xyz_filename):
     # What frames would you like from the first .xyz file?
     request = input('Which frames do you want from {}?: '.format(xyz_filename))
+    reverse = input('Any key to reverse {} else Return: '.format(xyz_filename))
     # Continue if the user did not want that file processed and pressed enter
     if request == '':
         return request
@@ -94,52 +96,38 @@ def request_frames(xyz_filename):
 
     print('For {} you requested frames {}.'.format(xyz_filename, frames))
 
-    return frames
+    return frames, reverse
 
 
 '''
-Turns an xyz trajectory file into a list of lists where each element is a frame.
+Get the user's linear combination of restraints.
 Parameters
-----------
-xyz_filename : string
-    The file name of a trajectory
-
+-------
+atoms : list
+    list of atoms indices
+Get the user's reaction coordinate definition.
 Returns
 -------
-trajectory_list : list
-    List of lists containing the trajectory with each frame saved as an element
+atoms : list
+    list of atoms indices
 '''
 
 
-def multiframe_xyz_to_list(xyz_filename):
-    # Variables that measure our progress in parsing the optim.xyz file
-    xyz_as_list = []  # List of lists containing all frames
-    frame_contents = ''
-    line_count = 0
-    frame_count = 0
-    first_line = True  # Marks if we've looked at the atom count yet
+def user_input():
+    # What atoms define the first reaction coordinate
+    coord1_input = input('What atoms define your first reaction coordinate?')
+    # Convert user input to a list even if it is hyphenated
+    temp = [(lambda sub: range(sub[0], sub[-1] + 1))
+            (list(map(int, ele.split('-')))) for ele in coord1_input.split(',')]
+    coord1 = [b for a in temp for b in a]
+    # What atoms define the second reaction coordinate
+    coord2_input = input('What atoms define your second reaction coordinate?')
+    # Convert user input to a list even if it is hyphenated
+    temp = [(lambda sub: range(sub[0], sub[-1] + 1))
+            (list(map(int, ele.split('-')))) for ele in coord2_input.split(',')]
+    coord2 = [b for a in temp for b in a]
 
-    # Loop through optim.xyz and collect distances, energies and frame contents
-    with open(xyz_filename, 'r') as trajectory:
-        for line in trajectory:
-            # We determine the section length using the atom count in first line
-            if first_line == True:
-                section_length = int(line.strip()) + 2
-                first_line = False
-            # At the end of the section reset the frame-specific variables
-            if line_count == section_length:
-                line_count = 0
-                xyz_as_list.append(frame_contents)
-                frame_contents = ''
-                frame_count += 1
-            frame_contents += line
-            line_count += 1
-
-        xyz_as_list.append(frame_contents)
-
-    print('We found {} frames in {}.'.format(len(xyz_as_list), xyz_filename))
-
-    return xyz_as_list
+    return coord1, coord2
 
 
 '''
@@ -275,7 +263,7 @@ def combine_xyz_files():
     # For each xyz file convert to a list a select the requested frames
     combined_xyz_list = []
     for file in xyz_filename_list:
-        requested_frames = request_frames(file)
+        requested_frames, reverse = request_frame_info(file)
         # The user can skip files by with enter which returns an empty string
         if requested_frames == '':
             continue
@@ -285,7 +273,6 @@ def combine_xyz_files():
             xyz_list) if index + 1 in requested_frames]
 
         # Ask the user if they want the frames reversed for a given xyz file
-        reverse = input('Any key to reverse {} else Return: '.format(file))
         if reverse:
             requested_xyz_list.reverse()
 
