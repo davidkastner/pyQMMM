@@ -200,7 +200,7 @@ def collect_reaction_coordinate():
         diff_dist_list = rc2_dist_list - rc1_dist_list
     else:
         diff_dist_list = rc1_dist_list - rc2_dist_list
-    get_reaction_dat(diff_dist_list, E_list, 'dd_v_energy.dat')
+    get_reaction_dat(diff_dist_list, E_list, 'dd_v_energy')
     get_reaction_dat(diff_dist_list, rc1_dist_list, 'dd_v_rc1')
     get_reaction_dat(diff_dist_list, rc2_dist_list, 'dd_v_rc2')
 

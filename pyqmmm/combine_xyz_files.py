@@ -84,7 +84,7 @@ frames : list
 
 def request_frames(xyz_filename):
     # What frames would you like from the first .xyz file?
-    if xyz_filename == 'combined.xyz_filename':
+    if xyz_filename == 'combined.xyz':
         return
     request = input('Which frames do you want from {}?: '.format(xyz_filename))
     # Continue if the user did not want that file processed and pressed enter
@@ -175,7 +175,7 @@ def combine_xyz_files():
     with open(combined_filename, 'w') as combined_file:
         for entry in combined_xyz_list:
             combined_file.write(entry)
-    print('Your combined xyz was written to {}'.format(combined_filename))
+    print('Your combined xyz was written to {}\n'.format(combined_filename))
 
 
 def analyze_combined_xyz():
