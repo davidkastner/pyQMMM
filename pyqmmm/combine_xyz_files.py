@@ -33,7 +33,7 @@ trajectory_list : list
 
 def get_xyz_filenames():
     # Get all xyz files and sort them
-    file_list = glob.glob('./*.xyz')
+    file_list = glob.glob('*.xyz')
     sorted(file_list)
     xyz_filename_list = []
 
@@ -58,7 +58,8 @@ def get_xyz_filenames():
         if trajectory == True:
             xyz_filename_list.append(file)
 
-        print('We found these .xyz files: {}'.format(xyz_filename_list))
+    xyz_filename_list.sort()
+    print('We found these .xyz files: {}'.format(xyz_filename_list))
 
     return xyz_filename_list
 
@@ -79,13 +80,14 @@ frames : list
 
 def request_frames(xyz_filename):
     # What frames would you like from the first .xyz file?
-    request = input('Frames from {}? (e.g., 1,3-5): '.format(xyz_filename))
-
-    if request != '':
-        # Check the request and convert it to a list even if it is hyphenated
-        temp = [(lambda sub: range(sub[0], sub[-1] + 1))
-                (list(map(int, ele.split('-')))) for ele in request.split('-')]
-        frames = [b for a in temp for b in a]
+    request = input('Which frames do you want from {}?: '.format(xyz_filename))
+    # Continue if the user did not want that file processed and pressed enter
+    if request == '':
+        return request
+    # Check the request and convert it to a list even if it is hyphenated
+    temp = [(lambda sub: range(sub[0], sub[-1] + 1))
+            (list(map(int, ele.split('-')))) for ele in request.split(',')]
+    frames = [b for a in temp for b in a]
 
     print('For {} you requested frames {}.'.format(xyz_filename, frames))
 
@@ -124,15 +126,15 @@ def multiframe_xyz_to_list(xyz_filename):
             # At the end of the section reset the frame-specific variables
             if line_count == section_length:
                 line_count = 0
+                xyz_as_list.append(frame_contents)
                 frame_contents = ''
                 frame_count += 1
-
             frame_contents += line
             line_count += 1
 
         xyz_as_list.append(frame_contents)
 
-    print('We found {} frames in {}.'.format(len(xyz_as_list, xyz_filename)))
+    print('We found {} frames in {}.'.format(len(xyz_as_list), xyz_filename))
 
     return xyz_as_list
 
@@ -152,18 +154,24 @@ def combine_xyz_files():
     # For each xyz file convert to a list a select the requested frames
     combined_xyz_list = []
     for file in xyz_filename_list:
+        requested_frames = request_frames(file)
+        # The user can skip files by with enter which returns an empty string
+        if requested_frames == '':
+            continue
+        # Convert the xyz files to a list
         xyz_list = multiframe_xyz_to_list(file)
-        requested_frames = request_frames(file)[1, 2, 3, 8]
         requested_xyz_list = [frame for index, frame in enumerate(
             xyz_list) if index + 1 in requested_frames]
+
         # Ask the user if they want the frames reversed for a given xyz file
-        reverse_bool = input('True to reverse {}, else Return.'.format(file))
-        if reverse_bool == True:
-            requested_xyz_list = requested_xyz_list.reverse()
+        reverse = input('Any key to reverse {} else Return: '.format(file))
+        if reverse:
+            requested_xyz_list.reverse()
+
         combined_xyz_list += requested_xyz_list
 
     with open('combined.xyz', 'w') as combined_file:
-        for entry in xyz_list:
+        for entry in combined_xyz_list:
             combined_file.write(entry)
 
 
