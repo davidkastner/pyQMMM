@@ -1,5 +1,5 @@
 '''
-See more here: https://github.com/davidkastner/quick-csa/blob/main/README.md
+Docs: https://github.com/davidkastner/pyQMMM/blob/main/pyqmmm/README.md
 DESCRIPTION
     After performing a TeraChem PES, the coordinates are found in scan_optim.xyz.
     Using this file we can extract reaction coordinates against energies.

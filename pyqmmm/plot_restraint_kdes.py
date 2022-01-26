@@ -1,5 +1,5 @@
 '''
-Docs: https://github.com/davidkastner/hyscore-plotter/blob/main/README.md
+Docs: https://github.com/davidkastner/pyQMMM/blob/main/pyqmmm/README.md
 DESCRIPTION
     Creates a series of KDE plots based on HYSCORE-guided simulations.
 

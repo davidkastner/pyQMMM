@@ -1,5 +1,5 @@
 '''
-See more here: https://github.com/davidkastner/quick-csa/blob/main/README.md
+Docs: https://github.com/davidkastner/pyQMMM/blob/main/pyqmmm/README.md
 DESCRIPTION
     Searches through the job output for a TeraChem job.
     Collects the energies into a CSV file as a pandas dataframe.

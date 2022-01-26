@@ -1,5 +1,5 @@
 '''
-See more here: https://github.com/davidkastner/quick-csa/blob/main/README.md
+Docs: https://github.com/davidkastner/pyQMMM/blob/main/pyqmmm/README.md
 DESCRIPTION
     Extract charge and spin data for a given subset of atoms for graphing.
     Written to interpet TeraChem mullpop and charge_mull.xls files.

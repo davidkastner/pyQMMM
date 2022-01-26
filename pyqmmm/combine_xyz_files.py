@@ -1,5 +1,5 @@
 '''
-See more here: https://github.com/davidkastner/quick-csa/blob/main/README.md
+Docs: https://github.com/davidkastner/pyQMMM/blob/main/pyqmmm/README.md
 DESCRIPTION
     Reaction path calculations often need to be restarted from a later point.
     For example, when rerunning a scan of the peak to get higher resolution TS.
@@ -18,7 +18,7 @@ import glob
 ################################## FUNCTIONS ###################################
 
 '''
-Search the current directory and located 
+Search the current directory for all xyz files and remove any non-trajectories
 Parameters
 -------
 atoms : list
@@ -26,14 +26,39 @@ atoms : list
 Get the user's reaction coordinate definition.
 Returns
 -------
-atoms : list
-    list of atoms indices
+trajectory_list : list
+    list string names of all the trajectory xyz files in the directory
 '''
 
 
 def get_xyz_trajectories():
+    # Get all xyz files and sort them
     file_list = glob.glob('./*.xyz')
-    file_list_sorted = sorted(file_list)
+    sorted(file_list)
+    xyz_filename_list = []
+
+    # Loop through files and check to see if they are trajectories
+    for file in file_list:
+        with open(file, 'r') as current_file:
+            trajectory = False
+            first_line = True
+            header_count = 0
+            # If the atom count appears more than once than it is a trajectory
+            for line in current_file:
+                if first_line == True:
+                    atom_count = line.strip()
+                    header_count += 1
+                    first_line = False
+                if line.strip() == atom_count:
+                    header_count += 1
+                if header_count > 1:
+                    trajectory = True
+                    break
+        # Combine all the trajectory files into a single list
+        if trajectory == True:
+            xyz_filename_list.append(file)
+
+    return xyz_filename_list
 
 
 '''
@@ -78,8 +103,13 @@ def combine_xyz_files():
     print('Name your xyz file as 1.xyz, 2.xyz, etc.')
     print('Leave the prompt blank when you are done.\n')
 
+    # Search through all xyz's in the current directory and get the trajectories
+    xyz_filename_list = get_xyz_trajectories()
+
     # Find out what frames the user wants combined
-    frames_list = request_frames()
+    file_request_dict = request_frames(xyz_filename_list)
+
+    # Save each frame of the trajectory to an list
 
 
 if __name__ == "__main__":

@@ -1,5 +1,5 @@
 '''
-See more here: https://github.com/davidkastner/pdb-utilities/blob/main/README.md
+Docs: https://github.com/davidkastner/pdb-utilities/blob/main/README.md
 DESCRIPTION
     Extract specific residues from a PDB file and save them as a new file.
 

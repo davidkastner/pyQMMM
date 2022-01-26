@@ -1,5 +1,5 @@
 '''
-See more here: https://github.com/davidkastner/pdb-utilities/blob/main/README.md
+Docs: https://github.com/davidkastner/pyQMMM/blob/main/pyqmmm/README.md
 DESCRIPTION
     Breaks up TeraChem optimization XYZ file into individual frames.
 

@@ -1,5 +1,5 @@
 '''
-Docs: https://github.com/davidkastner/pdb-utilities/automodeller.py
+Docs: https://github.com/davidkastner/pyQMMM/blob/main/pyqmmm/README.md
 DESCRIPTION
     Automates the process of replacing missing residues with Modeller.
 

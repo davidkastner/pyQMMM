@@ -1,5 +1,5 @@
 '''
-See more here: https://github.com/davidkastner/quick-csa/blob/main/README.md
+Docs: https://github.com/davidkastner/pyQMMM/blob/main/pyqmmm/README.md
 DESCRIPTION
    By default, TeraChem scans only print the charge and spin of the final frame.
    We change this by using the ml_prop keyword. Now every optimization will print.

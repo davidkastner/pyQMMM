@@ -1,5 +1,5 @@
 '''
-See more here: https://github.com/davidkastner/pdb-utilities/blob/main/README.md
+Docs: https://github.com/davidkastner/pyQMMM/blob/main/pyqmmm/README.md
 DESCRIPTION
     Generates plots for the common files: energy, water density, RMSD, and RoG.
 

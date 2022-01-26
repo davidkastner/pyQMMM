@@ -1,5 +1,5 @@
 '''
-Docs: https://github.com/davidkastner/pyqmmm/dccm_mapper/blob/main/README.md
+Docs: https://github.com/davidkastner/pyQMMM/blob/main/pyqmmm/README.md
 DESCRIPTION
     Reads in DCCM data and formats it into the Kulik Lab standard format.
 

@@ -1,5 +1,5 @@
 '''
-See more here: https://github.com/davidkastner/pdb-utilities/blob/main/README.md
+Docs: https://github.com/davidkastner/pyQMMM/blob/main/pyqmmm/README.md
 DESCRIPTION
     Reunumbers waters that restart after reaching 9999.
 

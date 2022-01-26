@@ -1,5 +1,5 @@
 '''
-See more here: https://github.com/davidkastner/pdb-utilities/blob/main/README.md
+Docs: https://github.com/davidkastner/pyQMMM/blob/main/pyqmmm/README.md
 DESCRIPTION
     Takes the ppm image output from VMD and converts them to PNGs.
     These can then be merged in blender to create a movie of the trajectory.
