@@ -170,6 +170,8 @@ def combine_xyz_files():
         reverse = input('Any key to reverse {} else Return: '.format(file))
         if reverse:
             requested_xyz_list.reverse()
+            print('reversed!!')
+            reverse = False
         combined_xyz_list += requested_xyz_list
     # Write the combined trajectories out to a new file called combined.xyz
     with open(combined_filename, 'w') as combined_file:
