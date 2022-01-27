@@ -192,7 +192,7 @@ def analyze_combined_xyz():
     combine_xyz_files()
 
     # STEP 2: Perform reaction coordinate analysis
-    perform_rc_analysis = input('Any key to perform analyze RC, else Retrun: ')
+    perform_rc_analysis = input('Any key to perform analyze RC, else Return: ')
     collect_reaction_coordinate.collect_reaction_coordinate()
 
 
