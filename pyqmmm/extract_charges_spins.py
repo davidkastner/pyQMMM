@@ -32,10 +32,9 @@ xyz_filename_list : list
 
 
 def get_files(file_pattern):
-    file_list = glob.glob(file)
+    file_list = glob.glob(file_pattern)
     sorted(file_list)
-    file_list = []
-    print('We found {} files for the patter {}'.format(file_list, file_pattern))
+    print('We found {} for the pattern {}'.format(file_list, file_pattern))
     return file_list
 
 
@@ -48,9 +47,21 @@ atoms : list
 '''
 
 
-def user_input():
+def get_selection(file):
+    # For which frames would the user like
+    selection = input('What frames would you like for {}: '.format(file))
+
+    # Convert user input to a list even if it is hyphenated
+    temp = [(lambda sub: range(sub[0], sub[-1] + 1))
+            (list(map(int, ele.split('-')))) for ele in selection.split(', ')]
+    selection = [str(b) for a in temp for b in a]
+
+    return selection
+
+
+def get_atoms():
     # For which atoms would the user like to sum the spin and charge
-    my_atoms = input('What atom indexes would you like to sum (e.g., 58-76)?')
+    my_atoms = input('What atom indexes to sum (e.g., 58-76): ')
 
     # Convert user input to a list even if it is hyphenated
     temp = [(lambda sub: range(sub[0], sub[-1] + 1))
@@ -84,6 +95,9 @@ def get_spins(atoms, file, selection):
                 scan_step_count += 1
                 net_spins.append('{} {}\n'.format(scan_step_count, net_spin))
                 net_spin = 0
+    for index, spin in enumerate(net_spins):
+        if index + 1 not in selection:
+            net_spins.pop(index)
 
     reverse = input('Press any key to reverse data for {}: '.format(file))
     if reverse:
@@ -117,6 +131,9 @@ def get_charges(atoms, file, selection):
                 net_charges.append('{} {}\n'.format(
                     scan_step_count, net_charge))
                 net_charge = 0
+    for index, charge in enumerate(net_charges):
+        if index + 1 not in selection:
+            net_charges.pop(index)
 
     reverse = input('Press any key to reverse data for {}: '.format(file))
     if reverse:
@@ -146,7 +163,7 @@ def extract_charges_spins():
     print('\n.-----------------------.')
     print('| EXTRACT CHARGES SPINS |')
     print('.-----------------------.\n')
-    print('First run pes_data_organizer.py for each job.')
+    print('First run organize_energy_scan_data.py for each job.')
     print('Move the scan_charge and scan_spin to the same directory.')
     print('Give them unique names.')
     print('Extract summed charge and spin for user specified atoms\n')
@@ -156,12 +173,12 @@ def extract_charges_spins():
     spin_files = get_files('*.spin')
 
     # What atoms does the user want to perform charge-spin analysis for?
-    atoms = user_input()
+    atoms = get_atoms()
 
     # Loop through each charge files and concatonate them
     charge_lists = []
     for file in charge_files:
-        selection = input('What frames would you like for {}'.format(file))
+        selection = get_selection(file)
         net_charge_data = get_charges(atoms, file, selection)
         charge_lists += net_charge_data
     write_data('combined_charge.dat', charge_lists)
@@ -169,10 +186,10 @@ def extract_charges_spins():
     # Loop through each spin files and concatonate them
     spin_lists = []
     for file in spin_files:
-        selection = input('What frames would you like for {}'.format(file))
+        selection = get_selection(file)
         net_spin_data = get_spins(atoms, file, selection)
-        charge_lists += net_spin_data
-    write_data('combined_charge.dat', charge_lists)
+        spin_lists += net_spin_data
+    write_data('combined_spin.dat', spin_lists)
 
 
 if __name__ == "__main__":
