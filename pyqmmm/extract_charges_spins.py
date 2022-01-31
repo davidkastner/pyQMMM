@@ -84,7 +84,7 @@ def get_spins(atoms, file, selection):
     # Sum the spins for the user selected atoms
     net_spins = []
     net_spin = 0
-    scan_step_count = 0
+    step_count = 0
     with open(file, 'r') as scan_spin_file:
         for line in scan_spin_file:
             line_list = line.split()
@@ -92,8 +92,8 @@ def get_spins(atoms, file, selection):
                 net_spin += float(line_list[9])
 
             if line_list[0] == 'End':
-                scan_step_count += 1
-                net_spins.append('{} {}\n'.format(scan_step_count, net_spin))
+                step_count += 1
+                net_spins.append('{} {}\n'.format(step_count, net_spin))
                 net_spin = 0
     for index, spin in enumerate(net_spins):
         if index + 1 not in selection:
@@ -119,7 +119,7 @@ def get_charges(atoms, file, selection):
     # Sum the charges for the user selected atoms
     net_charges = []
     net_charge = 0
-    scan_step_count = 0
+    step_count = 0
     with open(file, 'r') as scan_charge_file:
         for line in scan_charge_file:
             line_list = line.split()
@@ -127,9 +127,8 @@ def get_charges(atoms, file, selection):
                 net_charge += float(line_list[2])
 
             if line_list[0] == 'End':
-                scan_step_count += 1
-                net_charges.append('{} {}\n'.format(
-                    scan_step_count, net_charge))
+                step_count += 1
+                net_charges.append('{} {}\n'.format(step_count, net_charge))
                 net_charge = 0
     for index, charge in enumerate(net_charges):
         if index + 1 not in selection:
