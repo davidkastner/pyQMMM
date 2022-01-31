@@ -158,11 +158,21 @@ def extract_charges_spins():
     # What atoms does the user want to perform charge-spin analysis for?
     atoms = user_input()
 
+    # Loop through each charge files and concatonate them
+    charge_lists = []
     for file in charge_files:
         selection = input('What frames would you like for {}'.format(file))
-        net_charge_data = get_charges(atoms, file)
+        net_charge_data = get_charges(atoms, file, selection)
+        charge_lists += net_charge_data
+    write_data('combined_charge.dat', charge_lists)
 
-    get_spins(atoms)
+    # Loop through each spin files and concatonate them
+    spin_lists = []
+    for file in spin_files:
+        selection = input('What frames would you like for {}'.format(file))
+        net_spin_data = get_spins(atoms, file, selection)
+        charge_lists += net_spin_data
+    write_data('combined_charge.dat', charge_lists)
 
 
 if __name__ == "__main__":
