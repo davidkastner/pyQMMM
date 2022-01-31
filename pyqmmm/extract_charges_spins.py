@@ -21,7 +21,7 @@ atoms : list
 
 
 def user_input():
-    # What atoms would the user like to sum the spin for
+    # For which atoms would the user like to sum the spin and charge
     my_atoms = input('What atom indexes would you like to sum (e.g., 58-76)?')
 
     # Convert user input to a list even if it is hyphenated
@@ -46,7 +46,7 @@ def get_spins(atoms):
     net_spins = []
     net_spin = 0
     scan_step_count = 0
-    with open('./scr/scan_spin', 'r') as scan_spin_file:
+    with open('./scr/mullpop', 'r') as scan_spin_file:
         for line in scan_spin_file:
             line_list = line.split()
             if line_list[0] in atoms:
@@ -57,7 +57,7 @@ def get_spins(atoms):
                 net_spins.append('{} {}\n'.format(scan_step_count, net_spin))
                 net_spin = 0
 
-    with open('./scr/select_spin', 'w') as select_spin_file:
+    with open('./spin.dat', 'w') as select_spin_file:
         for pair in net_spins:
             select_spin_file.write(pair)
 
@@ -76,7 +76,7 @@ def get_charges(atoms):
     net_charges = []
     net_charge = 0
     scan_step_count = 0
-    with open('./scr/scan_charge', 'r') as scan_charge_file:
+    with open('./scr/charge_mull.xls', 'r') as scan_charge_file:
         for line in scan_charge_file:
             line_list = line.split()
             if line_list[0] in atoms:
@@ -88,12 +88,11 @@ def get_charges(atoms):
                     scan_step_count, net_charge))
                 net_charge = 0
 
-    with open('./scr/select_charge', 'w') as select_charge_file:
+    with open('./charge.dat', 'w') as select_charge_file:
         for pair in net_charges:
             select_charge_file.write(pair)
 
 
-# General function handler
 def extract_charges_spins():
     print('\n.-----------------------.')
     print('| EXTRACT CHARGES SPINS |')
