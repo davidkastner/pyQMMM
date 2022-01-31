@@ -53,7 +53,7 @@ def get_selection(file):
 
     # Convert user input to a list even if it is hyphenated
     temp = [(lambda sub: range(sub[0], sub[-1] + 1))
-            (list(map(int, ele.split('-')))) for ele in selection.split(', ')]
+            (list(map(int, ele.split('-')))) for ele in selection.split(',')]
     selection = [int(b) for a in temp for b in a]
 
     return selection
@@ -65,7 +65,7 @@ def get_atoms():
 
     # Convert user input to a list even if it is hyphenated
     temp = [(lambda sub: range(sub[0], sub[-1] + 1))
-            (list(map(int, ele.split('-')))) for ele in my_atoms.split(', ')]
+            (list(map(int, ele.split('-')))) for ele in my_atoms.split(',')]
     atoms = [str(b) for a in temp for b in a]
 
     return atoms
@@ -95,10 +95,11 @@ def get_spins(atoms, file, selection):
                 step_count += 1
                 net_spins.append('{} {}\n'.format(step_count, net_spin))
                 net_spin = 0
-    print(selection)
-    for index, spin in enumerate(net_spins):
+
+    net_spins_reference = net_spins.copy()
+    for index, spin in enumerate(net_spins_reference):
         if index + 1 not in selection:
-            net_spins.pop(index)
+            net_spins.remove(net_spins_reference[index])
 
     reverse = input('Press any key to reverse data for {}: '.format(file))
     if reverse:
@@ -131,9 +132,11 @@ def get_charges(atoms, file, selection):
                 step_count += 1
                 net_charges.append('{} {}\n'.format(step_count, net_charge))
                 net_charge = 0
-    for index, charge in enumerate(net_charges):
+
+    net_charges_reference = net_charges.copy()
+    for index, charge in enumerate(net_charges_reference):
         if index + 1 not in selection:
-            net_charges.pop(index)
+            net_charges.remove(net_charges_reference[index])
 
     reverse = input('Press any key to reverse data for {}: '.format(file))
     if reverse:
