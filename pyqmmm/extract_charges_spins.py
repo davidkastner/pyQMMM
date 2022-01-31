@@ -54,7 +54,7 @@ def get_selection(file):
     # Convert user input to a list even if it is hyphenated
     temp = [(lambda sub: range(sub[0], sub[-1] + 1))
             (list(map(int, ele.split('-')))) for ele in selection.split(', ')]
-    selection = [str(b) for a in temp for b in a]
+    selection = [int(b) for a in temp for b in a]
 
     return selection
 
@@ -95,6 +95,7 @@ def get_spins(atoms, file, selection):
                 step_count += 1
                 net_spins.append('{} {}\n'.format(step_count, net_spin))
                 net_spin = 0
+    print(selection)
     for index, spin in enumerate(net_spins):
         if index + 1 not in selection:
             net_spins.pop(index)
