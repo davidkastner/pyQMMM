@@ -10,10 +10,10 @@ DESCRIPTION
 '''
 
 
-def extract_pdb_residues():
+def pdb_residue_extractor():
     # Introduce user to the function
     print('\n.-----------------------.')
-    print('| EXTRACT PDB RESIDUES |')
+    print('| PDB RESIDUE EXTRACTOR |')
     print('.-----------------------.\n')
     print('You want to select a specific selection of residues from your PDB?')
     pdb_name = input('Which PDB in this directory are we selecting from?: ')
@@ -52,4 +52,4 @@ def extract_pdb_residues():
 
 
 if __name__ == "__main__":
-    extract_pdb_residues()
+    pdb_residue_extractor()

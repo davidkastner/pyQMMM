@@ -39,11 +39,11 @@ def get_plot(df, yaxis, title, color, saveloc):
     plt.show()
 
 
-def plot_md_vitals():
+def md_vitals_plotter():
     # Welcome user and print some instructions
-    print('\n.----------------.\n')
-    print('| PLOT MD VITALS |')
-    print('-----------------.\n')
+    print('\n.-------------------.')
+    print('| MD VITALS PLOTTER |')
+    print('--------------------.\n')
     print('This script will search your directory for the following input:')
     print('+ Energy levels > summary.ETOT')
     print('+ Water density of solvent box > summary.DENSITY')
@@ -75,4 +75,4 @@ def plot_md_vitals():
 
 # Execute the function when run as a script but not if used as a module
 if __name__ == "__main__":
-    plot_md_vitals()
+    md_vitals_plotter()

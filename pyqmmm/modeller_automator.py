@@ -303,9 +303,9 @@ def clean_up(pdb_name):
 # Introduce user to Automodeller functionality
 
 
-def automate_modeller(aa_lookup):
-    print('\n.-------------------.')
-    print('| AUTOMATE MODELLER |')
+def modeller_automator(aa_lookup):
+    print('\n.--------------------.')
+    print('| MODELLER AUTOMATOR |')
     print('.-------------------.\n')
     print('Automates the process of replacing missing residues with Modeller.\n')
 
@@ -336,4 +336,4 @@ def automate_modeller(aa_lookup):
 
 
 if __name__ == "__main__":
-    automate_modeller()
+    modeller_automator()

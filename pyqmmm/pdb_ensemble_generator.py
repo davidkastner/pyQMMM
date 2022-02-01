@@ -18,7 +18,7 @@ import shutil
 # Creates an ensemble from individual PDB files
 
 
-def create_pdb_ensemble():
+def pdb_ensemble_generator():
     model_count = 1
     dir = 'ensemble'
     if os.path.exists(dir):
@@ -40,4 +40,4 @@ def create_pdb_ensemble():
 
 
 if __name__ == "__main__":
-    create_pdb_ensemble()
+    pdb_ensemble_generator()

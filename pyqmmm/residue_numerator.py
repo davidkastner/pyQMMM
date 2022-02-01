@@ -37,10 +37,10 @@ def renumber(pdb_name, offset):
                 shifted_pdb.write(' '.join(line_list))
 
 
-def renumber_residues():
+def residue_numerator():
     # Introduce user to Renumber Residues functionality
     print('\n.-------------------.')
-    print('| RENUMBER RESIDUES |')
+    print('| RESIDUE NUMERATOR |')
     print('.-------------------.\n')
     print('Renumbers all residues in a PDB from an integar of your choice.')
     print('------------------------\n')
@@ -51,4 +51,4 @@ def renumber_residues():
 
 
 if __name__ == "__main__":
-    renumber_residues()
+    residue_numerator()

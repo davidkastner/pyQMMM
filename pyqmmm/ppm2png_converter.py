@@ -17,7 +17,7 @@ import os
 ################################# FUNCTIONS ####################################
 
 
-def convert_ppm_png():
+def ppm2png_converter():
     directory = './'
     # Loop through all images in the current directory
     count = 0
@@ -31,4 +31,4 @@ def convert_ppm_png():
 
 
 if __name__ == "__main__":
-    convert_ppm_png()
+    ppm2png_converter()

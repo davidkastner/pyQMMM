@@ -403,11 +403,11 @@ def graph_datasets(x_data, y_data, z_data, labels, plot_params, show_crosshairs)
     plt.savefig('./3_out/restraints_kde.png', dpi=600, bbox_inches='tight')
 
 
-def plot_restraint_kdes():
+def restraint_kdes_plotter():
     # Introduce user to HyScore Eval functionality
-    print('\n.---------------------.')
-    print('| PLOT RESTRAINT KDES |')
-    print('.---------------------.\n')
+    print('\n.------------------------.')
+    print('| RESTRAINT KDES PLOTTER |')
+    print('.------------------------.\n')
     print('Generates a series of KDE plots for hyscore-guided simulations.')
     print('This the goal of RESTRAINT PLOTS is to:')
     print('+ Vizualize a simulation against two order parameters')
@@ -431,4 +431,4 @@ def plot_restraint_kdes():
 
 # Execute the Quick CSA when run as a script but not if used as a pyQM/MM module
 if __name__ == "__main__":
-    plot_restraint_kdes()
+    restraint_kdes_plotter()

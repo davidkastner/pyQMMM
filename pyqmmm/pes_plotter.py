@@ -179,10 +179,10 @@ def get_energies(file_path):
         return get_energies(file_path)
 
 
-def plot_energy_profile():
-    print('\n.---------------------.')
-    print('| PLOT ENERGY PROFILE |')
-    print('.---------------------.\n')
+def pes_plotter():
+    print('\n.-------------.')
+    print('| PES PLOTTER |')
+    print('.-------------.\n')
     print('Collects the final energies from a TeraChem scan into a CSV file.')
     print('The script assumes the .out file is in the current directory.')
     print('--------------------------\n')
@@ -200,4 +200,4 @@ def plot_energy_profile():
 
 # Collect energies into .csv file and create a dataframe
 if __name__ == "__main__":
-    plot_energy_profile()
+    pes_plotter()
