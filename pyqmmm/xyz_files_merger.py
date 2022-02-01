@@ -17,7 +17,7 @@ import glob
 import matplotlib.pyplot as plt
 from scipy.spatial import distance
 import numpy as np
-import collect_reaction_coordinate
+import reaction_coordinate_collector
 
 ################################## FUNCTIONS ###################################
 
@@ -179,7 +179,7 @@ def combine_xyz_files():
     print('Your combined xyz was written to {}\n'.format(combined_filename))
 
 
-def analyze_combined_xyz():
+def xyz_file_merger():
     # Welcome the user to the file and introduce basic functionality
     print('\n.-------------------.')
     print('| COMBINE XYZ FILES |')
@@ -190,12 +190,12 @@ def analyze_combined_xyz():
     print('Leave the prompt blank to ignore an xyz file.\n')
 
     # STEP 1: Combine two different xyz files
-    combine_xyz_files()
+    xyz_file_merger()
 
     # STEP 2: Perform reaction coordinate analysis
     perform_rc_analysis = input('Any key to perform analyze RC, else Return: ')
-    collect_reaction_coordinate.collect_reaction_coordinate()
+    reaction_coordinate_collector.reaction_coordinate_collector()
 
 
 if __name__ == "__main__":
-    analyze_combined_xyz()
+    xyz_file_merger()
