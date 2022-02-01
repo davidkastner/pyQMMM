@@ -158,13 +158,13 @@ energy_list : list
 def get_reaction_dat(xaxis_list, yaxis_list, extension):
     with open('./{}.dat'.format(extension), 'w') as dat_file:
         for x, y in zip(xaxis_list, yaxis_list):
-            dat_file.write('{} {}\n'.format(x, y))
+            dat_file.write('{},{}\n'.format(x, y))
 
 
-def collect_reaction_coordinate():
-    print('\n.-----------------------------.')
-    print('| COLLECT REACTION COORDINATE |')
-    print('.-----------------------------.\n')
+def reaction_coordinate_collector():
+    print('\n.-------------------------------.')
+    print('| REACTION COORDINATE COLLECTOR |')
+    print('.-------------------------------.\n')
     print('Run this script in the same directory as the TeraChem job.')
     print('Computes energy (kcal/mol) against two distance coordinates.')
     print('If you only have one RC, leave a prompt empty.')
@@ -206,4 +206,4 @@ def collect_reaction_coordinate():
 
 
 if __name__ == "__main__":
-    collect_reaction_coordinate()
+    reaction_coordinate_collector()
