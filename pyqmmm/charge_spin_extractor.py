@@ -162,9 +162,9 @@ def write_data(file, net_data):
             select_file.write(pair)
 
 
-def extract_charges_spins():
+def charge_spin_extractor():
     print('\n.-----------------------.')
-    print('| EXTRACT CHARGES SPINS |')
+    print('| CHARGE SPIN EXTRACTOR |')
     print('.-----------------------.\n')
     print('First run organize_energy_scan_data.py for each job.')
     print('Move the scan_charge and scan_spin to the same directory.')
@@ -196,4 +196,4 @@ def extract_charges_spins():
 
 
 if __name__ == "__main__":
-    extract_charges_spins()
+    charge_spin_extractor()

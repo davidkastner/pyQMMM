@@ -75,11 +75,11 @@ Returns
 '''
 
 
-def format_dccm_plot():
+def dccm_plot_formattor():
     df = get_dccm()
     get_plot(df)
 
 
 # Execute the DCCM Mapper function when run as a script
 if __name__ == "__main__":
-    format_dccm_plot()
+    dccm_plot_formattor()

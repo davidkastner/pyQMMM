@@ -138,7 +138,7 @@ for chain in chain_list:
     df_res_se.loc[chain] = [std_err_res_ediam, std_err_res_edia]
 
 
-def calculate_chain_edia():
+def edia_chain_calculator():
     # Rank order the chains by EDIA score
     sorted_res_df = df_res_means.sort_values(by='EDIA', ascending=False)
     print('Your sorted results for specific residues:')
@@ -163,4 +163,4 @@ def calculate_chain_edia():
 
 
 if __name__ == "__main__":
-    calculate_chain_edia()
+    edia_chain_calculator()

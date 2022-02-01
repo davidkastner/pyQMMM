@@ -153,10 +153,10 @@ def get_scan_charges(final_scan_position):
     return sections
 
 
-def scan_data_organizer():
-    print('\n.---------------------------.')
-    print('| ORGANIZE ENERGY SCAN DATA |')
-    print('.---------------------------.\n')
+def energy_scan_organizer():
+    print('\n.-----------------------.')
+    print('| ENERGY SCAN ORGANIZER |')
+    print('.-----------------------.\n')
     print('Use the ml_prop keyword when running your TeraChem scan.')
     print('Execute this script from the directory where this job was run.\n')
 
@@ -166,4 +166,4 @@ def scan_data_organizer():
 
 
 if __name__ == "__main__":
-    scan_data_organizer()
+    energy_scan_organizer()

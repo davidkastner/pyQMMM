@@ -113,10 +113,10 @@ def plot_individuals(df):
 # General function handler
 
 
-def parse_gbsa_data():
-    print('\n.-----------------.')
-    print('| PARSE GBSA DATA |')
-    print('.-----------------.\n')
+def gbsa_data_parser():
+    print('\n.------------------.')
+    print('| GBSA DATA PARSER |')
+    print('.------------------.\n')
     print('Run this in the same directory as your GBSA output')
     print('Remember to update variables section for your system')
     # Give the user time to read description
@@ -133,4 +133,4 @@ def parse_gbsa_data():
 
 
 if __name__ == "__main__":
-    parse_gbsa_data()
+    gbsa_data_parser()

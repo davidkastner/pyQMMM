@@ -64,10 +64,10 @@ def find_heavy_atoms(file):
     print(heavy_atoms)
 
 
-def optimize_hdyrogen_atoms():
+def hydrogen_atom_optimizer():
     # Introduce user to Hydro Optimizer functionality
     print('\n.-------------------------.')
-    print('| OPTIMIZE HYDROGEN ATOMS |')
+    print('| HYDROGEN ATOM OPTIMIZER |')
     print('.-------------------------.\n')
     print('Takes an .xyz file and returns the index of all hydrogens as a list.')
     print('This script will search the current directory for the following input:')
@@ -81,4 +81,4 @@ def optimize_hdyrogen_atoms():
 
 
 if __name__ == "__main__":
-    optimize_hdyrogen_atoms()
+    hydrogen_atom_optimizer()
