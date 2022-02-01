@@ -57,10 +57,10 @@ def get_plot(final_df):
     plt.show()
 
 
-def color_code_rmsd_clusters():
+def rmsd_clusters_colorcoder():
     # Welcome user and print some instructions
     print('\n.--------------------------.')
-    print('| COLOR CODE RMSD CLUSTERS |')
+    print('| RMSD CLUSTERS COLORCODER |')
     print('.--------------------------.\n')
     print('This script will search your directory for the following output:')
     print('+ CCPTraj RMSD file > rmsd.dat')
@@ -90,4 +90,4 @@ def color_code_rmsd_clusters():
 
 # Execute the function when run as a script but not if used as a pyQM/MM module
 if __name__ == "__main__":
-    color_code_rmsd_clusters()
+    rmsd_clusters_colorcoder()

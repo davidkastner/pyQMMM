@@ -10,10 +10,11 @@ DESCRIPTION
 '''
 
 
-def renumber_waters():
+def waters_numerator():
     # Introduce user to the function
-    print('WELCOME TO RENUMBER WATERS')
-    print('--------------------------\n')
+    print('\n.------------------.')
+    print('| WATERS NUMERATOR |')
+    print('-------------------.\n')
     print('So you have a CPPTRAJ PDB with more than 9999 residues? ')
     pdb_name = input('Which PDB in this directory needs to be renumbered? ')
     print('--------------------------\n')
@@ -62,4 +63,4 @@ def renumber_waters():
 
 
 if __name__ == "__main__":
-    renumber_waters()
+    waters_numerator()

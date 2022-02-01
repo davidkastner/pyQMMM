@@ -181,9 +181,9 @@ def combine_xyz_files():
 
 def xyz_file_merger():
     # Welcome the user to the file and introduce basic functionality
-    print('\n.-------------------.')
-    print('| COMBINE XYZ FILES |')
-    print('.-------------------.\n')
+    print('\n.-----------------.')
+    print('| XYZ FILE MERGER |')
+    print('.-----------------.\n')
     print('Searches current directory for xyz trajectory files.')
     print('You can combine as many xyz files as you need.')
     print('Name your xyz file as 1.xyz, 2.xyz, etc.')

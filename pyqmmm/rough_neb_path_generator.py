@@ -281,10 +281,10 @@ def get_plot(dist_diff_list, energy_list):
     plt.show()
 
 
-def generate_rough_neb_path():
-    print('.-------------------------.')
-    print('| GENERATE ROUGH NEB PATH |')
-    print('.-------------------------.\n')
+def rough_neb_path_generator():
+    print('\n.--------------------------.')
+    print('| ROUGH NEB PATH GENERATOR |')
+    print('.--------------------------.\n')
     print('Run this script in the same directory as the TeraChem job.')
     print('Identifies the best set of images for an initial NEB path.\n')
 
@@ -336,4 +336,4 @@ def generate_rough_neb_path():
 
 
 if __name__ == "__main__":
-    generate_rough_neb_path()
+    rough_neb_path_generator()
