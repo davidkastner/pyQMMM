@@ -130,7 +130,7 @@ def get_charges(atoms, file, selection):
 
             if line_list[0] == 'End':
                 step_count += 1
-                net_charges.append('{} {}\n'.format(step_count, net_charge))
+                net_charges.append('{},{}\n'.format(step_count, net_charge))
                 net_charge = 0
 
     net_charges_reference = net_charges.copy()
