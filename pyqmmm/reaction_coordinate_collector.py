@@ -158,7 +158,7 @@ energy_list : list
 def get_reaction_dat(xaxis_list, yaxis_list, extension):
     with open('./{}.dat'.format(extension), 'w') as dat_file:
         for x, y in zip(xaxis_list, yaxis_list):
-            dat_file.write('{} {}\n'.format(x, y))
+            dat_file.write('{},{}\n'.format(x, y))
 
 
 def reaction_coordinate_collector():
