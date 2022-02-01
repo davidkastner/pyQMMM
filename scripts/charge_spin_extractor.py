@@ -20,6 +20,7 @@ Parameters
 ----------
 file_pattern : str
     The type of file the user would like to search the current directory for
+
 Returns
 -------
 xyz_filename_list : list
@@ -30,7 +31,7 @@ xyz_filename_list : list
 def get_files(file_pattern):
     file_list = glob.glob(file_pattern)
     sorted(file_list)
-    print('We found {} for the pattern {}'.format(file_list, file_pattern))
+    print('We found {} using the pattern {}'.format(file_list, file_pattern))
     return file_list
 
 
@@ -38,8 +39,8 @@ def get_files(file_pattern):
 Get the user's atom set.
 Returns
 -------
-atoms : list
-    list of atoms indices
+atoms : selection
+    the index of the atom the user would like the spin and charge for
 '''
 
 
@@ -57,7 +58,7 @@ def get_selection(file):
 
 def get_atoms():
     # For which atoms would the user like to sum the spin and charge
-    my_atoms = input('What atom indexes to sum (e.g., 58-76): ')
+    my_atoms = input('What atom indexes would you like to sum (e.g., 58-76): ')
 
     # Convert user input to a list even if it is hyphenated
     temp = [(lambda sub: range(sub[0], sub[-1] + 1))
@@ -73,6 +74,15 @@ Parameters
 ----------
 atoms : list
     list of atoms indices
+file : str
+    the name of the file that you would like to analyze
+selection : list
+    the indices of the atoms that the user would like the charge and spin for
+
+Returns
+-------
+net_spins : list
+    list fo spins corresponding to each image in the scan
 '''
 
 
@@ -110,6 +120,15 @@ Parameters
 ----------
 atoms : list
     list of atoms indices
+file : str
+    the name of the file that you would like to analyze
+selection : list
+    the indices of the atoms that the user would like the charge and spin for
+
+Returns
+-------
+net_spins : list
+    list fo spins corresponding to each image in the scan
 '''
 
 
@@ -180,7 +199,7 @@ def charge_spin_extractor():
         selection = get_selection(file)
         net_charge_data = get_charges(atoms, file, selection)
         charge_lists += net_charge_data
-    write_data('combined_charge.dat', charge_lists)
+    write_data('combined_charge.csv', charge_lists)
 
     # Loop through each spin files and concatonate them
     spin_lists = []
@@ -188,7 +207,7 @@ def charge_spin_extractor():
         selection = get_selection(file)
         net_spin_data = get_spins(atoms, file, selection)
         spin_lists += net_spin_data
-    write_data('combined_spin.dat', spin_lists)
+    write_data('combined_spin.csv', spin_lists)
 
 
 if __name__ == "__main__":

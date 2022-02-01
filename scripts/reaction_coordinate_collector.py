@@ -4,7 +4,7 @@ DESCRIPTION
     After performing a TeraChem PES, the coordinates are found in the xyz file.
     Using this file we can extract reaction coordinates against energies.
     This is can then be graphed in your plotter of choice such as XMGrace.
-    The output is a .dat file with energies in column 1 and the RC in column 2.
+    The output is a .csv file with energies in column 1 and the RC in column 2.
 
     Author: David Kastner
     Massachusetts Institute of Technology
@@ -145,7 +145,7 @@ def get_opt_energies(xyz_file):
 
 
 '''
-Combine reaction coordinate and energy list and write them to a .dat file
+Combine reaction coordinate and energy list and write them to a .csv file
 Parameters
 ----------
 dist_list : list
@@ -155,10 +155,10 @@ energy_list : list
 '''
 
 
-def get_reaction_dat(xaxis_list, yaxis_list, extension):
-    with open('./{}.dat'.format(extension), 'w') as dat_file:
+def get_reaction_csv(xaxis_list, yaxis_list, extension):
+    with open('./{}.csv'.format(extension), 'w') as csv_file:
         for x, y in zip(xaxis_list, yaxis_list):
-            dat_file.write('{},{}\n'.format(x, y))
+            csv_file.write('{},{}\n'.format(x, y))
 
 
 def reaction_coordinate_collector():
@@ -184,13 +184,13 @@ def reaction_coordinate_collector():
     rc1_dist_atoms, rc1_request = request_rc('first')
     if rc1_request != '':
         rc1_dist_list = get_distance(rc1_dist_atoms, xyz_file)
-        get_reaction_dat(rc1_dist_list, E_list, 'rc1_v_energy')
+        get_reaction_csv(rc1_dist_list, E_list, 'rc1_v_energy')
 
     # Energy against second distance coordinate
     rc2_dist_atoms, rc2_request = request_rc('second')
     if rc2_request != '':
         rc2_dist_list = get_distance(rc2_dist_atoms, xyz_file)
-        get_reaction_dat(rc2_dist_list, E_list, 'rc2_v_energy')
+        get_reaction_csv(rc2_dist_list, E_list, 'rc2_v_energy')
 
     # Calculate differences of differences
     rc1_dist_list = np.array(rc1_dist_list)
@@ -200,9 +200,9 @@ def reaction_coordinate_collector():
         diff_dist_list = rc2_dist_list - rc1_dist_list
     else:
         diff_dist_list = rc1_dist_list - rc2_dist_list
-    get_reaction_dat(diff_dist_list, E_list, 'dd_v_energy')
-    get_reaction_dat(diff_dist_list, rc1_dist_list, 'dd_v_rc1')
-    get_reaction_dat(diff_dist_list, rc2_dist_list, 'dd_v_rc2')
+    get_reaction_csv(diff_dist_list, E_list, 'dd_v_energy')
+    get_reaction_csv(diff_dist_list, rc1_dist_list, 'dd_v_rc1')
+    get_reaction_csv(diff_dist_list, rc2_dist_list, 'dd_v_rc2')
 
 
 if __name__ == "__main__":
