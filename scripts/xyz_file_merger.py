@@ -190,7 +190,7 @@ def xyz_file_merger():
     print('Leave the prompt blank to ignore an xyz file.\n')
 
     # STEP 1: Combine two different xyz files
-    xyz_file_merger()
+    combine_xyz_files()
 
     # STEP 2: Perform reaction coordinate analysis
     perform_rc_analysis = input('Any key to perform analyze RC, else Return: ')

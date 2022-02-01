@@ -12,10 +12,6 @@ DESCRIPTION
 
 ################################ DEPENDENCIES ##################################
 import glob
-import matplotlib.pyplot as plt
-from scipy.spatial import distance
-import numpy as np
-import collect_reaction_coordinate
 
 ################################## FUNCTIONS ###################################
 '''
@@ -93,7 +89,7 @@ def get_spins(atoms, file, selection):
 
             if line_list[0] == 'End':
                 step_count += 1
-                net_spins.append('{} {}\n'.format(step_count, net_spin))
+                net_spins.append('{},{}\n'.format(step_count, net_spin))
                 net_spin = 0
 
     net_spins_reference = net_spins.copy()
