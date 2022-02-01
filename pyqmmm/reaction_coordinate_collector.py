@@ -161,7 +161,7 @@ def get_reaction_dat(xaxis_list, yaxis_list, extension):
             dat_file.write('{} {}\n'.format(x, y))
 
 
-def collect_reaction_coordinate():
+def reaction_coordinate_collector():
     print('\n.-----------------------------.')
     print('| COLLECT REACTION COORDINATE |')
     print('.-----------------------------.\n')
@@ -206,4 +206,4 @@ def collect_reaction_coordinate():
 
 
 if __name__ == "__main__":
-    collect_reaction_coordinate()
+    reaction_coordinate_collector()
