@@ -30,7 +30,7 @@ xyz_filename_list : list
 
 def get_files(file_pattern):
     file_list = glob.glob(file_pattern)
-    sorted(file_list)
+    file_list = sorted(file_list)
     print('We found {} using the pattern {}'.format(file_list, file_pattern))
     return file_list
 
