@@ -78,9 +78,9 @@ def get_scan_spins(final_scan_position):
         for line in spins:
             if line[29:42] == 'Spin-Averaged':
                 current_section += 1
-                # if current_section == final_scan_position[section_count]:
-                #     section_count += 1
-                #     section_found = True
+                if current_section == final_scan_position[section_count]:
+                    section_count += 1
+                    section_found = True
                 if section_found:
                     sections.append(section_content)
                     section_found = False
@@ -128,9 +128,9 @@ def get_scan_charges(final_scan_position):
             line_content = line.split()
             if line_content[0] == '1':
                 current_section += 1
-                # if current_section == final_scan_position[section_count]:
-                #     section_count += 1
-                #     section_found = True
+                if current_section == final_scan_position[section_count]:
+                    section_count += 1
+                    section_found = True
                 if section_found:
                     sections.append(section_content)
                     section_found = False
