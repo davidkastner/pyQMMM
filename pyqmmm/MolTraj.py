@@ -64,6 +64,34 @@ class MolTraj:
                     frame_count += 1
                 frame_contents += line
                 line_count += 1
-
             xyz_as_list.append(frame_contents)
+            
+        print('We found {} frames in {}.'.format(len(xyz_as_list), xyz_filename))
 
+def combine_xyz_files():
+    # Find xyz trajectories in the current directory
+    combined_filename = 'combined.xyz'
+    xyz_filename_list = get_xyz_filenames()
+    # For each xyz file convert to a list with only the requested frames
+    combined_xyz_list = []
+    for file in xyz_filename_list:
+        requested_frames = request_frames(file)
+        # The user can skip files by with enter which returns an empty string
+        if requested_frames == '':
+            continue
+        # Convert the xyz files to a list
+        xyz_list = multiframe_xyz_to_list(file)
+        requested_xyz_list = [frame for index, frame in enumerate(
+            xyz_list) if index + 1 in requested_frames]
+        # Ask the user if they want the frames reversed for a given xyz file
+        reverse = input('Any key to reverse {} else Return: '.format(file))
+        if reverse:
+            requested_xyz_list.reverse()
+            reverse = False
+        combined_xyz_list += requested_xyz_list
+    # Write the combined trajectories out to a new file called combined.xyz
+    with open(combined_filename, 'w') as combined_file:
+        for entry in combined_xyz_list:
+            combined_file.write(entry)
+            
+    print('Your combined xyz was written to {}\n'.format(combined_filename))
