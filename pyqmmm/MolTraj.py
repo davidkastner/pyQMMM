@@ -19,6 +19,12 @@ class MolTraj:
   def __init__(self, name=''):
     # The number of frames
     self.frames = []
+    # The number of atoms in the structure
+    self.natoms = 0
+    # The multiplicty of the structure
+    self.multiplicty = 0
+    # Thecharge of the structure
+    self.charge = 0
     
   def get_traj(self, filename):
     return
