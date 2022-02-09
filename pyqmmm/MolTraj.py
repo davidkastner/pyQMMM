@@ -9,6 +9,9 @@ class MolTraj:
     '''
     Stores a molecular trajectory and facilitates manipulations.
     Reads information from an multiframe xyz file.
+    The MolTraj object is a dictionary of dictionaries.
+    The first dict corresponds to the trajectory: {frame # : frame}.
+    The second dict corresponds to the molecule: {atom # : [coordiantes]}
   
     Example instantiation of a molecular scan from an molecular trajectory:
   
