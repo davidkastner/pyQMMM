@@ -36,6 +36,7 @@ class MolTraj:
     def get_traj(self, filename):
         '''
         Turns an xyz trajectory file into a list of lists where each element is a frame.
+        
         Parameters
         ----------
         filename : string
