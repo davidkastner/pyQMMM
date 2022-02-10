@@ -43,7 +43,7 @@ def md_vitals_plotter():
     # Welcome user and print some instructions
     print('\n.-------------------.')
     print('| MD VITALS PLOTTER |')
-    print('--------------------.\n')
+    print('.-------------------.\n')
     print('This script will search your directory for the following input:')
     print('+ Energy levels > summary.ETOT')
     print('+ Water density of solvent box > summary.DENSITY')
