@@ -20,6 +20,7 @@ def missing_frame_checkup():
     print('Checks a production file for missing frames.')
 
     # Open the production run MD file
+    print('Analyzing production output file ...\n')
     with open('constP_prod.out', 'r') as prod_file:
         nsteps = []
         nstep = 0
