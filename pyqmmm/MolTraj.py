@@ -9,37 +9,35 @@ class MolTraj:
     '''
     Stores a molecular trajectory and facilitates manipulations.
     Reads information from an multiframe xyz file.
-    The MolTraj object is a dictionary of dictionaries.
-    The first dict corresponds to the trajectory: {frame # : frame}.
-    The second dict corresponds to the molecule: {atom # : [coordiantes]}
-  
-    Example instantiation of a molecular scan from an molecular trajectory:
-  
+
+    Example instantiation of a molecular scan from a molecular trajectory:
+
     >>> mol_scan = MolTraj()
     >>> mol_scan.get_xyz('tc_scan.xyz')
     '''
-  
-    def __init__(self, name=''):
-      # The number of frames
-      self.frames = []
-      # The number of atoms in the structure
-      self.natoms = 0
-      # The multiplicty of the structure
-      self.multiplicty = 0
-      # The charge of the structure
-      self.charge = 0
-      # The frame corresponding to the reactants
-      self.reactant = []
-      # The frame corresponding to the transition state
-      self.ts = []
-      # The frame corresponding to the products
-      self.product = []
 
-    
+    def __init__(self, name=''):
+        # The number of frames
+        self.frames = []
+        # The number of atoms in the structure
+        self.natoms = 0
+        # The multiplicty of the structure
+        self.multiplicty = 0
+        # The charge of the structure
+        self.charge = 0
+        # The frame corresponding to the reactants
+        self.reactant = []
+        # The frame corresponding to the transition state
+        self.ts = []
+        # The frame corresponding to the products
+        self.product = []
+
     def get_traj(self, filename):
         '''
-        Turns an xyz trajectory file into a list of lists where each element is a frame.
-        
+        Generates the default MolTraj object as a dictionary of dictionaries.
+        The first dict corresponds to the trajectory: {frame # : {contents}}.
+        The second dict corresponds to the molecule: {atom # : [coordiantes]}
+
         Parameters
         ----------
         filename : string
@@ -52,10 +50,10 @@ class MolTraj:
         frame_count = 0
         first_line = True  # Marks if we've looked at the atom count yet
 
-        # Loop through optim.xyz and collect distances, energies and frame contents
+        # Extract distances, energies, and frame contents from optim.xyz
         with open(xyz_filename, 'r') as trajectory:
             for line in trajectory:
-                # We determine the section length using the atom count in first line
+                # Determine the section length with the atom count in first line
                 if first_line == True:
                     section_length = int(line.strip()) + 2
                     first_line = False
@@ -68,8 +66,10 @@ class MolTraj:
                 frame_contents += line
                 line_count += 1
             xyz_as_list.append(frame_contents)
-            
-        print('We found {} frames in {}.'.format(len(xyz_as_list), xyz_filename))
+
+        print('We found {} frames in {}.'.format(
+            len(xyz_as_list), xyz_filename))
+
 
 def combine_xyz_files():
     # Find xyz trajectories in the current directory
@@ -96,5 +96,5 @@ def combine_xyz_files():
     with open(combined_filename, 'w') as combined_file:
         for entry in combined_xyz_list:
             combined_file.write(entry)
-            
+
     print('Your combined xyz was written to {}\n'.format(combined_filename))
