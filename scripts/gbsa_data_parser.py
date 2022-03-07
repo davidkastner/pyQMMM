@@ -63,7 +63,8 @@ def get_top_hits_df(df):
     # Ask the user how many of the top hits they would like to see
     hit_num = int(input('Show me the top n residues: '))
     # Get the top largest contributors to ligand interaction energies
-    df_hits = df[df['Resid 1'] == 247].nsmallest(hit_num, 'Total', keep='all')
+    df_hits = df[df['Resid 1'] == 286].nsmallest(hit_num, 'Total', keep='all')
+    df_hits.to_csv("top_hits.csv")
 
     return  df_hits
 
@@ -81,20 +82,20 @@ def figure_formatting():
     plt.legend(bbox_to_anchor=(1.05, 1.0), loc='upper left')
 
 def plot_single_total_gbsa(df, file_name):
-    colors = ['#8ecae6', '#219ebc', '#023047', '#ffb703', '#fb8500']
+    colors = '#8ecae6'
     ax = df.plot.bar(x='Residue', y='Total', color = colors)
     figure_formatting()
     ax.set_ylabel("GBSA energy score", weight='bold')
     ax.set_xlabel("Residue", weight='bold')
-    plt.savefig(file_name, bbox_inches='tight')
+    plt.savefig(file_name, bbox_inches='tight', transparent=True)
 
 def plot_single_all_gbsa(df, file_name):
-    colors = ['#8ecae6', '#219ebc', '#023047', '#ffb703', '#fb8500']
+    colors = ['#fb8500', '#ffb703', '#023047', '#219ebc', '#8ecae6']
     ax = df.plot.bar(x='Residue', y=['VDW','Electrostatic','Polar','Non-polar','Total'], color = colors)
     figure_formatting()
     ax.set_ylabel("GBSA energy score", weight='bold')
     ax.set_xlabel("Residue", weight='bold')
-    plt.savefig(file_name, bbox_inches='tight')
+    plt.savefig(file_name, bbox_inches='tight', transparent=True)
 
 # def plot_multi_total_gbsa(df_hits, df):
 #     # Use df_hits as a mask to select the top hits from df
