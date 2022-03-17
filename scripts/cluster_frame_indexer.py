@@ -42,4 +42,4 @@ def cluster_frame_indexer():
 
 
 if __name__ == "__main__":
-    pes_organizer()
+    cluster_frame_indexer()
