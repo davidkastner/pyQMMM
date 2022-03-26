@@ -5,10 +5,12 @@ DESCRIPTION
    This contains the frames numbers and their corresponding clusters.
    This script will find all frames in the main cluster and condense it into
    the smallest string of numbers. This can then be used with CPPTraj to convert
-   to a new mdcrd.
+   to a new mdcrd. Also calculates the interval for 625 snapshots.
+
    parm welo5_solv.prmtop
    trajin constP_prod.mdcrd
    trajout output.mdcrd onlyframes 2,5-200,202-400
+
    Author: David Kastner
    Massachusetts Institute of Technology
    kastner (at) mit . edu
@@ -29,18 +31,42 @@ Returns
 def get_clusters(file):
     cluster_list = []
     with open(file, 'r') as cluster_file:
+        # Skip first line as it is just text
+        next(cluster_file)
         for line in cluster_file:
-            frame_num = int(line.split('')[0])
-            cluster_num = int(line.split('')[1])
-            if cluster_num = 0:
-                cluster_list.append(cluster_num)
+            frame_num = int(line.split()[0])
+            cluster_num = int(line.split()[1])
+            if cluster_num == 0:
+                cluster_list.append(frame_num)
     return cluster_list
 
 def condense_numbering(cluster_list):
-    return final_selection
+    seq = []
+    final = []
+    last = 0
 
-def calculate_interval(cluster_list):
-    return
+    for index, val in enumerate(cluster_list):
+
+        if last + 1 == val or index == 0:
+            seq.append(val)
+            last = val
+        else:
+            if len(seq) > 1:
+               final.append(str(seq[0]) + '-' + str(seq[len(seq)-1]))
+            else:
+               final.append(str(seq[0]))
+            seq = []
+            seq.append(val)
+            last = val
+
+        if index == len(cluster_list) - 1:
+            if len(seq) > 1:
+                final.append(str(seq[0]) + '-' + str(seq[len(seq)-1]))
+            else:
+                final.append(str(seq[0]))
+
+    final_selection = ', '.join(map(str, final))
+    return final_selection
 
 def cluster_frame_indexer():
     print('\n.-----------------------.')
@@ -56,9 +82,8 @@ def cluster_frame_indexer():
     final_selection = condense_numbering(cluster_list)
     
     # Important output for the user
-    print(f"Total frames counted: {}")
-    print(f"Final selection: {}")
-    print(f"Interval: {}")
+    print(f"Total frames: {len(cluster_list)}")
+    print(f"Final selection: {final_selection}")
 
 if __name__ == "__main__":
     cluster_frame_indexer()
