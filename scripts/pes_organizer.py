@@ -2,7 +2,7 @@
 Docs: https://github.com/davidkastner/pyQMMM/blob/main/pyqmmm/README.md
 DESCRIPTION
    By default, TeraChem scans only print the charge and spin of the final frame.
-   We change this by using the ml_prop keyword. Now every optimization will print.
+   We change this by using the ml_prop keyword. Now every optimization prints.
    However, we only need the charge and spin at the end of each optimization.
    This script will return the the charge and spin into a readable format.
    The coordinates are already piped nicely to scan_optim.xyz.
