@@ -28,9 +28,9 @@ with open("{}.xyz".format(filename), 'r') as xyzfile:
 
 with open("{}_{}_{}.xyz".format(filename, atom1, atom2), "w") as newfile:
   for lines in lines_lists:
-    atom1_line = lines[atom1 + lines_to_skip]
-    atom2_line = lines[atom2 + lines_to_skip]
-    lines[atom2 + lines_to_skip] = atom1_line
-    lines[atom1 + lines_to_skip] = atom2_line
+    atom1_line = lines[atom1 + lines_to_skip - 1]
+    atom2_line = lines[atom2 + lines_to_skip - 1]
+    lines[atom2 + lines_to_skip - 1] = atom1_line
+    lines[atom1 + lines_to_skip - 1] = atom2_line
     for line in lines:
       newfile.write(line)
