@@ -10,8 +10,51 @@ DESCRIPTION
 '''
 ################################ DEPENDENCIES ##################################
 import numpy as np
+import glob
 
 ################################## FUNCTIONS ###################################
+
+'''
+Search the current directory for all xyz files and ignore non-trajectory files
+Returns
+-------
+xyz_filename_list : list
+    A list of all trajectory file names in the current directory
+'''
+
+
+def get_xyz_filenames():
+    # Get all xyz files and sort them
+    file_list = glob.glob('*.xyz')
+    sorted(file_list)
+    xyz_filename_list = []
+
+    # Loop through files and check to see if they are trajectories
+    for file in file_list:
+        with open(file, 'r') as current_file:
+            trajectory = False
+            first_line = True
+            header_count = 0
+            # If the atom count appears more than once than it is a trajectory
+            for line in current_file:
+                if first_line == True:
+                    atom_count = line.strip()
+                    header_count += 1
+                    first_line = False
+                if line.strip() == atom_count:
+                    header_count += 1
+                if header_count > 1:
+                    trajectory = True
+                    break
+        # Combine all the trajectory files into a single list
+        if trajectory == True:
+            xyz_filename_list.append(file)
+
+    xyz_filename_list.sort()
+    print('We found these .xyz files: {}'.format(xyz_filename_list))
+
+    return xyz_filename_list
+
 
 '''
 Turns an xyz trajectory file into a list of lists where each element is a frame.
@@ -57,3 +100,71 @@ def multiframe_xyz_to_list(xyz_filename):
     print(f'We found {xyz_as_list} frames in {xyz_filename}.')
 
     return xyz_as_list
+
+
+'''
+Request frames for each file from the user.
+Parameters
+----------
+xyz_filename : str
+    The filename of the current xyz trajectory of interest
+
+Returns
+-------
+frames : list
+    The frames the user requested to be extracted from the xyz trajectory
+'''
+
+
+def request_frames(xyz_filename):
+    # What frames would you like from the first .xyz file?
+    if xyz_filename == 'combined.xyz':
+        return
+    request = input('Which frames do you want from {}?: '.format(xyz_filename))
+    # Continue if the user did not want that file processed and pressed enter
+    if request == '':
+        return request
+    # Check the request and convert it to a list even if it is hyphenated
+    temp = [(lambda sub: range(sub[0], sub[-1] + 1))
+            (list(map(int, ele.split('-')))) for ele in request.split(',')]
+    frames = [b for a in temp for b in a]
+
+    print('For {} you requested frames {}.'.format(xyz_filename, frames))
+
+    return frames
+
+
+'''
+Combines two xyz files into one.
+Parameters
+----------
+combined_filename : string
+    What the user would like to call the newly created combined xyz file
+'''
+
+
+def combine_xyz_files(combined_filename='combined.xyz'):
+    # Find xyz trajectories in the current directory
+    xyz_filename_list = get_xyz_filenames()
+    # For each xyz file convert to a list with only the requested frames
+    combined_xyz_list = []
+    for file in xyz_filename_list:
+        requested_frames = request_frames(file)
+        # The user can skip files by with enter which returns an empty string
+        if requested_frames == '':
+            continue
+        # Convert the xyz files to a list
+        xyz_list = multiframe_xyz_to_list(file)
+        requested_xyz_list = [frame for index, frame in enumerate(
+            xyz_list) if index + 1 in requested_frames]
+        # Ask the user if they want the frames reversed for a given xyz file
+        reverse = input('Any key to reverse {} else Return: '.format(file))
+        if reverse:
+            requested_xyz_list.reverse()
+            reverse = False
+        combined_xyz_list += requested_xyz_list
+    # Write the combined trajectories out to a new file called combined.xyz
+    with open(combined_filename, 'w') as combined_file:
+        for entry in combined_xyz_list:
+            combined_file.write(entry)
+    print(f'Your combined xyz was written to {combined_filename}.')
