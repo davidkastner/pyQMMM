@@ -1,14 +1,13 @@
 '''
-Docs: https://github.com/davidkastner/pyQMMM/blob/main/pyqmmm/README.md
+Docs: https://github.com/davidkastner/hyscore-plotter/blob/main/README.md
 DESCRIPTION
-    Creates a series of KDE plots based on HYSCORE-guided simulations.
-
-    Author: David Kastner
-    Massachusetts Institute of Technology
-    kastner (at) mit . edu
-
+   Creates a series of KDE plots based on HYSCORE-guided simulations.
+   Author: David Kastner
+   Massachusetts Institute of Technology
+   kastner (at) mit . edu
+SEE ALSO
+    N/A
 '''
-
 ################################ DEPENDENCIES ##################################
 import numpy as np
 import time
@@ -24,9 +23,7 @@ import matplotlib.colors as mplc
 import matplotlib.cm as cm
 from scipy.stats import gaussian_kde
 from matplotlib.patches import Rectangle
-
 ################################## FUNCTIONS ###################################
-
 '''
 Parses the config file for the users parameters
 Parameters
@@ -57,7 +54,7 @@ def config():
     for section in config.sections():
         if section == "Labels":
             for key, value in config.items(section):
-                labels[key] = value
+                labels[key] = value;
         else:
             plot_dict = {}
             for key, _ in config.items(section):
@@ -96,7 +93,7 @@ def combine_inp():
         sys.exit()
     # Combine the dist and angle files into a single file
     file_array = []
-    for num in range(1, num_plots+1):
+    for num in range(1,num_plots+1):
         file_array.append('./2_temp/{}_combined.dat'.format(num))
         with open('./2_temp/{}_combined.dat'.format(num), 'w') as combined:
             with open('./1_in/{}_angles.dat'.format(num), 'r') as ang_file:
@@ -226,7 +223,6 @@ def compare_patch_limits(x_data, y_data, patch_params):
 
     return xlim, ylim
 
-
 '''
 Description.
 Parameters
@@ -237,7 +233,6 @@ Returns
 hyscore_kde.png : PNG
     A PNG depicting the KDE analysis at 300 dpi.
 '''
-
 
 def get_plot_limits(x_data, y_data, plot_params):
     # size group extremes
@@ -253,7 +248,7 @@ def get_plot_limits(x_data, y_data, plot_params):
         width_max = plot_params[i]['width_max']
         size_group = plot_params[i]['size_group']
         patch_params = [height_min, height_max, width_min, width_max]
-
+        
         # Save the size groups in the order that they come up as reference
         size_group_list.append(size_group)
 
@@ -277,14 +272,14 @@ def get_plot_limits(x_data, y_data, plot_params):
             # set new mins and maxes
             xlim = [xlim_min, xlim_max]
             ylim = [ylim_min, ylim_max]
-            group_curr_max_min[size_group] = [xlim, ylim]
-
+            group_curr_max_min[size_group] = [xlim,ylim]
+    
     # We have the max and min for each size group and can now return them
-    for size in size_group_list:
-        [xlim, ylim] = group_curr_max_min[size]
+    for size in size_group_list:  
+        [xlim,ylim] = group_curr_max_min[size]  
         xlims.append(xlim)
         ylims.append(ylim)
-
+        
     return xlims, ylims
 
 
@@ -313,10 +308,9 @@ def graph_datasets(x_data, y_data, z_data, labels, plot_params, show_crosshairs)
     plt.rcParams['xtick.direction'] = 'in'
     plt.rcParams['ytick.direction'] = 'in'
     plt.rcParams['mathtext.default'] = 'regular'
-
+    
     # Plot subfigures
-    fig, ax = plt.subplots(1, len(x_data), sharey=True,
-                           figsize=(len(x_data)*4, 4))
+    fig, ax = plt.subplots(1, len(x_data), sharey=True, figsize=(len(x_data)*4,4))
     fig.subplots_adjust(wspace=0)
 
     # Titles and axes titles
@@ -324,26 +318,26 @@ def graph_datasets(x_data, y_data, z_data, labels, plot_params, show_crosshairs)
     # The y-axis title must be set manually until version 3.4
     if len(plot_params) == 1:
         plt.ylabel(labels['ylabel'], fontweight='bold')
+    elif len(plot_params) == 2:
+        fig.text(0.05, 0.22, labels['ylabel'], ha='center', rotation='vertical')
     elif len(plot_params) == 3:
-        fig.text(0.07, 0.22, labels['ylabel'],
-                 ha='center', rotation='vertical')
+        fig.text(0.07, 0.22, labels['ylabel'], ha='center', rotation='vertical')
     elif len(plot_params) == 4:
-        fig.text(0.08, 0.22, labels['ylabel'],
-                 ha='center', rotation='vertical')
+        fig.text(0.08, 0.22, labels['ylabel'], ha='center', rotation='vertical')
 
     # Get x and y limits
-    xlims, ylims = get_plot_limits(x_data, y_data, plot_params)
-
+    xlims, ylims = get_plot_limits(x_data,y_data,plot_params)
+    
     # Y-axis is the same so we set it before entering the Loop
     ymax = max([i for lis in ylims for i in lis])
     ymin = min([i for lis in ylims for i in lis])
-
-    ymax_spread = [ymin, ymax]
+    
+    ymax_spread = [ymin,ymax]
     plt.ylim(ymax_spread)
 
     # Loop through the the data associated with each plot
     for i in range(len(x_data)):
-
+        
         # Parse the config dictionary for the color of each plot
         color = plot_params[i]['color']
         if color == 'blue':
@@ -370,8 +364,7 @@ def graph_datasets(x_data, y_data, z_data, labels, plot_params, show_crosshairs)
 
         # Create a scatter plot
         axes = ax[i] if len(x_data) > 1 else ax
-        axes.scatter(x_data[i], y_data[i], c=z_data[i],
-                     s=40, vmin=0, vmax=0.30, cmap=cmap)
+        axes.scatter(x_data[i], y_data[i], c=z_data[i], s=40, vmin=0, vmax=0.30, cmap=cmap)
         axes.set_xlim(xlim)
 
         if show_crosshairs:
@@ -380,15 +373,15 @@ def graph_datasets(x_data, y_data, z_data, labels, plot_params, show_crosshairs)
             width = width_max - width_min
             height = height_max - height_min
             axes.add_patch(Rectangle(anchor, width, height, fill=False, color="k",
-                                     linestyle='--', linewidth=2.0, joinstyle='miter'))
-
+                            linestyle='--', linewidth=2.0, joinstyle='miter'))
+            
             # Define where to place the crosshairs of the patch
             width_avg = np.average([width_max, width_min])
             height_avg = np.average([height_max, height_min])
             axes.plot((width_min, width_max),
-                      (height_avg, height_avg), color='k', linewidth=2.0)
+                       (height_avg, height_avg), color='k', linewidth=2.0)
             axes.plot((width_avg, width_avg),
-                      (height_min, height_max), color='k', linewidth=2.0)
+                       (height_min, height_max), color='k', linewidth=2.0)
 
         # Set the ticks as the y and x limits
         xlim_min, xlim_max = xlim
@@ -397,17 +390,18 @@ def graph_datasets(x_data, y_data, z_data, labels, plot_params, show_crosshairs)
         axes.xaxis.set_ticks(xticks)
         axes.xaxis.set_major_formatter(ticker.FormatStrFormatter('%0.1f'))
         axes.tick_params(which='both', bottom=True, top=True, left=True,
-                         right=False)
+                          right=False)
         axes.tick_params(which='minor', length=5, color='k', width=2.5)
 
     plt.savefig('./3_out/restraints_kde.png', dpi=600, bbox_inches='tight')
 
 
-def restraint_kdes_plotter():
-    # Introduce user to HyScore Eval functionality
-    print('\n.------------------------.')
-    print('| RESTRAINT KDES PLOTTER |')
-    print('.------------------------.\n')
+############################## HYSCORE PLOTTER #################################
+# Introduce user to HyScore Eval functionality
+def restraint_plots():
+    print('\n+--------------------------+')
+    print('|WELCOME TO RESTRAINT PLOTS|')
+    print('+--------------------------+\n')
     print('Generates a series of KDE plots for hyscore-guided simulations.')
     print('This the goal of RESTRAINT PLOTS is to:')
     print('+ Vizualize a simulation against two order parameters')
@@ -425,10 +419,8 @@ def restraint_kdes_plotter():
 
     # Execute the main functions and generate plot
     x_data, y_data, z_data = collect_xyz_data(filenames)
-    graph_datasets(x_data, y_data, z_data, labels,
-                   plot_params, show_crosshairs)
-
+    graph_datasets(x_data, y_data, z_data, labels, plot_params, show_crosshairs)
 
 # Execute the Quick CSA when run as a script but not if used as a pyQM/MM module
 if __name__ == "__main__":
-    restraint_kdes_plotter()
+    restraint_plots()

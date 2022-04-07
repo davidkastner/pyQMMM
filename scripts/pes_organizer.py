@@ -6,7 +6,6 @@ DESCRIPTION
    However, we only need the charge and spin at the end of each optimization.
    This script will return the the charge and spin into a readable format.
    The coordinates are already piped nicely to scan_optim.xyz.
-
    Author: David Kastner
    Massachusetts Institute of Technology
    kastner (at) mit . edu
@@ -81,7 +80,7 @@ def get_scan_spins(final_scan_position):
                 if current_section == final_scan_position[section_count]:
                     section_count += 1
                     section_found = True
-                if section_found:
+                elif section_found:
                     sections.append(section_content)
                     section_found = False
                     section_content = ''
@@ -131,7 +130,7 @@ def get_scan_charges(final_scan_position):
                 if current_section == final_scan_position[section_count]:
                     section_count += 1
                     section_found = True
-                if section_found:
+                elif section_found:
                     sections.append(section_content)
                     section_found = False
                     section_content = ''

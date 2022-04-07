@@ -86,6 +86,7 @@ def rmsd_clusters_colorcoder():
     final_df = pd.concat([rmsd_df, clus_df], axis=1)
     final_df.columns = ['RMSD', 'Cluster']
     final_df['Frame'] = final_df.index
+    get_plot(final_df)
 
 
 # Execute the function when run as a script but not if used as a pyQM/MM module

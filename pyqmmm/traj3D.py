@@ -5,7 +5,7 @@
 #
 #  Department of Chemical Engineering, MIT
 
-class MolTraj:
+class traj3D:
     '''
     Stores a molecular trajectory and facilitates manipulations.
     Reads information from an multiframe xyz file.
@@ -17,7 +17,7 @@ class MolTraj:
     '''
 
     def __init__(self, name=''):
-        # The number of frame in the trajectory
+        # List of frames where each frame is 
         self.frames = []
         # The number of atoms in the structure
         self.natoms = 0
