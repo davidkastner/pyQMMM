@@ -10,20 +10,21 @@ DESCRIPTION
 
 '''
 ################################ DEPENDENCIES ##################################
-from math import comb
-from scipy.spatial import distance
-import numpy as np
-import os
+
 
 ################################## FUNCTIONS ###################################
-'''
-Get the user's reaction coordinate definition.
-Returns
--------
-atoms : list
-    list of atoms indices
-'''
 
 
-def function(function):
-    return
+def distance_scan_calculator():
+    print('\n.--------------------------.')
+    print('| DISTANCE SCAN CALCULATOR |')
+    print('.--------------------------.\n')
+    print('Calculates the distance between two centroids from an xyz traj.')
+    print('Just provide two sets of atoms, and we handle the rest.')
+    print('Returns the distance per frame and the average distance and std.\n')
+
+    # Create an iterable list of frames from the xyz file
+
+
+if __name__ == "__main__":
+    distance_scan_calculator()
