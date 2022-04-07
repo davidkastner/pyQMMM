@@ -65,22 +65,22 @@ xyz_filename : string
 
 Returns
 -------
-xyz_as_list : list
+xyz_traj : list
     List of lists containing the trajectory with each frame saved as an element
 '''
 
 
 def multiframe_xyz_to_list(xyz_filename):
     # Variables that measure our progress in parsing the optim.xyz file
-    xyz_as_list = []  # List of lists containing all frames
+    xyz_traj = []  # List of lists containing all frames
     frame_contents = ''
     line_count = 0
     frame_count = 0
     first_line = True  # Marks if we've looked at the atom count yet
 
     # Loop through optim.xyz and collect distances, energies and frame contents
-    with open(xyz_filename, 'r') as trajectory:
-        for line in trajectory:
+    with open(xyz_filename, 'r') as traj:
+        for line in traj:
             # We determine the section length using the atom count in first line
             if first_line == True:
                 section_length = int(line.strip()) + 2
@@ -88,50 +88,18 @@ def multiframe_xyz_to_list(xyz_filename):
             # At the end of the section reset the frame-specific variables
             if line_count == section_length:
                 line_count = 0
-                xyz_as_list.append(frame_contents)
+                xyz_traj.append(frame_contents)
                 frame_contents = ''
                 frame_count += 1
             frame_contents += line
             line_count += 1
 
-        xyz_as_list.append(frame_contents)
+        xyz_traj.append(frame_contents)
 
     # Print statistics of the xyz parsing to the user
-    print(f'We found {xyz_as_list} frames in {xyz_filename}.')
+    print(f'We found {xyz_traj} frames in {xyz_filename}.')
 
-    return xyz_as_list
-
-
-'''
-Request frames for each file from the user.
-Parameters
-----------
-xyz_filename : str
-    The filename of the current xyz trajectory of interest
-
-Returns
--------
-frames : list
-    The frames the user requested to be extracted from the xyz trajectory
-'''
-
-
-def request_frames(xyz_filename):
-    # What frames would you like from the first .xyz file?
-    if xyz_filename == 'combined.xyz':
-        return
-    request = input('Which frames do you want from {}?: '.format(xyz_filename))
-    # Continue if the user did not want that file processed and pressed enter
-    if request == '':
-        return request
-    # Check the request and convert it to a list even if it is hyphenated
-    temp = [(lambda sub: range(sub[0], sub[-1] + 1))
-            (list(map(int, ele.split('-')))) for ele in request.split(',')]
-    frames = [b for a in temp for b in a]
-
-    print('For {} you requested frames {}.'.format(xyz_filename, frames))
-
-    return frames
+    return xyz_traj
 
 
 '''
