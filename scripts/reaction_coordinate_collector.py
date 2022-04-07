@@ -41,7 +41,7 @@ def request_rc(rc_request):
 
 
 '''
-Calculates the reaction coordinate at each step of the scan in xyz file.
+Calculates the reaction coordinate at each step of the scan in the xyz file.
 Parameters
 ----------
 atoms : list
