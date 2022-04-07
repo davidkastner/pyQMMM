@@ -17,7 +17,7 @@ class MolTraj:
     '''
 
     def __init__(self, name=''):
-        # The number of frames
+        # The number of frame in the trajectory
         self.frames = []
         # The number of atoms in the structure
         self.natoms = 0
@@ -26,7 +26,7 @@ class MolTraj:
         # The charge of the structure
         self.charge = 0
         # The frame corresponding to the reactants
-        self.reactant = []
+        self.reactant = 0
         # The frame corresponding to the transition state
         self.ts = []
         # The frame corresponding to the products
@@ -36,7 +36,7 @@ class MolTraj:
         '''
         Generates the default MolTraj object as a dictionary of dictionaries.
         The first dict corresponds to the trajectory: {frame # : {contents}}.
-        The second dict corresponds to the molecule: {atom # : [coordiantes]}
+        The second dict corresponds to the molecule: {atom # : [coordinates]}
 
         Parameters
         ----------
