@@ -66,7 +66,7 @@ xyz_filename : string
 Returns
 -------
 xyz_traj : list
-    List of lists containing the trajectory with each frame saved as an element
+    List containing the trajectory with each frame saved as an element
 '''
 
 
