@@ -10,6 +10,10 @@ DESCRIPTION
 
 '''
 ################################ DEPENDENCIES ##################################
+import sys
+from pyqmmm.modules import analyze
+from pyqmmm.modules import organize
+from pyqmmm.modules import input
 
 
 ################################## FUNCTIONS ###################################
