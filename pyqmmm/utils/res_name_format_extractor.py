@@ -11,8 +11,8 @@ def res_name_format_extractor():
     """
 
     # Parse the input text and clean the data
-    with open('Book1.txt', 'r') as atom_list:
-        res_list = [] # A variable for storing processed residues
+    with open("Book1.txt", "r") as atom_list:
+        res_list = []  # A variable for storing processed residues
         # Loop through a list with residue names and numbers
         for line in atom_list:
             id_and_name = line.split()
@@ -35,11 +35,12 @@ def res_name_format_extractor():
             clean_res_list.append(res)
 
     # Write the formatted final residues to a new file
-    with open('residues.dat', 'w') as file_res_file:
+    with open("residues.dat", "w") as file_res_file:
         for res in clean_res_list:
             # Combine the residue name and index e.g., Ala100
             res_combined = res[0] + str(res[1])
-            file_res_file.write(res_combined + '\n')
+            file_res_file.write(res_combined + "\n")
+
 
 if __name__ == "__main__":
     res_name_format_extractor()

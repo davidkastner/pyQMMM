@@ -1,4 +1,4 @@
-'''
+"""
 Docs: https://github.com/davidkastner/pyQMMM/blob/main/pyqmmm/README.md
 DESCRIPTION
     Takes the ppm image output from VMD and converts them to PNGs.
@@ -9,7 +9,7 @@ DESCRIPTION
     Massachusetts Institute of Technology
     kastner (at) mit . edu
    
-'''
+"""
 
 ################################ DEPENDENCIES ##################################
 import os
@@ -18,7 +18,7 @@ import os
 
 
 def ppm2png_converter():
-    directory = './'
+    directory = "./"
     # Loop through all images in the current directory
     count = 0
     for filename in sorted(os.listdir(directory)):
@@ -26,7 +26,7 @@ def ppm2png_converter():
 
         # Checking if it is a file
         if os.path.isfile(file):
-            os.system('pnmtopng {} > {}.png'.format(file, count))
+            os.system("pnmtopng {} > {}.png".format(file, count))
             count += 1
 
 

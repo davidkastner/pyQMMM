@@ -1,4 +1,4 @@
-'''
+"""
 Docs: https://github.com/davidkastner/pyQMMM/blob/main/pyqmmm/README.md
 DESCRIPTION
     Reunumbers waters that restart after reaching 9999.
@@ -7,31 +7,31 @@ DESCRIPTION
     Massachusetts Institute of Technology
     kastner (at) mit . edu
 
-'''
+"""
 
 
 def waters_numerator():
     # Introduce user to the function
-    print('\n.------------------.')
-    print('| WATERS NUMERATOR |')
-    print('-------------------.\n')
-    print('So you have a CPPTRAJ PDB with more than 9999 residues? ')
-    pdb_name = input('Which PDB in this directory needs to be renumbered? ')
-    print('--------------------------\n')
+    print("\n.------------------.")
+    print("| WATERS NUMERATOR |")
+    print("-------------------.\n")
+    print("So you have a CPPTRAJ PDB with more than 9999 residues? ")
+    pdb_name = input("Which PDB in this directory needs to be renumbered? ")
+    print("--------------------------\n")
 
     change_start = 0
-    new_pdb = '{}_corrected.pdb'.format(pdb_name[:-4])
-    with open(new_pdb, 'w') as correct_waters:
-        with open(pdb_name, 'r') as original:
+    new_pdb = "{}_corrected.pdb".format(pdb_name[:-4])
+    with open(new_pdb, "w") as correct_waters:
+        with open(pdb_name, "r") as original:
             red_flag = False
             for i, line in enumerate(original):
                 # We don't want to number the last line so we will watch for END
-                if line[:3] == 'END':
+                if line[:3] == "END":
                     correct_waters.write(line)
                     break
 
                 # Check if we are on the last line of residue 9999
-                if line[:3] == 'TER' and line[22:26] == '9999':
+                if line[:3] == "TER" and line[22:26] == "9999":
                     red_flag = True
                     correct_waters.write(line)
                     continue
@@ -53,13 +53,13 @@ def waters_numerator():
                 start_list = list(str(start))
                 line_list[21:26] = start_list
                 change_end = i + 1  # Tracks number of lines for user output
-                correct_waters.write(''.join(line_list))
+                correct_waters.write("".join(line_list))
 
     # Print important statistics for the user
-    print('Renumbered lines {} to {}.'.format(change_start, change_end))
-    print('There were {} misnumbered waters.'.format(incorrect_waters_count))
-    print('Your new file is named {}.'.format(new_pdb))
-    print('Done.')
+    print("Renumbered lines {} to {}.".format(change_start, change_end))
+    print("There were {} misnumbered waters.".format(incorrect_waters_count))
+    print("Your new file is named {}.".format(new_pdb))
+    print("Done.")
 
 
 if __name__ == "__main__":

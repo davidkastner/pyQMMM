@@ -1,4 +1,4 @@
-'''
+"""
 Docs: https://github.com/davidkastner/pyQMMM/blob/main/pyqmmm/README.md
 DESCRIPTION
    By default, TeraChem scans only print the charge and spin of the final frame.
@@ -10,11 +10,11 @@ DESCRIPTION
    Massachusetts Institute of Technology
    kastner (at) mit . edu
    
-'''
+"""
 
 ################################## FUNCTIONS ###################################
 
-'''
+"""
 Reads through the qmscript.out and counts iterations per scan step.
 Then returns then as a dictionary: {scan_number:iterations}.
 Parameters
@@ -26,7 +26,7 @@ Returns
 -------
 iteraction_pairs : dictionary
     The scan step number as the key and iterations as the value
-'''
+"""
 
 
 def get_iteration_pairs():
@@ -34,11 +34,11 @@ def get_iteration_pairs():
     opt_count = 0
     scan_count = 0
     scan_step_pairs = {}
-    with open('./qmscript.out', 'r') as qmscript:
+    with open("./qmscript.out", "r") as qmscript:
         for line in qmscript:
-            if line[:14] == 'FINAL ENERGY: ':
+            if line[:14] == "FINAL ENERGY: ":
                 opt_count += 1
-            if line[:24] == '-=#=- Optimized Energy: ':
+            if line[:24] == "-=#=- Optimized Energy: ":
                 scan_count += 1
                 scan_step_pairs[scan_count] = opt_count
                 opt_count = 0
@@ -53,7 +53,7 @@ def get_iteration_pairs():
     return final_scan_position, scan_step_pairs
 
 
-'''
+"""
 Extracts spin sections from mullpop for each scan and stores them as a dict.
 Parameters
 ----------
@@ -64,18 +64,18 @@ Returns
 -------
 spin_pairs : dictionary
     The scan step number as the key and the spin section as the key
-'''
+"""
 
 
 def get_scan_spins(final_scan_position):
     section_count = 0
-    section_content = ''
+    section_content = ""
     sections = []
     current_section = 0
     section_found = False
-    with open('./scr/mullpop', 'r') as spins:
+    with open("./scr/mullpop", "r") as spins:
         for line in spins:
-            if line[29:42] == 'Spin-Averaged':
+            if line[29:42] == "Spin-Averaged":
                 current_section += 1
                 if current_section == final_scan_position[section_count]:
                     section_count += 1
@@ -83,7 +83,7 @@ def get_scan_spins(final_scan_position):
                 elif section_found:
                     sections.append(section_content)
                     section_found = False
-                    section_content = ''
+                    section_content = ""
 
             # Combine all lines of a final section into a single string
             if section_found:
@@ -94,15 +94,15 @@ def get_scan_spins(final_scan_position):
         sections.append(section_content)
 
     # Write the spin data for the final step of each scan step to a file
-    with open('./scr/1.spin', 'w') as scan_spin_file:
+    with open("./scr/1.spin", "w") as scan_spin_file:
         for index, section in enumerate(sections):
             scan_spin_file.write(section)
-            scan_spin_file.write('End scan {}\n'.format(index + 1))
+            scan_spin_file.write("End scan {}\n".format(index + 1))
 
     return sections
 
 
-'''
+"""
 Extracts charges from charge_mull.xls for each scan and stores them as a dict.
 Parameters
 ----------
@@ -113,19 +113,19 @@ Returns
 -------
 charge_pairs : dictionary
     The scan step number as the key and the charge section as the key
-'''
+"""
 
 
 def get_scan_charges(final_scan_position):
     section_count = 0
-    section_content = ''
+    section_content = ""
     sections = []
     current_section = 0
     section_found = False
-    with open('./scr/charge_mull.xls', 'r') as charges:
+    with open("./scr/charge_mull.xls", "r") as charges:
         for line in charges:
             line_content = line.split()
-            if line_content[0] == '1':
+            if line_content[0] == "1":
                 current_section += 1
                 if current_section == final_scan_position[section_count]:
                     section_count += 1
@@ -133,7 +133,7 @@ def get_scan_charges(final_scan_position):
                 elif section_found:
                     sections.append(section_content)
                     section_found = False
-                    section_content = ''
+                    section_content = ""
 
             # Combine all lines of a final section into a single string
             if section_found:
@@ -144,20 +144,20 @@ def get_scan_charges(final_scan_position):
         sections.append(section_content)
 
     # Write the charge data for the final step of each scan step to a file
-    with open('./scr/1.charge', 'w') as scan_charge_file:
+    with open("./scr/1.charge", "w") as scan_charge_file:
         for index, section in enumerate(sections):
             scan_charge_file.write(section)
-            scan_charge_file.write('End scan {}\n'.format(index + 1))
+            scan_charge_file.write("End scan {}\n".format(index + 1))
 
     return sections
 
 
 def pes_organizer():
-    print('\n.---------------.')
-    print('| PES ORGANIZER |')
-    print('.---------------.\n')
-    print('Use the ml_prop keyword when running your TeraChem scan.')
-    print('Execute this script from the directory where this job was run.\n')
+    print("\n.---------------.")
+    print("| PES ORGANIZER |")
+    print(".---------------.\n")
+    print("Use the ml_prop keyword when running your TeraChem scan.")
+    print("Execute this script from the directory where this job was run.\n")
 
     final_scan_position, scan_step_pairs = get_iteration_pairs()
     get_scan_spins(final_scan_position)

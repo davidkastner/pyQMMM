@@ -5,8 +5,9 @@
 #
 #  Department of Chemical Engineering, MIT
 
+
 class traj3D:
-    '''
+    """
     Stores a molecular trajectory and facilitates manipulations.
     Reads information from an multiframe xyz file.
 
@@ -14,10 +15,10 @@ class traj3D:
 
     >>> mol_scan = MolTraj()
     >>> mol_scan.get_xyz('tc_scan.xyz')
-    '''
+    """
 
-    def __init__(self, name=''):
-        # List of frames where each frame is 
+    def __init__(self, name=""):
+        # List of frames where each frame is
         self.frames = []
         # The number of atoms in the structure
         self.natoms = 0
@@ -33,7 +34,7 @@ class traj3D:
         self.product = []
 
     def get_traj(self, filename):
-        '''
+        """
         Generates the default MolTraj object as a dictionary of dictionaries.
         The first dict corresponds to the trajectory: {frame # : {contents}}.
         The second dict corresponds to the molecule: {atom # : [coordinates]}
@@ -42,16 +43,16 @@ class traj3D:
         ----------
         filename : string
             The file name of a trajectory
-        '''
+        """
         # Variables that measure our progress in parsing the optim.xyz file
         xyz_as_list = []  # List of lists containing all frames
-        frame_contents = ''
+        frame_contents = ""
         line_count = 0
         frame_count = 0
         first_line = True  # Marks if we've looked at the atom count yet
 
         # Extract distances, energies, and frame contents from optim.xyz
-        with open(xyz_filename, 'r') as trajectory:
+        with open(xyz_filename, "r") as trajectory:
             for line in trajectory:
                 # Determine the section length with the atom count in first line
                 if first_line == True:
@@ -61,40 +62,42 @@ class traj3D:
                 if line_count == section_length:
                     line_count = 0
                     xyz_as_list.append(frame_contents)
-                    frame_contents = ''
+                    frame_contents = ""
                     frame_count += 1
                 frame_contents += line
                 line_count += 1
             xyz_as_list.append(frame_contents)
 
-        print('We found {} frames in {}.'.format(
-            len(xyz_as_list), xyz_filename))
+        print("We found {} frames in {}.".format(len(xyz_as_list), xyz_filename))
 
 
 def combine_xyz_files():
     # Find xyz trajectories in the current directory
-    combined_filename = 'combined.xyz'
+    combined_filename = "combined.xyz"
     xyz_filename_list = get_xyz_filenames()
     # For each xyz file convert to a list with only the requested frames
     combined_xyz_list = []
     for file in xyz_filename_list:
         requested_frames = request_frames(file)
         # The user can skip files by with enter which returns an empty string
-        if requested_frames == '':
+        if requested_frames == "":
             continue
         # Convert the xyz files to a list
         xyz_list = multiframe_xyz_to_list(file)
-        requested_xyz_list = [frame for index, frame in enumerate(
-            xyz_list) if index + 1 in requested_frames]
+        requested_xyz_list = [
+            frame
+            for index, frame in enumerate(xyz_list)
+            if index + 1 in requested_frames
+        ]
         # Ask the user if they want the frames reversed for a given xyz file
-        reverse = input('Any key to reverse {} else Return: '.format(file))
+        reverse = input("Any key to reverse {} else Return: ".format(file))
         if reverse:
             requested_xyz_list.reverse()
             reverse = False
         combined_xyz_list += requested_xyz_list
     # Write the combined trajectories out to a new file called combined.xyz
-    with open(combined_filename, 'w') as combined_file:
+    with open(combined_filename, "w") as combined_file:
         for entry in combined_xyz_list:
             combined_file.write(entry)
 
-    print('Your combined xyz was written to {}\n'.format(combined_filename))
+    print("Your combined xyz was written to {}\n".format(combined_filename))
