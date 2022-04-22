@@ -15,6 +15,7 @@ import matplotlib.pyplot as plt
 import os.path
 from pathlib import Path
 
+
 # Converts a dat file to csv
 
 
@@ -30,12 +31,13 @@ def dat2df(dat_file):
 
 def get_plot(df, yaxis, title, color, saveloc):
     plt.rc("axes", linewidth=2.5)
-    df.plot(0, 1, color=color, legend=False)
+    plt.rcParams['svg.fonttype'] = 'none'
     plt.title(title, fontsize=18)
     plt.ylabel(yaxis, fontsize=16)
     plt.xlabel("Frames", fontsize=16)
     plt.xticks(rotation=45)
     plt.tick_params(labelsize=14)
+    df.plot(0, 1, color=color, legend=False)
     plt.savefig("figures/{}".format(saveloc), bbox_inches="tight")
     plt.show()
 
