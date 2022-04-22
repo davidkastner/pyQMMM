@@ -108,6 +108,7 @@ def get_top_hits_df(df, sub_num):
 def figure_formatting():
     font = {"family": "sans-serif", "weight": "bold", "size": 18}
     plt.rc("font", **font)
+    plt.rcParams['svg.fonttype'] = 'none'
     plt.rcParams["axes.linewidth"] = 2.5
     plt.rcParams["xtick.major.size"] = 10
     plt.rcParams["xtick.major.width"] = 2.5
