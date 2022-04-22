@@ -303,6 +303,7 @@ def graph_datasets(x_data, y_data, z_data, labels, plot_params, show_crosshairs)
     # Lab styling graph properties
     font = {"family": "sans-serif", "weight": "bold", "size": 18}
     plt.rc("font", **font)
+    plt.rcParams['svg.fonttype'] = 'none'
     plt.rcParams["axes.linewidth"] = 2.5
     plt.rcParams["xtick.major.size"] = 10
     plt.rcParams["xtick.major.width"] = 2.5
