@@ -337,7 +337,7 @@ def graph_datasets(x_data, y_data, z_data, labels, plot_params, show_crosshairs)
     ymin = min([i for lis in ylims for i in lis])
 
     ymax_spread = [ymin, ymax]
-    plt.ylim(ymax_spread)
+    plt.ylim(ymax_spread) # Axis limits
 
     # Loop through the the data associated with each plot
     for i in range(len(x_data)):
@@ -371,8 +371,8 @@ def graph_datasets(x_data, y_data, z_data, labels, plot_params, show_crosshairs)
         axes.scatter(
             x_data[i], y_data[i], c=z_data[i], s=40, vmin=0, vmax=0.30, cmap=cmap
         )
-        axes.set_xlim(xlim)
-
+        axes.set_xlim(xlim) # Axis limits
+   
         if show_crosshairs:
             # Calculate the dimensions for the patch and define patch
             anchor = (width_min, height_min)
@@ -416,7 +416,8 @@ def graph_datasets(x_data, y_data, z_data, labels, plot_params, show_crosshairs)
         axes.tick_params(which="both", bottom=True, top=True, left=True, right=False)
         axes.tick_params(which="minor", length=5, color="k", width=2.5)
 
-    plt.savefig("./3_out/restraints_kde.png", dpi=600, bbox_inches="tight", transparent=True)
+#     plt.savefig("./3_out/restraints_kde.png", dpi=600, bbox_inches="tight", transparent=True)
+    plt.savefig("./3_out/restraints_kde.pdf", bbox_inches="tight", transparent=True)
 
 
 ############################## HYSCORE PLOTTER #################################
