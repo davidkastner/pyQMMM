@@ -17,16 +17,12 @@ import seaborn as sns
 
 ################################## FUNCTIONS ###################################
 
-"""
-Read in the DCCA CSV and format the dataframe
-Parameters
-----------
-Returns
--------
-"""
-
 
 def get_dccm():
+    """
+    Read in the DCCA CSV and format the dataframe.
+
+    """
     df = pd.read_csv("cij.csv", index_col=None)
     df = df.iloc[:, 1:]
     df.columns = (x for x in range(1, len(df) + 1))
@@ -34,16 +30,12 @@ def get_dccm():
     return df
 
 
-"""
-Takes the final dataframe and plots it according the the Kulik Group style
-Parameters
-----------
-Returns
--------
-"""
-
-
 def get_plot(df):
+    """
+    Takes the final dataframe and plots it according the the Kulik Group style.
+
+    """
+
     font = {"family": "sans-serif", "weight": "bold", "size": 18}
     plt.rc("font", **font)
     plt.rc("axes", linewidth=2.5)
@@ -67,16 +59,11 @@ def get_plot(df):
     plt.show()
 
 
-"""
-Takes the final dataframe and plots it according the the Kulik Group style
-Parameters
-----------
-Returns
--------
-"""
-
-
 def dccm_plot_formattor():
+    """
+    Takes the final dataframe and plots it according the the Kulik Group style
+
+    """
     df = get_dccm()
     get_plot(df)
 
