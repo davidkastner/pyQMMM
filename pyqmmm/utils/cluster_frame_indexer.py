@@ -1,7 +1,35 @@
-"""Condenses the frame indices of a clustered MD run into a single string"""
+"""
+Docs: https://github.com/davidkastner/pyQMMM/blob/main/pyqmmm/README.md
+DESCRIPTION
+    After clustering with CPPTraj, you will be returned with a cnuvtime.dat file.
+    This contains the frame numbers and their corresponding clusters.
+    This script will find all frames in the main cluster and condense them. 
+    This can then be used with CPPTraj to convert to a new mdcrd.
+    Also calculates the interval for 625 snapshots.
+
+    Author: David Kastner
+    Massachusetts Institute of Technology
+    kastner (at) mit . edu
+"""
 
 
 def get_clusters(file):
+    """
+    Opens the CPPTraj cnumvtime.dat file,
+    which contains every frame and its assigned cluster.
+    Creates a list containing the indices of all frames in cluster 0,
+    which will always be the predominant cluster.
+
+    Parameters
+    ----------
+    file : str
+        The file containing the cluster assignments for every frame.
+
+    Returns
+    -------
+    cluster_list : list
+        A list of all the frame indices from cluster 0.
+    """
     cluster_list = []
     with open(file, "r") as cluster_file:
         # Skip first line as it is just text
@@ -15,6 +43,16 @@ def get_clusters(file):
 
 
 def condense_numbering(cluster_list):
+    """
+
+
+    Parameters
+    ----------
+
+    Returns
+    -------
+    final_selection : 
+    """
     seq = []
     final = []
     last = 0
@@ -45,11 +83,7 @@ def condense_numbering(cluster_list):
 
 def cluster_frame_indexer():
     """
-    After clustering with CPPTraj, you will be returned with a cnuvtime.dat file.
-    This contains the frames numbers and their corresponding clusters.
-    This script will find all frames in the main cluster and condense it into
-    the smallest string of numbers. This can then be used with CPPTraj to convert
-    to a new mdcrd. Also calculates the interval for 625 snapshots.
+    Condenses the frame indices of a clustered MD run into a single string.
 
     Examples
     --------

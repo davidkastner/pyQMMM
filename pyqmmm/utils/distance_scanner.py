@@ -1,8 +1,7 @@
 """
 Docs: https://github.com/davidkastner/pyQMMM/blob/main/pyqmmm/README.md
 DESCRIPTION
-    When you generate a xyz scan you lose amino acid identifers.
-    This script allows you to analyze distances between atoms in xyz files.
+
 
     Author: David Kastner
     Massachusetts Institute of Technology
@@ -19,6 +18,11 @@ from pyqmmm.modules import input
 
 
 def distance_scanner():
+    """
+    When you generate a xyz scan you lose amino acid identifers.
+    This script allows you to analyze distances between atoms in xyz files.
+    """
+
     print("\n.------------------.")
     print("| DISTANCE SCANNER |")
     print(".------------------.\n")
