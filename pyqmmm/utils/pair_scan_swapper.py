@@ -5,10 +5,10 @@ def get_atom(which):
     """
     Get atoms from user.
     """
-    atom = input("What is the {} atom?".format(which))
+    atom = input(f"What is the {which} atom?")
     try:
         return int(atom)
-    except:
+    except SystemExit:
         print("Please enter a number.")
         return get_atom(which)
 

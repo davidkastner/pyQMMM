@@ -83,7 +83,7 @@ def get_mask_res(type):
     try:
         with open("./1_input/{}_list".format(type)) as mask_res_file:
             mask_list = mask_res_file.read().strip().split(",")
-    except:
+    except SystemExit:
         print("File {}_list does not exist".format(type))
         sys.exit()
     return mask_list
