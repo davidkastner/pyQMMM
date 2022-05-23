@@ -69,7 +69,7 @@ enzymes = [taud, vioc, besd, welo5, welo5_ax]
 def figure_formatting():
     font = {"family": "sans-serif", "weight": "bold", "size": 18}
     plt.rc("font", **font)
-    plt.rcParams['svg.fonttype'] = 'none'
+    plt.rcParams["svg.fonttype"] = "none"
     plt.rcParams["axes.linewidth"] = 2.5
     plt.rcParams["xtick.major.size"] = 10
     plt.rcParams["xtick.major.width"] = 2.5

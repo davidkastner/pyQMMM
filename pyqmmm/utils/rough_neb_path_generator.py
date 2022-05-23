@@ -221,7 +221,7 @@ def get_ts(scan_master_list):
     # We need to get the transition state from scan_optim.xyz
     for index, dict in enumerate(scan_master_list):
         # Since our starting list is empty, we will handle first case separately
-        if max_energy == None:
+        if max_energy is None:
             max_energy = scan_master_list[index]["energy"]
             max_energy_index = index
         # Look for the largest energy

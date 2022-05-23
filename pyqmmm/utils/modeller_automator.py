@@ -1,6 +1,5 @@
 """Automates the process of replacing missing residues with Modeller."""
 
-import numpy as np
 import glob
 import sys
 import os.path
@@ -225,7 +224,7 @@ def get_ali(pdb_seq, fasta_seq, pdb_name, header):
         n = 75
         # Divide the ali list into N sublists of 75 characters
         pdb_str = "".join(pdb_list)
-        pdb_lines = [pdb_str[i: i + n] for i in range(0, len(pdb_str), n)]
+        pdb_lines = [pdb_str[i : i + n] for i in range(0, len(pdb_str), n)]
         for line in pdb_lines:
             ali_file.write("{}\n".format(line))
         print("The first section of the .ali file was written")
@@ -234,7 +233,7 @@ def get_ali(pdb_seq, fasta_seq, pdb_name, header):
         ali_file.write("{}_fill\n".format(str(header[0].strip())))
         ali_file.write("sequence:::::::::\n")
         fasta_str = "".join(fasta_list)
-        fasta_lines = [fasta_str[i: i + n] for i in range(0, len(fasta_str), n)]
+        fasta_lines = [fasta_str[i : i + n] for i in range(0, len(fasta_str), n)]
         for line in fasta_lines:
             ali_file.write("{}\n".format(line))
         print("The second section of the .ali file was written")
@@ -322,4 +321,4 @@ def modeller_automator(aa_lookup):
 
 
 if __name__ == "__main__":
-    modeller_automator()
+    modeller_automator(aa_lookup)

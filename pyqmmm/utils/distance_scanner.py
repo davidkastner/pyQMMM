@@ -1,9 +1,6 @@
 """Calculates the distance between two centroids from an xyz traj."""
 
-import sys
-from pyqmmm.modules import analyze
 from pyqmmm.modules import organize
-from pyqmmm.modules import input
 
 
 def distance_scanner():

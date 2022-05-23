@@ -149,10 +149,16 @@ def pes_organizer():
     print(".---------------.\n")
     print("Use the ml_prop keyword when running your TeraChem scan.")
     print("Execute this script from the directory where this job was run.")
-    print("By default, TeraChem scans only print the charge and spin of the final frame.")
-    print("We change this by using the ml_prop keyword. Now every optimization will print.")
+    print(
+        "By default, TeraChem scans only print the charge and spin of the final frame."
+    )
+    print(
+        "We change this by using the ml_prop keyword. Now every optimization will print."
+    )
     print("However, we only need the charge and spin at the end of each optimization.")
-    print("This script will return the the charge and spin into a more readable format.")
+    print(
+        "This script will return the the charge and spin into a more readable format."
+    )
     print("The coordinates are already piped nicely to scan_optim.xyz.")
 
     final_scan_position, scan_step_pairs = get_iteration_pairs()

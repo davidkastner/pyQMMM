@@ -7,9 +7,6 @@
 # The script will generate a new combined file.
 
 import glob
-import matplotlib.pyplot as plt
-from scipy.spatial import distance
-import numpy as np
 import reaction_coordinate_collector
 
 

@@ -1,17 +1,13 @@
 """Creates a series of KDE plots based on HYSCORE-guided simulations."""
 
 import numpy as np
-import time
 import glob
 import sys
 import os.path
 import configparser as cp
 import matplotlib.pyplot as plt
 import matplotlib as mpl
-import matplotlib.cm as cm
 import matplotlib.ticker as ticker
-import matplotlib.colors as mplc
-import matplotlib.cm as cm
 from scipy.stats import gaussian_kde
 from matplotlib.patches import Rectangle
 
@@ -278,7 +274,7 @@ def graph_datasets(x_data, y_data, z_data, labels, plot_params, show_crosshairs)
     # Lab styling graph properties
     font = {"family": "sans-serif", "weight": "bold", "size": 18}
     plt.rc("font", **font)
-    plt.rcParams['svg.fonttype'] = 'none'
+    plt.rcParams["svg.fonttype"] = "none"
     plt.rcParams["axes.linewidth"] = 2.5
     plt.rcParams["xtick.major.size"] = 10
     plt.rcParams["xtick.major.width"] = 2.5
@@ -339,7 +335,7 @@ def graph_datasets(x_data, y_data, z_data, labels, plot_params, show_crosshairs)
 
         # Get xlim and ylim
         xlim = xlims[i]
-        ylim = ylims[i]
+        # ylim = ylims[i]
 
         # Create a scatter plot
         axes = ax[i] if len(x_data) > 1 else ax
@@ -391,7 +387,7 @@ def graph_datasets(x_data, y_data, z_data, labels, plot_params, show_crosshairs)
         axes.tick_params(which="both", bottom=True, top=True, left=True, right=False)
         axes.tick_params(which="minor", length=5, color="k", width=2.5)
 
-#     plt.savefig("./3_out/restraints_kde.png", dpi=600, bbox_inches="tight", transparent=True)
+    #     plt.savefig("./3_out/restraints_kde.png", dpi=600, bbox_inches="tight", transparent=True)
     plt.savefig("./3_out/restraints_kde.pdf", bbox_inches="tight", transparent=True)
 
 

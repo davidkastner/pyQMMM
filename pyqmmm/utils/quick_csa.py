@@ -125,7 +125,7 @@ def mask_maker(mask, pdb_name, type):
                 if line[:3] == "END":
                     break
     # Print important statistics for the user
-    print("Extracted {} residues".format(len(set(res_type_array)), type))
+    print(f"Extracted {len(set(res_type_array))} residues")
     print("Your new file is named {}\n".format(new_pdb))
     # Make temporary empty link files
     open("./2_temp/{}_link_atoms".format(type), "w")  # TODO: add section

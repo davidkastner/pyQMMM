@@ -20,7 +20,7 @@ def renumber(pdb_name, offset):
                         line_list[index] = new_entry
                         del_spaces = len(new_entry) - entry_len
                         if del_spaces:
-                            del line_list[index - del_spaces: index]
+                            del line_list[index - del_spaces : index]
                         break
                 # Write out the new line
                 shifted_pdb.write(" ".join(line_list))

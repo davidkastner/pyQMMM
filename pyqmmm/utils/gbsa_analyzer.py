@@ -3,7 +3,6 @@
 import glob
 import pandas as pd
 import matplotlib.pyplot as plt
-import numpy as np
 from pandas.api.types import CategoricalDtype
 
 
@@ -110,7 +109,7 @@ def get_top_hits_df(df, sub_num):
 def figure_formatting():
     font = {"family": "sans-serif", "weight": "bold", "size": 18}
     plt.rc("font", **font)
-    plt.rcParams['svg.fonttype'] = 'none'
+    plt.rcParams["svg.fonttype"] = "none"
     plt.rcParams["axes.linewidth"] = 2.5
     plt.rcParams["xtick.major.size"] = 10
     plt.rcParams["xtick.major.width"] = 2.5
@@ -178,9 +177,9 @@ def plot_clustered_stacked(dataframes, labels, y_columns, sorted_x_labels, file_
         0, number_of_df * number_of_col, number_of_col
     ):  # len(h) = n_col * n_df
         sliced_handles = (
-            handles[i: i + number_of_col]
+            handles[i : i + number_of_col]
             if i == 0
-            else handles[i - 1: i + number_of_col]
+            else handles[i - 1 : i + number_of_col]
         )
         for j, pa in enumerate(sliced_handles):
             for rect in pa.patches:  # for each index
@@ -194,8 +193,8 @@ def plot_clustered_stacked(dataframes, labels, y_columns, sorted_x_labels, file_
     l1 = axe.legend(
         handles[:number_of_col], list(axe_labels[: number_of_col - 1]), loc=[1.01, 0.5]
     )
-    if labels is not None:
-        l2 = plt.legend(n, labels, loc=[1.01, 0.1])
+    # if labels is not None:
+    #     l2 = plt.legend(n, labels, loc=[1.01, 0.1])
     axe.add_artist(l1)
     axe.set_ylabel("GBSA energy score", weight="bold")
     axe.set_xlabel("Residue", weight="bold")

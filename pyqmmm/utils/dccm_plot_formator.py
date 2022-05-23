@@ -1,9 +1,7 @@
 """Reads in DCCM data and formats it into the Kulik Lab standard format."""
 
 import matplotlib.pyplot as plt
-import numpy as np
 import pandas as pd
-import seaborn as sns
 
 
 def get_dccm():

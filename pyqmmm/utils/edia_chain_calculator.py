@@ -1,6 +1,5 @@
 """This script takes EDIA output and cacluates the average chain EDIA scores."""
 
-import numpy as numpy
 import matplotlib.pyplot as plt
 import pandas as pd
 

@@ -1,11 +1,8 @@
 """Collects the energies into a CSV file as a pandas dataframe."""
 
 import glob
-import pandas as pd
-import plotly.io as pio
 import plotly.graph_objs as go
-import plotly.express as px
-from plotly.offline import download_plotlyjs, init_notebook_mode, plot, iplot
+from plotly.offline import iplot
 
 
 def get_opt_energies(file_path):
@@ -32,7 +29,7 @@ def get_opt_energies(file_path):
             for line in out_file:
                 if line[6:22] == "Optimized Energy":
                     energy = float(line[26:42])
-                    if first_energy == None:
+                    if first_energy is None:
                         first_energy = energy
                     if opt_iter > 20:
                         relative_energy = (energy - first_energy) * 627.5
@@ -67,7 +64,7 @@ def get_final_energies(file_path):
             for line in out_file:
                 if line[0:14] == "FINAL ENERGY: ":
                     energy = float(line[14:30])
-                    if first_energy == None:
+                    if first_energy is None:
                         first_energy = energy
                     energy_list.append((energy - first_energy) * 627.5)
                     opt_energy_line = "{},{}\n".format(conv_iter, energy)

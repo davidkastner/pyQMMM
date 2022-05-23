@@ -5,9 +5,9 @@ import shutil
 
 
 def check_exists():
-    '''
+    """
     Check to see if user's xyz file is in the current directory
-    '''
+    """
     name = input("What is the name of your .xyz ensemble (ignore extenstion)? ")
     file_name = "{}.xyz".format(name)
     if os.path.exists(file_name):
@@ -19,9 +19,9 @@ def check_exists():
 
 
 def create_dir():
-    '''
+    """
     Create a new directory to store the frames
-    '''
+    """
     dir = "movie"
     if os.path.exists(dir):
         shutil.rmtree(dir)
@@ -31,9 +31,9 @@ def create_dir():
 
 
 def get_frames(file_name):
-    '''
+    """
     Break up the original xyz file.
-    '''
+    """
     current_frame = 0
     with open(file_name, "r") as ensemble:
         for line in ensemble:

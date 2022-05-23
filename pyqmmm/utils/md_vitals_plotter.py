@@ -2,7 +2,6 @@
 
 import pandas as pd
 import matplotlib.pyplot as plt
-import os.path
 from pathlib import Path
 
 
@@ -17,7 +16,7 @@ def dat2df(dat_file):
 # Generalizable plotting function
 def get_plot(df, yaxis, title, color, saveloc):
     plt.rc("axes", linewidth=2.5)
-    plt.rcParams['svg.fonttype'] = 'none'
+    plt.rcParams["svg.fonttype"] = "none"
     plt.title(title, fontsize=18)
     plt.ylabel(yaxis, fontsize=16)
     plt.xlabel("Frames", fontsize=16)

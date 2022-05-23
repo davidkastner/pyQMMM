@@ -5,8 +5,6 @@
 # This is can then be graphed in your plotter of choice such as XMGrace.
 # The output is a .csv file with energies in column 1 and the RC in column 2.
 
-
-from math import comb
 from scipy.spatial import distance
 import numpy as np
 import os
@@ -128,7 +126,7 @@ def get_opt_energies(xyz_file):
             if line[:9] == "Converged":
                 line = line.split()
                 energy = float(line[4])
-                if first_energy == None:
+                if first_energy is None:
                     first_energy = energy
                 relative_energy = (energy - first_energy) * 627.5
                 absolute_energy = energy
