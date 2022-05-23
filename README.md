@@ -11,7 +11,7 @@ Python package for manipulating QM and MD trajectories
 ---
 ### Copyright
 
-Copyright (c) 2022, David Kastner
+Copyright (c) 2022,  Kulik group at MIT
 
 ---
 #### Acknowledgements
