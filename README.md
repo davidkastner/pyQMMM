@@ -1,4 +1,4 @@
-![Graphical Summary of README](docs/images/header.jpg)
+![Graphical Summary of README](docs/_static/header.jpg)
 pyQMMM
 ==============================
 [//]: # (Badges)
