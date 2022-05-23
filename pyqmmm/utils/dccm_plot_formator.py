@@ -1,19 +1,9 @@
-# Docs: https://pyqmmm.readthedocs.io/en/latest/
-# DESCRIPTION
-#     Reads in DCCM data and formats it into the Kulik Lab standard format.
+"""Reads in DCCM data and formats it into the Kulik Lab standard format."""
 
-#     Author: David Kastner
-#     Massachusetts Institute of Technology
-#     kastner (at) mit . edu
-
-
-################################ DEPENDENCIES ##################################
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import seaborn as sns
-
-################################## FUNCTIONS ###################################
 
 
 def get_dccm():

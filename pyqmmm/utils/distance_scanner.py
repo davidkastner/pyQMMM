@@ -1,21 +1,9 @@
-# Docs: https://pyqmmm.readthedocs.io/en/latest/
-# DESCRIPTION
-#     Calculates the distance between two centroids from an xyz traj.
-#     Just provide two sets of atoms, and we handle the rest.
-#     Returns the distance per frame and the average distance and std.
+"""Calculates the distance between two centroids from an xyz traj."""
 
-#     Author: David Kastner
-#     Massachusetts Institute of Technology
-#     kastner (at) mit . edu
-
-
-################################ DEPENDENCIES ##################################
 import sys
 from pyqmmm.modules import analyze
 from pyqmmm.modules import organize
 from pyqmmm.modules import input
-
-################################## FUNCTIONS ###################################
 
 
 def distance_scanner():
@@ -33,8 +21,6 @@ def distance_scanner():
 
     # Create an iterable list of frames from the xyz file
     organize.multiframe_xyz_to_list("xyz_filename")
-
-    #
 
 
 if __name__ == "__main__":

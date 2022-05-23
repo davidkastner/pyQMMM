@@ -1,4 +1,5 @@
-# Import dependencies
+"""Analyze data from hydrogen bonding analysis."""
+
 import pandas as pd
 import matplotlib.pyplot as plt
 
@@ -63,6 +64,8 @@ filenames = ["taud.pdf", "vioc.pdf", "besd.pdf", "welo5.pdf", "welo5_ax.pdf"]
 enzymes = [taud, vioc, besd, welo5, welo5_ax]
 
 # Set the lab plot formatting settings
+
+
 def figure_formatting():
     font = {"family": "sans-serif", "weight": "bold", "size": 18}
     plt.rc("font", **font)

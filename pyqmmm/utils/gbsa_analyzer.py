@@ -1,3 +1,5 @@
+"""Process and analyze output from AMBER GBSA calculation."""
+
 import glob
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -176,9 +178,9 @@ def plot_clustered_stacked(dataframes, labels, y_columns, sorted_x_labels, file_
         0, number_of_df * number_of_col, number_of_col
     ):  # len(h) = n_col * n_df
         sliced_handles = (
-            handles[i : i + number_of_col]
+            handles[i: i + number_of_col]
             if i == 0
-            else handles[i - 1 : i + number_of_col]
+            else handles[i - 1: i + number_of_col]
         )
         for j, pa in enumerate(sliced_handles):
             for rect in pa.patches:  # for each index

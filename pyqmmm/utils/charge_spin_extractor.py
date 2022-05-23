@@ -1,11 +1,4 @@
-# Docs: https://pyqmmm.readthedocs.io/en/latest/
-# DESCRIPTION
-#     Extract charge and spin data for a given subset of atoms for graphing.
-#     Written to interpet TeraChem mullpop and charge_mull.xls files.
-
-#     Author: David Kastner
-#     Massachusetts Institute of Technology
-#     kastner (at) mit . edu
+"""Extract charge and spin data for a given subset of atoms for graphing."""
 
 import glob
 

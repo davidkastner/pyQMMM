@@ -1,14 +1,4 @@
-# Docs: https://pyqmmm.readthedocs.io/en/latest/
-# DESCRIPTION
-#     After clustering with CPPTraj, you will be returned with a cnuvtime.dat file.
-#     This contains the frame numbers and their corresponding clusters.
-#     This script will find all frames in the main cluster and condense them.
-#     This can then be used with CPPTraj to convert to a new mdcrd.
-#     Also calculates the interval for 625 snapshots.
-
-#     Author: David Kastner
-#     Massachusetts Institute of Technology
-#     kastner (at) mit . edu
+"""This script will find all frames in the main cluster and condense them."""
 
 
 def get_clusters(file):
