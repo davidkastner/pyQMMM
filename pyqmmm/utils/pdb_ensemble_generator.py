@@ -1,21 +1,13 @@
-"""
-Docs: https://github.com/davidkastner/pyQMMM/blob/main/pyqmmm/README.md
-DESCRIPTION
-    Combines separate PDBs into a single ensemble.
+# Docs: https://github.com/davidkastner/pyQMMM/blob/main/pyqmmm/README.md
+# DESCRIPTION
+#     Combines separate PDBs into a single ensemble.
 
-    Author: David Kastner
-    Massachusetts Institute of Technology
-    kastner (at) mit . edu
+#     Author: David Kastner
+#     Massachusetts Institute of Technology
+#     kastner (at) mit . edu
 
-"""
-
-################################ DEPENDENCIES ##################################
 import os
 import shutil
-
-################################## FUNCTIONS ###################################
-
-# Creates an ensemble from individual PDB files
 
 
 def pdb_ensemble_generator():

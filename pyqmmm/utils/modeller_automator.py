@@ -1,14 +1,11 @@
-"""
-Docs: https://github.com/davidkastner/pyQMMM/blob/main/pyqmmm/README.md
-DESCRIPTION
-    Automates the process of replacing missing residues with Modeller.
+# Docs: https://github.com/davidkastner/pyQMMM/blob/main/pyqmmm/README.md
+# DESCRIPTION
+#     Automates the process of replacing missing residues with Modeller.
 
-    Author: David Kastner
-    Massachusetts Institute of Technology
-    kastner (at) mit . edu
-"""
+#     Author: David Kastner
+#     Massachusetts Institute of Technology
+#     kastner (at) mit . edu
 
-################################ DEPENDENCIES ##################################
 import numpy as np
 import glob
 import sys
@@ -17,7 +14,7 @@ import shutil
 from modeller import *
 from modeller.automodel import *
 
-################################## CONSTANTS ###################################
+
 aa_lookup = {
     "CYS": "C",
     "ASP": "D",
@@ -42,23 +39,18 @@ aa_lookup = {
     None: "-",
 }
 
-################################## FUNCTIONS ###################################
-"""
-Identify the user's primary PDB file.
-
-Parameters
-----------
-
-Returns
--------
-pdb_name : str
-    The file name of the users PDB that will be used to create masks.
-pdb_file : str
-    The pdb name and the extenstion.
-"""
-
 
 def get_pdb_name():
+    """
+    Identify the user's primary PDB file.
+
+    Returns
+    -------
+    pdb_name : str
+        The file name of the users PDB that will be used to create masks.
+    pdb_file : str
+        The pdb name and the extenstion.
+    """
     pdb_name_pattern = r"./1_in/*.pdb"
     # Collect all files ending in .pdb located in the current directory
     pdbs = glob.glob(pdb_name_pattern)
@@ -75,21 +67,20 @@ def get_pdb_name():
     return pdb_name, pdb_file
 
 
-"""
-Get sequences from provided fasta file deposited in 1_in.
-
-Parameters
-----------
-pdb_name : str
-    The name of the user's PDB 
-Returns
--------
-fasta : dict
-    The fasta seq with the index as the key and amino acid as the value
-"""
-
-
 def get_fasta(pdb_name):
+    """
+    Get sequences from provided fasta file deposited in 1_in.
+
+    Parameters
+    ----------
+    pdb_name : str
+        The name of the user's PDB.
+
+    Returns
+    -------
+    fasta : dict
+        The fasta seq with the index as the key and amino acid as the value.
+    """
     fasta_file_name = "{}.fasta".format(pdb_name)
     # Check if the seq file exists
     if os.path.isfile("./1_in/{}".format(fasta_file_name)):
@@ -112,21 +103,17 @@ def get_fasta(pdb_name):
     return fasta_seq
 
 
-"""
-Generate the modeller seq file.
-Parameters
-----------
-pdb_name : str
-    The name of the user's PDB 
-pdb_file : str
-    The pdb name and the extenstion.
-Returns
--------
-N/A
-"""
-
-
 def step_1(pdb_name, pdb_file):
+    """
+    Generate the modeller seq file.
+
+    Parameters
+    ----------
+    pdb_name : str
+        The name of the user's PDB.
+    pdb_file : str
+        The pdb name and the extenstion.
+    """
     modeller_env = Environ()
     model = Model(modeller_env, file=pdb_file)
     aln = Alignment(modeller_env)
@@ -136,24 +123,23 @@ def step_1(pdb_name, pdb_file):
     return
 
 
-"""
-Using the Modeller seq file, create a list of the extracted residues.
-
-Parameters
-----------
-pdb_name : str
-    The name of the user's PDB
-pdb_file : str
-    The pdb name and the extenstion.
-Returns
--------
-mod_seq : list
-    The modeller seq as a list with one-letter codes as elements.
-    Missing residues are delineated with a - character.
-"""
-
-
 def get_mod_seq(pdb_name, pdb_file, aa_lookup):
+    """
+    Using the Modeller seq file, create a list of the extracted residues.
+
+    Parameters
+    ----------
+    pdb_name : str
+        The name of the user's PDB.
+    pdb_file : str
+        The pdb name and the extenstion.
+
+    Returns
+    -------
+    mod_seq : list
+        The modeller seq as a list with one-letter codes as elements.
+        Missing residues are delineated with a - character.
+    """
     # Create a dictionary to convert between three and two letter codes
 
     # Get the sequence reported in the .seq file produced by Modeller
@@ -169,23 +155,22 @@ def get_mod_seq(pdb_name, pdb_file, aa_lookup):
     return mod_seq, header
 
 
-"""
-Using the PDB, create a dict with keys as res IDs and values as amino acids.
-
-Parameters
-----------
-pdb_name : str
-    The name of the user's PDB
-pdb_file : str
-    The pdb name and the extenstion
-Returns
--------
-pdb_seq : dict
-    Res IDs keys and amino acid values with missing residues with None type
-"""
-
-
 def get_pdb_seq(pdb_name, pdb_file, fasta_seq, aa_lookup):
+    """
+    Using the PDB, create a dict with keys as res IDs and values as amino acids.
+
+    Parameters
+    ----------
+    pdb_name : str
+        The name of the user's PDB.
+    pdb_file : str
+        The pdb name and the extenstion.
+
+    Returns
+    -------
+    pdb_seq : dict
+        Res IDs keys and amino acid values with missing residues with None type.
+    """
     # Initialize the dictionary for storing the AA and res ID's
     pdb_seq = {}
     end_index = len(fasta_seq)
@@ -216,22 +201,19 @@ def get_pdb_seq(pdb_name, pdb_file, fasta_seq, aa_lookup):
     return pdb_seq
 
 
-"""
-Compare fasta and modeller seq files.
-Create the .ali file that Modeller needs for part 2.
-
-Parameters
-----------
-pdb_name : str
-    The name of the user's PDB
-fasta : list
-    The fasta seq in list form with one-letter codes as elements
-Returns
--------
-"""
-
-
 def get_ali(pdb_seq, fasta_seq, pdb_name, header):
+    """
+    Compare fasta and modeller seq files.
+
+    Create the .ali file that Modeller needs for part 2.
+
+    Parameters
+    ----------
+    pdb_name : str
+        The name of the user's PDB.
+    fasta : list
+        The fasta seq in list form with one-letter codes as elements.
+    """
     # Begin creating the .ali file
     with open("./2_temp/{}.ali".format(pdb_name), "w") as ali_file:
         # Check if the pdb and fasta extracted sequences are the same length
@@ -249,7 +231,7 @@ def get_ali(pdb_seq, fasta_seq, pdb_name, header):
         n = 75
         # Divide the ali list into N sublists of 75 characters
         pdb_str = "".join(pdb_list)
-        pdb_lines = [pdb_str[i : i + n] for i in range(0, len(pdb_str), n)]
+        pdb_lines = [pdb_str[i: i + n] for i in range(0, len(pdb_str), n)]
         for line in pdb_lines:
             ali_file.write("{}\n".format(line))
         print("The first section of the .ali file was written")
@@ -258,23 +240,17 @@ def get_ali(pdb_seq, fasta_seq, pdb_name, header):
         ali_file.write("{}_fill\n".format(str(header[0].strip())))
         ali_file.write("sequence:::::::::\n")
         fasta_str = "".join(fasta_list)
-        fasta_lines = [fasta_str[i : i + n] for i in range(0, len(fasta_str), n)]
+        fasta_lines = [fasta_str[i: i + n] for i in range(0, len(fasta_str), n)]
         for line in fasta_lines:
             ali_file.write("{}\n".format(line))
         print("The second section of the .ali file was written")
     return
 
 
-"""
-The second step of Modeller software
-Parameters
-----------
-Returns
--------
-"""
-
-
 def step_2(pdb_name, pdb_file):
+    """
+    The second step of Modeller software.
+    """
     # log.verbose()
     env = Environ()
     # directories for input atom files
@@ -298,19 +274,11 @@ def step_2(pdb_name, pdb_file):
     return
 
 
-"""
-To address messy and strange file and naming conventions of Modeller,
-we will clean up the output files for the user to save time.
-Parameters
-----------
-N/A
-Returns
--------
-N/A
-"""
-
-
 def clean_up(pdb_name):
+    """
+    To address messy and strange file and naming conventions of Modeller,
+    we will clean up the output files for the user to save time.
+    """
     # Get the names of all files and directories in the current directory
     out_files = os.listdir("./")
     for file in out_files:

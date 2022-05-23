@@ -1,23 +1,19 @@
-"""
-Docs: https://github.com/davidkastner/pyQMMM/blob/main/pyqmmm/README.md
-DESCRIPTION
-    After performing a TeraChem PES, the coordinates are found in the xyz file.
-    Using this file we can extract reaction coordinates against energies.
-    This is can then be graphed in your plotter of choice such as XMGrace.
-    The output is a .csv file with energies in column 1 and the RC in column 2.
+# Docs: https://github.com/davidkastner/pyQMMM/blob/main/pyqmmm/README.md
+# DESCRIPTION
+#     After performing a TeraChem PES, the coordinates are found in the xyz file.
+#     Using this file we can extract reaction coordinates against energies.
+#     This is can then be graphed in your plotter of choice such as XMGrace.
+#     The output is a .csv file with energies in column 1 and the RC in column 2.
 
-    Author: David Kastner
-    Massachusetts Institute of Technology
-    kastner (at) mit . edu
+#     Author: David Kastner
+#     Massachusetts Institute of Technology
+#     kastner (at) mit . edu
 
-"""
-################################ DEPENDENCIES ##################################
 from math import comb
 from scipy.spatial import distance
 import numpy as np
 import os
 
-################################## FUNCTIONS ###################################
 """
 Get the user's reaction coordinate definition.
 Returns
@@ -42,20 +38,20 @@ def request_rc(rc_request):
     return atoms, request
 
 
-"""
-Calculates the reaction coordinate at each step of the scan in the xyz file.
-Parameters
-----------
-atoms : list
-    List of two atoms defining a reaction coordiante distance
-Returns
--------
-reaction_coordinates : list
-    List of values mapping to the distance that two atoms have moved.
-"""
-
-
 def get_distance(atoms, xyz_file):
+    """
+    Calculates the reaction coordinate at each step of the scan in the xyz file.
+
+    Parameters
+    ----------
+    atoms : list
+        List of two atoms defining a reaction coordiante distance.
+
+    Returns
+    -------
+    reaction_coordinates : list
+        List of values mapping to the distance that two atoms have moved.
+    """
     atom_count = 0
     coords_list = []
     dist_list = []
@@ -116,18 +112,17 @@ def get_distance(atoms, xyz_file):
 #     return angle_list
 
 
-"""
-Loop through the xyz file and collect optimized energies.
-Returns
--------
-energy_df : dataframe
-    The optimized energy from the current convergence line of the file.
-energy_list : list
-    Returns a list of the energies extracted from the .out file.
-"""
-
-
 def get_opt_energies(xyz_file):
+    """
+    Loop through the xyz file and collect optimized energies.
+
+    Returns
+    -------
+    energy_df : dataframe
+        The optimized energy from the current convergence line of the file.
+    energy_list : list
+        Returns a list of the energies extracted from the .out file.
+    """
     DE_list = []
     E_list = []
     with open(xyz_file, "r") as file:
@@ -147,18 +142,17 @@ def get_opt_energies(xyz_file):
     return DE_list, E_list
 
 
-"""
-Combine reaction coordinate and energy list and write them to a .csv file
-Parameters
-----------
-dist_list : list
-    List of distances defining each step of the reaction coordinate
-energy_list : list
-    List of all energies mapping to each step of the reacitno coordinate
-"""
-
-
 def get_reaction_csv(xaxis_list, yaxis_list, extension):
+    """
+    Combine reaction coordinate and energy list and write them to a .csv file.
+
+    Parameters
+    ----------
+    dist_list : list
+        List of distances defining each step of the reaction coordinate.
+    energy_list : list
+        List of all energies mapping to each step of the reacitno coordinate.
+    """
     with open("./{}.csv".format(extension), "w") as csv_file:
         for x, y in zip(xaxis_list, yaxis_list):
             csv_file.write("{},{}\n".format(x, y))

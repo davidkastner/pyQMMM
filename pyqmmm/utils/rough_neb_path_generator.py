@@ -1,35 +1,21 @@
-"""
-Docs: https://github.com/davidkastner/pyQMMM/blob/main/pyqmmm/README.md
-DESCRIPTION
-    Identify the ideal starting path for NEB from a TeraChem PES.
+# Docs: https://github.com/davidkastner/pyQMMM/blob/main/pyqmmm/README.md
+# DESCRIPTION
+#     Identify the ideal starting path for NEB from a TeraChem PES.
 
-    Author: David Kastner
-    Massachusetts Institute of Technology
-    kastner (at) mit . edu
-
-"""
-################################ DEPENDENCIES ##################################
-from scipy.spatial import distance
-import numpy as np
-import matplotlib.pyplot as plt
-
-################################## FUNCTIONS ###################################
-
-"""
-Get the user's linear combination of restraints and preferred NEB path length.
-Returns
--------
-atoms : list
-    list of atoms indices
-Get the user's reaction coordinate definition.
-Returns
--------
-atoms : list
-    list of atoms indices
-"""
+#     Author: David Kastner
+#     Massachusetts Institute of Technology
+#     kastner (at) mit . edu
 
 
 def user_input():
+    """
+    Get the user's linear difference of restraints and NEB path length.
+
+    Returns
+    -------
+    atoms : list
+        List of atoms indices.
+    """
     # What atoms define the first reaction coordinate
     coord1_input = input("What atoms define your first reaction coordinate?")
     # Convert user input to a list even if it is hyphenated
@@ -54,20 +40,20 @@ def user_input():
     return coord1, coord2, image_count
 
 
-"""
-Get each one of the frames and store them.
-Parameters
-----------
-dict : dictionary
-    List of two atoms defining a reaction coordiante distance
-Returns
--------
-reaction_coordinates : list
-    List of values mapping to the distance that two atoms have moved.
-"""
-
-
 def get_frames(coord1, coord2, master_list, file):
+    """
+    Get each one of the frames and store them.
+
+    Parameters
+    ----------
+    dict : dictionary
+        List of two atoms defining a reaction coordiante distance.
+
+    Returns
+    -------
+    reaction_coordinates : list
+        List of values mapping to the distance that two atoms have moved.
+    """
     # Variables that measure our progress in parsing the optim.xyz file
     frame_contents = ""
     line_count = 0
@@ -123,30 +109,30 @@ def get_frames(coord1, coord2, master_list, file):
     return master_list
 
 
-"""
-Get the distance between two atoms of a reaction coordinate
-Parameters
-----------
-frame_count : int
-    Keeps track of what frame we are on
-master_list : list
-    List of dictionaries keyed by frame
-line : object
-    The line in the file that we are iterating over
-coord : list
-    The two numbers that define the current coordinate of interest
-dict_key : string
-    The name of the key we will assign the distance value to
-Returns
--------
-master_list : list
-    Updated list of dictionaries keyed by frame
-"""
-
-
 def get_dist(
     frame_count, master_list, line, line_count, coord, xyz_coord_list, dict_key
 ):
+    """
+    Get the distance between two atoms of a reaction coordinate.
+
+    Parameters
+    ----------
+    frame_count : int
+        Keeps track of what frame we are on.
+    master_list : list
+        List of dictionaries keyed by frame.
+    line : object
+        The line in the file that we are iterating over.
+    coord : list
+        The two numbers that define the current coordinate of interest.
+    dict_key : string
+        The name of the key we will assign the distance value to.
+
+    Returns
+    -------
+    master_list : list
+        Updated list of dictionaries keyed by frame.
+    """
     # Get the distance between each atom for coordinate 2
     current_atom = line_count - 1
     if current_atom in coord:
@@ -163,20 +149,20 @@ def get_dist(
     return xyz_coord_list, master_list
 
 
-"""
-Calculate all difference of distances and add them to the master_list.
-Parameters
-----------
-master_list : list
-    List of dictionaries keyed by frame
-Returns
--------
-master_list : list
-    Updated list of dictionaries keyed by frame
-"""
-
-
 def get_dist_diff(master_list):
+    """
+    Calculate all difference of distances and add them to the master_list.
+
+    Parameters
+    ----------
+    master_list : list
+        List of dictionaries keyed by frame.
+
+    Returns
+    -------
+    master_list : list
+        Updated list of dictionaries keyed by frame.
+    """
     # Calculate the difference of distances
     for index, dict in enumerate(master_list):
         x1 = master_list[index]["coord1_dist"]
@@ -188,18 +174,10 @@ def get_dist_diff(master_list):
     return master_list
 
 
-"""
-Assign bins to all frames.
-Parameters
-----------
-
-Returns
--------
-
-"""
-
-
 def get_bins(master_list, scan_master_list, image_count):
+    """
+    Assign bins to all frames.
+    """
     # Get all the differences of distances and add them to a new list
     dist_diff_list = []
     for dict in master_list:

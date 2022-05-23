@@ -1,41 +1,37 @@
-"""
-Docs: https://github.com/davidkastner/pyQMMM/blob/main/pyqmmm/README.md
-DESCRIPTION
-    Reaction path calculations often need to be restarted from a later point.
-    For example, when rerunning a scan of the peak to get higher resolution TS.
-    Afterwards, the .xyz files of the two scans need to be stitched together.
-    Here, users can specify the frames from each file that need to be combined.
-    The script will generate a new combined file.
+# Docs: https://github.com/davidkastner/pyQMMM/blob/main/pyqmmm/README.md
+# DESCRIPTION
+#     Reaction path calculations often need to be restarted from a later point.
+#     For example, when rerunning a scan of the peak to get higher resolution TS.
+#     Afterwards, the .xyz files of the two scans need to be stitched together.
+#     Here, users can specify the frames from each file that need to be combined.
+#     The script will generate a new combined file.
 
-    Author: David Kastner
-    Massachusetts Institute of Technology
-    kastner (at) mit . edu
+#     Author: David Kastner
+#     Massachusetts Institute of Technology
+#     kastner (at) mit . edu
 
-"""
-################################ DEPENDENCIES ##################################
+
 import glob
 import matplotlib.pyplot as plt
 from scipy.spatial import distance
 import numpy as np
 import reaction_coordinate_collector
 
-################################## FUNCTIONS ###################################
-
-"""
-Search the current directory for all xyz files and remove any non-trajectories
-Parameters
--------
-atoms : list
-    list of atoms indices
-Get the user's reaction coordinate definition.
-Returns
--------
-trajectory_list : list
-    list string names of all the trajectory xyz files in the directory
-"""
-
 
 def get_xyz_filenames():
+    """
+    Search the current directory for all xyz files and remove any non-trajectories.
+
+    Parameters
+    ----------
+    atoms : list
+        list of atoms indices
+
+    Returns
+    -------
+    trajectory_list : list
+        list string names of all the trajectory xyz files in the directory.
+    """
     # Get all xyz files and sort them
     file_list = glob.glob("*.xyz")
     sorted(file_list)
@@ -68,21 +64,20 @@ def get_xyz_filenames():
     return xyz_filename_list
 
 
-"""
-Get the request frames for each file from the user.
-Parameters
-----------
-xyz_filename : str
-    The filename of the current xyz trajectory of interest
-
-Returns
--------
-frames : list
-    The frames the user requested to be extracted from the xyz trajectory
-"""
-
-
 def request_frames(xyz_filename):
+    """
+    Get the request frames for each file from the user.
+
+    Parameters
+    ----------
+    xyz_filename : str
+        The filename of the current xyz trajectory of interest.
+
+    Returns
+    -------
+    frames : list
+        The frames the user requested to be extracted from the xyz trajectory.
+    """
     # What frames would you like from the first .xyz file?
     if xyz_filename == "combined.xyz":
         return
@@ -102,21 +97,20 @@ def request_frames(xyz_filename):
     return frames
 
 
-"""
-Turns an xyz trajectory file into a list of lists where each element is a frame.
-Parameters
-----------
-xyz_filename : string
-    The file name of a trajectory
-
-Returns
--------
-trajectory_list : list
-    List of lists containing the trajectory with each frame saved as an element
-"""
-
-
 def multiframe_xyz_to_list(xyz_filename):
+    """
+    Turns an xyz trajectory file into a list of lists where each element is a frame.
+
+    Parameters
+    ----------
+    xyz_filename : string
+        The file name of a trajectory.
+
+    Returns
+    -------
+    trajectory_list : list
+        List of lists containing the trajectory with each frame saved as an element.
+    """
     # Variables that measure our progress in parsing the optim.xyz file
     xyz_as_list = []  # List of lists containing all frames
     frame_contents = ""
@@ -147,13 +141,11 @@ def multiframe_xyz_to_list(xyz_filename):
     return xyz_as_list
 
 
-"""
-Combines two xyz files into one.
-
-"""
-
-
 def combine_xyz_files():
+    """
+    Combines two xyz files into one.
+
+    """
     # Find xyz trajectories in the current directory
     combined_filename = "combined.xyz"
     xyz_filename_list = get_xyz_filenames()

@@ -1,14 +1,12 @@
-"""
-Docs: https://github.com/davidkastner/pyQMMM/blob/main/pyqmmm/README.md
-DESCRIPTION
-    The output for EDIA is only for individual residues or atoms
-    This script takes EDIA output and cacluates the average chain EDIA scores
+# Docs: https://pyqmmm.readthedocs.io/en/latest/
+# DESCRIPTION
+#     The output for EDIA is only for individual residues or atoms
+#     This script takes EDIA output and cacluates the average chain EDIA scores
 
-    Author: David Kastner
-    Massachusetts Institute of Technology
-    kastner (at) mit . edu
+#     Author: David Kastner
+#     Massachusetts Institute of Technology
+#     kastner (at) mit . edu
 
-"""
 
 # Import packages and dependencies
 import numpy as numpy

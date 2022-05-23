@@ -1,4 +1,4 @@
-"""Module for analyzing MD and QM trajectories"""
+# Module for analyzing MD and QM trajectories
 
 from scipy.spatial import distance
 
@@ -6,19 +6,19 @@ from scipy.spatial import distance
 def get_distance(atoms, xyz_traj):
     """
     Calculates the reaction coordinate at each step of the xyz trajectory.
+
     Parameters
     ----------
     atoms : list
-        List of two atoms for which a distance will be calculated
+        List of two atoms for which a distance will be calculated.
     xyz_traj : list
-        List of lists containing the trajectory with each frame saved as an element
+        List of lists containing the trajectory with each frame saved as an element.
 
     Returns
     -------
     dist_list : list
         List of values mapping to the distance that two atoms have moved.
     """
-
     # Initializing important varibales
     atom_count = 0
     coords_list = []

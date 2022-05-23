@@ -1,15 +1,12 @@
-"""
-Docs: https://github.com/davidkastner/pyQMMM/blob/main/pyqmmm/README.md
-DESCRIPTION
-    Plots RMSD and colors points based on their corresponding clusters.
+# Docs: https://github.com/davidkastner/pyQMMM/blob/main/pyqmmm/README.md
+# DESCRIPTION
+#     Plots RMSD and colors points based on their corresponding clusters.
 
-    Author: David Kastner
-    Massachusetts Institute of Technology
-    kastner (at) mit . edu
-   
-"""
+#     Author: David Kastner
+#     Massachusetts Institute of Technology
+#     kastner (at) mit . edu
 
-# Imports packages and dependencies
+
 import pandas as pd
 import matplotlib.pyplot as plt
 import os.path

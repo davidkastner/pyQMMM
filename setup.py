@@ -22,7 +22,7 @@ except:
 setup(
     # Self-descriptive entries which should always be present
     name='pyqmmm',
-    author='David W. Kastner',
+    author='David Kastner',
     author_email='kastner@mit.edu',
     description=short_description,
     long_description=long_description,

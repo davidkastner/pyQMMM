@@ -1,35 +1,31 @@
-"""
-Docs: https://github.com/davidkastner/pyQMMM/blob/main/pyqmmm/README.md
-DESCRIPTION
-   By default, TeraChem scans only print the charge and spin of the final frame.
-   We change this by using the ml_prop keyword. Now every optimization will print.
-   However, we only need the charge and spin at the end of each optimization.
-   This script will return the the charge and spin into a readable format.
-   The coordinates are already piped nicely to scan_optim.xyz.
-   Author: David Kastner
-   Massachusetts Institute of Technology
-   kastner (at) mit . edu
-   
-"""
+# Docs: https://github.com/davidkastner/pyQMMM/blob/main/pyqmmm/README.md
+# DESCRIPTION
+#    By default, TeraChem scans only print the charge and spin of the final frame.
+#    We change this by using the ml_prop keyword. Now every optimization will print.
+#    However, we only need the charge and spin at the end of each optimization.
+#    This script will return the the charge and spin into a readable format.
+#    The coordinates are already piped nicely to scan_optim.xyz.
 
-################################## FUNCTIONS ###################################
-
-"""
-Reads through the qmscript.out and counts iterations per scan step.
-Then returns then as a dictionary: {scan_number:iterations}.
-Parameters
-----------
-pdb_name : str
-    The name of the PDB that the user would like processed
-    
-Returns
--------
-iteraction_pairs : dictionary
-    The scan step number as the key and iterations as the value
-"""
+#    Author: David Kastner
+#    Massachusetts Institute of Technology
+#    kastner (at) mit . edu
 
 
 def get_iteration_pairs():
+    """
+    Reads through the qmscript.out and counts iterations per scan step.
+    Then returns then as a dictionary: {scan_number:iterations}.
+
+    Parameters
+    ----------
+    pdb_name : str
+        The name of the PDB that the user would like processed.
+
+    Returns
+    -------
+    iteraction_pairs : dictionary
+        The scan step number as the key and iterations as the value.
+    """
     # Read in the TeraChem output, the charge, and the spin
     opt_count = 0
     scan_count = 0
@@ -53,21 +49,20 @@ def get_iteration_pairs():
     return final_scan_position, scan_step_pairs
 
 
-"""
-Extracts spin sections from mullpop for each scan and stores them as a dict.
-Parameters
-----------
-iter_pairs : dictionary
-    The scan step number as the key and iterations as the value    
-    
-Returns
--------
-spin_pairs : dictionary
-    The scan step number as the key and the spin section as the key
-"""
-
-
 def get_scan_spins(final_scan_position):
+    """
+    Extracts spin sections from mullpop for each scan and stores them as a dict.
+
+    Parameters
+    ----------
+    iter_pairs : dictionary
+        The scan step number as the key and iterations as the value. 
+
+    Returns
+    -------
+    spin_pairs : dictionary
+        The scan step number as the key and the spin section as the key.
+    """
     section_count = 0
     section_content = ""
     sections = []
@@ -102,21 +97,20 @@ def get_scan_spins(final_scan_position):
     return sections
 
 
-"""
-Extracts charges from charge_mull.xls for each scan and stores them as a dict.
-Parameters
-----------
-iter_pairs : dictionary
-    The scan step number as the key and iterations as the value    
-    
-Returns
--------
-charge_pairs : dictionary
-    The scan step number as the key and the charge section as the key
-"""
-
-
 def get_scan_charges(final_scan_position):
+    """
+    Extracts charges from charge_mull.xls for each scan and stores them as a dict.
+
+    Parameters
+    ----------
+    iter_pairs : dictionary
+        The scan step number as the key and iterations as the value.
+
+    Returns
+    -------
+    charge_pairs : dictionary
+        The scan step number as the key and the charge section as the key.
+    """
     section_count = 0
     section_content = ""
     sections = []

@@ -1,13 +1,14 @@
-"""
-Docs: https://github.com/davidkastner/pyQMMM/blob/main/pyqmmm/README.md
-DESCRIPTION
+# Docs: https://pyqmmm.readthedocs.io/en/latest/
+# DESCRIPTION
+#     Calculates the distance between two centroids from an xyz traj.
+#     Just provide two sets of atoms, and we handle the rest.
+#     Returns the distance per frame and the average distance and std.
+
+#     Author: David Kastner
+#     Massachusetts Institute of Technology
+#     kastner (at) mit . edu
 
 
-    Author: David Kastner
-    Massachusetts Institute of Technology
-    kastner (at) mit . edu
-
-"""
 ################################ DEPENDENCIES ##################################
 import sys
 from pyqmmm.modules import analyze

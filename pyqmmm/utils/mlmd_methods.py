@@ -1,4 +1,10 @@
-'''ML workflow using demystifying'''
+# Docs: https://github.com/davidkastner/pyQMMM/blob/main/pyqmmm/README.md
+# DESCRIPTION
+#     ML workflow using demystifying.
+
+#     Author: David Kastner
+#     Massachusetts Institute of Technology
+#     kastner (at) mit . edu
 
 from tkinter import FALSE
 import pandas as pd
@@ -12,8 +18,11 @@ import logging
 
 logger = logging.getLogger("Trp")
 
+
 def create_combined_csv():
-    '''Generate a starting dataframe and stor in at a CSV'''
+    '''
+    Generate a starting dataframe and stor in at a CSV
+    '''
 
     averaging_frame = 10.0
     # Read in original files as a dataframe
@@ -26,13 +35,13 @@ def create_combined_csv():
 
     # 1L2Y remove the features of the atoms that were change due to the mutation
     df_1l2y = df_1l2y.drop(df_1l2y.columns[atoms_1l2y], axis=1)
-    df_1l2y = df_1l2y.iloc[:,:-1] # The last column "Unnamed" is empty
+    df_1l2y = df_1l2y.iloc[:, :-1]  # The last column "Unnamed" is empty
     df_1l2y.columns = [x+1 for x in range(len(df_1l2y.columns))]
     df_1l2y = df_1l2y.groupby(df_1l2y.index // averaging_frame).mean()
 
     # 2JOF remove the features of the atoms that were change due to the mutation
     df_2jof = df_2jof.drop(df_2jof.columns[atoms_2jof], axis=1)
-    df_2jof = df_2jof.iloc[:,:-1] # The last column "Unnamed" is empty
+    df_2jof = df_2jof.iloc[:, :-1]  # The last column "Unnamed" is empty
     df_2jof.columns = [x+1 for x in range(len(df_2jof.columns))]
     df_2jof = df_2jof.groupby(df_2jof.index // averaging_frame).mean()
 
@@ -50,7 +59,9 @@ def create_combined_csv():
 
 
 def data_processing(df, labels):
-    '''Format the data for the ML workflows'''
+    '''
+    Format the data for the ML workflows
+    '''
 
     # Scale each column such that all values are between 0 and 1
     scaler = MinMaxScaler()
@@ -71,17 +82,20 @@ def data_processing(df, labels):
     samples = samples[perm_inds]  # Apply the shuffling to the matrix
     labels = labels[perm_inds]  # Apply the same shuffling to the labels
     print('\nShuffling data.')
-    # samples, labels = shuffle(samples, labels, random_state=0)  
+    # samples, labels = shuffle(samples, labels, random_state=0)
 
     return samples, labels
 
+
 def run_trp_cage():
-    '''Run the ML processes'''
+    '''
+    Run the ML processes
+    '''
 
     # Get the processed data as a numpy array and the labels
     df, labels = create_combined_csv()
     samples, labels = data_processing(df, labels)
-    np.savetxt("foo.csv", samples, delimiter=",") # Check final matrix
+    np.savetxt("foo.csv", samples, delimiter=",")  # Check final matrix
 
     # Set the arguments for the ML workflows
     kwargs = {'samples': samples,
@@ -92,7 +106,7 @@ def run_trp_cage():
               'use_inverse_distances': False,
               'n_splits': 3,
               'n_iterations': 5,
-              'scaling': True,}
+              'scaling': True, }
 
     # Running various ML workflows
     models = ['PCA', 'RBM', 'AE', 'RF', 'KL', 'MLP']
@@ -116,7 +130,8 @@ def run_trp_cage():
         print(f'\nRunning {model} model.')
         extractor.extract_features()
         # Post-process data (rescale and filter feature importances)
-        postprocessor = extractor.postprocessing(working_dir=working_dir, rescale_results=True, filter_results=False, feature_to_resids=None)
+        postprocessor = extractor.postprocessing(
+            working_dir=working_dir, rescale_results=True, filter_results=False, feature_to_resids=None)
         postprocessor.average()
         postprocessor.persist()
         postprocessors.append(postprocessor)
@@ -128,6 +143,7 @@ def run_trp_cage():
                             show_performance=False,
                             highlighted_residues=[22],
                             outfile="./importance.pdf")
+
 
 # Execute the script
 if __name__ == "__main__":

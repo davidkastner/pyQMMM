@@ -1,15 +1,11 @@
-"""
-Docs: https://github.com/davidkastner/pyQMMM/blob/main/pyqmmm/README.md
-DESCRIPTION
-    Generates plots for the common files: energy, water density, RMSD, and RoG.
+# Docs: https://github.com/davidkastner/pyQMMM/blob/main/pyqmmm/README.md
+# DESCRIPTION
+#     Generates plots for the common files: energy, water density, RMSD, and RoG.
 
-    Author: David Kastner
-    Massachusetts Institute of Technology
-    kastner (at) mit . edu
+#     Author: David Kastner
+#     Massachusetts Institute of Technology
+#     kastner (at) mit . edu
 
-"""
-
-# Imports packages and dependencies
 import pandas as pd
 import matplotlib.pyplot as plt
 import os.path
@@ -17,8 +13,6 @@ from pathlib import Path
 
 
 # Converts a dat file to csv
-
-
 def dat2df(dat_file):
     df = pd.read_csv(dat_file, sep="\s+", header=None, skiprows=1)
     new_indexes = list(range(1, df.shape[0] + 1))
@@ -27,8 +21,6 @@ def dat2df(dat_file):
 
 
 # Generalizable plotting function
-
-
 def get_plot(df, yaxis, title, color, saveloc):
     plt.rc("axes", linewidth=2.5)
     plt.rcParams['svg.fonttype'] = 'none'

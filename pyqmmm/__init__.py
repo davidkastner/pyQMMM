@@ -1,7 +1,7 @@
 """Python package for manipulating QM and MD trajectories"""
 
 # Add imports here
-from .pyqmmm import *
+from pyqmmm import *
 
 # Handle versioneer
 from ._version import get_versions

@@ -1,14 +1,10 @@
-"""
-Docs: https://github.com/davidkastner/hyscore-plotter/blob/main/README.md
-DESCRIPTION
-   Creates a series of KDE plots based on HYSCORE-guided simulations.
-   Author: David Kastner
-   Massachusetts Institute of Technology
-   kastner (at) mit . edu
-SEE ALSO
-    N/A
-"""
-################################ DEPENDENCIES ##################################
+# Docs: https://github.com/davidkastner/hyscore-plotter/blob/main/README.md
+# DESCRIPTION
+#    Creates a series of KDE plots based on HYSCORE-guided simulations.
+#    Author: David Kastner
+#    Massachusetts Institute of Technology
+#    kastner (at) mit . edu
+
 import numpy as np
 import time
 import glob
@@ -24,23 +20,19 @@ import matplotlib.cm as cm
 from scipy.stats import gaussian_kde
 from matplotlib.patches import Rectangle
 
-################################## FUNCTIONS ###################################
-"""
-Parses the config file for the users parameters
-Parameters
-----------
-
-Returns
--------
-labels : dictionary
-    Contains labels section where the key is the name and the values is itself
-plot_params : list
-    A list of dictionaries where the index is the plot number and 
-    the values are the associated floats from the config file
-"""
-
 
 def config():
+    """
+    Parses the config file for the users parameters.
+
+    Returns
+    -------
+    labels : dictionary
+        Contains labels section where the key is the name and the values is itself.
+    plot_params : list
+        A list of dictionaries where the index is the plot number and 
+        the values are the associated floats from the config file.
+    """
     # Check if the user has provided a config file
     if os.path.isfile("./1_in/config"):
         print("Parameters obtained from config file.")
@@ -69,21 +61,17 @@ def config():
     return labels, plot_params
 
 
-"""
-Combines a CPPTraj output file with angles and another with distances.
-Parameters
-----------
-N/A
-Returns
--------
-combined : file
-    Generates a file with the combined distances and angles for each plot.
-file_array : list
-    List of all the files that are generated.
-"""
-
-
 def combine_inp():
+    """
+    Combines a CPPTraj output file with angles and another with distances.
+
+    Returns
+    -------
+    combined : file
+        Generates a file with the combined distances and angles for each plot.
+    file_array : list
+        List of all the files that are generated.
+    """
     # Determine the number of plots the user wants based on angle and dist files
     num_ang = glob.glob("./1_in/*_angles.dat")
     num_dist = glob.glob("./1_in/*_distances.dat")
@@ -109,22 +97,22 @@ def combine_inp():
     return file_array
 
 
-"""
-Takes a combined files and destructures it into arrays.
-Parameters
-----------
-filename : str
-    The name of the file.
-Returns
--------
-x : array
-    The x-values most likely a list of distances.
-y : array
-    The y-values most likely a list of angles.
-"""
-
-
 def get_xy_data(filename):
+    """
+    Takes a combined files and destructures it into arrays.
+
+    Parameters
+    ----------
+    filename : str
+        The name of the file.
+
+    Returns
+    -------
+    x : array
+        The x-values most likely a list of distances.
+    y : array
+        The y-values most likely a list of angles.
+    """
     # Open a file and loop through it splitting by white space
     with open(filename, "r") as file:
         x = []
@@ -140,24 +128,24 @@ def get_xy_data(filename):
         return x, y
 
 
-"""
-Retrieves the x and y data from the files.
-Parameters
-----------
-filenames : list
-    List of the combined file names that were generated.
-Returns
--------
-x_data : array
-    A list of values in the x dimension
-y_data : array
-    A list of values in the y dimension
-z_data : array
-    A list of values in the z dimension
-"""
-
-
 def collect_xyz_data(filenames):
+    """
+    Retrieves the x and y data from the files.
+
+    Parameters
+    ----------
+    filenames : list
+        List of the combined file names that were generated.
+
+    Returns
+    -------
+    x_data : array
+        A list of values in the x dimension.
+    y_data : array
+        A list of values in the y dimension.
+    z_data : array
+        A list of values in the z dimension.
+    """
     # Collect data
     print("Starting data collection.")
     x_data = []
@@ -178,26 +166,26 @@ def collect_xyz_data(filenames):
     return x_data, y_data, z_data
 
 
-"""
-Checks all the data sets and decides what the x and y bounds should be.
-Parameters
-----------
-x_data : list
-    A list of lists with the x data for each plot as a list within the list
-y_data : list
-    A list of lists with the y data for each plot as a list within the list
-patch_param : list
-    The dimensions of the patch as min and max for the the height and width
-Returns
--------
-xlim : list
-    The lowest and highest values on the x-axis
-ylim : list
-    The lowest and highest values on the y-axis
-"""
-
-
 def compare_patch_limits(x_data, y_data, patch_params):
+    """
+    Checks all the data sets and decides what the x and y bounds should be.
+
+    Parameters
+    ----------
+    x_data : list
+        A list of lists with the x data for each plot as a list within the list.
+    y_data : list
+        A list of lists with the y data for each plot as a list within the list.
+    patch_param : list
+        The dimensions of the patch as min and max for the the height and width.
+
+    Returns
+    -------
+    xlim : list
+        The lowest and highest values on the x-axis.
+    ylim : list
+        The lowest and highest values on the y-axis.
+    """
     # Unpack the dimensions of the patch
     height_min, height_max, width_min, width_max = patch_params
     # Identify max and min values from x and y data sets
@@ -225,19 +213,15 @@ def compare_patch_limits(x_data, y_data, patch_params):
     return xlim, ylim
 
 
-"""
-Description.
-Parameters
-----------
-
-Returns
--------
-hyscore_kde.png : PNG
-    A PNG depicting the KDE analysis at 300 dpi.
-"""
-
-
 def get_plot_limits(x_data, y_data, plot_params):
+    """
+    Create the box and crosshairs.
+
+    Returns
+    -------
+    hyscore_kde.png : PNG
+        A PNG depicting the KDE analysis at 300 dpi.
+    """
     # size group extremes
     group_curr_max_min = {}
     size_group_list = []
@@ -286,19 +270,15 @@ def get_plot_limits(x_data, y_data, plot_params):
     return xlims, ylims
 
 
-"""
-Description.
-Parameters
-----------
-
-Returns
--------
-hyscore_kde.png : PNG
-    A PNG depicting the KDE analysis at 300 dpi.
-"""
-
-
 def graph_datasets(x_data, y_data, z_data, labels, plot_params, show_crosshairs):
+    """
+    Graph the dataset.
+
+    Returns
+    -------
+    hyscore_kde.png : PNG
+        A PNG depicting the KDE analysis at 300 dpi.
+    """
 
     # Lab styling graph properties
     font = {"family": "sans-serif", "weight": "bold", "size": 18}
@@ -337,7 +317,7 @@ def graph_datasets(x_data, y_data, z_data, labels, plot_params, show_crosshairs)
     ymin = min([i for lis in ylims for i in lis])
 
     ymax_spread = [ymin, ymax]
-    plt.ylim(ymax_spread) # Axis limits
+    plt.ylim(ymax_spread)  # Axis limits
 
     # Loop through the the data associated with each plot
     for i in range(len(x_data)):
@@ -371,8 +351,8 @@ def graph_datasets(x_data, y_data, z_data, labels, plot_params, show_crosshairs)
         axes.scatter(
             x_data[i], y_data[i], c=z_data[i], s=40, vmin=0, vmax=0.30, cmap=cmap
         )
-        axes.set_xlim(xlim) # Axis limits
-   
+        axes.set_xlim(xlim)  # Axis limits
+
         if show_crosshairs:
             # Calculate the dimensions for the patch and define patch
             anchor = (width_min, height_min)

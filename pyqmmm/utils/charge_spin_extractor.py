@@ -1,13 +1,11 @@
-"""
-Docs: https://github.com/davidkastner/pyQMMM/blob/main/pyqmmm/README.md
-DESCRIPTION
-    Extract charge and spin data for a given subset of atoms for graphing.
-    Written to interpet TeraChem mullpop and charge_mull.xls files.
+# Docs: https://pyqmmm.readthedocs.io/en/latest/
+# DESCRIPTION
+#     Extract charge and spin data for a given subset of atoms for graphing.
+#     Written to interpet TeraChem mullpop and charge_mull.xls files.
 
-    Author: David Kastner
-    Massachusetts Institute of Technology
-    kastner (at) mit . edu
-"""
+#     Author: David Kastner
+#     Massachusetts Institute of Technology
+#     kastner (at) mit . edu
 
 import glob
 
@@ -72,20 +70,21 @@ def get_atoms():
 
 def get_spins(atoms, file, selection):
     """
-    Gets the charges for the atoms specified by the user and sums them
+    Gets the charges for the atoms specified by the user and sums them.
+
     Parameters
     ----------
     atoms : list
-        list of atoms indices
+        List of atoms indices.
     file : str
-        the name of the file that you would like to analyze
+        The name of the file that you would like to analyze.
     selection : list
-        the indices of the atoms that the user would like the charge and spin for
+        The indices of the atoms that the user would like the charge and spin for
 
     Returns
     -------
     net_spins : list
-        list fo spins corresponding to each image in the scan
+        List fo spins corresponding to each image in the scan
     """
 
     # Sum the spins for the user selected atoms
@@ -117,20 +116,21 @@ def get_spins(atoms, file, selection):
 
 def get_charges(atoms, file, selection):
     """
-    Gets the charge for the atoms specified by the user and sums them
+    Gets the charge for the atoms specified by the user and sums them.
+
     Parameters
     ----------
     atoms : list
-        list of atoms indices
+        List of atoms indices.
     file : str
-        the name of the file that you would like to analyze
+        The name of the file that you would like to analyze.
     selection : list
-        the indices of the atoms that the user would like the charge and spin for
+        The atom indices for which the user would like the charge and spin.
 
     Returns
     -------
     net_spins : list
-        list fo spins corresponding to each image in the scan
+        List fo spins corresponding to each image in the scan.
     """
 
     # Sum the charges for the user selected atoms
@@ -162,13 +162,14 @@ def get_charges(atoms, file, selection):
 
 def write_data(file, net_data):
     """
-    Writes out the data for either the charge or spin
+    Writes out the data for either the charge or spin.
+
     Parameters
     ----------
     file : str
-        the name of the file where we are going to write out the data
+        The name of the file where we are going to write out the data.
     net_data : list
-        list of data extracted from either the spin or charge files
+        List of data extracted from either the spin or charge files.
     """
 
     with open(file, "w") as select_file:

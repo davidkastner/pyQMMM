@@ -1,15 +1,13 @@
-"""
-Docs: https://github.com/davidkastner/pyQMMM/blob/main/pyqmmm/README.md
-DESCRIPTION
-    Searches through the job output for a TeraChem job.
-    Collects the energies into a CSV file as a pandas dataframe.
+# Docs: https://github.com/davidkastner/pyQMMM/blob/main/pyqmmm/README.md
+# DESCRIPTION
+#     Searches through the job output for a TeraChem job.
+#     Collects the energies into a CSV file as a pandas dataframe.
 
-    Author: David Kastner
-    Massachusetts Institute of Technology
-    kastner (at) mit . edu
+#     Author: David Kastner
+#     Massachusetts Institute of Technology
+#     kastner (at) mit . edu
 
-"""
-################################ DEPENDENCIES ##################################
+
 import glob
 import pandas as pd
 import plotly.io as pio
@@ -17,23 +15,21 @@ import plotly.graph_objs as go
 import plotly.express as px
 from plotly.offline import download_plotlyjs, init_notebook_mode, plot, iplot
 
-################################# FUNCTIONS ####################################
-"""
-Loop through the file, collect optimized energies.
-
-Parameters
-----------
-
-Returns
--------
-energy_df : dataframe
-    The optimized energy from the current convergence line of the file.
-energy_list : list
-    Returns a list of the energies extracted from the .out file.
-"""
-
 
 def get_opt_energies(file_path):
+    """
+    Loop through the file, collect optimized energies.
+
+    Parameters
+    ----------
+
+    Returns
+    -------
+    energy_df : dataframe
+        The optimized energy from the current convergence line of the file.
+    energy_list : list
+        Returns a list of the energies extracted from the .out file.
+    """
     energy_list = []
     opt_iter = 1
     with open(file_path, "r") as out_file:
@@ -60,22 +56,17 @@ def get_opt_energies(file_path):
     return energy_list
 
 
-"""
-Loop through the file, collect final energies.
-
-Parameters
-----------
-
-Returns
--------
-energy_df : dataframe
-    The optimized energy from the current convergence line of the file.
-energy_list : list
-    Returns a list of the energies extracted from the .out file.
-"""
-
-
 def get_final_energies(file_path):
+    """
+    Loop through the file, collect final energies.
+
+    Returns
+    -------
+    energy_df : dataframe
+        The optimized energy from the current convergence line of the file.
+    energy_list : list
+        Returns a list of the energies extracted from the .out file.
+    """
     energy_list = []
     conv_iter = 1
     with open(file_path, "r") as out_file:
@@ -95,18 +86,10 @@ def get_final_energies(file_path):
     return energy_list
 
 
-"""
-Set lab styling preferences for plotly.
-
-Parameters
-----------
-
-Returns
--------
-"""
-
-
 def plotly_styling():
+    """
+    Set lab styling preferences for plotly.
+    """
     glob_layout = go.Layout(
         font=dict(family="Helvetica", size=24, color="black"),
         margin=dict(l=100, r=10, t=10, b=100),
@@ -142,18 +125,10 @@ def plotly_styling():
     return glob_layout
 
 
-"""
-Generate a scatterplot to help quickly vizualize the data.
-
-Parameters
-----------
-
-Returns
--------
-"""
-
-
 def get_scatter_plot(energy_lists):
+    """
+    Generate a scatterplot to help quickly vizualize the data.
+    """
     glob_layout = plotly_styling()
     colors = ["#FFA500", "#6495ED", "#9370DB", "#E63946", "#000000", "#2a9d8f"]
     name_list = ["Acute", "Obtuse", "Axial", "good", "normal", "wpbeh"]

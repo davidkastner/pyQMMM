@@ -1,34 +1,27 @@
-"""
-Docs: https://github.com/davidkastner/pyQMMM/blob/main/pyqmmm/README.md
-DESCRIPTION
-    Performs charge shift analysis (CSA) form TeraChem output.
+# Docs: https://github.com/davidkastner/pyQMMM/blob/main/pyqmmm/README.md
+# DESCRIPTION
+#     Performs charge shift analysis (CSA) form TeraChem output.
 
-    Author: David Kastner, Heather Kulik, PhD
-    Massachusetts Institute of Technology
-    kastner (at) mit . edu
+#     Author: David Kastner, Heather Kulik, PhD
+#     Massachusetts Institute of Technology
+#     kastner (at) mit . edu
 
-"""
-################################ DEPENDENCIES ##################################
 import os
 import sys
 import shutil
 
-################################## FUNCTIONS ###################################
-
-"""
-Searches the current directory for required files, prints missing file alerts, 
-and cleans the directory into a three-folder system: 1_input, 2_temp, and 3_out
-Parameters
-----------
-pdb_name : str
-    The name of the PDB that the user would like processed
-    
-Returns
--------
-"""
-
 
 def clean_dir():
+    """
+    Searches the current directory for files, prints missing file alerts.
+
+    Cleans the directory into a three-folder system: 1_input, 2_temp, and 3_out.
+
+    Parameters
+    ----------
+    pdb_name : str
+        The name of the PDB that the user would like processed.
+    """
     # Asks the user for the name of the pdb that they would like to process
     pdb_name = input("What is the name of your pdb (e.g., 1OS7, 6EDH, etc.)? ")
     extension = pdb_name[-4:]
@@ -49,19 +42,15 @@ def clean_dir():
     return pdb_name
 
 
-"""
-Check the current directory for the five required files and move them
-Parameters
-----------
-file_system_exists : boolean
-    The path of the user's full PDB
-    
-Returns
--------
-"""
-
-
 def file_mover(file_system_exists, pdb_name):
+    """
+    Check the current directory for the five required files and move them.
+
+    Parameters
+    ----------
+    file_system_exists : boolean
+        The path of the user's full PDB.
+    """
     required_files = [
         pdb_name,
         "apo_list",
@@ -82,21 +71,20 @@ def file_mover(file_system_exists, pdb_name):
                 print("{} is not in your current directory".format(file))
 
 
-"""
-Create a list of the residues that should belong to the holo/apo regions.
-Parameters
-----------
-type : str
-    Tell function if it is the holo or apo list
-    
-Returns
--------
-mask_res_list : res_type_array
-    An array of all the residues that the user wants included in their mask
-"""
-
-
 def get_mask_res(type):
+    """
+    Create a list of the residues that should belong to the holo/apo regions.
+
+    Parameters
+    ----------
+    type : str
+        Tell function if it is the holo or apo list.
+
+    Returns
+    -------
+    mask_res_list : res_type_array
+        An array of all the residues that the user wants included in their mask.
+    """
     try:
         with open("./1_input/{}_list".format(type)) as mask_res_file:
             mask_list = mask_res_file.read().strip().split(",")
@@ -106,21 +94,19 @@ def get_mask_res(type):
     return mask_list
 
 
-"""
-Using the input from the user, 
-this funtino will create the apo and holo masks from the original PDB file.
-Parameters
-----------
-raw_mask : str
-    A list of residues that the user would like pulled from the original PDB.
-pdb_name : str
-    The name of the users original PDB file that will will create the mask from.
-type : str
-    Tell function if it is the holo or apo mask
-"""
-
-
 def mask_maker(mask, pdb_name, type):
+    """
+    Create the apo and holo masks from the original PDB file.
+
+    Parameters
+    ----------
+    raw_mask : str
+        A list of residues that the user wants pulled from the original PDB.
+    pdb_name : str
+        The name of the user's original PDB file from which we create the mask.
+    type : str
+        Tell function if it is the holo or apo mask.
+    """
 
     print("Creating the {} mask".format(type))
     # Create a list from the users input
@@ -140,7 +126,7 @@ def mask_maker(mask, pdb_name, type):
                 # We don't won't to count chain breaks as a discarded residue
                 if line[:3] == "TER":
                     continue
-                # We don't want to include the last line so we will watch for END
+                # We don't want to include the last line so we watch for END
                 if line[:3] == "END":
                     break
     # Print important statistics for the user
@@ -150,16 +136,15 @@ def mask_maker(mask, pdb_name, type):
     open("./2_temp/{}_link_atoms".format(type), "w")  # TODO: add section
 
 
-"""
-Collect the charges from the charge.xls file.
-Parameters
-----------
-type : str
-    Tell function if it is the holo or apo mask
-"""
-
-
 def collect_charges(type):
+    """
+    Collect the charges from the charge.xls file.
+
+    Parameters
+    ----------
+    type : str
+        Tell function if it is the holo or apo mask.
+    """
     # Open the mask atoms and link atoms files
     mask_atoms = open("./2_temp/{}_mask".format(type), "r").readlines()
     link_atoms = open("./2_temp/{}_link_atoms".format(type), "r").readlines()
@@ -220,19 +205,15 @@ def collect_charges(type):
     link.close()
 
 
-"""
-Calculate the difference in the charges for the apo and holo residue list files.
-Parameters
-----------
-Returns
--------
-res_diff : list
-    A list of the residues or ligands that were removed in the holo structure,
-    creating the apo structure.
-"""
-
-
 def get_res_diff():
+    """
+    Calculate the charge difference for the apo and holo residue list files.
+
+    Returns
+    -------
+    res_diff : list
+        A list of the residues that were removed in the holo structure.
+    """
     holo_mull = open("./2_temp/holo.mullres", "r").readlines()
     apo_mull = open("./2_temp/apo.mullres", "r").readlines()
 
@@ -255,17 +236,15 @@ def get_res_diff():
     return res_diff
 
 
-"""
-Calculate the difference in the charges for the apo and holo residue list files.
-Parameters
-----------
-ns_res_list : list
-    A list of the residues or ligands that were removed in the holo structure,
-    creating the apo structure.
-"""
-
-
 def charge_diff():
+    """
+    Calculate the difference in the charges for the apo and holo residue lists.
+
+    Parameters
+    ----------
+    ns_res_list : list
+        A list of the residues that were removed in the holo structure.
+    """
     # Get the differences in the charges for the holo and apo structures
     res_diff = get_res_diff()
     # Open recently created holo and apo charge files
@@ -321,17 +300,11 @@ def charge_diff():
             )
 
 
-"""
-Introduces the user to Quick CSA and provides information on how it is run.
-Also contains information about the required files and the naming conventions.
-Parameters
-----------
-Returns
--------
-"""
-
-
 def quick_csa_intro():
+    """
+    Introduces the user to Quick CSA and provides information on how it is run.
+    Contains information about the required files and the naming conventions.
+    """
     print("\n.----------------------.")
     print("| WELCOME TO QUICK CSA |")
     print(".----------------------.\n")
@@ -347,17 +320,11 @@ def quick_csa_intro():
     print("   - Holo file should be called holo_cahrge.xls\n")
 
 
-"""
-The central funtion for the Quick CSA program that handles the other functions.
-This function is also provided as a module in the pyQM/MM package.
-Parameters
-----------
-Returns
--------
-"""
-
-
 def quick_csa():
+    """
+    The central handler funtion for the Quick CSA program.
+    This function is also provided as a module in the pyQM/MM package.
+    """
     # Introduce user to Quick CSA
     quick_csa_intro()
 

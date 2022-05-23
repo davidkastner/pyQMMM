@@ -1,33 +1,25 @@
-"""
-Docs: https://github.com/davidkastner/pyQMMM/blob/main/pyqmmm/README.md
-DESCRIPTION
-    Creates a list with the indices of all heavy atoms in an xyz.
-    This is useful if you want to only optimize the hydrogen positions.
+# Docs: https://github.com/davidkastner/pyQMMM/blob/main/pyqmmm/README.md
+# DESCRIPTION
+#     Creates a list with the indices of all heavy atoms in an xyz.
+#     This is useful if you want to only optimize the hydrogen positions.
 
-    Author: David Kastner
-    Massachusetts Institute of Technology
-    kastner (at) mit . edu
+#     Author: David Kastner
+#     Massachusetts Institute of Technology
+#     kastner (at) mit . edu
 
-"""
-################################ DEPENDENCIES ##################################
 import os
 import sys
 
-################################## FUNCTIONS ###################################
-
-"""
-Check the current dir for an .xyz file and let user know if one exists.
-Parameters
-----------
-N/A
-Returns
--------
-file : str
-    The name of the .xyz that we will loop through
-"""
-
 
 def get_xyz_file():
+    """
+    Check the current dir for an .xyz file and let user know if one exists.
+
+    Returns
+    -------
+    file : str
+        The name of the .xyz that we will loop through.
+    """
     files = os.listdir(".")
     count = 0
     current_file = ""
@@ -42,19 +34,15 @@ def get_xyz_file():
     return current_file
 
 
-"""
-Search the user's xyz file for the index of all hydrogen atoms.
-Parameters
-----------
-file : str
-    The name of the .xyz that we will loop through
-Returns
--------
-N/A
-"""
-
-
 def find_heavy_atoms(file):
+    """
+    Search the user's xyz file for the index of all hydrogen atoms.
+
+    Parameters
+    ----------
+    file : str
+        The name of the .xyz that we will loop through.
+    """
     heavy_atoms_list = []
     with open(file, "r") as xyz_file:
         for index, line in enumerate(list(xyz_file)[2:]):

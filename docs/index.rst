@@ -1,23 +1,35 @@
 .. pyqmmm documentation master file, created by
    sphinx-quickstart on Thu Mar 15 13:55:56 2018.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
 
-Welcome to pyQMMM's documentation!
+.. image:: _static/logo-white.svg
+
+pyQMMM Docs
 =========================================================
 
+.. container:: .large
+
+   pyQMMM is a Python package designed to analysis and visualize molecular trajectories. 
+   The file formats `XYZ <https://www.cgl.ucsf.edu/chimera/docs/UsersGuide/xyz.html>`_
+   and `PDB <https://www.cgl.ucsf.edu/chimera/docs/UsersGuide/tutorials/pdbintro.html>`_
+   are currently supported.
+
+.. container:: .buttons
+
+   `Docs <getting_started.html>`_
+   `GitHub <https://github.com/davidkastner/pyQMMM>`_
+
 .. toctree::
-   :maxdepth: 2
-   :caption: Contents:
+   :maxdepth: 0
+   :caption: Contents
+   :hidden:
 
    getting_started
+   dev_guide
    api
 
+.. toctree::
+   :caption: More
+   :hidden:
 
+   ♡ Sponsor <https://www.buymeacoffee.com/kastner>
 
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`

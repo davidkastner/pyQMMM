@@ -1,13 +1,11 @@
-"""
-Docs: https://github.com/davidkastner/pyQMMM/blob/main/pyqmmm/README.md
-DESCRIPTION
-    Reads in DCCM data and formats it into the Kulik Lab standard format.
+# Docs: https://pyqmmm.readthedocs.io/en/latest/
+# DESCRIPTION
+#     Reads in DCCM data and formats it into the Kulik Lab standard format.
 
-    Author: David Kastner
-    Massachusetts Institute of Technology
-    kastner (at) mit . edu
+#     Author: David Kastner
+#     Massachusetts Institute of Technology
+#     kastner (at) mit . edu
 
-"""
 
 ################################ DEPENDENCIES ##################################
 import matplotlib.pyplot as plt
