@@ -53,7 +53,7 @@ def get_scan_spins(final_scan_position):
     Parameters
     ----------
     iter_pairs : dictionary
-        The scan step number as the key and iterations as the value. 
+        The scan step number as the key and iterations as the value.
 
     Returns
     -------

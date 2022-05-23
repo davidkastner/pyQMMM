@@ -192,9 +192,9 @@ def collect_charges(type):
     mull = open("./2_temp/{}.mullres".format(type), "w")
     link = open("./2_temp/{}.linkres".format(type), "w")
 
-    for res in range(len(res_list)):
-        mull.write("{} {}\n".format(res_list[res], tot_charge[res]))
-        link.write("{} {}\n".format(res_list_link[res], tot_charge_link[res]))
+    for idx, res in enumerate(res_list):
+        mull.write("{} {}\n".format(res, tot_charge[idx]))
+        link.write("{} {}\n".format(res, tot_charge_link[idx]))
 
     mull.close()
     link.close()
@@ -256,14 +256,14 @@ def charge_diff():
     n = 0
 
     # Calculate the differences in the charges for the holo and apo
-    for line in range(len(holo_mull)):
-        holo_mull_res, holo_mull_charge = holo_mull[line].strip("\n").split()
-        holo_link_res, holo_link_charge = holo_link[line].strip("\n").split()
+    for idx, line in enumerate(holo_mull):
+        holo_mull_res, holo_mull_charge = line.strip("\n").split()
+        holo_link_res, holo_link_charge = holo_link[idx].strip("\n").split()
         if holo_mull_res in res_diff:
             n -= 1
         else:
-            _, apo_mull_charge = apo_mull[line + n].strip("\n").split()
-            _, apo_link_charge = apo_link[line + n].strip("\n").split()
+            _, apo_mull_charge = apo_mull[idx + n].strip("\n").split()
+            _, apo_link_charge = apo_link[idx + n].strip("\n").split()
             diff = float(holo_mull_charge) - float(apo_mull_charge)
             diff_link = float(holo_link_charge) - float(apo_link_charge)
             res_list.append(holo_mull_res)

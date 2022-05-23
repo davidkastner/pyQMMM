@@ -21,7 +21,7 @@ def config():
     labels : dictionary
         Contains labels section where the key is the name and the values is itself.
     plot_params : list
-        A list of dictionaries where the index is the plot number and 
+        A list of dictionaries where the index is the plot number and
         the values are the associated floats from the config file.
     """
     # Check if the user has provided a config file
@@ -74,16 +74,16 @@ def combine_inp():
     # Combine the dist and angle files into a single file
     file_array = []
     for num in range(1, num_plots + 1):
-        file_array.append("./2_temp/{}_combined.dat".format(num))
-        with open("./2_temp/{}_combined.dat".format(num), "w") as combined:
-            with open("./1_in/{}_angles.dat".format(num), "r") as ang_file:
-                with open("./1_in/{}_distances.dat".format(num), "r") as dist_file:
+        file_array.append("./2_temp/{num}_combined.dat")
+        with open("./2_temp/{num}_combined.dat", "w") as combined:
+            with open("./1_in/{num}_angles.dat", "r") as ang_file:
+                with open("./1_in/{num}_distances.dat", "r") as dist_file:
                     for ang_line, dist_line in zip(ang_file, dist_file):
                         if "#" in ang_line:
                             continue
                         angle = ang_line.split()[1]
                         dist = dist_line.split()[1]
-                        combined.write("{} {}\n".format(dist, angle))
+                        combined.write("{dist} {angle}\n")
 
     return file_array
 

@@ -90,7 +90,8 @@ def multiframe_xyz_to_list(xyz_filename):
 
 
 def combine_xyz_files(
-    request_frames, combined_filename="combined.xyz",
+    request_frames,
+    combined_filename="combined.xyz",
 ):
     """
     Combines two xyz files into one.
