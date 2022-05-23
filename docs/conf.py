@@ -41,31 +41,30 @@ release = ''
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
-    # 'autoapi.extension',
-    'sphinx.ext.autosummary',
-    'sphinx.ext.autodoc',
+    'autoapi.extension',
+    # 'sphinx.ext.autosummary',
+    # 'sphinx.ext.autodoc',
     'sphinx.ext.mathjax',
     'sphinx.ext.viewcode',
     'sphinx.ext.napoleon',
     'sphinx.ext.intersphinx',
     'sphinx.ext.extlinks',
     "revitron_sphinx_theme",
-    # "numpydoc"
 ]
 
-autosummary_generate = True
-# autoapi_type = 'python'
-# autoapi_dirs = ['../pyqmmm']
-# autoapi_ignore = ["*/tests/*",
-#                   "*_version.py"]
+# autosummary_generate = True
+autoapi_type = 'python'
+autoapi_dirs = ['../pyqmmm']
+autoapi_ignore = ["*/tests/*",
+                  "*_version.py"]
 
-# autoapi_options = ['members',
-#                    'undoc-members',
-#                    # 'private-members',
-#                    # 'special-members',
-#                    'show-inheritance',
-#                    'show-module-summary',
-#                    'imported-members']
+autoapi_options = ['members',
+                   'undoc-members',
+                   # 'private-members',
+                   # 'special-members',
+                   'show-inheritance',
+                   'show-module-summary',
+                   'imported-members']
 
 napoleon_google_docstring = False
 napoleon_use_param = False
