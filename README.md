@@ -2,8 +2,8 @@
 pyQMMM
 ==============================
 [//]: # (Badges)
-[![GitHub Actions Build Status](https://github.com/REPLACE_WITH_OWNER_ACCOUNT/pyqmmm/workflows/CI/badge.svg)](https://github.com/davidkastner/pyqmmm/actions?query=workflow%3ACI)
-[![codecov](https://codecov.io/gh/davidkastner/pyQMMM/branch/master/graph/badge.svg)](https://codecov.io/gh/REPLACE_WITH_OWNER_ACCOUNT/pyQMMM/branch/master)
+[![GitHub Actions Build Status](https://github.com/davidkastner/pyqmmm/workflows/CI/badge.svg)](https://github.com/davidkastner/pyqmmm/actions?query=workflow%3ACI)
+[![codecov](https://codecov.io/gh/davidkastner/pyQMMM/branch/master/graph/badge.svg)](https://codecov.io/gh/davidkastner/pyQMMM/branch/master)
 
 
 Python package for manipulating QM and MD trajectories
