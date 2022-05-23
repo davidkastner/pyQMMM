@@ -1,9 +1,4 @@
-# Docs: https://github.com/davidkastner/hyscore-plotter/blob/main/README.md
-# DESCRIPTION
-#    Creates a series of KDE plots based on HYSCORE-guided simulations.
-#    Author: David Kastner
-#    Massachusetts Institute of Technology
-#    kastner (at) mit . edu
+"""Creates a series of KDE plots based on HYSCORE-guided simulations."""
 
 import numpy as np
 import time

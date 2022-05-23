@@ -1,19 +1,13 @@
-# Docs: https://github.com/davidkastner/pyQMMM/blob/main/pyqmmm/README.md
-# DESCRIPTION
-#     Breaks up TeraChem optimization XYZ file into individual frames.
+"""Breaks up TeraChem optimization XYZ file into individual frames."""
 
-#     Author: David Kastner
-#     Massachusetts Institute of Technology
-#     kastner (at) mit . edu
-
-# Import necessary packages and dependencies
 import os
 import shutil
 
-# Check to see if user's xyz file is in the current directory
-
 
 def check_exists():
+    '''
+    Check to see if user's xyz file is in the current directory
+    '''
     name = input("What is the name of your .xyz ensemble (ignore extenstion)? ")
     file_name = "{}.xyz".format(name)
     if os.path.exists(file_name):
@@ -24,10 +18,10 @@ def check_exists():
     return file_name
 
 
-# Create a new directory to store the frames
-
-
 def create_dir():
+    '''
+    Create a new directory to store the frames
+    '''
     dir = "movie"
     if os.path.exists(dir):
         shutil.rmtree(dir)
@@ -36,10 +30,10 @@ def create_dir():
         os.makedirs(dir)
 
 
-# Break up the original xyz file
-
-
 def get_frames(file_name):
+    '''
+    Break up the original xyz file.
+    '''
     current_frame = 0
     with open(file_name, "r") as ensemble:
         for line in ensemble:

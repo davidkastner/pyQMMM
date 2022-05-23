@@ -1,4 +1,10 @@
+"""Swap any two atoms in an xyz."""
+
+
 def get_atom(which):
+    """
+    Get atoms from user.
+    """
     atom = input("What is the {} atom?".format(which))
     try:
         return int(atom)
@@ -8,6 +14,9 @@ def get_atom(which):
 
 
 def swap_atoms():
+    """
+    Swap two atoms in an xyz file.
+    """
     lines_lists = []
     lines_list = []
     atom1 = get_atom("first")

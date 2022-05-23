@@ -1,10 +1,4 @@
-# Docs: https://github.com/davidkastner/pyQMMM/blob/main/pyqmmm/README.md
-# DESCRIPTION
-#     Reunumbers waters that restart after reaching 9999.
-
-#     Author: David Kastner
-#     Massachusetts Institute of Technology
-#     kastner (at) mit . edu
+"""Reunumbers waters that restart after reaching 9999."""
 
 
 def waters_numerator():

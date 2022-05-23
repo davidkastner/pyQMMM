@@ -1,18 +1,12 @@
-# Docs: https://github.com/davidkastner/pyQMMM/blob/main/pyqmmm/README.md
-# DESCRIPTION
-#     Takes the ppm image output from VMD and converts them to PNGs.
-#     These can then be merged in blender to create a movie of the trajectory.
-#     Uses the pnmtopng utility so make sure it is installed.
-
-#     Author: David Kastner
-#     Massachusetts Institute of Technology
-#     kastner (at) mit . edu
-
+"""Takes the ppm image output from VMD and converts them to PNGs."""
 
 import os
 
 
 def ppm2png_converter():
+    """
+    Converts a PNG to a PNG.
+    """
     directory = "./"
     # Loop through all images in the current directory
     count = 0

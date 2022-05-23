@@ -1,13 +1,10 @@
-# Docs: https://github.com/davidkastner/pyQMMM/blob/main/pyqmmm/README.md
-# DESCRIPTION
-#     After performing a TeraChem PES, the coordinates are found in the xyz file.
-#     Using this file we can extract reaction coordinates against energies.
-#     This is can then be graphed in your plotter of choice such as XMGrace.
-#     The output is a .csv file with energies in column 1 and the RC in column 2.
+"""Extract RC against energy and generate CSV."""
 
-#     Author: David Kastner
-#     Massachusetts Institute of Technology
-#     kastner (at) mit . edu
+# After performing a TeraChem PES, the coordinates are found in the xyz file.
+# Using this file we can extract reaction coordinates against energies.
+# This is can then be graphed in your plotter of choice such as XMGrace.
+# The output is a .csv file with energies in column 1 and the RC in column 2.
+
 
 from math import comb
 from scipy.spatial import distance

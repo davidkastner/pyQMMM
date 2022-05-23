@@ -1,10 +1,4 @@
-# Docs: https://github.com/davidkastner/pdb-utilities/blob/main/README.md
-# DESCRIPTION
-#     Extract specific residues from a PDB file and save them as a new file.
-
-#     Author: David Kastner
-#     Massachusetts Institute of Technology
-#     kastner (at) mit . edu
+"""Extract specific residues from a PDB file and save them as a new file."""
 
 
 def pdb_residue_extractor():

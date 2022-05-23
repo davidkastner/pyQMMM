@@ -1,11 +1,4 @@
-# Docs: https://github.com/davidkastner/pyQMMM/blob/main/pyqmmm/README.md
-# DESCRIPTION
-#     Creates a list with the indices of all heavy atoms in an xyz.
-#     This is useful if you want to only optimize the hydrogen positions.
-
-#     Author: David Kastner
-#     Massachusetts Institute of Technology
-#     kastner (at) mit . edu
+"""Creates a list with the indices of all heavy atoms in an xyz."""
 
 import os
 import sys

@@ -1,12 +1,4 @@
-# Docs: https://github.com/davidkastner/pyQMMM/blob/main/pyqmmm/README.md
-# DESCRIPTION
-#     Searches through the job output for a TeraChem job.
-#     Collects the energies into a CSV file as a pandas dataframe.
-
-#     Author: David Kastner
-#     Massachusetts Institute of Technology
-#     kastner (at) mit . edu
-
+"""Collects the energies into a CSV file as a pandas dataframe."""
 
 import glob
 import pandas as pd
@@ -181,7 +173,8 @@ def pes_plotter():
     print(".-------------.\n")
     print("Collects the final energies from a TeraChem scan into a CSV file.")
     print("The script assumes the .out file is in the current directory.")
-    print("--------------------------\n")
+    print("Searches through the job output for a TeraChem job.")
+    print("Collects the energies into a CSV file as a pandas dataframe.")
 
     # Get a list of all the .out files in the current directory
     out_list = glob.glob(r"./*.out")

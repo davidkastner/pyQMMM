@@ -1,10 +1,4 @@
-# Docs: https://github.com/davidkastner/pyQMMM/blob/main/pyqmmm/README.md
-# DESCRIPTION
-#     Identify the ideal starting path for NEB from a TeraChem PES.
-
-#     Author: David Kastner
-#     Massachusetts Institute of Technology
-#     kastner (at) mit . edu
+"""Identify the ideal starting path for NEB from a TeraChem PES."""
 
 
 def user_input():

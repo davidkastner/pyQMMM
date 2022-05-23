@@ -1,14 +1,11 @@
-# Docs: https://github.com/davidkastner/pyQMMM/blob/main/pyqmmm/README.md
-# DESCRIPTION
-#     Combine the residue name and index of a protien (e.g., Ala100).
-#     This script solves the specific problem of obtaining residues for SI tables.
-#     In a PDB residues are of the form 'PRO   103' on each line,
-#     and contains duplicates for each at in the residue.
-#     This script parses a PDB to get a unique list of the residues in a protein.
+"""Combine the residue name and index of a protien into a single list."""
 
-#     Author: David Kastner
-#     Massachusetts Institute of Technology
-#     kastner (at) mit . edu
+# Combine the residue name and index of a protien (e.g., Ala100).
+# This script solves the specific problem of obtaining residues for SI tables.
+# In a PDB residues are of the form 'PRO   103' on each line,
+# and contains duplicates for each at in the residue.
+# This script parses a PDB to get a unique list of the residues in a protein.
+
 
 def res_name_format_extractor():
     # Parse the input text and clean the data

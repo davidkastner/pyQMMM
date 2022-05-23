@@ -1,11 +1,4 @@
-# Docs: https://github.com/davidkastner/pyQMMM/blob/main/pyqmmm/README.md
-# DESCRIPTION
-#     If the scratch dir fills up some frames may not be written to the mdcrd.
-#     This script checks to see if any frames were not written to the mdcrd.
-#     Author: David Kastner
-#     Massachusetts Institute of Technology
-#     kastner (at) mit . edu
-
+"""This script checks to see if any frames were not written to the mdcrd."""
 
 import re
 

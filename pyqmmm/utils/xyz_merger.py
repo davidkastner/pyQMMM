@@ -1,15 +1,10 @@
-# Docs: https://github.com/davidkastner/pyQMMM/blob/main/pyqmmm/README.md
-# DESCRIPTION
-#     Reaction path calculations often need to be restarted from a later point.
-#     For example, when rerunning a scan of the peak to get higher resolution TS.
-#     Afterwards, the .xyz files of the two scans need to be stitched together.
-#     Here, users can specify the frames from each file that need to be combined.
-#     The script will generate a new combined file.
+"""Combine frames into a single file."""
 
-#     Author: David Kastner
-#     Massachusetts Institute of Technology
-#     kastner (at) mit . edu
-
+# Reaction path calculations often need to be restarted from a later point.
+# For example, when rerunning a scan of the peak to get higher resolution TS.
+# Afterwards, the .xyz files of the two scans need to be stitched together.
+# Here, users can specify the frames from each file that need to be combined.
+# The script will generate a new combined file.
 
 import glob
 import matplotlib.pyplot as plt

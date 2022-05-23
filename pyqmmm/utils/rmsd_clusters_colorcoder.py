@@ -1,21 +1,15 @@
-# Docs: https://github.com/davidkastner/pyQMMM/blob/main/pyqmmm/README.md
-# DESCRIPTION
-#     Plots RMSD and colors points based on their corresponding clusters.
-
-#     Author: David Kastner
-#     Massachusetts Institute of Technology
-#     kastner (at) mit . edu
-
+"""Plots RMSD and colors points based on their corresponding clusters."""
 
 import pandas as pd
 import matplotlib.pyplot as plt
 import os.path
 from pathlib import Path
 
-# Converts a dat file to csv
-
 
 def dat2df(dat_file):
+    """
+    Converts a dat file to csv
+    """
     df = pd.read_csv(dat_file, sep="\s+", header=None, skiprows=1, index_col=0)
     df.index = [x / 500 for x in range(df.shape[0])]
     df = df.iloc[1:, :]
@@ -23,7 +17,9 @@ def dat2df(dat_file):
 
 
 def get_plot(final_df):
-    # General plotting parameters for the Kulik lab
+    """
+    General plotting parameters.
+    """
     font = {"family": "sans-serif", "weight": "bold", "size": 10}
     plt.rc("font", **font)
     plt.rcParams["axes.linewidth"] = 2.5
@@ -65,7 +61,9 @@ def get_plot(final_df):
 
 
 def rmsd_clusters_colorcoder():
-    # Welcome user and print some instructions
+    """
+    Welcome user and print some instructions.
+    """
     print("\n.--------------------------.")
     print("| RMSD CLUSTERS COLORCODER |")
     print(".--------------------------.\n")

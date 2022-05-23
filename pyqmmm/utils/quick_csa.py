@@ -1,10 +1,5 @@
-# Docs: https://github.com/davidkastner/pyQMMM/blob/main/pyqmmm/README.md
-# DESCRIPTION
-#     Performs charge shift analysis (CSA) form TeraChem output.
+"""Performs charge shift analysis (CSA) form TeraChem output."""
 
-#     Author: David Kastner, Heather Kulik, PhD
-#     Massachusetts Institute of Technology
-#     kastner (at) mit . edu
 
 import os
 import sys

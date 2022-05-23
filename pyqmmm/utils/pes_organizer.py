@@ -1,11 +1,8 @@
+"""This script will return the the charge and spin into a more readable format."""
+
 # Docs: https://github.com/davidkastner/pyQMMM/blob/main/pyqmmm/README.md
 # DESCRIPTION
-#    By default, TeraChem scans only print the charge and spin of the final frame.
-#    We change this by using the ml_prop keyword. Now every optimization will print.
-#    However, we only need the charge and spin at the end of each optimization.
-#    This script will return the the charge and spin into a readable format.
-#    The coordinates are already piped nicely to scan_optim.xyz.
-
+#
 #    Author: David Kastner
 #    Massachusetts Institute of Technology
 #    kastner (at) mit . edu
@@ -151,7 +148,12 @@ def pes_organizer():
     print("| PES ORGANIZER |")
     print(".---------------.\n")
     print("Use the ml_prop keyword when running your TeraChem scan.")
-    print("Execute this script from the directory where this job was run.\n")
+    print("Execute this script from the directory where this job was run.")
+    print("By default, TeraChem scans only print the charge and spin of the final frame.")
+    print("We change this by using the ml_prop keyword. Now every optimization will print.")
+    print("However, we only need the charge and spin at the end of each optimization.")
+    print("This script will return the the charge and spin into a more readable format.")
+    print("The coordinates are already piped nicely to scan_optim.xyz.")
 
     final_scan_position, scan_step_pairs = get_iteration_pairs()
     get_scan_spins(final_scan_position)

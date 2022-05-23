@@ -1,10 +1,4 @@
-# Docs: https://github.com/davidkastner/pyQMMM/blob/main/pyqmmm/README.md
-# DESCRIPTION
-#     Allows you to change the starting residue of a PDB file.
-
-#     Author: David Kastner
-#     Massachusetts Institute of Technology
-#     kastner (at) mit . edu
+"""Allows you to change the starting residue of a PDB file."""
 
 
 def renumber(pdb_name, offset):

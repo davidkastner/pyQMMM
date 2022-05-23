@@ -1,10 +1,4 @@
-# Docs: https://github.com/davidkastner/pyQMMM/blob/main/pyqmmm/README.md
-# DESCRIPTION
-#     Combines separate PDBs into a single ensemble.
-
-#     Author: David Kastner
-#     Massachusetts Institute of Technology
-#     kastner (at) mit . edu
+"""Combines separate PDBs into a single ensemble."""
 
 import os
 import shutil

@@ -4,4 +4,7 @@ API Documentation
 .. autosummary::
    :toctree: autoapi
 
-   pyqmmm
+   pyqmmm.utils
+   pyqmmm.tests
+   pyqmmm.modules
+   pyqmmm.classes

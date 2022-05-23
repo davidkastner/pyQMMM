@@ -1,10 +1,5 @@
-# Docs: https://github.com/davidkastner/pyQMMM/blob/main/pyqmmm/README.md
-# DESCRIPTION
-#     ML workflow using demystifying.
+"""ML workflow using demystifying."""
 
-#     Author: David Kastner
-#     Massachusetts Institute of Technology
-#     kastner (at) mit . edu
 
 from tkinter import FALSE
 import pandas as pd

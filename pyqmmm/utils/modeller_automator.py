@@ -1,10 +1,4 @@
-# Docs: https://github.com/davidkastner/pyQMMM/blob/main/pyqmmm/README.md
-# DESCRIPTION
-#     Automates the process of replacing missing residues with Modeller.
-
-#     Author: David Kastner
-#     Massachusetts Institute of Technology
-#     kastner (at) mit . edu
+"""Automates the process of replacing missing residues with Modeller."""
 
 import numpy as np
 import glob

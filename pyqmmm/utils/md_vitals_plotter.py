@@ -1,10 +1,4 @@
-# Docs: https://github.com/davidkastner/pyQMMM/blob/main/pyqmmm/README.md
-# DESCRIPTION
-#     Generates plots for the common files: energy, water density, RMSD, and RoG.
-
-#     Author: David Kastner
-#     Massachusetts Institute of Technology
-#     kastner (at) mit . edu
+"""Generates plots for energy, water density, RMSD, and RoG."""
 
 import pandas as pd
 import matplotlib.pyplot as plt
