@@ -8,12 +8,12 @@ pyQMMM
 
 Python package for manipulating QM and MD trajectories
 
+==============================
 ### Copyright
 
 Copyright (c) 2022, David Kastner
 
-
+==============================
 #### Acknowledgements
- 
-Project based on the 
+
 [Computational Molecular Science Python Cookiecutter](https://github.com/molssi/cookiecutter-cms) version 1.6.
