@@ -1,4 +1,4 @@
-![Graphical Summary of README](docs/images/header.jpg)
+![Graphical Summary of README](docs/_static/header.jpg)
 pyQMMM
 ==============================
 [//]: # (Badges)
@@ -10,7 +10,7 @@ Python package for manipulating QM and MD trajectories
 
 ### Copyright
 
-Copyright (c) 2022, David W. Kastner
+Copyright (c) 2022, David Kastner
 
 
 #### Acknowledgements
