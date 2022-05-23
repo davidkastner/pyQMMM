@@ -10,7 +10,7 @@ Python package for manipulating QM and MD trajectories
 
 ### Copyright
 
-Copyright (c) 2022, David W. Kastner
+Copyright (c) 2022, David Kastner
 
 
 #### Acknowledgements
