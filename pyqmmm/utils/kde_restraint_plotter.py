@@ -83,7 +83,7 @@ def combine_inp():
                             continue
                         angle = ang_line.split()[1]
                         dist = dist_line.split()[1]
-                        combined.write("{dist} {angle}\n")
+                        combined.write(f"{dist} {angle}\n")
 
     return file_array
 
