@@ -183,7 +183,8 @@ def xyz_merger():
 
     # STEP 2: Perform reaction coordinate analysis
     perform_rc_analysis = input("Any key to perform analyze RC, else Return: ")
-    reaction_coordinate_collector.reaction_coordinate_collector()
+    if perform_rc_analysis:
+        reaction_coordinate_collector.reaction_coordinate_collector()
 
 
 if __name__ == "__main__":

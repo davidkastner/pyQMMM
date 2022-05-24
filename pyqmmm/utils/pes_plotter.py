@@ -121,12 +121,13 @@ def get_scatter_plot(energy_lists):
     glob_layout = plotly_styling()
     colors = ["#FFA500", "#6495ED", "#9370DB", "#E63946", "#000000", "#2a9d8f"]
     name_list = ["Acute", "Obtuse", "Axial", "good", "normal", "wpbeh"]
-    blue = "rgba(0, 0, 255, 1)"
-    red = "rgba(255, 0, 0, 1)"
-    green = "rgba(0, 196, 64, 1)"
-    gray = "rgba(140, 140, 140, 1)"
-    orange = "rgba(246, 141, 40, 1)"
-    sky = "rgba(103, 171, 201, 1)"
+    # Kulik Lab standard colors
+    # blue = "rgba(0, 0, 255, 1)"
+    # red = "rgba(255, 0, 0, 1)"
+    # green = "rgba(0, 196, 64, 1)"
+    # gray = "rgba(140, 140, 140, 1)"
+    # orange = "rgba(246, 141, 40, 1)"
+    # sky = "rgba(103, 171, 201, 1)"
     data = []
     print(energy_lists)
     for index, energy_list in enumerate(energy_lists):
