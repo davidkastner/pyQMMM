@@ -10,9 +10,9 @@ pyQMMM
 A python package for manipulating QM and MD trajectories.
 
 ---
-### Copyright
+#### Copyright
 
-Copyright (c) 2022,  Kulik group at MIT
+&copy; 2022,  Kulik group at MIT
 
 ---
 #### Acknowledgements
