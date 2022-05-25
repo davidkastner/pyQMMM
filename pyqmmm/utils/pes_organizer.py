@@ -1,12 +1,5 @@
 """This script will return the the charge and spin into a more readable format."""
 
-# Docs: https://github.com/davidkastner/pyQMMM/blob/main/pyqmmm/README.md
-# DESCRIPTION
-#
-#    Author: David Kastner
-#    Massachusetts Institute of Technology
-#    kastner (at) mit . edu
-
 
 def get_iteration_pairs():
     """
