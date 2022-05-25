@@ -16,5 +16,5 @@ A python package for manipulating QM, MD, and multiscale QM/MM trajectories with
 
 ---
 #### Acknowledgements
-
+Author: David W. Kastner
 [Computational Molecular Science Python Cookiecutter](https://github.com/molssi/cookiecutter-cms) version 1.6.
