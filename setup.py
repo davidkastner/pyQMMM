@@ -22,7 +22,7 @@ except SystemExit:
 setup(
     # Self-descriptive entries which should always be present
     name='pyqmmm',
-    author='David Kastner',
+    author='David W. Kastner',
     author_email='kastner@mit.edu',
     description=short_description,
     long_description=long_description,
