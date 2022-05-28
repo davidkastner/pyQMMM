@@ -10,12 +10,12 @@ def get_files(file_pattern):
     Parameters
     ----------
     file_pattern : str
-        The type of file the for which the user would like to search the current directory
+        The type of file the for which the user would like to search the current directory.
 
     Returns
     -------
     xyz_filename_list : list
-        list of files found matching the user's pattern
+        A list of files found matching the user's pattern.
     """
 
     file_list = glob.glob(file_pattern)
@@ -31,7 +31,7 @@ def get_selection(file):
     Returns
     -------
     atoms : selection
-        the index of the atom the user would like the spin and charge for
+        The index of the atom for which the user would like the spin and charge.
     """
 
     # For which frames would the user like
@@ -72,12 +72,12 @@ def get_spins(atoms, file, selection):
     file : str
         The name of the file that you would like to analyze.
     selection : list
-        The indices of the atoms that the user would like the charge and spin for
+        The indices of the atoms for which the user would like the charge and spin.
 
     Returns
     -------
     net_spins : list
-        List fo spins corresponding to each image in the scan
+        List fo spins corresponding to each image in the scan.
     """
 
     # Sum the spins for the user selected atoms
@@ -177,7 +177,7 @@ def charge_spin_extractor():
     print("First run organize_energy_scan_data.py for each job.")
     print("Move the scan_charge and scan_spin to the same directory.")
     print("Give them unique names.")
-    print("Extract summed charge and spin for user specified atoms\n")
+    print("Extract summed charge and spin for user specified atoms.\n")
 
     # Check how many charge and spin files
     charge_files = get_files("*.charge")
