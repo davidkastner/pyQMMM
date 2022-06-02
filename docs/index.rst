@@ -8,7 +8,7 @@ pyQMMM Docs
 
 .. container:: .large
 
-   pyQMMM is a Python package designed to analysis and visualize `ab initio` and classical molecular trajectories. 
+   pyQMMM is a Python package designed to analyze and visualize `ab initio` and classical molecular trajectories. 
    The file formats `XYZ <https://www.cgl.ucsf.edu/chimera/docs/UsersGuide/xyz.html>`_
    and `PDB <https://www.cgl.ucsf.edu/chimera/docs/UsersGuide/tutorials/pdbintro.html>`_
    are currently supported.
