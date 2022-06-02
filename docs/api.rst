@@ -2,7 +2,8 @@ API Documentation
 =================
 
 .. autosummary::
-   :toctree: autoapi
+   :toctree: autosummary
+   :recursive:
 
    pyqmmm.md
    pyqmmm.ml
