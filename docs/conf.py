@@ -42,8 +42,8 @@ release = ''
 # ones.
 extensions = [
     'autoapi.extension',
-    # 'sphinx.ext.autosummary',
-    # 'sphinx.ext.autodoc',
+    'sphinx.ext.autosummary',
+    'sphinx.ext.autodoc',
     'sphinx.ext.mathjax',
     'sphinx.ext.viewcode',
     'sphinx.ext.napoleon',
@@ -52,7 +52,7 @@ extensions = [
     "revitron_sphinx_theme",
 ]
 
-# autosummary_generate = True
+autosummary_generate = True
 autoapi_type = 'python'
 autoapi_dirs = ['../pyqmmm']
 autoapi_ignore = ["*/tests/*",
