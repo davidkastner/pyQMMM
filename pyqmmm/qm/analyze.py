@@ -1,4 +1,4 @@
-# Module for analyzing MD and QM trajectories
+"""Module for analyzing MD and QM trajectories"""
 
 from scipy.spatial import distance
 

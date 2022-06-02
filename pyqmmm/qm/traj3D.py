@@ -1,9 +1,4 @@
-# @file MolTraj.py
-#  Defines MolTraj class and trajectory manipulation methods.
-#
-#  Written by David W. Kastner
-#
-#  Department of Chemical Engineering, MIT
+"""MolTraj class and associated trajectory manipulation methods."""
 
 
 class traj3D:
