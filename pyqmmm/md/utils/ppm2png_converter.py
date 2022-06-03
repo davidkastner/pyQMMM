@@ -6,6 +6,7 @@ import os
 def ppm2png_converter():
     """
     Converts a PNG to a PNG.
+    Pnmtopng from Netpbm must be installed to perform the conversion.
     """
     directory = "./"
     # Loop through all images in the current directory
