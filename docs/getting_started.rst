@@ -1,10 +1,13 @@
 Getting Started
 ===============
 
-This page details how to get started with pyQMMM. 
+This page details how to get started with the pyQMMM package.
+The purpose of the package is to act as a library for MD, QM, and QM/MM simulations of proteins as well as a repository for useful scripts.
 
 Installation
 ------------
+Download the package from GitHub.
+
 
 Usage
 -----
