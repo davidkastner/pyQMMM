@@ -1,7 +1,7 @@
-pyqmmm.qm.utils.reaction\_coordinate\_collector
-===============================================
+pyqmmm.qm.reaction\_coordinate\_collector
+=========================================
 
-.. automodule:: pyqmmm.qm.utils.reaction_coordinate_collector
+.. automodule:: pyqmmm.qm.reaction_coordinate_collector
 
    
    

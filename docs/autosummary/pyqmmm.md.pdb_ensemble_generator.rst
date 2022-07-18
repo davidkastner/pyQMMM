@@ -1,7 +1,7 @@
-pyqmmm.qm.utils.residue\_numerator
+pyqmmm.md.pdb\_ensemble\_generator
 ==================================
 
-.. automodule:: pyqmmm.qm.utils.residue_numerator
+.. automodule:: pyqmmm.md.pdb_ensemble_generator
 
    
    
@@ -13,8 +13,7 @@ pyqmmm.qm.utils.residue\_numerator
 
    .. autosummary::
    
-      renumber
-      residue_numerator
+      pdb_ensemble_generator
    
    
 

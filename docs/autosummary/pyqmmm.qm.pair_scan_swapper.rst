@@ -1,7 +1,7 @@
-pyqmmm.qm.utils.pair\_scan\_swapper
-===================================
+pyqmmm.qm.pair\_scan\_swapper
+=============================
 
-.. automodule:: pyqmmm.qm.utils.pair_scan_swapper
+.. automodule:: pyqmmm.qm.pair_scan_swapper
 
    
    

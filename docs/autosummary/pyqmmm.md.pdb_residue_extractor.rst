@@ -1,7 +1,7 @@
-pyqmmm.md.utils.pdb\_residue\_extractor
-=======================================
+pyqmmm.md.pdb\_residue\_extractor
+=================================
 
-.. automodule:: pyqmmm.md.utils.pdb_residue_extractor
+.. automodule:: pyqmmm.md.pdb_residue_extractor
 
    
    

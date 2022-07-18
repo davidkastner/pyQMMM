@@ -1,7 +1,7 @@
-pyqmmm.qm.utils.pes\_organizer
-==============================
+pyqmmm.qm.pes\_organizer
+========================
 
-.. automodule:: pyqmmm.qm.utils.pes_organizer
+.. automodule:: pyqmmm.qm.pes_organizer
 
    
    

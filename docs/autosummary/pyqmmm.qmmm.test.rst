@@ -1,7 +1,7 @@
-﻿pyqmmm.ml
-=========
+pyqmmm.qmmm.test
+================
 
-.. automodule:: pyqmmm.ml
+.. automodule:: pyqmmm.qmmm.test
 
    
    
@@ -27,6 +27,5 @@
    :toctree:
    :recursive:
 
-   pyqmmm.ml.charge_backpropagator
-   pyqmmm.ml.test
+   pyqmmm.qmmm.test.test_pyqmmm
 

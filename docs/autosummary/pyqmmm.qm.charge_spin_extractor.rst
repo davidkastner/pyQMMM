@@ -1,7 +1,7 @@
-pyqmmm.qm.utils.charge\_spin\_extractor
-=======================================
+pyqmmm.qm.charge\_spin\_extractor
+=================================
 
-.. automodule:: pyqmmm.qm.utils.charge_spin_extractor
+.. automodule:: pyqmmm.qm.charge_spin_extractor
 
    
    

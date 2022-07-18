@@ -1,7 +1,7 @@
-pyqmmm.qm.utils.missing\_frame\_checkup
-=======================================
+pyqmmm.qm.missing\_frame\_checkup
+=================================
 
-.. automodule:: pyqmmm.qm.utils.missing_frame_checkup
+.. automodule:: pyqmmm.qm.missing_frame_checkup
 
    
    

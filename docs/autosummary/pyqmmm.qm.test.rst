@@ -1,7 +1,7 @@
-pyqmmm.ml.utils
-===============
+pyqmmm.qm.test
+==============
 
-.. automodule:: pyqmmm.ml.utils
+.. automodule:: pyqmmm.qm.test
 
    
    
@@ -27,5 +27,5 @@ pyqmmm.ml.utils
    :toctree:
    :recursive:
 
-   pyqmmm.ml.utils.mlmd_methods
+   pyqmmm.qm.test.test_pyqmmm
 

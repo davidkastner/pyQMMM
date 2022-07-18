@@ -27,5 +27,6 @@
    :toctree:
    :recursive:
 
-   pyqmmm.qmmm.utils
+   pyqmmm.qmmm.quick_csa
+   pyqmmm.qmmm.test
 

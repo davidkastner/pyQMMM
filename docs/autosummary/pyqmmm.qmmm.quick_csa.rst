@@ -1,7 +1,7 @@
-pyqmmm.qm.utils.quick\_csa
-==========================
+pyqmmm.qmmm.quick\_csa
+======================
 
-.. automodule:: pyqmmm.qm.utils.quick_csa
+.. automodule:: pyqmmm.qmmm.quick_csa
 
    
    

@@ -1,7 +1,7 @@
-pyqmmm.qm.utils.waters\_numerator
-=================================
+pyqmmm.qm.waters\_numerator
+===========================
 
-.. automodule:: pyqmmm.qm.utils.waters_numerator
+.. automodule:: pyqmmm.qm.waters_numerator
 
    
    

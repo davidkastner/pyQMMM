@@ -1,7 +1,7 @@
-pyqmmm.qm.utils.rough\_neb\_path\_generator
-===========================================
+pyqmmm.qm.rough\_neb\_path\_generator
+=====================================
 
-.. automodule:: pyqmmm.qm.utils.rough_neb_path_generator
+.. automodule:: pyqmmm.qm.rough_neb_path_generator
 
    
    

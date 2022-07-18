@@ -1,7 +1,7 @@
-pyqmmm.qm.utils.xyz\_movie\_generator
-=====================================
+pyqmmm.qm.xyz\_movie\_generator
+===============================
 
-.. automodule:: pyqmmm.qm.utils.xyz_movie_generator
+.. automodule:: pyqmmm.qm.xyz_movie_generator
 
    
    

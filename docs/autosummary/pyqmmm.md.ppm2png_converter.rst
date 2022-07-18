@@ -1,7 +1,7 @@
-pyqmmm.md.utils.ppm2png\_converter
-==================================
+pyqmmm.md.ppm2png\_converter
+============================
 
-.. automodule:: pyqmmm.md.utils.ppm2png_converter
+.. automodule:: pyqmmm.md.ppm2png_converter
 
    
    

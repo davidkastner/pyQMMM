@@ -1,7 +1,7 @@
-pyqmmm.qm.utils.cluster\_frame\_indexer
-=======================================
+pyqmmm.qm.cluster\_frame\_indexer
+=================================
 
-.. automodule:: pyqmmm.qm.utils.cluster_frame_indexer
+.. automodule:: pyqmmm.qm.cluster_frame_indexer
 
    
    

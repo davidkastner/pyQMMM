@@ -1,7 +1,7 @@
-pyqmmm.qm.utils.hydrogen\_atom\_optimizer
-=========================================
+pyqmmm.qm.hydrogen\_atom\_optimizer
+===================================
 
-.. automodule:: pyqmmm.qm.utils.hydrogen_atom_optimizer
+.. automodule:: pyqmmm.qm.hydrogen_atom_optimizer
 
    
    
