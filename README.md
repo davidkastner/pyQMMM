@@ -7,7 +7,23 @@ pyQMMM
 [![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/davidkastner/pyQMMM.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/davidkastner/pyQMMM/context:python)
 [![codecov](https://codecov.io/gh/davidkastner/pyQMMM/branch/master/graph/badge.svg)](https://codecov.io/gh/davidkastner/pyQMMM/branch/master)
 
-A python package for manipulating QM, MD, and multiscale QM/MM trajectories with an emphasis on manipulating XYZ files. Currently under construction.
+# PyQMMM Package
+## Table of Contents
+1. **Overview**
+    * Introduction
+    * Purpose
+2. **Installation**
+    * File structure
+    * Prerequisites
+    * Installing pyQMMM
+3. **What is included?**
+    * Library
+    * Utility functions
+4. **Documentation**
+    * Read the Docs
+    * Website
+    * Examples
+    * Tutorial video
 
 ---
 #### Copyright
