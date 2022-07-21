@@ -110,7 +110,7 @@ def write_scan(filename: str, lines_lists: tuple[str, list[list[str]]], skipped:
     except SystemExit:
         print("Please enter a number.")
 
-    # Get requested file extension
+    # Get requested file name and its extension
     pre = filename.split(".")[0]
     ext = filename.split(".")[-1]
     with open(f"{pre}_{atom1}_{atom2}.{ext}", "w") as newfile:
