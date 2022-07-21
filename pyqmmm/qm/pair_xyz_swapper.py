@@ -13,7 +13,7 @@ def swap_atoms() -> tuple[str, list[list[str]], int]:
     """
 
     # Request user defined variables
-    filename = input("What is your xyz file name?")
+    filename = input("What is your xyz file name? ")
 
     # Initialize variables used later
     lines_list: list[str] = []
@@ -59,8 +59,8 @@ def write_scan(filename: str, lines_lists: tuple[str, list[list[str]]], skipped:
 
     # Get atoms from user and verify that the user has entered a number
     try:
-        atom1 = int(input(f"What is the first atom to switch?"))
-        atom2 = int(input(f"What is the second atom to switch?"))
+        atom1 = int(input(f"What is the first atom to switch? "))
+        atom2 = int(input(f"What is the second atom to switch? "))
     except SystemExit:
         print("Please enter a number.")
 
@@ -68,8 +68,8 @@ def write_scan(filename: str, lines_lists: tuple[str, list[list[str]]], skipped:
         for lines in lines_lists:
             atom1_line = lines[atom1 + skipped - 1]
             atom2_line = lines[atom2 + skipped - 1]
-            lines[atom1 + skipped - 1] = atom1_line
-            lines[atom2 + skipped - 1] = atom2_line
+            lines[atom2 + skipped - 1] = atom1_line
+            lines[atom1 + skipped - 1] = atom2_line
             for line in lines:
                 newfile.write(line)
 
@@ -85,4 +85,4 @@ def pair_xyz_swapper():
 
 # Executes the function when run as a script
 if __name__ == "__main__":
-    swap_atoms()
+    pair_xyz_swapper()
