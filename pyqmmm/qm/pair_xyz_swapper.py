@@ -21,8 +21,8 @@ def swap_atoms() -> tuple[str, list[list[str]], int]:
     count_lines_to_skip = True
     skipped = 0
 
-    with open("{}.xyz".format(filename), "r") as xyzfile:
-        for line in xyzfile:
+    with open("{}.xyz".format(filename), "r") as file:
+        for line in file:
             lines_list.append(line)
             # If the line contains a coordinate, don't skip it
             if len(line.split()) == 4:
