@@ -111,8 +111,9 @@ def write_scan(filename: str, lines_lists: tuple[str, list[list[str]]], skipped:
         print("Please enter a number.")
 
     # Get requested file extension
+    pre = filename.split(".")[0]
     ext = filename.split(".")[-1]
-    with open(f"{filename}_{atom1}_{atom2}.{ext}", "w") as newfile:
+    with open(f"{pre}_{atom1}_{atom2}.{ext}", "w") as newfile:
         for lines in lines_lists:
             atom1_line = lines[atom1 + skipped - 1]
             atom2_line = lines[atom2 + skipped - 1]
