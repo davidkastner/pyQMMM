@@ -13,9 +13,9 @@ pyQMMM
     * Introduction
     * Purpose
 2. **Installation**
-    * File structure
-    * Prerequisites
     * Installing pyQMMM
+    * Prerequisites
+    * File structure
 3. **What is included?**
     * Library
     * Utility functions
@@ -49,6 +49,15 @@ cd pyqmmm
 pip install -e
 ```
 
+To have complete access to all pyQMMM functionality, you should install the following dependencies. 
+This should be done inside you pyqmmm virtual environment. 
+
+```
+conda install -c conda-forge matplotlib
+conda install -c anaconda pandas
+conda install -c anaconda configparser
+conda install -c salilab modeller
+```
 
 
 ---
