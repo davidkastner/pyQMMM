@@ -59,6 +59,19 @@ conda install -c anaconda configparser
 conda install -c salilab modeller
 ```
 
+### File structure
+
+```
+.
+├── devtools
+├── docs
+├── pyqmmm
+│   ├── md      # Processes for setting MD optimizations prior to QM/MM
+│   ├── ml      # Machine learning analysis scripts
+│   ├── qm      # Processes for running and anlayzing QM cluster model jobs 
+│   └── qmmm    # Process for automating QM/MM jobs with TeraChem and Amber
+└── ...
+```
 
 ---
 #### Copyright
