@@ -35,7 +35,7 @@ although some functionality is software agnostic.
 
 The initial humble goal of the package is serve as a repository sandbox for useful scripts used in my molecular modelling workflows.
 However, eventually, I would hope to grow PyQMMM into a robust tool for automating the job preparation and analysis of QM/MM simulations.
-
+---
 
 ## Installation
 Install the package by running the follow command inside the repository. 
@@ -72,6 +72,12 @@ conda install -c salilab modeller
 │   └── qmmm    # Process for automating QM/MM jobs with TeraChem and Amber
 └── ...
 ```
+---
+
+## What's included?
+pyQMMM is built as both a library and a collection of pre-built scripts.
+If a script is not already included for procedure, many of the functions may be useful in building a procedure.
+
 
 ---
 #### Copyright
