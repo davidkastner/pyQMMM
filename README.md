@@ -21,9 +21,7 @@ pyQMMM
     * Utility functions
 4. **Documentation**
     * Read the Docs
-    * Website
     * Examples
-    * Tutorial video
 
 
 ## Overview
@@ -78,10 +76,18 @@ conda install -c salilab modeller
 
 ## What's included?
 pyQMMM is built as both a library and a collection of pre-built scripts.
+The scripts are prepared to accelerate data processesing and automation of calculations.
 If a script is not already included for procedure, many of the functions may be useful in building a procedure.
 
 
 ---
+
+## Documentation
+While pyQMMM is still underconstrunction and its functionality is limited,
+detailed and accurate documentation will always be a high priority for the project.
+You can find documentation at the project's Read the Docs.
+You can also find examples of some of the more used functions, 
+such as quickCSA.py, in the the docs/examples folder.
 
 #### Copyright
 
