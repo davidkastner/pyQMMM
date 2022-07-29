@@ -27,9 +27,9 @@ pyQMMM
 ## Overview
 PyQMMM is a package of useful utility functions for accelerating structure to simulation workflows for QM/MM simulations. 
 The package contains useful tools for all stages of the QM/MM workflow, form MD, to QM, to multiscale QM/MM.
-As the package is designed spcifically for accelerating research in the Kulik group, 
-much of the functionality is built around the Amber-TeraChem workflow, 
-although some functionality is software agnostic. 
+As the package is designed spcifically for accelerating research in the Kulik group at MIT, 
+much of the functionality is built around the Amber-TeraChem interface. 
+However, we aim for software agnostic functionality. 
 
 The initial limited goal of the package is serve as a repository sandbox for useful scripts used in my molecular modelling workflows.
 However, eventually, I would hope to grow PyQMMM into a robust tool for automating the job preparation and analysis of QM/MM simulations.
