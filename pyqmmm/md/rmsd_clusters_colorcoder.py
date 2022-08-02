@@ -48,7 +48,7 @@ def get_plot(final_df, centroid_frame_ns):
                     edgecolors=color, s=9, facecolors='none', label=label[cluster if cluster < 4 else 4])
         
     indicesToKeep = final_df["Frame"] == centroid_frame_ns
-    plt.scatter(final_df.loc[indicesToKeep, 'Frame'], final_df.loc[indicesToKeep, 'RMSD'], facecolors="k", marker="+", s=320)
+    plt.scatter(final_df.loc[indicesToKeep, 'Frame'], final_df.loc[indicesToKeep, 'RMSD'], facecolors="k", marker="+", s=290)
 
     plt.rc('axes', linewidth=2.5)
     plt.ylabel('Active site RMSD (Å)', fontsize=16, weight='bold')
