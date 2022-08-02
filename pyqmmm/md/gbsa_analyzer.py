@@ -1,4 +1,4 @@
-"""Process and analyze output from AMBER GBSA calculation."""
+"""Process and analyze output from AMBER GBSA calculation. Runs best on Google Colab"""
 
 import glob
 import pandas as pd
