@@ -16,7 +16,7 @@ def ppm2png_converter():
 
         # Checking if it is a file
         if os.path.isfile(file):
-            os.system("pnmtopng {} > {}.png".format(file, count))
+            os.system(f"pnmtopng {file} > {count}.png")
             count += 1
 
 
