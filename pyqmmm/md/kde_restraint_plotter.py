@@ -387,7 +387,6 @@ def graph_datasets(x_data, y_data, z_data, labels, plot_params, show_crosshairs)
         axes.tick_params(which="both", bottom=True, top=True, left=True, right=False)
         axes.tick_params(which="minor", length=5, color="k", width=2.5)
 
-    #     plt.savefig("./3_out/restraints_kde.png", dpi=600, bbox_inches="tight", transparent=True)
     plt.savefig("./3_out/restraints_kde.pdf", bbox_inches="tight", transparent=True)
 
 
@@ -401,6 +400,8 @@ def restraint_plots():
     print("This the goal of RESTRAINT PLOTS is to:")
     print("+ Vizualize a simulation against two order parameters")
     print("+ Compare the results to the experimentally expected values")
+    print("+ For helvetica font, use AmberTools21 on gibraltar")
+    # https://fowlerlab.org/2019/01/03/changing-the-sans-serif-font-to-helvetica/
     print("\n")
 
     # show_crosshairs = input('Would you like crosshairs (y/n)?  ') == 'y'
