@@ -4,22 +4,6 @@ Getting Started
 Introduction
 ------------
 
-Table of Contents
-^^^^^^^^^^^^^^^^^
-- Overview
-    - Introduction
-    - Purpose
-- Installation
-    - Installing pyQMMM
-    - Prerequisites
-    - File structure
-- What is included?
-    - Library
-    - Utility functions
-- Documentation
-    - Read the Docs
-    - Examples
-
 Overview
 ^^^^^^^^
 PyQMMM is a package of useful utility functions for accelerating structure to simulation workflows for QM/MM simulations. 
