@@ -62,7 +62,6 @@ def get_edia():
     # Plot the findings
     # Plot constants
     colors = ["#ff16ea", "#020cfa"]
-    label = chain_list
 
     # Plot parameters
     plt.rc("axes", linewidth=2.5)

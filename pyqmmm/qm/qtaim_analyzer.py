@@ -9,7 +9,6 @@ DESCRIPTION
 
 # Imports
 import pandas as pd
-import numpy as np
 import plotly.graph_objects as go
 
 
@@ -61,10 +60,10 @@ def get_barplot_plot(dataframe, filename):
     # Additional color settings
     blue = "rgba(0, 0, 255, 1)"
     red = "rgba(255, 0, 0, 1)"
-    green = "rgba(0, 196, 64, 1)"
-    gray = "rgba(140, 140, 140, 1)"
-    orange = "rgba(246, 141, 40, 1)"
-    sky = "rgba(103, 171, 201, 1)"
+    # green = "rgba(0, 196, 64, 1)"
+    # gray = "rgba(140, 140, 140, 1)"
+    # orange = "rgba(246, 141, 40, 1)"
+    # sky = "rgba(103, 171, 201, 1)"
 
     # Set the layout
     glob_layout = plotly_styling()

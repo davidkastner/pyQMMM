@@ -1,25 +1,27 @@
 Getting Started
 ===============
 
-
 Introduction
 ------------
-**Table of Contents**
-1. **Overview**
-    * Introduction
-    * Purpose
-2. **Installation**
-    * Installing pyQMMM
-    * Prerequisites
-    * File structure
-3. **What is included?**
-    * Library
-    * Utility functions
-4. **Documentation**
-    * Read the Docs
-    * Examples
 
-**Overview**
+Table of Contents
+^^^^^^^^^^^^^^^^^
+1. Overview
+    - Introduction
+    - Purpose
+2. Installation
+    - Installing pyQMMM
+    - Prerequisites
+    - File structure
+3. What is included?
+    - Library
+    - Utility functions
+4. Documentation
+    - Read the Docs
+    - Examples
+
+Overview
+^^^^^^^^
 PyQMMM is a package of useful utility functions for accelerating structure to simulation workflows for QM/MM simulations. 
 The package contains useful tools for all stages of the QM/MM workflow, form MD, to QM, to multiscale QM/MM.
 As the package is designed spcifically for accelerating research in the Kulik group at MIT, 
@@ -32,7 +34,9 @@ However, eventually, I would hope to grow PyQMMM into a robust tool for automati
 
 Installation
 ------------
-**Installing the package**
+
+Installing the package
+^^^^^^^^^^^^^^^^^^^^^^
 Install the package by running the follow command inside the repository. 
 This will perform a developmental version install. 
 It is good practice to do this inside of a virtual environment.
@@ -42,7 +46,8 @@ It is good practice to do this inside of a virtual environment.
     cd pyqmmm
     pip install -e  
 
-**Installing dependencies**
+Installing dependencies
+^^^^^^^^^^^^^^^^^^^^^^^
 To have complete access to all pyQMMM functionality, you should install the following dependencies. 
 This should be done inside you pyqmmm virtual environment. 
 
@@ -51,6 +56,7 @@ This should be done inside you pyqmmm virtual environment.
     conda install -c anaconda pandas
     conda install -c anaconda configparser
     conda install -c salilab modeller
+
 
 File Structure
 --------------
