@@ -61,8 +61,6 @@ autoapi_ignore = ["*/tests/*",
 
 autoapi_options = ['members',
                    'undoc-members',
-                   # 'private-members',
-                   # 'special-members',
                    'show-inheritance',
                    'show-module-summary',
                    'imported-members']
