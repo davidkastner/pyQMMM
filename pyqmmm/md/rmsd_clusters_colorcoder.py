@@ -1,13 +1,4 @@
-'''
-Docs: https://github.com/davidkastner/pyQMMM/blob/main/pyqmmm/README.md
-DESCRIPTION
-    Plots RMSD and colors points based on their corresponding clusters.
-
-    Author: David Kastner
-    Massachusetts Institute of Technology
-    kastner (at) mit . edu
-   
-'''
+"""Plots a clustered trajectory by RMSD and identifies the centroid"""
 
 # Imports packages and dependencies
 import pandas as pd
