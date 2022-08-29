@@ -3,13 +3,25 @@
 # Imports packages and dependencies
 import pandas as pd
 import matplotlib.pyplot as plt
-import os.path
 from pathlib import Path
 
 # Converts a dat file to csv
 
 
-def dat2df(dat_file, rows_to_skip = 1):
+def dat2df(dat_file, rows_to_skip=1):
+    """
+    Convert a the cluster data dat file into a DataFrame.
+
+    Parameters
+    ----------
+    dat_file : str
+        The name of the dat file.
+
+    Returns
+    -------
+    df : pd.DataFrame
+        Dataframe with clustering data.
+    """
     df = pd.read_csv(dat_file, sep='\s+', header=None, skiprows=rows_to_skip, index_col=0)
     df.index = [x/500 for x in range(df.shape[0])]
     df = df.iloc[1:, :]
@@ -17,7 +29,17 @@ def dat2df(dat_file, rows_to_skip = 1):
 
 
 def get_plot(final_df, centroid_frame_ns):
-    # General plotting parameters for the Kulik lab
+    """
+    General plotting function.
+
+    Parameters
+    ----------
+    final_df : pd.DataFrame
+        Dataframe with clustering data.
+    centroid_frame_ns : int
+        The frame number of the computed centroid.
+
+    """
     font = {'family': 'sans-serif', 'weight': 'bold', 'size': 10}
     plt.rc('font', **font)
     plt.rcParams['axes.linewidth'] = 2.5
@@ -37,9 +59,10 @@ def get_plot(final_df, centroid_frame_ns):
         indicesToKeep = final_df['Cluster'] == cluster if cluster != 4 else final_df['Cluster'] >= cluster
         plt.scatter(final_df.loc[indicesToKeep, 'Frame'], final_df.loc[indicesToKeep, 'RMSD'],
                     edgecolors=color, s=9, facecolors='none', label=label[cluster if cluster < 4 else 4])
-        
+
     indicesToKeep = final_df["Frame"] == centroid_frame_ns
-    plt.scatter(final_df.loc[indicesToKeep, 'Frame'], final_df.loc[indicesToKeep, 'RMSD'], facecolors="k", marker="+", s=290)
+    plt.scatter(final_df.loc[indicesToKeep, 'Frame'],
+                final_df.loc[indicesToKeep, 'RMSD'], facecolors="k", marker="+", s=290)
 
     plt.rc('axes', linewidth=2.5)
     plt.ylabel('Active site RMSD (Å)', fontsize=16, weight='bold')
