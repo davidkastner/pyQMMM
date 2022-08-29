@@ -6,17 +6,17 @@ Introduction
 
 Table of Contents
 ^^^^^^^^^^^^^^^^^
-1. Overview
+- Overview
     - Introduction
     - Purpose
-2. Installation
+- Installation
     - Installing pyQMMM
     - Prerequisites
     - File structure
-3. What is included?
+- What is included?
     - Library
     - Utility functions
-4. Documentation
+- Documentation
     - Read the Docs
     - Examples
 
@@ -49,18 +49,16 @@ It is good practice to do this inside of a virtual environment.
 Installing dependencies
 ^^^^^^^^^^^^^^^^^^^^^^^
 To have complete access to all pyQMMM functionality, you should install the following dependencies. 
-This should be done inside you pyqmmm virtual environment. 
-
+This should be done inside you pyqmmm virtual environment.
 ::
     conda install -c conda-forge matplotlib
     conda install -c anaconda pandas
     conda install -c anaconda configparser
     conda install -c salilab modeller
 
-
 File Structure
 --------------
-Once installed, you can use the package. This example draws a benzene molecule from an xyz file.
+General file structure
 ::
     .
     ├── devtools
@@ -71,7 +69,8 @@ Once installed, you can use the package. This example draws a benzene molecule f
     │   ├── qm      # Processes for running and anlayzing QM cluster model jobs 
     │   └── qmmm    # Process for automating QM/MM jobs with TeraChem and Amber
 
-## What's included?
+What is included?
+^^^^^^^^^^^^^^^^^
 pyQMMM is built as both a library and a collection of pre-built scripts.
 The scripts are prepared to accelerate data processesing and automation of calculations.
 If a script is not already included for procedure, many of the functions may be useful in building a procedure.
