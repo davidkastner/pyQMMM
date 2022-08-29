@@ -67,6 +67,7 @@ def input_data():
 
     return filenames, enzymes
 
+
 # Set the lab plot formatting settings
 
 

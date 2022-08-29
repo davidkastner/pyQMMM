@@ -1,8 +1,9 @@
-'''Find how fast on average the AIMD timesteps are happening for benchmarking'''
+"""Find how fast on average the AIMD timesteps are happening for benchmarking"""
 
 import os
 import sys
 import re
+
 
 def check_if_aimd() -> str:
     """
@@ -31,7 +32,7 @@ def check_if_aimd() -> str:
         sys.exit("This directory does not contain a TeraChem AIMD job.")
 
     # Check if the .out file is a successful AIMD job
-    aimd = False # We assume it is not an aimd file
+    aimd = False  # We assume it is not an aimd file
     with open(outfile, "r") as outfile_contents:
         for line in outfile_contents:
             if "=MD= Time per MD step:" in line:
@@ -43,7 +44,8 @@ def check_if_aimd() -> str:
 
     return outfile
 
-def get_avg_mdstep_time(outfile: str) -> tuple[int,int,int]:
+
+def get_avg_mdstep_time(outfile: str) -> tuple[int, int, int]:
     """
     Calculate the avg, max, and min MD time step compute time.
 
@@ -63,16 +65,17 @@ def get_avg_mdstep_time(outfile: str) -> tuple[int,int,int]:
     """
     # Open the TeraChem AIMD output file
     with open(outfile, "r") as outfile_contents:
-        time = [] 
+        time = []
         # Loop through the AIMD output and collect the timestep compute times
         for line in outfile_contents:
-            if "=MD= Time per MD step:" in line: # AIMD will have this text
+            if "=MD= Time per MD step:" in line:  # AIMD will have this text
                 time.append(float(re.findall("\d+\.\d+", line)[0]))
     print(time)
-    avg_time = sum(time)/len(time)
+    avg_time = sum(time) / len(time)
     max_time = max(time)
     min_time = min(time)
     return avg_time, max_time, min_time
+
 
 def speed_evalutor():
     """
@@ -90,12 +93,13 @@ def speed_evalutor():
     # Check if there is aimd data in the current directory to analyze
     outfile = check_if_aimd()
     # Calculate the average, maximum, and minimum times for each step
-    avg_time,max_time,min_time = get_avg_mdstep_time(outfile)
+    avg_time, max_time, min_time = get_avg_mdstep_time(outfile)
 
     # Report the findings to the user
     print(f"Avg. time: {avg_time}")
     print(f"Max. time: {max_time}")
     print(f"Min. time: {min_time}")
+
 
 if __name__ == "__main__":
     speed_evalutor()

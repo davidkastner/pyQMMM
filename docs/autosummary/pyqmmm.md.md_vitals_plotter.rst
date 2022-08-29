@@ -1,7 +1,7 @@
-pyqmmm.qm.pair\_scan\_swapper
+pyqmmm.md.md\_vitals\_plotter
 =============================
 
-.. automodule:: pyqmmm.qm.pair_scan_swapper
+.. automodule:: pyqmmm.md.md_vitals_plotter
 
    
    
@@ -13,8 +13,9 @@ pyqmmm.qm.pair\_scan\_swapper
 
    .. autosummary::
    
-      get_atom
-      swap_atoms
+      dat2df
+      get_plot
+      md_vitals_plotter
    
    
 

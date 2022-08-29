@@ -31,9 +31,10 @@
    pyqmmm.qm.cluster_frame_indexer
    pyqmmm.qm.hydrogen_atom_optimizer
    pyqmmm.qm.missing_frame_checkup
-   pyqmmm.qm.pair_scan_swapper
+   pyqmmm.qm.pair_swapper
    pyqmmm.qm.pes_organizer
    pyqmmm.qm.pes_plotter
+   pyqmmm.qm.qtaim_analyzer
    pyqmmm.qm.reaction_coordinate_collector
    pyqmmm.qm.res_name_format_extractor
    pyqmmm.qm.residue_numerator

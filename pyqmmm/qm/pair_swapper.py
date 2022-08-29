@@ -82,14 +82,16 @@ def swap_spins(filename: str) -> tuple[list[list[str]], int]:
                 skipped += 1
             is_spin_end = "End scan" in line
 
-            if (is_spin_end):
+            if is_spin_end:
                 lines_lists.append(lines_list)
                 lines_list = []
 
     return lines_lists, skipped
 
 
-def write_scan(filename: str, lines_lists: tuple[str, list[list[str]]], skipped: int) -> NoReturn:
+def write_scan(
+    filename: str, lines_lists: tuple[str, list[list[str]]], skipped: int
+) -> NoReturn:
     """
     Write the lines from the scan with the switched atoms.
 
@@ -124,11 +126,11 @@ def write_scan(filename: str, lines_lists: tuple[str, list[list[str]]], skipped:
 
 
 def pair_swapper():
-    print('\n.--------------.')
-    print('| PAIR SWAPPER |')
-    print('.--------------.\n')
-    print('Sometimes atoms get switched between comparing scans.')
-    print('This script gives you a way to switch then back.\n')
+    print("\n.--------------.")
+    print("| PAIR SWAPPER |")
+    print(".--------------.\n")
+    print("Sometimes atoms get switched between comparing scans.")
+    print("This script gives you a way to switch then back.\n")
 
     filename = input("What is your xyz file name (e.g., 1.xyz, 2.spin)? ")
     if filename.split(".")[-1] == "xyz":

@@ -31,7 +31,9 @@ def get_edia():
         index=[chain for chain in chain_list], columns=["EDIAm", "EDIA"]
     )
     # Create empty dataframe to store standard error
-    df_se = pd.DataFrame(index=[chain for chain in chain_list], columns=["EDIAm", "EDIA"])
+    df_se = pd.DataFrame(
+        index=[chain for chain in chain_list], columns=["EDIAm", "EDIA"]
+    )
 
     # Calculate the Avg. EDIAm, Avg. EDIA, and Std. Error
     for chain in chain_list:

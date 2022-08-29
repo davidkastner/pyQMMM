@@ -17,7 +17,6 @@ from matplotlib.patches import Rectangle
 import matplotlib.ticker as plticker
 
 
-
 def config():
     """
     Parses the config file for the users parameters
@@ -28,7 +27,7 @@ def config():
     labels : dictionary
         Contains labels section where the key is the name and the values is itself
     plot_params : list
-        A list of dictionaries where the index is the plot number and 
+        A list of dictionaries where the index is the plot number and
         the values are the associated floats from the config file
     """
 
@@ -129,7 +128,6 @@ def get_xy_data(filename):
         return x, y
 
 
-
 def collect_xyz_data(filenames):
     """
     Retrieves the x and y data from the files.
@@ -223,7 +221,7 @@ def get_plot_limits(x_data, y_data, plot_params):
     hyscore_kde.png : PNG
         A PNG depicting the KDE analysis at 300 dpi.
     """
-    
+
     # size group extremes
     group_curr_max_min = {}
     size_group_list = []
@@ -286,7 +284,7 @@ def graph_datasets(x_data, y_data, z_data, labels, plot_params, show_crosshairs)
     # Lab styling graph properties
     font = {"family": "sans-serif", "weight": "bold", "size": 18}
     plt.rc("font", **font)
-    plt.rcParams['svg.fonttype'] = 'none'
+    plt.rcParams["svg.fonttype"] = "none"
     plt.rcParams["axes.linewidth"] = 2.5
     plt.rcParams["xtick.major.size"] = 10
     plt.rcParams["xtick.major.width"] = 2.5
@@ -297,8 +295,7 @@ def graph_datasets(x_data, y_data, z_data, labels, plot_params, show_crosshairs)
     plt.rcParams["mathtext.default"] = "regular"
 
     # Plot subfigures
-    fig, ax = plt.subplots(1, len(x_data), sharey=True,
-                           figsize=(len(x_data) * 4, 4))
+    fig, ax = plt.subplots(1, len(x_data), sharey=True, figsize=(len(x_data) * 4, 4))
     fig.subplots_adjust(wspace=0)
 
     # Titles and axes titles
@@ -307,14 +304,11 @@ def graph_datasets(x_data, y_data, z_data, labels, plot_params, show_crosshairs)
     if len(plot_params) == 1:
         plt.ylabel(labels["ylabel"], fontweight="bold")
     elif len(plot_params) == 2:
-        fig.text(0.05, 0.22, labels["ylabel"],
-                 ha="center", rotation="vertical")
+        fig.text(0.05, 0.22, labels["ylabel"], ha="center", rotation="vertical")
     elif len(plot_params) == 3:
-        fig.text(0.07, 0.22, labels["ylabel"],
-                 ha="center", rotation="vertical")
+        fig.text(0.07, 0.22, labels["ylabel"], ha="center", rotation="vertical")
     elif len(plot_params) == 4:
-        fig.text(0.08, 0.22, labels["ylabel"],
-                 ha="center", rotation="vertical")
+        fig.text(0.08, 0.22, labels["ylabel"], ha="center", rotation="vertical")
 
     # Get x and y limits
     xlims, ylims = get_plot_limits(x_data, y_data, plot_params)
@@ -389,8 +383,8 @@ def graph_datasets(x_data, y_data, z_data, labels, plot_params, show_crosshairs)
 
         # Remember to update the tick values
         # Set x-axis tick options
-        major_xticks = np.arange(3.5, 5.0, .5)
-        minor_xticks = np.arange(3.5, 5.0, .1)
+        major_xticks = np.arange(3.5, 5.0, 0.5)
+        minor_xticks = np.arange(3.5, 5.0, 0.1)
         axes.xaxis.set_ticks(major_xticks)
         axes.xaxis.set_ticks(minor_xticks, minor=True)
         axes.set_xlim(3.4, 5.0)
@@ -401,8 +395,7 @@ def graph_datasets(x_data, y_data, z_data, labels, plot_params, show_crosshairs)
         axes.yaxis.set_ticks(minor_yticks, minor=True)
         axes.set_ylim(10, 110)
 
-        axes.tick_params(which="both", bottom=True,
-                         top=True, left=True, right=True)
+        axes.tick_params(which="both", bottom=True, top=True, left=True, right=True)
         axes.tick_params(which="minor", length=5, color="k", width=2.5)
 
     plt.savefig("./3_out/restraints_kde.png", bbox_inches="tight", dpi=600)
@@ -432,8 +425,7 @@ def restraint_plots():
 
     # Execute the main functions and generate plot
     x_data, y_data, z_data = collect_xyz_data(filenames)
-    graph_datasets(x_data, y_data, z_data, labels,
-                   plot_params, show_crosshairs)
+    graph_datasets(x_data, y_data, z_data, labels, plot_params, show_crosshairs)
 
 
 # Execute the Quick CSA when run as a script but not if used as a pyQM/MM module

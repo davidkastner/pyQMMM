@@ -1,7 +1,6 @@
 """Function for generating combined KDE plot"""
 
 import numpy as np
-import time
 import glob
 import sys
 import os.path
@@ -16,10 +15,11 @@ import matplotlib.colors as mplc
 from scipy.stats import gaussian_kde
 from matplotlib.patches import Rectangle
 from matplotlib.font_manager import FontProperties
-from matplotlib import rc,rcParams
+from matplotlib import rc, rcParams
 import matplotlib.font_manager
-matplotlib.rcParams['pdf.fonttype'] = '42'
-matplotlib.rcParams['ps.fonttype'] = '42'
+
+matplotlib.rcParams["pdf.fonttype"] = "42"
+matplotlib.rcParams["ps.fonttype"] = "42"
 
 
 def config():
@@ -32,7 +32,7 @@ def config():
     labels : dictionary
         Contains labels section where the key is the name and the values is itself
     plot_params : list
-        A list of dictionaries where the index is the plot number and 
+        A list of dictionaries where the index is the plot number and
         the values are the associated floats from the config file
     """
 
@@ -131,7 +131,6 @@ def get_xy_data(filename):
         y = np.asarray(y, dtype=float)
 
         return x, y
-
 
 
 def collect_xyz_data(filenames):
@@ -290,7 +289,7 @@ def graph_datasets(x_data, y_data, z_data, labels, plot_params, show_crosshairs)
     # Font properties
     font = {"family": "sans-serif", "weight": "bold", "size": 18}
     plt.rc("font", **font)
-    plt.rcParams['svg.fonttype'] = 'none'
+    plt.rcParams["svg.fonttype"] = "none"
     # Tick properties
     plt.rcParams["axes.linewidth"] = 2.5
     plt.rcParams["xtick.major.size"] = 10
@@ -316,7 +315,6 @@ def graph_datasets(x_data, y_data, z_data, labels, plot_params, show_crosshairs)
     ymax = max([i for lis in ylims for i in lis])
     ymin = min([i for lis in ylims for i in lis])
     ymax_spread = [ymin, ymax]
-
 
     # Loop through the the data associated with each plot
     for i in range(len(x_data)):
@@ -358,7 +356,7 @@ def graph_datasets(x_data, y_data, z_data, labels, plot_params, show_crosshairs)
 
         # Get xlim and ylim
         xlim = xlims[i]
-        ylim = ylims[i]
+        # ylim = ylims[i]
 
         # Create a scatter plot
         ax.scatter(
@@ -403,23 +401,25 @@ def graph_datasets(x_data, y_data, z_data, labels, plot_params, show_crosshairs)
         xlim_min, xlim_max = xlim
         xlim_min = 2.8
         xlim_max = 5.0
-        major_xticks = np.arange(xlim_min + .2, xlim_max, .5)
-        minor_xticks = np.arange(xlim_min, xlim_max, .1)
+        major_xticks = np.arange(xlim_min + 0.2, xlim_max, 0.5)
+        minor_xticks = np.arange(xlim_min, xlim_max, 0.1)
         ax.xaxis.set_ticks(major_xticks)
         ax.xaxis.set_ticks(minor_xticks, minor=True)
-        ax.set_xlim(2.8,5)
+        ax.set_xlim(2.8, 5)
 
         # Set y-axis tick options
         major_yticks = np.arange(20, 121, 20)
         minor_yticks = np.arange(10, 126, 10)
         ax.yaxis.set_ticks(major_yticks)
         ax.yaxis.set_ticks(minor_yticks, minor=True)
-        ax.set_ylim(10,125)
+        ax.set_ylim(10, 125)
 
         ax.tick_params(which="both", bottom=True, top=True, left=True, right=True)
         ax.tick_params(which="minor", length=5, color="k", width=2.5)
 
-    plt.savefig("./3_out/restraints_kde.png", dpi=600, bbox_inches="tight", transparent=True)
+    plt.savefig(
+        "./3_out/restraints_kde.png", dpi=600, bbox_inches="tight", transparent=True
+    )
     # plt.savefig("./3_out/restraints_kde.svg", bbox_inches="tight", format="svg")
 
 
