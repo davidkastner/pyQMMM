@@ -130,9 +130,6 @@ html_favicon = '_static/favicon.ico'
 html_context = {
     'landing_page': {
         'menu': [{
-            'title': 'Renderverse ',
-            'url': 'https://renderverse.readthedocs.io/'
-        }, {
             'title': 'Developer Guide',
             'url': 'pyqmmm.html'
         }, {

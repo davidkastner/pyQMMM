@@ -19,16 +19,14 @@ import matplotlib.ticker as plticker
 
 def config():
     """
-    Parses the config file for the users parameters
-    Parameters
-    ----------
+    Parses the config file for the users parameters.
+
     Returns
     -------
     labels : dictionary
-        Contains labels section where the key is the name and the values is itself
+        Contains labels section where the key is the name and the values is itself.
     plot_params : list
-        A list of dictionaries where the index is the plot number and
-        the values are the associated floats from the config file
+        A list of dictionaries where the index is the plot number and the values are the associated floats from the config file.
     """
 
     # Check if the user has provided a config file
@@ -62,9 +60,7 @@ def config():
 def combine_inp():
     """
     Combines a CPPTraj output file with angles and another with distances.
-    Parameters
-    ----------
-    N/A
+
     Returns
     -------
     combined : file
@@ -101,10 +97,12 @@ def combine_inp():
 def get_xy_data(filename):
     """
     Takes a combined files and destructures it into arrays.
+
     Parameters
     ----------
     filename : str
         The name of the file.
+
     Returns
     -------
     x : array
@@ -131,18 +129,20 @@ def get_xy_data(filename):
 def collect_xyz_data(filenames):
     """
     Retrieves the x and y data from the files.
+
     Parameters
     ----------
     filenames : list
         List of the combined file names that were generated.
+
     Returns
     -------
     x_data : array
-        A list of values in the x dimension
+        A list of values in the x dimension.
     y_data : array
-        A list of values in the y dimension
+        A list of values in the y dimension.
     z_data : array
-        A list of values in the z dimension
+        A list of values in the z dimension.
     """
 
     # Collect data
@@ -168,20 +168,22 @@ def collect_xyz_data(filenames):
 def compare_patch_limits(x_data, y_data, patch_params):
     """
     Checks all the data sets and decides what the x and y bounds should be.
+
     Parameters
     ----------
     x_data : list
-        A list of lists with the x data for each plot as a list within the list
+        A list of lists with the x data for each plot as a list within the list.
     y_data : list
-        A list of lists with the y data for each plot as a list within the list
+        A list of lists with the y data for each plot as a list within the list.
     patch_param : list
-        The dimensions of the patch as min and max for the the height and width
+        The dimensions of the patch as min and max for the the height and width.
+
     Returns
     -------
     xlim : list
-        The lowest and highest values on the x-axis
+        The lowest and highest values on the x-axis.
     ylim : list
-        The lowest and highest values on the y-axis
+        The lowest and highest values on the y-axis.
     """
 
     # Unpack the dimensions of the patch
@@ -213,9 +215,8 @@ def compare_patch_limits(x_data, y_data, patch_params):
 
 def get_plot_limits(x_data, y_data, plot_params):
     """
-    Description.
-    Parameters
-    ----------
+    Calculate the x and y limits for the plot.
+
     Returns
     -------
     hyscore_kde.png : PNG
@@ -272,9 +273,8 @@ def get_plot_limits(x_data, y_data, plot_params):
 
 def graph_datasets(x_data, y_data, z_data, labels, plot_params, show_crosshairs):
     """
-    Description.
-    Parameters
-    ----------
+    Generate the plot.
+
     Returns
     -------
     hyscore_kde.png : PNG
