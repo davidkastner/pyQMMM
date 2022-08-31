@@ -7,15 +7,8 @@ import os.path
 import configparser as cp
 import matplotlib.pyplot as plt
 import matplotlib as mpl
-import matplotlib.cm as cm
-from matplotlib.colors import LinearSegmentedColormap
-from matplotlib.ticker import MultipleLocator
-import matplotlib.ticker as ticker
-import matplotlib.colors as mplc
 from scipy.stats import gaussian_kde
 from matplotlib.patches import Rectangle
-from matplotlib.font_manager import FontProperties
-from matplotlib import rc, rcParams
 import matplotlib.font_manager
 
 matplotlib.rcParams["pdf.fonttype"] = "42"
@@ -314,7 +307,6 @@ def graph_datasets(x_data, y_data, z_data, labels, plot_params, show_crosshairs)
     # Y-axis is the same so we set it before entering the Loop
     ymax = max([i for lis in ylims for i in lis])
     ymin = min([i for lis in ylims for i in lis])
-    ymax_spread = [ymin, ymax]
 
     # Loop through the the data associated with each plot
     for i in range(len(x_data)):
@@ -398,7 +390,6 @@ def graph_datasets(x_data, y_data, z_data, labels, plot_params, show_crosshairs)
             )
 
         # Set x-axis tick options
-        xlim_min, xlim_max = xlim
         xlim_min = 2.8
         xlim_max = 5.0
         major_xticks = np.arange(xlim_min + 0.2, xlim_max, 0.5)

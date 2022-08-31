@@ -1,20 +1,14 @@
 """Function for generating three pane KDE plots"""
 
 import numpy as np
-import time
 import glob
 import sys
 import os.path
 import configparser as cp
 import matplotlib.pyplot as plt
 import matplotlib as mpl
-import matplotlib.cm as cm
-import matplotlib.ticker as ticker
-import matplotlib.colors as mplc
-import matplotlib.cm as cm
 from scipy.stats import gaussian_kde
 from matplotlib.patches import Rectangle
-import matplotlib.ticker as plticker
 
 
 def config():
@@ -338,7 +332,6 @@ def graph_datasets(x_data, y_data, z_data, labels, plot_params, show_crosshairs)
 
         # Get xlim and ylim
         xlim = xlims[i]
-        ylim = ylims[i]
 
         # Create a scatter plot
         axes = ax[i] if len(x_data) > 1 else ax
