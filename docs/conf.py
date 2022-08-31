@@ -132,9 +132,6 @@ html_context = {
         'menu': [{
             'title': 'Developer Guide',
             'url': 'pyqmmm.html'
-        }, {
-            'title': '♡ Sponsor',
-            'url': 'https://www.buymeacoffee.com/kastner'
         }]
     }
 }

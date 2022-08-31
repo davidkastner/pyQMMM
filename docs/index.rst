@@ -26,10 +26,3 @@ pyQMMM Docs
    getting_started
    dev_guide
    api
-
-.. toctree::
-   :caption: More
-   :hidden:
-
-   ♡ Sponsor <https://www.buymeacoffee.com/kastner>
-
