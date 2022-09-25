@@ -1,3 +1,5 @@
+"""Automated protocol for the Modeller software"""
+
 from modeller import *
 from modeller.automodel import *
 
