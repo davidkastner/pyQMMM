@@ -104,7 +104,7 @@ def get_pdb_ensemble(new_frames: list[list[str]]):
     my_atom = -1
     pdb_file.write('MODEL        1\n')
 
-    i = 2
+    model = 2  # Starts with MODEL 2 as MODEL 1 was written
     for index in range(0, len(xyz_file)):
         if my_atom > 0:
             my_atom += 1
@@ -121,7 +121,7 @@ def get_pdb_ensemble(new_frames: list[list[str]]):
             pdb_file.write('TER\n')
             pdb_file.write('ENDMDL\n')
             pdb_file.write('MODEL        ' + str(i) + '\n')
-        i += 1
+        model += 1
 
     return
 
