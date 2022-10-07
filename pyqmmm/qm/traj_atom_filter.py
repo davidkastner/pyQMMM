@@ -94,11 +94,10 @@ def get_pdb_ensemble():
     
     pdb_file.write("MODEL        1\n")
     for index,line in enumerate(xyz_file):
-        print(f"{index}, {atom}")
         # If we have passed the xyz header lines
         if atom > 0:
             x, y, z = line.strip("\n").split()[1:5]
-            pdb_file.write(f"{template[atom][0:32]}{x[0:6]}  {y[0:6]}  {z[0:6]}  {template[atom][54:80]}\n")
+            pdb_file.write(f"{template[atom - 1][0:32]}{x[0:6]}  {y[0:6]}  {z[0:6]}  {template[atom - 1][54:80]}\n")
             atom += 1
         # If it is the first line continue
         else:
