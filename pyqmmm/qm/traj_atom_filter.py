@@ -1,6 +1,6 @@
 """Generate a new trajectory with only selected atoms."""
 
-import os
+from os.path import exists
 import sys
 import numpy
 
@@ -13,8 +13,6 @@ def get_selection():
     selection : list[int]
         A list of atoms.
     """
-
-
     selection = input(f"What atoms would you like to remove (e.g. 1-50,52-60)? ")
 
     # Convert user input to a list even if it is hyphenated
@@ -36,11 +34,6 @@ def remove_atoms(selection: list[int]) -> list[list[str]]:
     ----------
     selection : list[int]
         A list of atoms.
-    
-    Return
-    ------
-    new_frames: list[list[str]]
-        List of list containing the updated xyz file.
 
     """
     # Search the current directory for the .xyz file
@@ -83,61 +76,53 @@ def remove_atoms(selection: list[int]) -> list[list[str]]:
     return new_frames
 
 
-def get_pdb_ensemble(new_frames: list[list[str]]):
+def get_pdb_ensemble():
     """
     Takes an xyz trajectory and a PDB template file.
     Creates a PDB ensemble file.
 
-    Parameters
-    ----------
-    new_frames: list[list[str]]
-        List of list containing the updated xyz file.
-
     """
-    # Read in the template file and get the final atom number
-    with open('template.pdb', 'r') as template:
-        max_atom = int(template[len(template) - 3].split()[1])
-
-    # Initialize files for reading and writing
-    xyz_file = open("new_traj.xyz", 'r').readlines()
-    pdb_file = open('new_traj.pdb', 'w')
-    my_atom = -1
-    pdb_file.write('MODEL        1\n')
-
-    model = 2  # Starts with MODEL 2 as MODEL 1 was written
-    for index in range(0, len(xyz_file)):
-        if my_atom > 0:
-            my_atom += 1
-            x, y, z = xyz_file[index].strip('\n').split()[1:5]
-            pdb_file.write(template[my_atom][0:30] + x[0:6] + '  '+y[0:6] + '  ' + z[0:6] + '  ' + template[my_atom][54:80] + '\n')
+    # Initialize files
+    template = open("template.pdb", "r").readlines()
+    xyz_file = open("new_traj.xyz", "r").readlines()
+    pdb_file = open("new_traj.pdb", "w")
+    
+    # Initialize count variables
+    max_atom = int(open("template.pdb", "r").readlines()[-1].split()[1]) # Final atom number
+    atom = -1 # Account for two header lines in the xyz
+    model = 2  # MODEL 1 was already written
+    
+    pdb_file.write("MODEL        1\n")
+    for index,line in enumerate(xyz_file):
+        print(f"{index}, {atom}")
+        # If we have passed the xyz header lines
+        if atom > 0:
+            x, y, z = line.strip("\n").split()[1:5]
+            pdb_file.write(f"{template[atom][0:32]}{x[0:6]}  {y[0:6]}  {z[0:6]}  {template[atom][54:80]}\n")
+            atom += 1
+        # If it is the first line continue
         else:
-            # If it is the first line continue
-            my_atom += 1
-            x, y, z = '', '', ''
-        if my_atom > max_atom:
-            # Check if we have reached the end of the file
-            my_atom = -1
-            x, y, z = '', '', ''   
-            pdb_file.write('TER\n')
-            pdb_file.write('ENDMDL\n')
-            pdb_file.write('MODEL        ' + str(i) + '\n')
-        model += 1
-
-    return
+            atom += 1
+        # If we have reached the end of the file
+        if atom > max_atom:
+            pdb_file.write(f"TER\nENDMDL\nMODEL        {model}\n")
+            atom = -1
+            model += 1
 
 
 def traj_atom_filter():
     print("\n.------------------.")
     print("| TRAJ ATOM FILTER |")
     print(".------------------.\n")
-    print("Requests the atoms to remove.")
-    print("Removes the atoms from the trajectory.")
-    print("Writes out a new trajectory.")
-    print("Reads in a template file called template.pdb.")
+    print("- Requests the atoms to remove.")
+    print("- Removes the atoms from the trajectory.")
+    print("- Writes out a new trajectory.")
+    print("- Reads in a template file called template.pdb.\n")
 
-    selection = get_selection()
-    new_frames = remove_atoms(selection)
-    get_pdb_ensemble(new_frames)
+    if not exists("new_traj.xyz"):
+        selection = get_selection()
+        remove_atoms(selection)
+    get_pdb_ensemble()
 
 
 # Executes the function when run as a script
