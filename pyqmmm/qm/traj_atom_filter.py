@@ -1,6 +1,6 @@
 """Generate a new trajectory with only selected atoms."""
 
-from os.path import exists
+import os
 import sys
 import numpy
 
@@ -97,7 +97,7 @@ def get_pdb_ensemble():
         # If we have passed the xyz header lines
         if atom > 0:
             x, y, z = line.strip("\n").split()[1:5]
-            pdb_file.write(f"{template[atom - 1][0:32]}{x[0:6]}  {y[0:6]}  {z[0:6]}  {template[atom - 1][54:80]}\n")
+            pdb_file.write(f"{template[atom - 1][0:32]}{x[0:6]}  {y[0:6]}  {z[0:6]}{template[atom - 1][54:80]}\n")
             atom += 1
         # If it is the first line continue
         else:
@@ -118,7 +118,7 @@ def traj_atom_filter():
     print("- Writes out a new trajectory.")
     print("- Reads in a template file called template.pdb.\n")
 
-    if not exists("new_traj.xyz"):
+    if not os.path.exists("new_traj.xyz"):
         selection = get_selection()
         remove_atoms(selection)
     get_pdb_ensemble()
