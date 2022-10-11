@@ -31,7 +31,7 @@ As the package is designed spcifically for accelerating research in the Kulik gr
 much of the functionality is built around the Amber-TeraChem interface. 
 However, we aim for software agnostic functionality. 
 
-The initial limited goal of the package is serve as a repository sandbox for useful scripts used in my molecular modelling workflows.
+The initial limited goal of the package is to serve as a repository sandbox for useful scripts used in my molecular modelling workflows.
 However, eventually, I would hope to grow PyQMMM into a robust tool for automating the job preparation and analysis of QM/MM simulations.
 
 ---
