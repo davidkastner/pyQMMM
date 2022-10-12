@@ -1,4 +1,4 @@
-"""Script for submitting many jobs in the same directory."
+"""Script for submitting many jobs in the same directory."""
 
 import os
 import time
