@@ -76,7 +76,7 @@ conda install -c salilab modeller
 
 ## What's included?
 pyQMMM is built as both a library and a collection of pre-built scripts.
-The scripts are prepared to accelerate data processesing and automation of calculations.
+The scripts aim to accelerate data processesing and automation of calculations.
 If a script is not already included for procedure, many of the functions may be useful in building a procedure.
 
 
