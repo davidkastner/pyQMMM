@@ -38,7 +38,7 @@ def get_relative_energies(energy_list):
     """
 
     # Take the smallest value as the ground state
-    ground_state = min(energy_list)
+    ground_state = energy_list[0]
     # The equation for calculating the relative energy
     relative_energy = lambda x: -(ground_state*627.5)+(x*627.5)
     # Convert all energies to relative energies
@@ -52,13 +52,13 @@ def plotly_styling():
     '''
 
     glob_layout = go.Layout(
-        font=dict(family='Arial', size=24, color='black'),
-        margin=dict(l=100, r=300, t=10, b=100),
+        font=dict(family='Arial', size=22, color='black'),
+        margin=dict(l=100, r=225, t=10, b=100),
         xaxis=dict(showgrid=False,  zeroline=False, ticks="inside", showline=True,
-                   tickwidth=4, linewidth=4, ticklen=10, linecolor='black',
+                   tickwidth=3, linewidth=3, ticklen=10, linecolor='black',
                    mirror="allticks", color="black"),
         yaxis=dict(showgrid=False,  zeroline=False, ticks="inside", showline=True,
-                   tickwidth=4, linewidth=4, ticklen=10, linecolor='black',
+                   tickwidth=3, linewidth=3, ticklen=10, linecolor='black',
                    mirror="allticks", color="black"),
         legend_orientation="v",
         paper_bgcolor='rgba(0,0,0,0)',
@@ -67,7 +67,7 @@ def plotly_styling():
     return glob_layout
 
 
-def get_scatter_plot(energy_list):
+def get_scatter_plot(energy_list, out_name, start, end, atoms):
     '''
     Generate a scatterplot to help quickly vizualize the data.
     '''
@@ -82,11 +82,11 @@ def get_scatter_plot(energy_list):
 
     # User defined variables
     color = 'blue'
-    start = 2.205
-    end = 0.9814782130
+    start = start
+    end = end
     points = 70
-    file_name = "besd_obtuse.svg"
-    x_title = "<b>C···Cl distance (Å)</b>"
+    file_name = out_name
+    x_title = f"<b>{atoms} distance (Å)</b>"
     y_title = "<b>energy (kcal/mol)</b>"
 
     data = []
@@ -104,15 +104,81 @@ def get_scatter_plot(energy_list):
     layout["yaxis"].update({'title': y_title})
 
     fig = go.Figure()
+    # Add minor ticks to the x-axis
+    fig.update_xaxes(minor=dict(dtick=.25, ticklen=6, tickcolor="black"))
+    fig.update_xaxes(minor_ticks="inside")
     fig.update_xaxes(autorange="reversed")
+    # Bold the axis labels
     fig.update_yaxes(tickprefix="<b>")
     fig.update_xaxes(tickprefix="<b>")
-    fig.update_layout(xaxis = dict(titlefont = dict(size=24)))
-    fig.update_layout(yaxis = dict(titlefont = dict(size=24)))
+    # Change the size of the axes fonts
+    fig.update_layout(xaxis = dict(titlefont = dict(size=22)))
+    fig.update_layout(yaxis = dict(titlefont = dict(size=22)))
     fig.add_trace(trace)
     fig.layout.update(layout)
     fig.write_image(file_name)
     iplot(fig)
+
+
+def references(name):
+    """
+    Stores user defined variables.
+    """
+    if name == "besd_acute":
+        start = 2.202
+        end = 0.981
+        atoms = "O···H"
+    elif name == "besd_obtuse":
+        start = 2.205
+        end = 0.981
+        atoms = "O···H"
+    elif name == "welo5_acute":
+        start = 2.538
+        end = 0.981
+        atoms = "O···H"
+    elif name == "welo5_obtuse":
+        start = 2.659
+        end = 0.981
+        atoms = "O···H"
+        
+    # if name == "besd_acute":
+    #     start = 3.5
+    #     end = 1.87
+    #     atoms = "Cl···C"
+    # elif name == "besd_obtuse":
+    #     start = 3.2
+    #     end = 1.87
+    #     atoms = "Cl···C"
+    # elif name == "taud_acute":
+    #     start = 3.08
+    #     end = 1.41
+    #     atoms = "O···C"
+    # elif name == "taud_obtuse":
+    #     start = 2.92
+    #     end = 1.41
+    #     atoms = "O···C"
+    # elif name == "vioc_acute":
+    #     start = 2.79
+    #     end = 1.4
+    #     atoms = "O···C"
+    # elif name == "vioc_obtuse":
+    #     start = 2.79
+    #     end = 1.44
+    #     atoms = "O···C"
+    # elif name == "welo5_acute":
+    #     start = 3.40
+    #     end = 1.87
+    #     atoms = "Cl···C"
+    # elif name == "welo5_obtuse":
+    #     start = 3.50
+    #     end = 1.87
+    #     atoms = "Cl···C"
+    # else:
+    #     start = 1.0
+    #     end = 3.0
+    #     atoms = "C···H"
+
+    return start, end, atoms
 
 
 def pes_plotter():
@@ -134,12 +200,15 @@ def pes_plotter():
     print('--------------------------\n')
 
     # Get the name of the scan xyz to process
-    file_name = "scan_optim.xyz"
+    name = "welo5_obtuse"
+    file_name = f"{name}.xyz"
+    out_name = f"{name}.svg"
     # Extract energies
     energy_list = get_opt_energies(file_name)
     energy_list = get_relative_energies(energy_list)
     # Send a list of energy lists to the plotting function
-    get_scatter_plot(energy_list)
+    start, end, atoms = references(name)
+    get_scatter_plot(energy_list, out_name, start, end, atoms)
 
 
 # Collect energies into .csv file and create a dataframe
