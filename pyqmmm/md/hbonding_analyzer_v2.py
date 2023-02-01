@@ -93,12 +93,18 @@ def process_data(count_df, frame_count, name, substrate):
 
     Parameters
     ----------
-    count_df
-    frame_count: number of frames in trajectory
-    name
+    count_df: pd.DataFrame
+        DataFrame containing the hydrogen bonding counts
+    frame_count: int
+        Number of frames in trajectory
+    name: str
+        System name
 
     Returns
     -------
+    count_df: pd.DataFrame
+        Cleaned DataFrame containing the hydrogen bonding counts
+
 
     """
     increment = 0 # Is there an offset between the res number and the real res number
@@ -151,9 +157,6 @@ def figure_formatting():
     """
     Sets formatting for matplotlib.
 
-    Returns
-    -------
-    None
     """
     font = {"family": "sans-serif", "weight": "bold", "size": 14}
     plt.rc("font", **font)
@@ -170,15 +173,15 @@ def figure_formatting():
 
 def plot(data, file_path):
     """
-    Plot single figure for hbonding analysis
+    Plot single figure for hbonding analysis.
+
     Parameters
     ----------
-    data: dataframe
-    file_path: path to directory where output image should go
+    data: pd.DataFrame
+        Data that will be used to plot the figure
+    file_path: str
+        Path to directory where output image should go
 
-    Returns
-    -------
-    None
     """
     figure_formatting()
     df = data.sort_values('position').drop(['position'], axis=1)
@@ -201,9 +204,6 @@ def plot_multi(data, file_path):
     data: list of two dataframes
     file_path: path to directory where output image should go
 
-    Returns
-    -------
-    None
     """
     figure_formatting()
     new_df = pd.merge(data[0], data[1], on=['residue', 'position'], how='inner').sort_index().sort_values('position')
