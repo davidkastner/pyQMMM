@@ -245,7 +245,6 @@ def analyze_hbonds(file_paths, names, substrate):
             d.to_csv(file_path + 'hbond.csv')
         plot(d, file_path)
         data.append(d)
-        print(data)
 
     plot_multi(data, file_paths[0])
 
