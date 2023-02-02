@@ -139,6 +139,7 @@ def get_top_hits_df(df, sub_num, num_hits) -> pd.DataFrame:
         GBSA DataFrame with the updated residue names.
     sub_num: int
         The index of your substrate.
+    
     Returns
     -------
     df_hits: pd.DataFrame
@@ -172,6 +173,11 @@ def figure_formatting() -> None:
 
 
 def plot_single_total_gbsa(df, file_name) -> None:
+    """
+    Plot the total GBSA energy scores.
+
+    """
+
     colors = "#8ecae6"
     ax = df.plot.bar(x="Residue", y="Total", color=colors)
     figure_formatting()
@@ -181,6 +187,10 @@ def plot_single_total_gbsa(df, file_name) -> None:
 
 
 def plot_single_all_gbsa(df, file_name) -> None:
+    """
+    Plot the GBSA energy scores by type.
+    """
+
     colors = ["#fb8500", "#ffb703", "#023047", "#219ebc", "#8ecae6"]
     ax = df.plot.bar(
         x="Residue", y=["VDW", "Electrostatic", "Polar", "Non-polar"], color=colors
@@ -192,6 +202,11 @@ def plot_single_all_gbsa(df, file_name) -> None:
 
 
 def plot_clustered_stacked(dataframes, labels, y_columns, sorted_x_labels):
+    """
+    Format the stacked bar plots.
+
+    """
+
     H = "//"
     plt.axhline(y=0, color="k", alpha=0.5, linestyle="-", linewidth=3)
     colors = ["#fb8500", "#ffb703", "#023047", "#219ebc", "#8ecae6"]
@@ -253,6 +268,11 @@ def plot_clustered_stacked(dataframes, labels, y_columns, sorted_x_labels):
 
 
 def plot_multi_all_gbsa(df_hits_list, df_list, y_columns, sorted_x_labels) -> None:
+    """
+    Plot the GBSA energy scores by type for multiple dataframes.
+
+    """
+
     acute_df_hits, obtuse_df_hits, series_columns = prep_multi_gbsa_data(
         df_hits_list, df_list, y_columns
     )
@@ -266,6 +286,10 @@ def plot_multi_all_gbsa(df_hits_list, df_list, y_columns, sorted_x_labels) -> No
 
 
 def prep_multi_gbsa_data(df_hits_list, df_list, y_columns):
+    """
+    Prepare the data for plotting the GBSA energy scores by type for multiple dataframes.
+    
+    """
     acute_df_hits = df_hits_list[0]
     obtuse_df_hits = df_hits_list[1]
     acute_df = df_list[0]
