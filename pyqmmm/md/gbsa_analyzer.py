@@ -1,4 +1,4 @@
-"""Process and analyze output from AMBER GBSA calculation. Runs on Google Colab"""
+"""Process and analyze output from AMBER GBSA calculation"""
 
 import glob
 import pandas as pd
@@ -6,29 +6,22 @@ import matplotlib.pyplot as plt
 from pandas.api.types import CategoricalDtype
 
 
-def update_res_names(df):
-    # Dict containing MCPB residue names and their more convnetional pairs
-    res_names = {
-        "AG2": "ARG",
-        "AN1": "ASN",
-        "HIE": "HIS",
-        "TR1": "TYR",
-        "HD1": "HIS",
-        "HD2": "HIS",
-        "AP1": "ASP",
-        "CL1": "CL",
-        "SC1": "SUC",
-    }
-    df.reset_index(inplace=True)
-    df = df.replace({"Resname 1": res_names})
-    df = df.replace({"Resname 2": res_names})
-    df["Resname 2"].replace(res_names)
+def get_gbsa_df(raw) -> pd.DataFrame:
+    """
+    Turn the GBSA file into a parsable pd.DataFrame.
 
-    df.insert(4, "Residue", df["Resname 2"] + df["Resid 2"].astype(str))
-    return df
+    Parameters
+    ----------
+    raw: str
+        The name of the GBSA output file.
 
+    Returns
+    -------
+    df: pd.DataFrame
+        The raw GBSA file as a pd.DataFrame
 
-def get_gbsa_df(raw):
+    """
+
     # List of file keywords from the GBSA output
     total_energy_keyword = "D,E,L,T,A,S,:"
     sidechain_keyword = "S,i,d,e,c,h,a,i,n, ,E,n,e,r,g,y, ,D,e,c,o,m,p,o,s,i,t,i,o,n,:"
@@ -90,23 +83,80 @@ def get_gbsa_df(raw):
     # Remove all rows where Resid 1 and Resid 2 are the same number
     df = df[df["Resid 1"] != df["Resid 2"]]
 
-    # Rewrite the csv file
-    df.to_csv("deltas.csv")
+    return df
+
+def update_res_names(df) -> pd.DataFrame:
+    """
+    Updates odd residue names to more conventional names.
+    
+    Metal enzyme PDB's are notorious for having unconventional names,
+    especially when they are processed with AMBER's MCPB.py utility.
+
+    Parameters
+    ----------
+    df: pd.DataFrame
+        The raw GBSA file read in as a DataFrame.
+    
+    Returns
+    -------
+    df: pd.DataFrame
+        The GBSA file as a DataFrame with more intuitive residue names.
+    
+    """
+
+    # Dict containing MCPB residue names and their more conventional pairs
+    res_names = {
+        "AG2": "ARG",
+        "AN1": "ASN",
+        "HIE": "HIS",
+        "TR1": "TYR",
+        "HD1": "HIS",
+        "HD2": "HIS",
+        "AP1": "ASP",
+        "CL1": "CL",
+        "SC1": "SUC",
+    }
+
+    df.reset_index(inplace=True)
+    df = df.replace({"Resname 1": res_names})
+    df = df.replace({"Resname 2": res_names})
+    df["Resname 2"].replace(res_names)
+
+    df.insert(4, "Residue", df["Resname 2"] + df["Resid 2"].astype(str))
 
     return df
 
 
-def get_top_hits_df(df, sub_num):
-    # Ask the user how many of the top hits they would like to see
-    hit_num = 5  # int(input('Show me the top n residues: '))
+def get_top_hits_df(df, sub_num, num_hits) -> pd.DataFrame:
+    """
+    Gets the residues with the greatest energetic contributions.
+
+    The user can specify how many they would like to see.
+
+    Parameters
+    ----------
+    df: pd.DataFrame
+        GBSA DataFrame with the updated residue names.
+    sub_num: int
+        The index of your substrate.
+    Returns
+    -------
+    df_hits: pd.DataFrame
+        The DataFrame sorted only for the residues of interest.
+    """
+    
     # Get the top largest contributors to ligand interaction energies
-    df_hits = df[df["Resid 1"] == sub_num].nsmallest(hit_num, "Total", keep="all")
+    df_hits = df[df["Resid 1"] == sub_num].nsmallest(num_hits, "Total", keep="all")
     df_hits.to_csv("top_hits.csv")
 
     return df_hits
 
 
-def figure_formatting():
+def figure_formatting() -> None:
+    """
+    Sets formatting for matplotlib.
+
+    """
     font = {"family": "sans-serif", "weight": "bold", "size": 18}
     plt.rc("font", **font)
     plt.rcParams["svg.fonttype"] = "none"
@@ -121,7 +171,7 @@ def figure_formatting():
     plt.legend(bbox_to_anchor=(1.05, 1.0), loc="upper left")
 
 
-def plot_single_total_gbsa(df, file_name):
+def plot_single_total_gbsa(df, file_name) -> None:
     colors = "#8ecae6"
     ax = df.plot.bar(x="Residue", y="Total", color=colors)
     figure_formatting()
@@ -130,7 +180,7 @@ def plot_single_total_gbsa(df, file_name):
     plt.savefig(file_name, bbox_inches="tight", transparent=True)
 
 
-def plot_single_all_gbsa(df, file_name):
+def plot_single_all_gbsa(df, file_name) -> None:
     colors = ["#fb8500", "#ffb703", "#023047", "#219ebc", "#8ecae6"]
     ax = df.plot.bar(
         x="Residue", y=["VDW", "Electrostatic", "Polar", "Non-polar"], color=colors
@@ -141,7 +191,7 @@ def plot_single_all_gbsa(df, file_name):
     plt.savefig(file_name, bbox_inches="tight", transparent=True)
 
 
-def plot_clustered_stacked(dataframes, labels, y_columns, sorted_x_labels, file_name):
+def plot_clustered_stacked(dataframes, labels, y_columns, sorted_x_labels):
     H = "//"
     plt.axhline(y=0, color="k", alpha=0.5, linestyle="-", linewidth=3)
     colors = ["#fb8500", "#ffb703", "#023047", "#219ebc", "#8ecae6"]
@@ -193,17 +243,16 @@ def plot_clustered_stacked(dataframes, labels, y_columns, sorted_x_labels, file_
     l1 = axe.legend(
         handles[:number_of_col], list(axe_labels[: number_of_col - 1]), loc=[1.01, 0.5]
     )
-    # if labels is not None:
-    #     l2 = plt.legend(n, labels, loc=[1.01, 0.1])
+
     axe.add_artist(l1)
     axe.set_ylabel("GBSA energy score", weight="bold")
     axe.set_xlabel("Residue", weight="bold")
     axe.set_xticks([tick + 0.65 for tick in axe.get_xticks()])
-    plt.savefig(file_name, bbox_inches="tight", transparent=True)
+
     return axe
 
 
-def plot_multi_all_gbsa(df_hits_list, df_list, y_columns, sorted_x_labels):
+def plot_multi_all_gbsa(df_hits_list, df_list, y_columns, sorted_x_labels) -> None:
     acute_df_hits, obtuse_df_hits, series_columns = prep_multi_gbsa_data(
         df_hits_list, df_list, y_columns
     )
@@ -211,8 +260,7 @@ def plot_multi_all_gbsa(df_hits_list, df_list, y_columns, sorted_x_labels):
         [acute_df_hits[series_columns], obtuse_df_hits[series_columns]],
         ["acute", "obtuse"],
         y_columns,
-        sorted_x_labels,
-        "test.pdf",
+        sorted_x_labels
     )
     plt.savefig("stacked_multi_1.pdf", bbox_inches="tight", transparent=True)
 
@@ -242,10 +290,31 @@ def prep_multi_gbsa_data(df_hits_list, df_list, y_columns):
 
     figure_formatting()
     series_columns = y_columns + ["Residue"]
+
     return acute_df_hits, obtuse_df_hits, series_columns
 
 
-def plot_multi_total_gbsa(df_hits_list, df_list, y_columns):
+def plot_multi_total_gbsa(df_hits_list, df_list, y_columns) -> list:
+    """
+    Create the GBSA plot.
+
+    Parameters
+    ----------
+    df_hits_list: pd.DataFrame
+
+    df_list: pd.DataFrame
+
+    df_list: list
+
+    y_columns:
+
+
+    Returns
+    -------
+    sorted_x_labels: list
+
+    """
+
     acute_df_hits, obtuse_df_hits, series_columns = prep_multi_gbsa_data(
         df_hits_list, df_list, y_columns
     )
@@ -258,19 +327,37 @@ def plot_multi_total_gbsa(df_hits_list, df_list, y_columns):
     ax = new_df.plot.bar(color=["SkyBlue", "IndianRed"])
     ax.set_ylabel("GBSA energy score", weight="bold")
     ax.set_xlabel("Residue", weight="bold")
+
     plt.savefig("stacked_multi_2.pdf", bbox_inches="tight", transparent=True)
-    plt.show()
+
     return sorted_x_labels
 
 
-def gbsa():
+def gbsa() -> None:
+    '''
+    Main GBSA analysis wrapper function.
+
+    '''
+
+    # Welcome user and print some instructions
+    print("\n.---------------.")
+    print("| GBSA ANALYZER |")
+    print(".---------------.\n")
+    print("This script will process GBSA output files:")
+    print("+ Looks for file24.dat")
+    print("+ Will look for more than one GBSA output to compare\n")
+
+    # Get user input
     sub_num = int(input("What is the residue num of your substrate?: ")) - 1
+    num_hits = int(input('Show me the top n residues: '))
+
     file_extension = "*24.dat"
     acute_plot_names = ["acute_total.pdf", "acute_all.pdf"]
     obtuse_plot_names = ["obtuse_total.pdf", "obtuse_all.pdf"]
     plot_file_names = [acute_plot_names, obtuse_plot_names]
     df_list = []
     df_hits_list = []
+
     # Collect all the GBSA data located in the current directory
     raw_files = glob.glob(file_extension, recursive=True)
     raw_files = sorted(raw_files)
@@ -279,7 +366,7 @@ def gbsa():
     for raw, file_name_list in zip(raw_files, plot_file_names):
         df = get_gbsa_df(raw)
         df = update_res_names(df)
-        df_hits = get_top_hits_df(df, sub_num)
+        df_hits = get_top_hits_df(df, sub_num, num_hits)
         df_list.append(df)
         df_hits_list.append(df_hits)
 
@@ -295,6 +382,6 @@ def gbsa():
         sorted_x_labels,
     )
 
-
+# Use to run as a script
 if __name__ == "__main__":
     gbsa()
