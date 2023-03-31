@@ -36,6 +36,13 @@ Install the package by running the follow command inside the repository.
 This will perform a developmental version install. 
 It is good practice to do this inside of a virtual environment.
 
+### Download the package from GitHub
+```
+git clone git@github.com:davidkastner/pyQMMM.git
+cd pyQMMM
+python -m pip install -e .
+```
+
 ### Creating python environment
 All the dependencies can be loaded together using the prebuilt environment.yml file.
 Compatibility is automatically tested for python versions 3.8 and higher.
@@ -62,9 +69,8 @@ pyQMMM contains automated workflows for modelling in missing loops using Modelle
 conda install -c salilab modeller
 ```
 
-### Download the package from GitHub
+### Developer install of pyQMMM
 ```
-git clone git@github.com:davidkastner/pyQMMM.git
 cd pyQMMM
 python -m pip install -e .
 ```
