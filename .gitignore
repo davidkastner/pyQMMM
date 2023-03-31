@@ -1,6 +1,3 @@
-# MAC OS
-.DS_Store
-
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -107,3 +104,6 @@ ENV/
 # profraw files from LLVM? Unclear exactly what triggers this
 # There are reports this comes from LLVM profiling, but also Xcode 9.
 *profraw
+
+# In-tree generated files
+*/_version.py

@@ -21,9 +21,8 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        # os: [macOS-latest, ubuntu-latest, windows-latest]
-        os: [ubuntu-latest]
-        python-version: [3.9, "3.10", "3.11"]
+        os: [macOS-latest, ubuntu-latest, windows-latest]
+        python-version: [3.8, 3.9, "3.10"]
 
     steps:
       - uses: actions/checkout@v3
@@ -34,6 +33,7 @@ jobs:
           uname -a
           df -h
           ulimit -a
+
       # More info on options: https://github.com/marketplace/actions/provision-with-micromamba
       - uses: mamba-org/provision-with-micromamba@main
         with:
@@ -42,17 +42,20 @@ jobs:
           channels: conda-forge,defaults
           extra-specs: |
             python=${{ matrix.python-version }}
+
       - name: Install package
         # conda setup requires this special shell
         shell: bash -l {0}
         run: |
           python -m pip install . --no-deps
           micromamba list
+
       - name: Run tests
         # conda setup requires this special shell
         shell: bash -l {0}
         run: |
-          pytest -v --cov=qa --cov-report=xml --color=yes qa/tests/
+          pytest -v --cov=pyqmmm --cov-report=xml --color=yes pyqmmm/tests/
+
       - name: CodeCov
         uses: codecov/codecov-action@v1
         with:
