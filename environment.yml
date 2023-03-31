@@ -1,0 +1,22 @@
+name: pyqmmm
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.8
+  - black
+  - biopandas
+  - cookiecutter
+  - click
+  - jupyterlab
+  - matplotlib
+  - numpy
+  - pandas
+  - pip
+  - scikit-learn
+  - scipy
+  - seaborn
+  - sphinx-autoapi
+  - sphinx_rtd_theme
+  - pip:
+    - https://github.com/revitron/revitron-sphinx-theme/archive/master.zip
