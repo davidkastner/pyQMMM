@@ -1,7 +1,7 @@
-pyqmmm.qm.xyz\_movie\_generator
-===============================
+pyqmmm.qm.traj\_movie\_generator
+================================
 
-.. automodule:: pyqmmm.qm.xyz_movie_generator
+.. automodule:: pyqmmm.qm.traj_movie_generator
 
    
    

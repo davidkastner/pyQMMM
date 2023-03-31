@@ -6,6 +6,4 @@ API Documentation
    :recursive:
 
    pyqmmm.md
-   pyqmmm.ml
    pyqmmm.qm
-   pyqmmm.qmmm

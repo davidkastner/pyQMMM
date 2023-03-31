@@ -1,7 +1,7 @@
-pyqmmm.qm.pair\_swapper
-=======================
+pyqmmm.qm.traj\_atom\_swapper
+=============================
 
-.. automodule:: pyqmmm.qm.pair_swapper
+.. automodule:: pyqmmm.qm.traj_atom_swapper
 
    
    
