@@ -53,12 +53,20 @@ cd pyqmmm
 pip install -e
 ```
 
+### Supporting installations
 To have complete access to all pyQMMM functionality, you should also install following dependencies. 
 This should be done inside you pyqmmm virtual environment. 
 pyQMMM contains automated workflows for modelling in missing loops using Modeller.
 
 ```
 conda install -c salilab modeller
+```
+
+### Download the package from GitHub
+```
+git clone git@github.com:davidkastner/pyQMMM.git
+cd pyQMMM
+python -m pip install -e .
 ```
 
 ---
