@@ -39,8 +39,6 @@ It is good practice to do this inside of a virtual environment.
 ### Download the package from GitHub
 ```
 git clone git@github.com:davidkastner/pyQMMM.git
-cd pyQMMM
-python -m pip install -e .
 ```
 
 ### Creating python environment
@@ -50,6 +48,7 @@ Installing all dependencies together has shown to produce more robust installati
 
 Installing all packages together via the yaml will produce a more robust and efficient environment:
 ```
+cd pyQMMM
 conda env create -f environment.yml
 source activate pyqmmm
 ```
