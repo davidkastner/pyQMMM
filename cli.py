@@ -10,27 +10,27 @@ print("Documenation: https://pyqmmm.readthedocs.io\n")
 print("""
     The overall command-line interface (CLI) entry point.
     The CLI interacts with the rest of the package.
-    A CLI is advantagous as it introduces the complete scope of functionality.
-    It also improves long-term maintainability and readability.\n
+    The CLI is advantagous as it summarizes the scope of the package,
+    and improves long-term maintainability and readability.\n
     """)
 
 import click
 
 @click.command()
-@click.option("--first_task", "-a", is_flag=True, help="The first task.")
+@click.option("--gbsa_analysis", "-g", is_flag=True, help="Extract results from GBSA analysis.")
 @click.help_option('--help', '-h', is_flag=True, help='Exiting pyQMMM.')
 def md(
-    combine_restarts,
+    gbsa_analysis,
     ):
     """
     Functions for molecular dynamics (MD) simulations.
+
     """
-    
-    if combine_restarts:
-        click.echo("> Combine restarts:")
-        click.echo("> Loading...")
-        import pyqmmm.md.task
-        # Perform task
+    click.echo("> Analyze a GBSA calculation output:")
+    click.echo("> Loading...")
+    import pyqmmm.md.gbsa_analyzer
+    # Run the GBSA analysis
+    pyqmmm.md.gbsa_analyzer.analyze()
 
 @click.command()
 @click.option("--first_task", "-a", is_flag=True, help="The first task.")
@@ -40,13 +40,12 @@ def qm(
     ):
     """
     Functions for quantum mechanics (QM) simulations.
+
     """
-    
-    if combine_restarts:
-        click.echo("> Combine restarts:")
-        click.echo("> Loading...")
-        import pyqmmm.qm.task
-        # Perform task
+    click.echo("> Combine restarts:")
+    click.echo("> Loading...")
+    import pyqmmm.qm.task
+    # Perform task
 
 if __name__ == "__main__":
     # Run the command-line interface when this script is executed
