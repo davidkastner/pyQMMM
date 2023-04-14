@@ -8,31 +8,29 @@ pyQMMM
 # PyQMMM Package
 ## Table of Contents
 1. **Overview**
-    * Introduction
-    * Purpose
 2. **Installation**
-    * Installing pyQMMM
-    * Prerequisites
-    * File structure
+    * Download the package from GitHub
+    * Creating python environment
+    * Developer install of pyQMMM
+    * Supporting installations
 3. **What is included?**
-    * Library
-    * Utility functions
+    * File structure
+    * Command Line Interface
 4. **Documentation**
-    * Read the Docs
-    * Examples
+    * Update the ReadTheDocs
+    * GitHub refresher
 
 
 ## 1. Overview
-PyQMMM is a package for accelerating structure to simulation workflows for QM, MD, and QM/MM simulations. 
-The package contains useful tools for all stages of the QM/MM workflow, from MD, to QM, to multiscale QM/MM.
+PyQMMM is a package for accelerating structure to simulation QM, MD, and QM/MM workflows. 
+The package contains useful tools for all stages of multiscale simulation prep.
 As the package is designed spcifically for accelerating research in the Kulik group at MIT, 
 much of the functionality is built around the Amber-TeraChem interface.
-It's current purpose is to act as a utility sandbox for my projects.
+It's current purpose is to act as a utility sandbox for several in-house projects.
 
----
 
 ## 2. Installation
-Install the package by running the follow command inside the repository. 
+Install the package by running the follow commands inside the downloaded repository. 
 This will perform a developmental version install. 
 It is good practice to do this inside of a virtual environment.
 
@@ -46,17 +44,17 @@ All the dependencies can be loaded together using the prebuilt environment.yml f
 Compatibility is automatically tested for python versions 3.8 and higher.
 Installing all dependencies together has shown to produce more robust installations.
 
-Installing all packages together via the yaml will produce a more robust and efficient environment:
 ```
 cd pyQMMM
 conda env create -f environment.yml
-source activate pyqmmm
+conda activate pyqmmm
+source activate qa  #Alternatively used on some clusters
 ```
 
+### Developer install of pyQMMM
 ```
-conda activate pyqmmm
 cd pyqmmm
-pip install -e
+python -m pip install -e .
 ```
 
 ### Supporting installations
@@ -67,14 +65,6 @@ pyQMMM contains automated workflows for modelling in missing loops using Modelle
 ```
 conda install -c salilab modeller
 ```
-
-### Developer install of pyQMMM
-```
-cd pyQMMM
-python -m pip install -e .
-```
-
----
 
 ## 3. What's included?
 pyQMMM is built as both a library and a collection of pre-built scripts.
@@ -88,7 +78,7 @@ If a script is not already included for procedure, many of the functions may be 
 |── cli.py      # Command-line interface entry point
 ├── docs        # Readthedocs documentation site
 ├── pyqmmm      # Directory containing pyQMMM modules
-│   ├── mm      # Processes for setting MD optimizations prior to QM/MM
+│   ├── md      # Processes for setting MD optimizations prior to QM/MM
 │   └── qm      # Processes for running and anlayzing QM cluster model jobs 
 └── ...
 ```
@@ -96,26 +86,27 @@ If a script is not already included for procedure, many of the functions may be 
 ### Command Line Interface
 The contents of the library are designed to be navigated through the commandline interface.
 Add the following line to your bash.rc
+
 ```
 alias pyqmmm='python /the/path/to/pyQMMM/cli.py'
 ```
 
----
 
 ## 4. Documentation
 Accurate documentation will always be a high priority for the project.
-You can find documentation at the project's Read the Docs.
+You can find documentation at the project's [ReadtheDocs](https://pyqmmm.readthedocs.io/).
 
-### Run the following commands to update the ReadTheDocs site
-```bash
+### Update the ReadTheDocs
+
+```
 make clean
 make html
 ```
 
-### Developer guide
-### GitHub refresher for those who would like to contribute
+### GitHub refresher
 #### Push new changes
-```bash
+
+```
 git status
 git pull
 git add .
@@ -124,7 +115,8 @@ git push -u origin main
 ```
 
 #### Handle merge conflict
-```bash
+
+```
 git stash push --include-untracked
 git stash drop
 git pull
@@ -133,7 +125,6 @@ git pull
 #### Copyright
 &copy; 2022,  Kulik group at MIT
 
----
 
 #### Acknowledgements
 Author: David W. Kastner
