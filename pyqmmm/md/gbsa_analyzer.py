@@ -117,19 +117,21 @@ def get_top_hits_df(df, sub_num, num_hits) -> pd.DataFrame:
     Parameters
     ----------
     df: pd.DataFrame
-        GBSA DataFrame with the updated residue names.
+        GBSA DataFrame with the updated residue names
     sub_num: int
-        The index of your substrate.
+        The index of your substrate
+    num_hits: int
+        The number of top hits that the user would like
     
     Returns
     -------
     df_hits: pd.DataFrame
         The DataFrame sorted only for the residues of interest.
+
     """
-    
     # Get the top largest contributors to ligand interaction energies
     df_hits = df[df["Resid 1"] == sub_num].nsmallest(num_hits, "Total", keep="all")
-    df_hits.to_csv("top_hits.csv")
+    df_hits.to_csv("top_hits.csv", index=False)
 
     return df_hits
 
@@ -241,12 +243,12 @@ def plot_multi_all_gbsa(df_hits_list, df_list, y_columns, sorted_x_labels) -> No
 
     """
 
-    acute_df_hits, obtuse_df_hits, series_columns = prep_multi_gbsa_data(
+    gbsa1_df_hits, gbsa2_df_hits, series_columns = prep_multi_gbsa_data(
         df_hits_list, df_list, y_columns
     )
     plot_clustered_stacked(
-        [acute_df_hits[series_columns], obtuse_df_hits[series_columns]],
-        ["acute", "obtuse"],
+        [gbsa1_df_hits[series_columns], gbsa2_df_hits[series_columns]],
+        ["gbsa1", "gbsa2"],
         y_columns,
         sorted_x_labels
     )
@@ -258,32 +260,32 @@ def prep_multi_gbsa_data(df_hits_list, df_list, y_columns):
     Prepare the data for plotting the GBSA energy scores by type for multiple dataframes.
     
     """
-    acute_df_hits = df_hits_list[0]
-    obtuse_df_hits = df_hits_list[1]
-    acute_df = df_list[0]
-    obtuse_df = df_list[1]
-    acute_residues = acute_df_hits["Residue"].tolist()
-    obtuse_residues = obtuse_df_hits["Residue"].tolist()
-    residues = list(set(acute_residues + obtuse_residues))
+    gbsa1_df_hits = df_hits_list[0]
+    gbsa2_df_hits = df_hits_list[1]
+    gbsa1_df = df_list[0]
+    gbsa2_df = df_list[1]
+    gbsa1_residues = gbsa1_df_hits["Residue"].tolist()
+    gbsa2_residues = gbsa2_df_hits["Residue"].tolist()
+    residues = list(set(gbsa1_residues + gbsa2_residues))
 
     for residue in residues:
-        if residue not in acute_residues and residue in obtuse_residues:
-            residue_index = obtuse_df_hits.loc[obtuse_df_hits["Residue"] == residue][
+        if residue not in gbsa1_residues and residue in gbsa2_residues:
+            residue_index = gbsa2_df_hits.loc[gbsa2_df_hits["Residue"] == residue][
                 "index"
             ].tolist()[0]
-            missing_residue = acute_df.loc[acute_df["index"] == residue_index]
-            acute_df_hits = pd.concat([acute_df_hits, missing_residue], ignore_index=True)
-        elif residue not in obtuse_residues and residue in acute_residues:
-            residue_index = acute_df_hits.loc[acute_df_hits["Residue"] == residue][
+            missing_residue = gbsa1_df.loc[gbsa1_df["index"] == residue_index]
+            gbsa1_df_hits = pd.concat([gbsa1_df_hits, missing_residue], ignore_index=True)
+        elif residue not in gbsa2_residues and residue in gbsa1_residues:
+            residue_index = gbsa1_df_hits.loc[gbsa1_df_hits["Residue"] == residue][
                 "index"
             ].tolist()[0]
-            missing_residue = obtuse_df.loc[obtuse_df["index"] == residue_index]
-            obtuse_df_hits = pd.concat([obtuse_df_hits, missing_residue], ignore_index=True)
+            missing_residue = gbsa2_df.loc[gbsa2_df["index"] == residue_index]
+            gbsa2_df_hits = pd.concat([gbsa2_df_hits, missing_residue], ignore_index=True)
 
     format_plot()
     series_columns = y_columns + ["Residue"]
 
-    return acute_df_hits, obtuse_df_hits, series_columns
+    return gbsa1_df_hits, gbsa2_df_hits, series_columns
 
 
 def plot_multi_total_gbsa(df_hits_list, df_list, y_columns) -> list:
@@ -305,14 +307,14 @@ def plot_multi_total_gbsa(df_hits_list, df_list, y_columns) -> list:
 
     """
 
-    acute_df_hits, obtuse_df_hits, series_columns = prep_multi_gbsa_data(
+    gbsa1_df_hits, gbsa2_df_hits, series_columns = prep_multi_gbsa_data(
         df_hits_list, df_list, y_columns
     )
-    acute_series = acute_df_hits[series_columns].set_index("Residue").squeeze()
-    obtuse_series = obtuse_df_hits[series_columns].set_index("Residue").squeeze()
+    gbsa1_series = gbsa1_df_hits[series_columns].set_index("Residue").squeeze()
+    gbsa2_series = gbsa2_df_hits[series_columns].set_index("Residue").squeeze()
     format_plot()
-    new_df = pd.DataFrame({"Acute": acute_series, "Obtuse": obtuse_series})
-    new_df = new_df.sort_values(by=["Acute"])
+    new_df = pd.DataFrame({"gbsa1": gbsa1_series, "gbsa2": gbsa2_series})
+    new_df = new_df.sort_values(by=["gbsa1"])
     sorted_x_labels = list(new_df.index)
     plt.figure()  # Add this line
     ax = new_df.plot.bar(color=["SkyBlue", "IndianRed"])
@@ -339,11 +341,11 @@ def analyze() -> None:
     print("+ Will look for more than one GBSA output to compare\n")
 
     # Get user input
-    sub_num = int(input("What is the residue num of your substrate?: ")) - 1
+    sub_num = int(input("What is the index of your substrate in your GBSA calculation?: "))
     num_hits = int(input('Show me the top n residues: '))
 
     file_extension = "*24.dat"
-    plot_file_names = [["acute_total.pdf", "acute_all.pdf"], ["obtuse_total.pdf", "obtuse_all.pdf"]]
+    plot_file_names = [["gbsa1_total.pdf", "gbsa1_all.pdf"], ["gbsa2_total.pdf", "gbsa2_all.pdf"]]
 
     # Collect all the GBSA data located in the current directory
     raw_files = glob.glob(file_extension)
@@ -355,6 +357,7 @@ def analyze() -> None:
     # Loop through each GBSA file and analyze the results
     for raw, file_name_list in zip(raw_files, plot_file_names):
         df = get_gbsa_df(raw)
+
         df = update_res_names(df)
         df_hits = get_top_hits_df(df, sub_num, num_hits)
 
@@ -364,9 +367,17 @@ def analyze() -> None:
         # Generate a plots
         plot_single_total_gbsa(df_hits, file_name_list[0])
 
-    # Generate multi GBSA plots
-    sorted_x_labels = plot_multi_total_gbsa(df_hits_list, df_list, ["Total"])
-    plot_multi_all_gbsa(df_hits_list, df_list, ["VDW", "Electrostatic", "Polar", "Non-polar"], sorted_x_labels)
+        # If there is only one file matching "*24.dat", do not generate the other plots
+        if len(raw_files) == 1:
+            break
+
+    # Generate multi GBSA plots if there are more than one file
+    if len(raw_files) > 1:
+        sorted_x_labels = plot_multi_total_gbsa(df_hits_list, df_list, ["Total"])
+        plot_multi_all_gbsa(df_hits_list, df_list, ["VDW", "Electrostatic", "Polar", "Non-polar"], sorted_x_labels)
+
+if __name__ == "__main__":
+    analyze()
 
 if __name__ == "__main__":
     analyze()
