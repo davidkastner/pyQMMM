@@ -1,0 +1,5 @@
+parm ../../../dah_solv.prmtop
+trajin ../../../1_output/constP_prod.mdcrd
+strip :NA+,Na+,WAT,FE1 outprefix prmtop
+trajout dah_stripped.nc
+run
