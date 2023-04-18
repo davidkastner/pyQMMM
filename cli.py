@@ -18,19 +18,27 @@ import click
 
 @click.command()
 @click.option("--gbsa_analysis", "-g", is_flag=True, help="Extract results from GBSA analysis.")
+@click.option("--last_frame", "-l", is_flag=True, help="Get last frame from an AMBER trajectory.")
 @click.help_option('--help', '-h', is_flag=True, help='Exiting pyQMMM.')
 def md(
     gbsa_analysis,
+    last_frame,
     ):
     """
     Functions for molecular dynamics (MD) simulations.
 
     """
-    click.echo("> Analyze a GBSA calculation output:")
-    click.echo("> Loading...")
-    import pyqmmm.md.gbsa_analyzer
-    # Run the GBSA analysis
-    pyqmmm.md.gbsa_analyzer.analyze()
+    if gbsa_analysis:
+        click.echo("> Analyze a GBSA calculation output:")
+        click.echo("> Loading...")
+        import pyqmmm.md.gbsa_analyzer
+        pyqmmm.md.gbsa_analyzer.analyze()
+
+    elif last_frame:
+        click.echo("> Extracting the last frame from a MD simulation:")
+        click.echo("> Loading...")
+        import pyqmmm.md.cpptraj_toolkit
+        pyqmmm.md.cpptraj_toolkit.
 
 @click.command()
 @click.option("--first_task", "-a", is_flag=True, help="The first task.")
