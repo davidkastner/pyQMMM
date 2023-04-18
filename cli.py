@@ -38,7 +38,7 @@ def md(
         click.echo("> Extracting the last frame from a MD simulation:")
         click.echo("> Loading...")
         import pyqmmm.md.cpptraj_toolkit
-        pyqmmm.md.cpptraj_toolkit.
+        pyqmmm.md.cpptraj_toolkit.get_last_frame()
 
 @click.command()
 @click.option("--first_task", "-a", is_flag=True, help="The first task.")
