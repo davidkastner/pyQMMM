@@ -7,7 +7,6 @@ dependencies:
 
     # Package depends
   - numpy
-  - ambertools
   - matplotlib
   - pandas
 

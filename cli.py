@@ -18,11 +18,13 @@ import click
 
 @click.command()
 @click.option("--gbsa_analysis", "-g", is_flag=True, help="Extract results from GBSA analysis.")
-@click.option("--last_frame", "-l", is_flag=True, help="Get last frame from an AMBER trajectory.")
+@click.option("--last_frame", "-lf", is_flag=True, help="Get last frame from an AMBER trajectory.")
+@click.option("--residue_list", "-lr", is_flag=True, help="Get a list of all residues in a PDB.")
 @click.help_option('--help', '-h', is_flag=True, help='Exiting pyQMMM.')
 def md(
     gbsa_analysis,
     last_frame,
+    residue_list,
     ):
     """
     Functions for molecular dynamics (MD) simulations.
@@ -39,6 +41,12 @@ def md(
         click.echo("> Loading...")
         import pyqmmm.md.cpptraj_toolkit
         pyqmmm.md.cpptraj_toolkit.get_last_frame()
+
+    elif residue_list:
+        click.echo("> Extract the residues from a PDB:")
+        click.echo("> Loading...")
+        import pyqmmm.md.residue_lister
+        pyqmmm.md.residue_lister.list_residues()
 
 @click.command()
 @click.option("--first_task", "-a", is_flag=True, help="The first task.")

@@ -1,44 +1,48 @@
-"""Combine the residue name and index of a protien into a single list."""
-
-# Combine the residue name and index of a protien (e.g., Ala100).
-# This script solves the specific problem of obtaining residues for SI tables.
-# In a PDB residues are of the form 'PRO   103' on each line,
-# and contains duplicates for each at in the residue.
-# This script parses a PDB to get a unique list of the residues in a protein.
+"""Extract specific residues from a PDB file and save them as a new file."""
 
 
-def res_name_format_extractor():
-    # Parse the input text and clean the data
-    with open("Book1.txt", "r") as atom_list:
-        res_list = []  # A variable for storing processed residues
-        # Loop through a list with residue names and numbers
-        for line in atom_list:
-            id_and_name = line.split()
-            # Remove atoms where the atom ID is an empty string
-            id_and_name[1] = id_and_name[1].strip()
-            if len(id_and_name[1]) == 1:
-                continue
-            else:
-                id_and_name[1] = int(id_and_name[1])
-            # Remove atoms where the residue name is an empty string
-            id_and_name[0] = id_and_name[0].strip()
-            if len(id_and_name[0]) == 0:
-                continue
-            res_list.append(id_and_name)
+def pdb_residue_extractor():
+    # Introduce user to the function
+    print("\n.-----------------------.")
+    print("| PDB RESIDUE EXTRACTOR |")
+    print(".-----------------------.\n")
+    print("You want to select a specific selection of residues from your PDB?")
+    print("--------------------------\n")
 
-    # Remove duplicates as each residue as many atoms each as a new line
-    clean_res_list = []
-    for res in res_list:
-        if res not in clean_res_list:
-            clean_res_list.append(res)
+    # Get User input
+    pdb_name = input("Which PDB in this directory are we selecting from?: ")
+    raw_mask = input("Enter the residues as a list (1,2,3,etc.)?: ")
 
-    # Write the formatted final residues to a new file
-    with open("residues.dat", "w") as file_res_file:
-        for res in clean_res_list:
-            # Combine the residue name and index e.g., Ala100
-            res_combined = res[0] + str(res[1])
-            file_res_file.write(res_combined + "\n")
+    # Create a list from the users input
+    mask = raw_mask.split(",")
+
+    # The code for Mask Maker begins here
+    res_type_array = []
+    new_pdb = "{}_mask.pdb".format(pdb_name[:-4])
+    with open(new_pdb, "w") as new_mask:
+        with open(pdb_name, "r") as original:
+            for line in original:
+
+                # Start checking once we reach the ATOM section
+                res_index = line[22:28].strip()
+                res_type = line[:4]
+                if res_type == "ATOM" and res_index in mask:
+                    new_mask.write(line)
+                    res_type_array.append(res_index)
+                    continue
+                # We don't won't to count chain breaks as a discarded residue
+                if line[:3] == "TER":
+                    continue
+                # We don't want to include the last line so we will watch for END
+                if line[:3] == "END":
+                    new_mask.write(line)
+                    break
+
+    # Print important statistics for the user
+    print("We extracted {} residues for the mask".format(len(set(res_type_array))))
+    print("Your new file is named {}".format(new_pdb))
+    print("Done.")
 
 
 if __name__ == "__main__":
-    res_name_format_extractor()
+    pdb_residue_extractor()
