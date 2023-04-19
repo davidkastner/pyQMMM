@@ -18,13 +18,15 @@ import click
 
 @click.command()
 @click.option("--gbsa_analysis", "-g", is_flag=True, help="Extract results from GBSA analysis.")
-@click.option("--hbond_analysis", "-hb", is_flag=True, help="Extract Hbonding patterns from MD.")
+@click.option("--compute_hbond", "-hc", is_flag=True, help="Calculates hbonds with cpptraj.")
+@click.option("--hbond_analysis", "-ha", is_flag=True, help="Extract Hbonding patterns from MD.")
 @click.option("--last_frame", "-lf", is_flag=True, help="Get last frame from an AMBER trajectory.")
 @click.option("--residue_list", "-lr", is_flag=True, help="Get a list of all residues in a PDB.")
 @click.option("--colored_rmsd", "-cr", is_flag=True, help="Color RMSD by clusters.")
 @click.help_option('--help', '-h', is_flag=True, help='Exiting pyQMMM.')
 def md(
     gbsa_analysis,
+    compute_hbond,
     hbond_analysis,
     last_frame,
     residue_list,
@@ -40,14 +42,23 @@ def md(
         import pyqmmm.md.gbsa_analyzer
         pyqmmm.md.gbsa_analyzer.analyze()
 
+    elif compute_hbond:
+        click.echo("> Compute all hbonds between the protein and the substrate:")
+        click.echo("> Loading...")
+        import pyqmmm.md.hbond_analyzer
+        protein_name = input("What is the name of your protein (e.g., DAH)? ")
+        substrate_index = input("What is the index of your substrate (e.g., 280)? ")
+        residue_range = input("What is the range of residues in your protein (e.g., 1-279)? ")
+        pyqmmm.md.hbond_analyzer.compute_hbonds(protein_name, substrate_index, residue_range)
+
     elif hbond_analysis:
         click.echo("> Extract and plot hbonding patterns from an MD simulation:")
         click.echo("> Loading...")
-        import pyqmmm.md.hbonding_analyzer
+        import pyqmmm.md.hbond_analyzer
         file_paths = ["/Users/kastner/Downloads/test/obtuse/", "/Users/kastner/Downloads/test/acute/"]
         names = ["acute", "obtuse"]
         substrate = "DHK"
-        pyqmmm.md.hbonding_analyzer.analyze_hbonds(file_paths, names, substrate)
+        pyqmmm.md.hbond_analyzer.analyze_hbonds(file_paths, names, substrate)
 
     elif last_frame:
         click.echo("> Extracting the last frame from a MD simulation:")

@@ -3,8 +3,10 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 from pathlib import Path
+import subprocess
 import sys
-
+    
+    
 def bond_labels(file_path, ignore_backbone=True, include_backbone=tuple("DHK")):
     """
     Extracts bond labels from gnu file.
