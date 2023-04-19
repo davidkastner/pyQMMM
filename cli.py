@@ -44,6 +44,9 @@ def md(
         click.echo("> Extract and plot hbonding patterns from an MD simulation:")
         click.echo("> Loading...")
         import pyqmmm.md.hbonding_analyzer
+        file_paths = ["/Users/kastner/Downloads/test/obtuse/", "/Users/kastner/Downloads/test/acute/"]
+        names = ["acute", "obtuse"]
+        substrate = "DHK"
         pyqmmm.md.hbonding_analyzer.analyze_hbonds(file_paths, names, substrate)
 
     elif last_frame:

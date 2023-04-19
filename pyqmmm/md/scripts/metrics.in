@@ -1,0 +1,19 @@
+parm /home/kastner/project/1_tleap/output/h127a/besd_h127a_solv.prmtop
+trajin ../constP_prod.mdcrd
+strip :NA+,Na+,WAT
+autoimage
+
+rms first :67,113,127,130,131,133,197,214,212,231,232,244,245,246,247,248&!@H= out rmsd.dat
+radgyr :1-287&!(@H=) out rog.dat mass nomax
+atomicfluct :67,113,127,130,131,133,197,214,212,231,232,244,245,246,247,248&!@H= out rmsf.dat
+secstruct :67,113,127,130,131,133,197,214,212,231,232,244,245,246,247,248 out dssp.gnu sumout dssp.agr
+
+hbond donormask :248 acceptormask :1-243 out nhb1.dat avgout avghb1.dat dist 3.2
+hbond donormask :1-243 acceptormask :248 out nhb2.dat avgout avghb2.dat dist 3.2
+hbond contacts avgout avg.dat series uuseries hbond.gnu nointramol dist 3.2
+
+distance h5_oxo @3920 @3925 out h5_oxo_distance.agr
+distance h5_fe @3906 @3925 out h5_fe_distance.agr
+angle fe_oxo_h @3920 @3906 @3925 out oxo_fe_h5_angle.agr
+
+run

@@ -1,6 +1,5 @@
 """Analyze data from hydrogen bonding analysis based on hbond.gnu file."""
 
-
 import pandas as pd
 import matplotlib.pyplot as plt
 from pathlib import Path
@@ -185,8 +184,7 @@ def plot(data, file_path):
     """
     figure_formatting()
     df = data.sort_values('position').drop(['position'], axis=1)
-    # 10% occurence cutoff
-    df = df[df.ge(0.1).all(axis=1)]
+    df = df[df.ge(0.1).all(axis=1)] # 10% occurence cutoff
     ax = df.plot.bar(color=["Black"])
     ax.set_ylabel("occurrence (%)", weight="bold")
     ax.set_xlabel("residue", weight="bold")
@@ -208,8 +206,7 @@ def plot_multi(data, file_path):
     figure_formatting()
     new_df = pd.merge(data[0], data[1], on=['residue', 'position'], how='inner').sort_index().sort_values('position')
     new_df = new_df.dropna(axis=0).drop(['position'], axis=1)
-    # 10% ocurrence cutoff
-    new_df = new_df[new_df.ge(0.1).all(axis=1)]
+    new_df = new_df[new_df.ge(0.1).all(axis=1)] # 10% ocurrence cutoff
     ax = new_df.plot.bar(color=["Blue", "Red", "Orange"])
     ax.set_ylabel("occurrence (%)", weight="bold")
     ax.set_xlabel("residue", weight="bold")
