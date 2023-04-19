@@ -20,11 +20,13 @@ import click
 @click.option("--gbsa_analysis", "-g", is_flag=True, help="Extract results from GBSA analysis.")
 @click.option("--last_frame", "-lf", is_flag=True, help="Get last frame from an AMBER trajectory.")
 @click.option("--residue_list", "-lr", is_flag=True, help="Get a list of all residues in a PDB.")
+@click.option("--colored_rmsd", "-cr", is_flag=True, help="Color RMSD by clusters.")
 @click.help_option('--help', '-h', is_flag=True, help='Exiting pyQMMM.')
 def md(
     gbsa_analysis,
     last_frame,
     residue_list,
+    colored_rmsd,
     ):
     """
     Functions for molecular dynamics (MD) simulations.
@@ -47,6 +49,12 @@ def md(
         click.echo("> Loading...")
         import pyqmmm.md.residue_lister
         pyqmmm.md.residue_lister.list_residues()
+
+    elif residue_list:
+        click.echo("> Color a MD trajectory by clusters:")
+        click.echo("> Loading...")
+        import pyqmmm.md.rmsd_clusters_colorcoder
+        pyqmmm.md.rmsd_clusters_colorcoder.rmsd_clusters_colorcoder()
 
 @click.command()
 @click.option("--first_task", "-a", is_flag=True, help="The first task.")
