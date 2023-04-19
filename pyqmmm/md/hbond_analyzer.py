@@ -32,28 +32,6 @@ def compute_hbonds(protein_name, substrate_index, residue_range):
     pyqmmm.md.hbonding_analyzer.analyze_hbonds()
 
     """
-    # Define the CPPTRAJ script
-    cpptraj_script = textwrap.dedent(f"""parm ../../{protein_name}_solv.prmtop
-    trajin ../../1_output/constP_prod.mdcrd
-    strip :NA+,Na+,WAT autoimage hbond donormask :{substrate_index} acceptormask :{residue_range} out nhb1.dat avgout avghb1.dat dist 3.2
-    hbond donormask :{residue_range} acceptormask :{substrate_index} out nhb2.dat avgout avghb2.dat dist 3.2
-    hbond contacts avgout avg.dat series uuseries hbond.gnu nointramol dist 3.2 run
-    """)
-
-    # Define the submit script
-    submit_script = textwrap.dedent(f"""#!/bin/bash
-    #$ -S /bin/bash
-    #$ -N {protein_name}_hbond
-    #$ -l h_rt=168:00:00
-    #$ -cwd
-    #$ -l h_rss=8G
-    #$ -q cpus
-    #$ -pe smp 4
-    cd $SGE_O_WORKDIR
-    module load amber/18
-    cpptraj -i metrics.in
-    """)
-
     # Check if hbond.gnu exists in the current directory
     if os.path.exists("hbond.gnu"):
         print(" > Hbonding results found")

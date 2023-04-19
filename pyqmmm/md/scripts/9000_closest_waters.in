@@ -1,7 +1,0 @@
-parm ../../dah_solv.prmtop
-trajin ../../1_output/constP_prod.mdcrd 69004 69004 1
-strip :NA+,Na+
-autoimage 
-closestwaters 9000 :1-355 noimage center outprefix closest 
-trajout closest9000_f pdb
-run 
