@@ -46,10 +46,13 @@ def md(
         click.echo("> Compute all hbonds between the protein and the substrate:")
         click.echo("> Loading...")
         import pyqmmm.md.hbond_analyzer
-        protein_name = input("What is the name of your protein (e.g., DAH)? ")
-        substrate_index = input("What is the index of your substrate (e.g., 280)? ")
-        residue_range = input("What is the range of residues in your protein (e.g., 1-279)? ")
-        pyqmmm.md.hbond_analyzer.compute_hbonds(protein_name, substrate_index, residue_range)
+        import pyqmmm.md.amber_toolkit
+        protein_id = input("What is the name of your protein (e.g., DAH)? ")
+        substrate_index = input("What is the index of your substrate (e.g., 355)? ")
+        residue_range = input("What is the range of residues in your protein (e.g., 1-351)? ")
+        hbonds_script = pyqmmm.md.amber_toolkit.calculate_hbonds_script(protein_id, substrate_index, residue_range)
+        submit_script = pyqmmm.md.amber_toolkit.submit_script(protein_id, "hbonds.in")
+        pyqmmm.md.hbond_analyzer.compute_hbonds(hbonds_script, submit_script, "hbonds.in")
 
     elif hbond_analysis:
         click.echo("> Extract and plot hbonding patterns from an MD simulation:")

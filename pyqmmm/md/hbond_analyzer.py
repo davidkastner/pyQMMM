@@ -9,7 +9,7 @@ import os
 import subprocess
 import textwrap
 
-def compute_hbonds(protein_name, substrate_index, residue_range):
+def compute_hbonds(cpptraj_script, submit_script, script_name):
     """
     Calculates the hbonding data if it does not exist.
 
@@ -39,7 +39,7 @@ def compute_hbonds(protein_name, substrate_index, residue_range):
         print(" > No hbond data found, submitting")
 
         # Write the CPPTRAJ script to a file
-        with open("metrics.in", "w") as f:
+        with open(script_name, "w") as f:
             f.write(cpptraj_script)
 
         # Write the submit script to a file

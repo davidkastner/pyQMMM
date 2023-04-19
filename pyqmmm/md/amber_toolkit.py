@@ -32,7 +32,7 @@ def run_cpptraj(cpptraj_script, script_name="cpptraj_script.in"):
         os.remove(script_name)
 
 
-def submit_script(protein_id, cpus, script):
+def submit_script(protein_id, script_name, cpus=8):
     """
     Classic submit script for CPPTraj jobs.
 
@@ -50,7 +50,7 @@ def submit_script(protein_id, cpus, script):
     #$ -pe smp {cpus}
     cd $SGE_O_WORKDIR
     module load amber/18
-    cpptraj -i {script}.in
+    cpptraj -i {script_name}
     """)
 
     return submit_script
@@ -62,11 +62,13 @@ def calculate_hbonds_script(protein_id, substrate_index, residue_range):
 
     """
     hbonds_script = textwrap.dedent(f"""\
-    parm ../../{protein_id}_solv.prmtop
+    parm ../../{protein_id.lower()}_solv.prmtop
     trajin ../../1_output/constP_prod.mdcrd
-    strip :NA+,Na+,WAT autoimage hbond donormask :{substrate_index} acceptormask :{residue_range} out nhb1.dat avgout avghb1.dat dist 3.2
+    strip :NA+,Na+,WAT
+    autoimage
+    hbond donormask :{substrate_index} acceptormask :{residue_range} out nhb1.dat avgout avghb1.dat dist 3.2
     hbond donormask :{residue_range} acceptormask :{substrate_index} out nhb2.dat avgout avghb2.dat dist 3.2
-    hbond contacts avgout avg.dat series uuseries hbond.gnu nointramol dist 3.2 run
+    hbond contacts avgout avg.dat series uuseries hbond.gnu nointramol dist 3.2
     run
     """)
 
@@ -79,7 +81,7 @@ def closest_waters_script(protein_id, centroid, all_residues):
 
     """
     closest_waters = textwrap.dedent(f"""\
-    parm ../../{protein_id}_solv.prmtop
+    parm ../../{protein_id.lower()}_solv.prmtop
     trajin ../../1_output/constP_prod.mdcrd {centroid} {centroid} 1
     strip :NA+,Na+
     autoimage
@@ -97,7 +99,7 @@ def strip_waters_script(protein_id):
 
     """
     strip_waters = textwrap.dedent(f"""\
-    parm ../../../{protein_id}_solv.prmtop
+    parm ../../../{protein_id.lower()}_solv.prmtop
     trajin ../../../1_output/constP_prod.mdcrd
     strip :NA+,Na+,WAT,FE1 outprefix prmtop
     trajout {protein_id}_stripped.nc
@@ -113,7 +115,7 @@ def basic_metrics_script(protein_id, all_residues, select_residues):
 
     """
     basic_metrics = textwrap.dedent(f"""\
-    parm ../../{protein_id}_solv.prmtop
+    parm ../../{protein_id.lower()}_solv.prmtop
     trajin ../../../1_output/constP_prod.mdcrd
     strip :NA+,Na+
     autoimage
@@ -133,7 +135,7 @@ def angles_and_dist_script(protein_id, h_index, oxo_index, iron_index):
 
     """
     angles_distances = textwrap.dedent(f"""\
-    parm ../../{protein_id}_solv.prmtop
+    parm ../../{protein_id.lower()}_solv.prmtop
     trajin ../../../1_output/constP_prod.mdcrd
     strip :NA+,Na+
     autoimage
@@ -146,12 +148,12 @@ def angles_and_dist_script(protein_id, h_index, oxo_index, iron_index):
     return angles_distances
 
 
-def gbsa_script(protein_id, cpus, ligand_name, ligand_index_minus_one, stride):
+def gbsa_script(protein_id, ligand_name, ligand_index_minus_one, stride, cpus=16):
     """
     Automated GBSA script.
 
     """
-    gbsa_script = = textwrap.dedent(f"""\
+    gbsa_script = textwrap.dedent(f"""\
     #!/bin/bash
     #$ -S /bin/bash
     #$ -N {protein_id}
