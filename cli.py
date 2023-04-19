@@ -18,12 +18,14 @@ import click
 
 @click.command()
 @click.option("--gbsa_analysis", "-g", is_flag=True, help="Extract results from GBSA analysis.")
+@click.option("--hbond_analysis", "-hb", is_flag=True, help="Extract Hbonding patterns from MD.")
 @click.option("--last_frame", "-lf", is_flag=True, help="Get last frame from an AMBER trajectory.")
 @click.option("--residue_list", "-lr", is_flag=True, help="Get a list of all residues in a PDB.")
 @click.option("--colored_rmsd", "-cr", is_flag=True, help="Color RMSD by clusters.")
 @click.help_option('--help', '-h', is_flag=True, help='Exiting pyQMMM.')
 def md(
     gbsa_analysis,
+    hbond_analysis,
     last_frame,
     residue_list,
     colored_rmsd,
@@ -37,6 +39,12 @@ def md(
         click.echo("> Loading...")
         import pyqmmm.md.gbsa_analyzer
         pyqmmm.md.gbsa_analyzer.analyze()
+
+    elif hbond_analysis:
+        click.echo("> Extract and plot hbonding patterns from an MD simulation:")
+        click.echo("> Loading...")
+        import pyqmmm.md.hbonding_analyzer
+        pyqmmm.md.hbonding_analyzer.analyze_hbonds(file_paths, names, substrate)
 
     elif last_frame:
         click.echo("> Extracting the last frame from a MD simulation:")
