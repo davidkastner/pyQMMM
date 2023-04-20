@@ -17,21 +17,25 @@ import os.path
 import configparser as cp
 import matplotlib.pyplot as plt
 import matplotlib as mpl
+
 # Colors
 import matplotlib.cm as cm
 from matplotlib.colors import LinearSegmentedColormap
+
 # Tickers
 from matplotlib.ticker import MultipleLocator
 import matplotlib.ticker as ticker
 import matplotlib.colors as mplc
 from scipy.stats import gaussian_kde
 from matplotlib.patches import Rectangle
+
 # Fonts
 from matplotlib.font_manager import FontProperties
-from matplotlib import rc,rcParams
+from matplotlib import rc, rcParams
 import matplotlib.font_manager
-matplotlib.rcParams['pdf.fonttype'] = '42'
-matplotlib.rcParams['ps.fonttype'] = '42'
+
+matplotlib.rcParams["pdf.fonttype"] = "42"
+matplotlib.rcParams["ps.fonttype"] = "42"
 ################################## FUNCTIONS ###################################
 """
 Parses the config file for the users parameters
@@ -304,12 +308,11 @@ hyscore_kde.png : PNG
 
 
 def graph_datasets(x_data, y_data, z_data, labels, plot_params, show_crosshairs):
-
     # Lab styling graph properties
     # Font properties
     font = {"family": "sans-serif", "weight": "bold", "size": 18}
     plt.rc("font", **font)
-    plt.rcParams['svg.fonttype'] = 'none'
+    plt.rcParams["svg.fonttype"] = "none"
     # Tick properties
     plt.rcParams["axes.linewidth"] = 2.5
     plt.rcParams["xtick.major.size"] = 10
@@ -336,10 +339,8 @@ def graph_datasets(x_data, y_data, z_data, labels, plot_params, show_crosshairs)
     ymin = min([i for lis in ylims for i in lis])
     ymax_spread = [ymin, ymax]
 
-
     # Loop through the the data associated with each plot
     for i in range(len(x_data)):
-
         # Parse the config dictionary for the color of each plot
         color = plot_params[i]["color"]
         if color == "blue":
@@ -422,23 +423,25 @@ def graph_datasets(x_data, y_data, z_data, labels, plot_params, show_crosshairs)
         xlim_min, xlim_max = xlim
         xlim_min = 2.8
         xlim_max = 5.0
-        major_xticks = np.arange(xlim_min + .2, xlim_max, .5)
-        minor_xticks = np.arange(xlim_min, xlim_max, .1)
+        major_xticks = np.arange(xlim_min + 0.2, xlim_max, 0.5)
+        minor_xticks = np.arange(xlim_min, xlim_max, 0.1)
         ax.xaxis.set_ticks(major_xticks)
         ax.xaxis.set_ticks(minor_xticks, minor=True)
-        ax.set_xlim(2.8,5)
+        ax.set_xlim(2.8, 5)
 
         # Set y-axis tick options
         major_yticks = np.arange(20, 121, 20)
         minor_yticks = np.arange(10, 126, 10)
         ax.yaxis.set_ticks(major_yticks)
         ax.yaxis.set_ticks(minor_yticks, minor=True)
-        ax.set_ylim(10,125)
+        ax.set_ylim(10, 125)
 
         ax.tick_params(which="both", bottom=True, top=True, left=True, right=True)
         ax.tick_params(which="minor", length=5, color="k", width=2.5)
 
-    plt.savefig("./3_out/restraints_kde.png", dpi=600, bbox_inches="tight", transparent=True)
+    plt.savefig(
+        "./3_out/restraints_kde.png", dpi=600, bbox_inches="tight", transparent=True
+    )
     # plt.savefig("./3_out/restraints_kde.svg", bbox_inches="tight", format="svg")
 
 

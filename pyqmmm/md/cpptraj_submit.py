@@ -21,4 +21,3 @@ for dir in dirs:
         os.chdir(f"{root}/{dir}")
         os.system("module load amber/18")
         os.system("cpptraj -i cpptraj.in")
-    

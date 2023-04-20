@@ -122,7 +122,7 @@ def get_top_hits_df(df, sub_num, num_hits) -> pd.DataFrame:
         The index of your substrate
     num_hits: int
         The number of top hits that the user would like
-    
+
     Returns
     -------
     df_hits: pd.DataFrame
@@ -188,7 +188,7 @@ def plot_clustered_stacked(dataframes, labels, y_columns, sorted_x_labels):
     for df in dataframes:  # for each data frame
         residue_order = CategoricalDtype(sorted_x_labels, ordered=True)
         df = df.copy()
-        df.loc[:, "Residue"] = df["Residue"].astype(residue_order)  
+        df.loc[:, "Residue"] = df["Residue"].astype(residue_order)
         axe = df.sort_values("Residue").plot.bar(
             x="Residue",
             y=y_columns,
@@ -250,7 +250,7 @@ def plot_multi_all_gbsa(df_hits_list, df_list, y_columns, sorted_x_labels) -> No
         [gbsa1_df_hits[series_columns], gbsa2_df_hits[series_columns]],
         ["gbsa1", "gbsa2"],
         y_columns,
-        sorted_x_labels
+        sorted_x_labels,
     )
     plt.savefig("stacked_multi_1.pdf", bbox_inches="tight", transparent=True)
 
@@ -258,7 +258,7 @@ def plot_multi_all_gbsa(df_hits_list, df_list, y_columns, sorted_x_labels) -> No
 def prep_multi_gbsa_data(df_hits_list, df_list, y_columns):
     """
     Prepare the data for plotting the GBSA energy scores by type for multiple dataframes.
-    
+
     """
     gbsa1_df_hits = df_hits_list[0]
     gbsa2_df_hits = df_hits_list[1]
@@ -274,13 +274,17 @@ def prep_multi_gbsa_data(df_hits_list, df_list, y_columns):
                 "index"
             ].tolist()[0]
             missing_residue = gbsa1_df.loc[gbsa1_df["index"] == residue_index]
-            gbsa1_df_hits = pd.concat([gbsa1_df_hits, missing_residue], ignore_index=True)
+            gbsa1_df_hits = pd.concat(
+                [gbsa1_df_hits, missing_residue], ignore_index=True
+            )
         elif residue not in gbsa2_residues and residue in gbsa1_residues:
             residue_index = gbsa1_df_hits.loc[gbsa1_df_hits["Residue"] == residue][
                 "index"
             ].tolist()[0]
             missing_residue = gbsa2_df.loc[gbsa2_df["index"] == residue_index]
-            gbsa2_df_hits = pd.concat([gbsa2_df_hits, missing_residue], ignore_index=True)
+            gbsa2_df_hits = pd.concat(
+                [gbsa2_df_hits, missing_residue], ignore_index=True
+            )
 
     format_plot()
     series_columns = y_columns + ["Residue"]
@@ -328,9 +332,9 @@ def plot_multi_total_gbsa(df_hits_list, df_list, y_columns) -> list:
 
 
 def analyze() -> None:
-    '''
+    """
     Main GBSA analysis wrapper function.
-    '''
+    """
 
     # Welcome user and print some instructions
     print("\n.---------------.")
@@ -341,11 +345,16 @@ def analyze() -> None:
     print("+ Will look for more than one GBSA output to compare\n")
 
     # Get user input
-    sub_num = int(input("What is the index of your substrate in your GBSA calculation?: "))
-    num_hits = int(input('Show me the top n residues: '))
+    sub_num = int(
+        input("What is the index of your substrate in your GBSA calculation?: ")
+    )
+    num_hits = int(input("Show me the top n residues: "))
 
     file_extension = "*24.dat"
-    plot_file_names = [["gbsa1_total.pdf", "gbsa1_all.pdf"], ["gbsa2_total.pdf", "gbsa2_all.pdf"]]
+    plot_file_names = [
+        ["gbsa1_total.pdf", "gbsa1_all.pdf"],
+        ["gbsa2_total.pdf", "gbsa2_all.pdf"],
+    ]
 
     # Collect all the GBSA data located in the current directory
     raw_files = glob.glob(file_extension)
@@ -374,7 +383,13 @@ def analyze() -> None:
     # Generate multi GBSA plots if there are more than one file
     if len(raw_files) > 1:
         sorted_x_labels = plot_multi_total_gbsa(df_hits_list, df_list, ["Total"])
-        plot_multi_all_gbsa(df_hits_list, df_list, ["VDW", "Electrostatic", "Polar", "Non-polar"], sorted_x_labels)
+        plot_multi_all_gbsa(
+            df_hits_list,
+            df_list,
+            ["VDW", "Electrostatic", "Polar", "Non-polar"],
+            sorted_x_labels,
+        )
+
 
 if __name__ == "__main__":
     analyze()

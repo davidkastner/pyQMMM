@@ -2,6 +2,7 @@
 
 import os
 
+
 def extract_residue_names(filename):
     """
     Extract residue names and their indices from a PDB file.
@@ -30,6 +31,7 @@ def extract_residue_names(filename):
 
     return residues
 
+
 def write_residues_to_file(residues, output_filename="residues.dat"):
     """
     Write the extracted residues to a file, one residue per line.
@@ -46,6 +48,7 @@ def write_residues_to_file(residues, output_filename="residues.dat"):
         for residue in residues:
             file.write(f"{residue}\n")
 
+
 def list_residues():
     """
     Parses all the residues in the PDB and returns them as a single list.
@@ -55,6 +58,7 @@ def list_residues():
     residues = extract_residue_names(pdb_filename)
     write_residues_to_file(residues)
     print(f"Residue names have been extracted and saved in 'residues.dat'.")
+
 
 if __name__ == "__main__":
     list_residues()

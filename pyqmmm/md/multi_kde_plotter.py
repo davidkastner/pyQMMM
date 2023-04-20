@@ -309,7 +309,6 @@ def graph_datasets(x_data, y_data, z_data, labels, plot_params, show_crosshairs)
 
     # Loop through the the data associated with each plot
     for i in range(len(x_data)):
-
         # Parse the config dictionary for the color of each plot
         color = plot_params[i]["color"]
         if color == "blue":

@@ -18,7 +18,7 @@ def run_cpptraj(cpptraj_script, script_name="cpptraj_script.in"):
         The content of the CPPTRAJ script as a string
     script_name : str, optional
         The name of the script file (default is "cpptraj_script.in")
-    
+
     """
     # Create a new file with the contents of the script
     with open(script_name, "w") as script_file:
@@ -39,7 +39,8 @@ def submit_script(protein_id, script_name, cpus=8):
     This script is for Gibraltar but can be modified for any SGE system.
 
     """
-    submit_script = textwrap.dedent(f"""\
+    submit_script = textwrap.dedent(
+        f"""\
     #!/bin/bash
     #$ -S /bin/bash
     #$ -N {protein_id}_hbond
@@ -51,7 +52,8 @@ def submit_script(protein_id, script_name, cpus=8):
     cd $SGE_O_WORKDIR
     module load amber/18
     cpptraj -i {script_name}
-    """)
+    """
+    )
 
     return submit_script
 
@@ -61,7 +63,8 @@ def calculate_hbonds_script(protein_id, substrate_index, residue_range):
     Calculate all hbonds that form between the protein and substrate.
 
     """
-    hbonds_script = textwrap.dedent(f"""\
+    hbonds_script = textwrap.dedent(
+        f"""\
     parm ../../{protein_id.lower()}_solv.prmtop
     trajin ../../1_output/constP_prod.mdcrd
     strip :NA+,Na+,WAT
@@ -70,7 +73,8 @@ def calculate_hbonds_script(protein_id, substrate_index, residue_range):
     hbond donormask :{residue_range} acceptormask :{substrate_index} out nhb2.dat avgout avghb2.dat dist 3.2
     hbond contacts avgout avg.dat series uuseries hbond.gnu nointramol dist 3.2
     run
-    """)
+    """
+    )
 
     return hbonds_script
 
@@ -80,7 +84,8 @@ def closest_waters_script(protein_id, centroid, all_residues):
     Extract the 9000 waters closest to the centroid
 
     """
-    closest_waters = textwrap.dedent(f"""\
+    closest_waters = textwrap.dedent(
+        f"""\
     parm ../../{protein_id.lower()}_solv.prmtop
     trajin ../../1_output/constP_prod.mdcrd {centroid} {centroid} 1
     strip :NA+,Na+
@@ -88,7 +93,8 @@ def closest_waters_script(protein_id, centroid, all_residues):
     closestwaters 9000 :{all_residues} noimage center outprefix closest
     trajout {protein_id}_closest9000.pdb pdb
     run
-    """)
+    """
+    )
 
     return closest_waters
 
@@ -98,13 +104,15 @@ def strip_waters_script(protein_id):
     Strip waters and generate a AMBER nc file
 
     """
-    strip_waters = textwrap.dedent(f"""\
+    strip_waters = textwrap.dedent(
+        f"""\
     parm ../../../{protein_id.lower()}_solv.prmtop
     trajin ../../../1_output/constP_prod.mdcrd
     strip :NA+,Na+,WAT,FE1 outprefix prmtop
     trajout {protein_id}_stripped.nc
     run
-    """)
+    """
+    )
 
     return strip_waters
 
@@ -114,7 +122,8 @@ def basic_metrics_script(protein_id, all_residues, select_residues):
     Get basic useful metrics
 
     """
-    basic_metrics = textwrap.dedent(f"""\
+    basic_metrics = textwrap.dedent(
+        f"""\
     parm ../../{protein_id.lower()}_solv.prmtop
     trajin ../../../1_output/constP_prod.mdcrd
     strip :NA+,Na+
@@ -124,7 +133,8 @@ def basic_metrics_script(protein_id, all_residues, select_residues):
     atomicfluct :{select_residues}&!@H= out rmsf.dat
     secstruct :{select_residues} out dssp.gnu sumout dssp.agr
     run
-    """)
+    """
+    )
 
     return basic_metrics
 
@@ -134,7 +144,8 @@ def angles_and_dist_script(protein_id, h_index, oxo_index, iron_index):
     Get distances and angles
 
     """
-    angles_distances = textwrap.dedent(f"""\
+    angles_distances = textwrap.dedent(
+        f"""\
     parm ../../{protein_id.lower()}_solv.prmtop
     trajin ../../../1_output/constP_prod.mdcrd
     strip :NA+,Na+
@@ -143,7 +154,8 @@ def angles_and_dist_script(protein_id, h_index, oxo_index, iron_index):
     distance h_fe @{h_index} @{iron_index} out h_fe_distance.agr
     angle h_fe_oxo @{h_index} @{iron_index} @{oxo_index} out h_fe_oxo_angle.agr
     run
-    """)
+    """
+    )
 
     return angles_distances
 
@@ -153,7 +165,8 @@ def gbsa_script(protein_id, ligand_name, ligand_index_minus_one, stride, cpus=16
     Automated GBSA script.
 
     """
-    gbsa_script = textwrap.dedent(f"""\
+    gbsa_script = textwrap.dedent(
+        f"""\
     #!/bin/bash
     #$ -S /bin/bash
     #$ -N {protein_id}
@@ -201,9 +214,11 @@ def gbsa_script(protein_id, ligand_name, ligand_index_minus_one, stride, cpus=16
 
     mkdir pbsa$struc$ligand_name$igbval1$idecompval/
     mv -f _MMPBSA* pbsa$struc$ligand_name$igbval1$idecompval/
-    """)
+    """
+    )
 
     return gbsa_script
+
 
 if __name__ == "__main__":
     protein_id = input("Enter the name of your protein: ")
