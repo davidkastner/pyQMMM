@@ -246,14 +246,16 @@ def plot(data, file_path):
     figure_formatting()
     df = data.sort_values("position").drop(["position"], axis=1)
     df = df[df.ge(0.1).all(axis=1)]  # 10% occurence cutoff
-    ax = df.plot.bar(color=["Black"])
+    
+    # Sort dataframe by occurrence in descending order and select the top 7 rows
+    df = df.sort_values(by=[df.columns[0]], ascending=False).head(7)
+    
+    ax = df.plot.bar(color="darkgray", figsize=(4, 4))  # Add edgecolor and facecolor attributes
     ax.set_ylabel("occurrence (%)", weight="bold")
     ax.set_xlabel("residue", weight="bold")
     ax.legend().set_visible(False)
     ax.tick_params(axis="x", labelrotation=90)
-    plt.savefig(
-        file_path + "hbond.png", bbox_inches="tight", transparent=False, dpi=600
-    )
+    plt.savefig(file_path + "hbond.svg", format="svg", dpi=600, bbox_inches="tight")
 
 
 def plot_multi(data, file_path):
@@ -302,20 +304,23 @@ def analyze_hbonds(file_paths, names, substrate):
     for file_path, name in zip(file_paths, names):
         data_path = Path(file_path + "hbond.csv")
         if data_path.is_file():
-            print(f"{data_path} already exists")
+            print(f"   > {data_path} already exists")
             d = pd.read_csv(file_path + "hbond.csv")
             d = d.set_index("residue")
         else:
             path = file_path + "hbond.gnu"
-            print(f"Processing: {path}")
+            print(f"   > Processing: {path}")
             label_df = bond_labels(path)
             count_df, frame_count = count_occurrences(path, label_df)
             d = process_data(count_df, frame_count, name, substrate)
             d.to_csv(file_path + "hbond.csv")
         plot(d, file_path)
+        print(f"   > Creating single plot")
         data.append(d)
 
-    plot_multi(data, file_paths[0])
+    if len(names) > 1:
+        plot_multi(data, file_paths[0])
+        print(f"   > Creating multi plot")
 
 
 if __name__ == "__main__":
