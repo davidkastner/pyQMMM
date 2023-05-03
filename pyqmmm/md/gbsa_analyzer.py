@@ -5,6 +5,24 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from pandas.api.types import CategoricalDtype
 
+def format_plot() -> None:
+    """
+    General plotting parameters for the Kulik Lab.
+    """
+    font = {"family": "sans-serif", "weight": "bold", "size": 10}
+    plt.rc("font", **font)
+    plt.rcParams["xtick.major.pad"] = 5
+    plt.rcParams["ytick.major.pad"] = 5
+    plt.rcParams["axes.linewidth"] = 2
+    plt.rcParams["xtick.major.size"] = 7
+    plt.rcParams["xtick.major.width"] = 2
+    plt.rcParams["ytick.major.size"] = 7
+    plt.rcParams["ytick.major.width"] = 2
+    plt.rcParams["xtick.direction"] = "in"
+    plt.rcParams["ytick.direction"] = "in"
+    plt.rcParams["xtick.top"] = False
+    plt.rcParams["ytick.right"] = False
+    plt.rcParams["svg.fonttype"] = "none"
 
 def get_gbsa_df(raw) -> pd.DataFrame:
     """
@@ -108,7 +126,7 @@ def update_res_names(df) -> pd.DataFrame:
     return df
 
 
-def get_top_hits_df(df, sub_num, num_hits) -> pd.DataFrame:
+def get_top_hits_df(df, sub_num, num_hits, sorted_x_labels) -> pd.DataFrame:
     """
     Gets the residues with the greatest energetic contributions.
 
@@ -122,6 +140,8 @@ def get_top_hits_df(df, sub_num, num_hits) -> pd.DataFrame:
         The index of your substrate
     num_hits: int
         The number of top hits that the user would like
+    sorted_x_labels: list
+        List of residue names sorted by total energy
 
     Returns
     -------
@@ -131,218 +151,99 @@ def get_top_hits_df(df, sub_num, num_hits) -> pd.DataFrame:
     """
     # Get the top largest contributors to ligand interaction energies
     df_hits = df[df["Resid 1"] == sub_num].nsmallest(num_hits, "Total", keep="all")
+
+    residue_order = CategoricalDtype(sorted_x_labels, ordered=True)
+    df_hits["Residue"] = df_hits["Residue"].astype(residue_order)
+    df_hits = df_hits.sort_values("Residue")
+
     df_hits.to_csv("top_hits.csv", index=False)
 
     return df_hits
 
 
-def format_plot() -> None:
-    """
-    General plotting parameters for the Kulik Lab.
-    """
-    font = {"family": "sans-serif", "weight": "bold", "size": 10}
-    plt.rc("font", **font)
-    plt.rcParams["xtick.major.pad"] = 5
-    plt.rcParams["ytick.major.pad"] = 5
-    plt.rcParams["axes.linewidth"] = 2
-    plt.rcParams["xtick.major.size"] = 7
-    plt.rcParams["xtick.major.width"] = 2
-    plt.rcParams["ytick.major.size"] = 7
-    plt.rcParams["ytick.major.width"] = 2
-    plt.rcParams["xtick.direction"] = "in"
-    plt.rcParams["ytick.direction"] = "in"
-    plt.rcParams["xtick.top"] = True
-    plt.rcParams["ytick.right"] = True
-    plt.rcParams["svg.fonttype"] = "none"
-
 
 def plot_single_total_gbsa(df, file_name) -> None:
     """
     Plot the total GBSA energy scores.
-
     """
-    plt.figure()  # Add this line
-    colors = "#8ecae6"
-    ax = df.plot.bar(x="Residue", y="Total", color=colors)
-    format_plot()
+    colors = "darkgrey"
+    ax = df.plot.bar(x="Residue", y="Total", color=colors, figsize=(4, 4))
     ax.set_ylabel("GBSA energy score", weight="bold")
     ax.set_xlabel("Residue", weight="bold")
     plt.savefig(file_name, bbox_inches="tight", transparent=True)
     plt.close()
 
 
-def plot_clustered_stacked(dataframes, labels, y_columns, sorted_x_labels):
+def plot_clustered_stacked(df, y_columns, sorted_x_labels):
     """
     Format the stacked bar plots.
-
     """
-
-    H = "//"
+    format_plot()
+    _, axe = plt.subplots(figsize=(4, 4))
     plt.axhline(y=0, color="k", alpha=0.5, linestyle="-", linewidth=3)
     colors = ["#fb8500", "#ffb703", "#023047", "#219ebc", "#8ecae6"]
-    number_of_df = len(dataframes)
-    number_of_col = len(dataframes[0].columns)
-    axe = plt.subplot(111)
-    position = -1.15
 
-    for df in dataframes:  # for each data frame
-        residue_order = CategoricalDtype(sorted_x_labels, ordered=True)
-        df = df.copy()
-        df.loc[:, "Residue"] = df["Residue"].astype(residue_order)
-        axe = df.sort_values("Residue").plot.bar(
-            x="Residue",
-            y=y_columns,
-            color=colors,
-            linewidth=0,
-            stacked=True,
-            ax=axe,
-            legend=False,
-            grid=False,
-            width=0.3,
-            position=position,
-        )
-        position -= 1
-        format_plot()
-
-    (
-        handles,
-        axe_labels,
-    ) = axe.get_legend_handles_labels()  # get the handles we want to modify
-    for i in range(
-        0, number_of_df * number_of_col, number_of_col
-    ):  # len(h) = n_col * n_df
-        sliced_handles = (
-            handles[i : i + number_of_col]
-            if i == 0
-            else handles[i - 1 : i + number_of_col]
-        )
-        for j, pa in enumerate(sliced_handles):
-            for rect in pa.patches:  # for each index
-                rect.set_hatch(H * int(i / number_of_col))  # edited part
-
-    # Add invisible data to add another legend
-    n = []
-    for i in range(number_of_df):
-        n.append(axe.bar(0, 0, color="gray", hatch=H * i))
-
-    l1 = axe.legend(
-        handles[:number_of_col], list(axe_labels[: number_of_col - 1]), loc=[1.01, 0.5]
+    residue_order = CategoricalDtype(sorted_x_labels, ordered=True)
+    df = df.copy()
+    df.loc[:, "Residue"] = df["Residue"].astype(residue_order)
+    axe = df.sort_values("Residue").plot.bar(
+        x="Residue",
+        y=y_columns,
+        color=colors,
+        linewidth=0,
+        stacked=True,
+        ax=axe,
+        legend=True,
+        grid=False,
+        width=0.3,
     )
 
-    axe.add_artist(l1)
     axe.set_ylabel("GBSA energy score", weight="bold")
     axe.set_xlabel("Residue", weight="bold")
-    axe.set_xticks([tick + 0.65 for tick in axe.get_xticks()])
+    axe.set_xticks([tick for tick in axe.get_xticks()])
 
     return axe
 
 
-def plot_multi_all_gbsa(df_hits_list, df_list, y_columns, sorted_x_labels) -> None:
+def plot_all_gbsa(df_hits, y_columns, sorted_x_labels) -> None:
     """
-    Plot the GBSA energy scores by type for multiple dataframes.
-
+    Plot the GBSA energy scores by type for a single dataframe.
     """
 
-    gbsa1_df_hits, gbsa2_df_hits, series_columns = prep_multi_gbsa_data(
-        df_hits_list, df_list, y_columns
-    )
+    series_columns = y_columns + ["Residue"]
     plot_clustered_stacked(
-        [gbsa1_df_hits[series_columns], gbsa2_df_hits[series_columns]],
-        ["gbsa1", "gbsa2"],
+        df_hits[series_columns],
         y_columns,
         sorted_x_labels,
     )
-    plt.savefig("stacked_multi_1.pdf", bbox_inches="tight", transparent=True)
+    plt.savefig("stacked_single.pdf", bbox_inches="tight", transparent=True)
 
 
-def prep_multi_gbsa_data(df_hits_list, df_list, y_columns):
+def prep_gbsa_data(df_hits, df, y_columns):
     """
-    Prepare the data for plotting the GBSA energy scores by type for multiple dataframes.
+    Prepare the data for plotting the GBSA energy scores by type for a single dataframe.
 
     """
-    gbsa1_df_hits = df_hits_list[0]
-    gbsa2_df_hits = df_hits_list[1]
-    gbsa1_df = df_list[0]
-    gbsa2_df = df_list[1]
-    gbsa1_residues = gbsa1_df_hits["Residue"].tolist()
-    gbsa2_residues = gbsa2_df_hits["Residue"].tolist()
-    residues = list(set(gbsa1_residues + gbsa2_residues))
-
-    for residue in residues:
-        if residue not in gbsa1_residues and residue in gbsa2_residues:
-            residue_index = gbsa2_df_hits.loc[gbsa2_df_hits["Residue"] == residue][
-                "index"
-            ].tolist()[0]
-            missing_residue = gbsa1_df.loc[gbsa1_df["index"] == residue_index]
-            gbsa1_df_hits = pd.concat(
-                [gbsa1_df_hits, missing_residue], ignore_index=True
-            )
-        elif residue not in gbsa2_residues and residue in gbsa1_residues:
-            residue_index = gbsa1_df_hits.loc[gbsa1_df_hits["Residue"] == residue][
-                "index"
-            ].tolist()[0]
-            missing_residue = gbsa2_df.loc[gbsa2_df["index"] == residue_index]
-            gbsa2_df_hits = pd.concat(
-                [gbsa2_df_hits, missing_residue], ignore_index=True
-            )
-
     format_plot()
+    residues = df_hits["Residue"].tolist()
     series_columns = y_columns + ["Residue"]
 
-    return gbsa1_df_hits, gbsa2_df_hits, series_columns
-
-
-def plot_multi_total_gbsa(df_hits_list, df_list, y_columns) -> list:
-    """
-    Create the GBSA plot.
-
-    Parameters
-    ----------
-    df_hits_list: pd.DataFrame
-
-    df_list: pd.DataFrame
-
-    y_columns:
-
-
-    Returns
-    -------
-    sorted_x_labels: list
-
-    """
-
-    gbsa1_df_hits, gbsa2_df_hits, series_columns = prep_multi_gbsa_data(
-        df_hits_list, df_list, y_columns
-    )
-    gbsa1_series = gbsa1_df_hits[series_columns].set_index("Residue").squeeze()
-    gbsa2_series = gbsa2_df_hits[series_columns].set_index("Residue").squeeze()
-    format_plot()
-    new_df = pd.DataFrame({"gbsa1": gbsa1_series, "gbsa2": gbsa2_series})
-    new_df = new_df.sort_values(by=["gbsa1"])
-    sorted_x_labels = list(new_df.index)
-    plt.figure()  # Add this line
-    ax = new_df.plot.bar(color=["SkyBlue", "IndianRed"])
-    ax.set_ylabel("GBSA energy score", weight="bold")
-    ax.set_xlabel("Residue", weight="bold")
-
-    plt.savefig("stacked_multi_2.pdf", bbox_inches="tight", transparent=True)
-    plt.close()
-
-    return sorted_x_labels
+    return df_hits, series_columns
 
 
 def analyze() -> None:
     """
-    Main GBSA analysis wrapper function.
+    Main GBSA analysis wrapper function for a single dataset.
     """
 
     # Welcome user and print some instructions
     print("\n.---------------.")
     print("| GBSA ANALYZER |")
     print(".---------------.\n")
-    print("This script will process GBSA output files:")
-    print("+ Looks for file24.dat")
-    print("+ Will look for more than one GBSA output to compare\n")
+    print("This script will process a single GBSA output file:")
+    print("+ Looks for file24.dat\n")
+
+    format_plot()
 
     # Get user input
     sub_num = int(
@@ -351,48 +252,27 @@ def analyze() -> None:
     num_hits = int(input("Show me the top n residues: "))
 
     file_extension = "*24.dat"
-    plot_file_names = [
-        ["gbsa1_total.pdf", "gbsa1_all.pdf"],
-        ["gbsa2_total.pdf", "gbsa2_all.pdf"],
-    ]
 
-    # Collect all the GBSA data located in the current directory
+    # Collect the GBSA data located in the current directory
     raw_files = glob.glob(file_extension)
     raw_files = sorted(raw_files)
 
-    df_list = []
-    df_hits_list = []
+    if len(raw_files) == 0:
+        print("No *24.dat files found. Please check your directory.")
+        return
 
-    # Loop through each GBSA file and analyze the results
-    for raw, file_name_list in zip(raw_files, plot_file_names):
-        df = get_gbsa_df(raw)
+    raw = raw_files[0]
+    df = get_gbsa_df(raw)
 
-        df = update_res_names(df)
-        df_hits = get_top_hits_df(df, sub_num, num_hits)
+    df = update_res_names(df)
 
-        df_list.append(df)
-        df_hits_list.append(df_hits)
+    # Generate plots
+    df_hits = df[df["Resid 1"] == sub_num].nsmallest(num_hits, "Total", keep="all")
+    sorted_x_labels = df_hits["Residue"].tolist()
+    df_hits = get_top_hits_df(df, sub_num, num_hits, sorted_x_labels)
+    plot_single_total_gbsa(df_hits, "gbsa_total.pdf")
+    plot_all_gbsa(df_hits, ["VDW", "Electrostatic", "Polar", "Non-polar"], sorted_x_labels)
 
-        # Generate a plots
-        plot_single_total_gbsa(df_hits, file_name_list[0])
-
-        # If there is only one file matching "*24.dat", do not generate the other plots
-        if len(raw_files) == 1:
-            break
-
-    # Generate multi GBSA plots if there are more than one file
-    if len(raw_files) > 1:
-        sorted_x_labels = plot_multi_total_gbsa(df_hits_list, df_list, ["Total"])
-        plot_multi_all_gbsa(
-            df_hits_list,
-            df_list,
-            ["VDW", "Electrostatic", "Polar", "Non-polar"],
-            sorted_x_labels,
-        )
-
-
-if __name__ == "__main__":
-    analyze()
 
 if __name__ == "__main__":
     analyze()
