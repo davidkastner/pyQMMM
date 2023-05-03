@@ -114,6 +114,28 @@ git commit -m "Change a specific functionality"
 git push -u origin main
 ```
 
+#### Making a pull request
+```
+git checkout main
+git pull
+```
+
+Before you begin making changes, create a new branch:
+```
+git checkout -b new-feature-branch
+git add -A
+git commit -m "Detailed commit message describing the changes"
+git push -u origin new-feature-branch
+```
+
+Visit github.com to add description, submit, merge the pull request, and delete the remote branch
+Once finished on github.com, return to local:
+```
+git checkout main
+git pull
+git branch -d new-feature-branch
+```
+
 #### Handle merge conflict
 
 ```

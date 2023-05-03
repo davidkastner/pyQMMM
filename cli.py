@@ -43,7 +43,7 @@ def md(
         pyqmmm.md.gbsa_analyzer.analyze()
 
     elif compute_hbond:
-        click.echo("> Compute all hbonds between the protein and the substrate:")
+        click.echo("> Compute all hbonds between the protein and the substrate using CPPTraj:")
         click.echo("> Loading...")
         import pyqmmm.md.hbond_analyzer
         import pyqmmm.md.amber_toolkit
@@ -58,9 +58,10 @@ def md(
         click.echo("> Extract and plot hbonding patterns from an MD simulation:")
         click.echo("> Loading...")
         import pyqmmm.md.hbond_analyzer
-        file_paths = ["/Users/kastner/Downloads/test/obtuse/", "/Users/kastner/Downloads/test/acute/"]
-        names = ["acute", "obtuse"]
-        substrate = "DHK"
+        # Include more than one path in the list to perform multiple analyses
+        file_paths = ["./"]
+        names = ["unrestrained"]
+        substrate = input("   > What is the resid of your substrate? (e.g., DCA) ")
         pyqmmm.md.hbond_analyzer.analyze_hbonds(file_paths, names, substrate)
 
     elif last_frame:
