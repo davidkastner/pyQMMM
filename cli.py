@@ -23,6 +23,7 @@ import click
 @click.option("--last_frame", "-lf", is_flag=True, help="Get last frame from an AMBER trajectory.")
 @click.option("--residue_list", "-lr", is_flag=True, help="Get a list of all residues in a PDB.")
 @click.option("--colored_rmsd", "-cr", is_flag=True, help="Color RMSD by clusters.")
+@click.option("--restraint_plot", "-rp", is_flag=True, help="Restraint plot KDE's on one plot.")
 @click.help_option('--help', '-h', is_flag=True, help='Exiting pyQMMM.')
 def md(
     gbsa_analysis,
@@ -31,6 +32,7 @@ def md(
     last_frame,
     residue_list,
     colored_rmsd,
+    restraint_plot,
     ):
     """
     Functions for molecular dynamics (MD) simulations.
@@ -81,6 +83,12 @@ def md(
         click.echo("> Loading...")
         import pyqmmm.md.rmsd_clusters_colorcoder
         pyqmmm.md.rmsd_clusters_colorcoder.rmsd_clusters_colorcoder()
+
+    elif restraint_plot:
+        click.echo("> Generate single KDE plot with hyscore measurements:")
+        click.echo("> Loading...")
+        import pyqmmm.md.kde_restraint_plotter
+        pyqmmm.md.kde_restraint_plotter.restraint_plot()
 
 @click.command()
 @click.option("--first_task", "-a", is_flag=True, help="The first task.")

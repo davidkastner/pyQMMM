@@ -8,7 +8,7 @@ DESCRIPTION
 SEE ALSO
     N/A
 """
-################################ DEPENDENCIES ##################################
+
 import numpy as np
 import time
 import glob
@@ -17,26 +17,20 @@ import os.path
 import configparser as cp
 import matplotlib.pyplot as plt
 import matplotlib as mpl
-
-# Colors
 import matplotlib.cm as cm
 from matplotlib.colors import LinearSegmentedColormap
-
-# Tickers
 from matplotlib.ticker import MultipleLocator
 import matplotlib.ticker as ticker
 import matplotlib.colors as mplc
 from scipy.stats import gaussian_kde
 from matplotlib.patches import Rectangle
-
-# Fonts
 from matplotlib.font_manager import FontProperties
 from matplotlib import rc, rcParams
 import matplotlib.font_manager
 
 matplotlib.rcParams["pdf.fonttype"] = "42"
 matplotlib.rcParams["ps.fonttype"] = "42"
-################################## FUNCTIONS ###################################
+
 """
 Parses the config file for the users parameters
 Parameters
@@ -447,7 +441,7 @@ def graph_datasets(x_data, y_data, z_data, labels, plot_params, show_crosshairs)
 
 ############################## HYSCORE PLOTTER #################################
 # Introduce user to HyScore Eval functionality
-def restraint_plots():
+def restraint_plot():
     print("\n.--------------------------.")
     print("|WELCOME TO RESTRAINT PLOTS|")
     print(".--------------------------.\n")
@@ -472,4 +466,4 @@ def restraint_plots():
 
 # Execute the Quick CSA when run as a script but not if used as a pyQM/MM module
 if __name__ == "__main__":
-    restraint_plots()
+    restraint_plot()
