@@ -216,7 +216,7 @@ def plot_all_gbsa(df_hits, y_columns, sorted_x_labels) -> None:
         y_columns,
         sorted_x_labels,
     )
-    plt.savefig("stacked_single.pdf", bbox_inches="tight", transparent=True)
+    plt.savefig("stacked_single.svg", bbox_inches="tight", transparent=True)
 
 
 def prep_gbsa_data(df_hits, df, y_columns):
@@ -270,7 +270,7 @@ def analyze() -> None:
     df_hits = df[df["Resid 1"] == sub_num].nsmallest(num_hits, "Total", keep="all")
     sorted_x_labels = df_hits["Residue"].tolist()
     df_hits = get_top_hits_df(df, sub_num, num_hits, sorted_x_labels)
-    plot_single_total_gbsa(df_hits, "gbsa_total.pdf")
+    plot_single_total_gbsa(df_hits, "gbsa_total.svg")
     plot_all_gbsa(df_hits, ["VDW", "Electrostatic", "Polar", "Non-polar"], sorted_x_labels)
 
 
