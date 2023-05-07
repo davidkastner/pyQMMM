@@ -9,6 +9,7 @@ dependencies:
   - numpy
   - matplotlib
   - pandas
+  - sphinx==6.0.0
   - sphinx-autoapi
 
     # Pip-only installs
