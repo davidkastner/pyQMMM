@@ -5,6 +5,15 @@ import textwrap
 import subprocess
 
 
+def get_lastframe(prmtop, mdcrd, output_pdb):
+    command = f"cpptraj -p {prmtop} -y {mdcrd} -ya 'lastframe' -x {output_pdb}"
+    try:
+        process = subprocess.run(command, shell=True, check=True, text=True, capture_output=True)
+        print("CPPTraj output:", process.stdout)
+    except subprocess.CalledProcessError as e:
+        print(f"CPPTraj command failed with error: {e.returncode}")
+
+
 def run_cpptraj(cpptraj_script, script_name="cpptraj_script.in"):
     """
     A generalizable function that can be used to run any of the cpptraj scripts.

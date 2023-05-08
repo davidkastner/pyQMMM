@@ -14,6 +14,7 @@ print("""
     and improves long-term maintainability and readability.\n
     """)
 
+import os
 import click
 
 @click.command()
@@ -69,8 +70,14 @@ def md(
     elif last_frame:
         click.echo("> Extracting the last frame from a MD simulation:")
         click.echo("> Loading...")
-        import pyqmmm.md.cpptraj_toolkit
-        pyqmmm.md.cpptraj_toolkit.get_last_frame()
+        import pyqmmm.md.amber_toolkit
+
+        prmtop = input("What is your prmtop file? ")
+        mdcrd = input("What is your trajectory file (e.g., nc or mdcrd)? ")
+        output_pdb = input("What should you output PDB be called? ")
+
+        pyqmmm.md.amber_toolkit.get_lastframe(prmtop, mdcrd, output_pdb)
+        
 
     elif residue_list:
         click.echo("> Extract the residues from a PDB:")
