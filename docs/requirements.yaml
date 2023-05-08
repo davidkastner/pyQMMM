@@ -9,9 +9,9 @@ dependencies:
   - numpy
   - matplotlib
   - pandas
-  - sphinx-autoapi
 
     # Pip-only installs
   - pip:
+    - sphinx-autoapi
     - sphinx==6.0.0
     - https://github.com/revitron/revitron-sphinx-theme/archive/master.zip
