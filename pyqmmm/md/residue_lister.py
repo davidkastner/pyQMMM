@@ -16,6 +16,7 @@ def extract_residue_names(filename):
     -------
     list
         A list of formatted residue names with their indices (e.g., MET1, THR2, GLU3).
+        
     """
     residues = []
 
@@ -43,6 +44,7 @@ def write_residues_to_file(residues, output_filename="residues.dat"):
 
     output_filename : str, optional
         The name of the output file, by default "residues.dat".
+
     """
     with open(output_filename, "w") as file:
         for residue in residues:
