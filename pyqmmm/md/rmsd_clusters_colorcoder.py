@@ -1,11 +1,8 @@
 """Plots a clustered trajectory by RMSD and identifies the centroid"""
 
-# Imports packages and dependencies
 import pandas as pd
 import matplotlib.pyplot as plt
 from pathlib import Path
-
-# Converts a dat file to csv
 
 
 def dat2df(dat_file, rows_to_skip=1):
@@ -21,6 +18,7 @@ def dat2df(dat_file, rows_to_skip=1):
     -------
     df : pd.DataFrame
         Dataframe with clustering data.
+        
     """
     df = pd.read_csv(
         dat_file, sep="\s+", header=None, skiprows=rows_to_skip, index_col=0
