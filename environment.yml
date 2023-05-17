@@ -19,5 +19,7 @@ dependencies:
   - sphinx
   - sphinx-autoapi
   - sphinx_rtd_theme
+  - xtb
+  - crest
   - pip:
     - https://github.com/revitron/revitron-sphinx-theme/archive/master.zip
