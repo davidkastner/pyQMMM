@@ -98,19 +98,21 @@ def md(
         pyqmmm.md.kde_restraint_plotter.restraint_plot()
 
 @click.command()
-@click.option("--first_task", "-a", is_flag=True, help="The first task.")
+@click.option("--plot_energy", "-pe", is_flag=True, help="Plot the energy of a xyz traj.")
 @click.help_option('--help', '-h', is_flag=True, help='Exiting pyQMMM.')
 def qm(
-    combine_restarts,
+    plot_energy,
     ):
     """
     Functions for quantum mechanics (QM) simulations.
 
     """
-    click.echo("> Combine restarts:")
-    click.echo("> Loading...")
-    import pyqmmm.qm.task
-    # Perform task
+    if plot_energy:
+        click.echo("> Combine restarts:")
+        click.echo("> Loading...")
+        import pyqmmm.qm.energy_plotter
+        pyqmmm.qm.energy_plotter.plot_energies()
+
 
 if __name__ == "__main__":
     # Run the command-line interface when this script is executed
