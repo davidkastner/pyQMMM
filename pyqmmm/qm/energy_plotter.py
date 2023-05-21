@@ -1,6 +1,7 @@
 """Generalizable script for plotting the PES of an xyz trajectory."""
 
 import matplotlib.pyplot as plt
+import time
 
 HARTREE_TO_KCAL = 627.509
 
@@ -119,15 +120,19 @@ def plot_energies():
     Main function that combines previous functions to generate the plot.
 
     """
-    print("\n.-------------------------.")
-    print("|WELCOME TO ENERGY PLOTTER|")
-    print(".--------------------------.\n")
-    print("Generates a plot of an xyz trajectory.")
-    print("Can handle an arbitary number of xyz trajectories")
-    filenames = input("What trajectories would you like to plot? ").split(", ")
+    print("\n.---------------------------.")
+    print("| WELCOME TO ENERGY PLOTTER |")
+    print(".---------------------------.\n")
+    print("> Generates a plot of an xyz trajectory.")
+    print("> Can handle an arbitrary number of xyz trajectories")
+
+    start_time = time.time()  # Used to report the execution speed
+    filenames = input("   > What trajectories would you like to plot? ").split(", ")
+    xyz_count = len(filenames)
 
     energies_by_file = {}
     first_energies = []
+    colors = ['#9b2226', '#001219', '#ae2012', '#005f73', '#bb3e03', '#0a9396', '#ca6702', '#94d2bd', '#ee9b00', '#e9d8a6']
 
     for filename in filenames:
         with open(filename, 'r') as f:
@@ -141,21 +146,32 @@ def plot_energies():
         first_energies.append(first_energy)
 
     min_first_energy = min(first_energies)
-    plot_relative_to_lowest = len(filenames) > 1 and input("Plot energies relative absolute energies? (yes/no) ") == "yes"
+    plot_relative_to_lowest = len(filenames) > 1 and input("   > Plot energies relative absolute energies? (yes/no) ") == "yes"
 
     format_plot()
 
-    for filename, energies in energies_by_file.items():
+    for idx, (filename, energies) in enumerate(energies_by_file.items()):
         if plot_relative_to_lowest:
             # make energies relative to the first frame with the lowest energy
             energies = [e - (first_energies[filenames.index(filename)] - min_first_energy) for e in energies]
         
-        plt.plot(energies, marker='.', linestyle='-', label=f'{filename} (max {max(energies):.2f} kcal/mol)')
+        plt.plot(energies, marker='.', linestyle='-', label=f'{filename} (max {max(energies):.2f} kcal/mol)', color=colors[idx])
     
-    plt.xlabel('Frame number')
-    plt.ylabel('Energy (kcal/mol)')
+    plt.xlabel('Frame number', weight="bold")
+    plt.ylabel('Energy (kcal/mol)', weight="bold")
     plt.legend()
-    plt.savefig('energy_plot.png', dpi=300)
+    plot_name = 'energy_plot.png'
+    plt.savefig(plot_name, dpi=300)
 
+    total_time = round(time.time() - start_time, 3)  # Seconds to run the function
+    job_summary = f"""
+        --------------------------ENERGY PLOTTER END--------------------------
+        RESULT: Plotted energies for {xyz_count} number of xyz trajectories.
+        OUTPUT: Created a plot called {plot_name} in the current directory.
+        TIME: Total execution time: {total_time} seconds.
+        --------------------------------------------------------------------\n
+        """
+    
+    print(job_summary)
 if __name__ == "__main__":
     plot_energies()
