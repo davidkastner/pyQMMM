@@ -17,8 +17,8 @@ from matplotlib.patches import Rectangle
 from matplotlib.font_manager import FontProperties
 from matplotlib import rc, rcParams
 
-mpl.rcParams['pdf.fonttype'] = '42'
-mpl.rcParams['ps.fonttype'] = '42'
+mpl.rcParams["pdf.fonttype"] = "42"
+mpl.rcParams["ps.fonttype"] = "42"
 
 
 def config():
@@ -30,7 +30,7 @@ def config():
     labels : dictionary
         Contains labels section where the key is the name and the values is itself
     plot_params : list
-        A list of dictionaries where the index is the plot number and 
+        A list of dictionaries where the index is the plot number and
         the values are the associated floats from the config file
 
     """
@@ -50,13 +50,16 @@ def config():
         if section == "Labels":
             labels.update(config.items(section))
         else:
-            plot_dict = {key: config.getint(section, key) if key == "size_group" else
-                         config.get(section, key) if key == "color" else
-                         config.getfloat(section, key)
-                         for key, _ in config.items(section)}
+            plot_dict = {
+                key: config.getint(section, key)
+                if key == "size_group"
+                else config.get(section, key)
+                if key == "color"
+                else config.getfloat(section, key)
+                for key, _ in config.items(section)
+            }
             plot_params.append(plot_dict)
     return labels, plot_params
-
 
 
 def combine_inp():
@@ -87,10 +90,9 @@ def combine_inp():
         combined_file_path = f"./2_temp/{num}_combined.dat"
         file_array.append(combined_file_path)
 
-        with open(combined_file_path, "w") as combined, \
-                open(f"./1_in/{num}_angles.dat", "r") as ang_file, \
-                open(f"./1_in/{num}_distances.dat", "r") as dist_file:
-
+        with open(combined_file_path, "w") as combined, open(
+            f"./1_in/{num}_angles.dat", "r"
+        ) as ang_file, open(f"./1_in/{num}_distances.dat", "r") as dist_file:
             for ang_line, dist_line in zip(ang_file, dist_file):
                 if "#" in ang_line:
                     continue
@@ -219,7 +221,10 @@ def get_plot_limits(x_data, y_data, plot_params):
     size_group_list = []
 
     for i, (x, y) in enumerate(zip(x_data, y_data)):
-        patch_params = [plot_params[i][key] for key in ["height_min", "height_max", "width_min", "width_max"]]
+        patch_params = [
+            plot_params[i][key]
+            for key in ["height_min", "height_max", "width_min", "width_max"]
+        ]
         size_group = plot_params[i]["size_group"]
         size_group_list.append(size_group)
 
@@ -231,7 +236,7 @@ def get_plot_limits(x_data, y_data, plot_params):
             group_xlim, group_ylim = group_curr_max_min[size_group]
             group_curr_max_min[size_group] = [
                 [min(xlim[0], group_xlim[0]), max(xlim[1], group_xlim[1])],
-                [min(ylim[0], group_ylim[0]), max(ylim[1], group_ylim[1])]
+                [min(ylim[0], group_ylim[0]), max(ylim[1], group_ylim[1])],
             ]
 
     xlims, ylims = zip(*[group_curr_max_min[size] for size in size_group_list])
@@ -240,27 +245,29 @@ def get_plot_limits(x_data, y_data, plot_params):
 
 
 def graph_datasets(x_data, y_data, z_data, labels, plot_params, show_crosshairs):
-    plt.rcParams.update({
-        'font.family': 'sans-serif',
-        'font.weight': 'bold',
-        'font.size': 18,
-        'svg.fonttype': 'none',
-        'axes.linewidth': 2.5,
-        'xtick.major.size': 10,
-        'xtick.major.width': 2.5,
-        'ytick.major.size': 10,
-        'ytick.major.width': 2.5,
-        'xtick.direction': 'in',
-        'ytick.direction': 'in',
-        'mathtext.default': 'regular'
-    })
+    plt.rcParams.update(
+        {
+            "font.family": "sans-serif",
+            "font.weight": "bold",
+            "font.size": 18,
+            "svg.fonttype": "none",
+            "axes.linewidth": 2.5,
+            "xtick.major.size": 10,
+            "xtick.major.width": 2.5,
+            "ytick.major.size": 10,
+            "ytick.major.width": 2.5,
+            "xtick.direction": "in",
+            "ytick.direction": "in",
+            "mathtext.default": "regular",
+        }
+    )
 
     color_map = {
-        'blue': mpl.cm.Blues(np.linspace(0, 1, 20)),
-        'orange': mpl.cm.Oranges(np.linspace(0, 1, 20)),
-        'red': mpl.cm.Reds(np.linspace(0, 1, 20)),
-        'grey': mpl.cm.Greys(np.linspace(0, 1, 20)),
-        'green': mpl.cm.Greens(np.linspace(0, 1, 20)),
+        "blue": mpl.cm.Blues(np.linspace(0, 1, 20)),
+        "orange": mpl.cm.Oranges(np.linspace(0, 1, 20)),
+        "red": mpl.cm.Reds(np.linspace(0, 1, 20)),
+        "grey": mpl.cm.Greys(np.linspace(0, 1, 20)),
+        "green": mpl.cm.Greens(np.linspace(0, 1, 20)),
     }
     fig, ax = plt.subplots()
     fig.text(0.5, -0.03, labels["xlabel"], ha="center")
@@ -273,12 +280,37 @@ def graph_datasets(x_data, y_data, z_data, labels, plot_params, show_crosshairs)
 
         if show_crosshairs:
             height_min, height_max, width_min, width_max = [
-                plot_params[i][key] for key in ["height_min", "height_max", "width_min", "width_max"]
+                plot_params[i][key]
+                for key in ["height_min", "height_max", "width_min", "width_max"]
             ]
-            anchor, width, height = (width_min, height_min), width_max - width_min, height_max - height_min
-            ax.add_patch(Rectangle(anchor, width, height, fill=False, color="k", linestyle="--", linewidth=2.0))
-            ax.plot((width_min, width_max), (np.mean([height_min, height_max]),) * 2, color="k", linewidth=2.0)
-            ax.plot((np.mean([width_min, width_max]),) * 2, (height_min, height_max), color="k", linewidth=2.0)
+            anchor, width, height = (
+                (width_min, height_min),
+                width_max - width_min,
+                height_max - height_min,
+            )
+            ax.add_patch(
+                Rectangle(
+                    anchor,
+                    width,
+                    height,
+                    fill=False,
+                    color="k",
+                    linestyle="--",
+                    linewidth=2.0,
+                )
+            )
+            ax.plot(
+                (width_min, width_max),
+                (np.mean([height_min, height_max]),) * 2,
+                color="k",
+                linewidth=2.0,
+            )
+            ax.plot(
+                (np.mean([width_min, width_max]),) * 2,
+                (height_min, height_max),
+                color="k",
+                linewidth=2.0,
+            )
 
         ax.set_xlim(2.8, 5)
         ax.set_ylim(10, 125)
@@ -289,7 +321,9 @@ def graph_datasets(x_data, y_data, z_data, labels, plot_params, show_crosshairs)
         ax.tick_params(which="both", bottom=True, top=True, left=True, right=True)
         ax.tick_params(which="minor", length=5, color="k", width=2.5)
 
-    plt.savefig("./3_out/restraints_kde.png", dpi=600, bbox_inches="tight", transparent=True)
+    plt.savefig(
+        "./3_out/restraints_kde.png", dpi=600, bbox_inches="tight", transparent=True
+    )
 
 
 def restraint_plots():

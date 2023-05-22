@@ -1,13 +1,5 @@
-"""
-Docs: https://github.com/davidkastner/pyQMMM/blob/main/pyqmmm/README.md
-DESCRIPTION
-    Creates paired bar plot for halogenase vs hydroxylase project.
-    Author: David Kastner
-    Massachusetts Institute of Technology
-    kastner (at) mit . edu
-"""
+"""Creates paired bar plot for halogenase vs hydroxylase project."""
 
-# Imports
 import pandas as pd
 import plotly.graph_objects as go
 

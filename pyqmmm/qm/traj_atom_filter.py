@@ -4,6 +4,7 @@ import os
 import sys
 import numpy
 
+
 def get_selection():
     """
     Request the atoms to remove.
@@ -24,6 +25,7 @@ def get_selection():
 
     return selection
 
+
 def remove_atoms(selection: list[int]) -> list[list[str]]:
     """
     Takes an atom selection as input.
@@ -37,9 +39,9 @@ def remove_atoms(selection: list[int]) -> list[list[str]]:
 
     """
     # Search the current directory for the .xyz file
-    xyz_files = [f for f in os.listdir('.') if f.endswith('xyz')]
+    xyz_files = [f for f in os.listdir(".") if f.endswith("xyz")]
     if len(xyz_files) != 1:
-        raise ValueError('More than one .xyz file found.')
+        raise ValueError("More than one .xyz file found.")
     xyz_file = xyz_files[0]
 
     # Lines in the molecule plus the header lines
@@ -55,7 +57,10 @@ def remove_atoms(selection: list[int]) -> list[list[str]]:
 
         # Place each frame in its own list
         n = section_length
-        frames = [unsorted_lines[i * n:(i + 1) * n] for i in range((len(unsorted_lines) + n - 1) // n)]
+        frames = [
+            unsorted_lines[i * n : (i + 1) * n]
+            for i in range((len(unsorted_lines) + n - 1) // n)
+        ]
         new_frames: list[list[str]] = []
 
         # Loop over the frames and delete all rows that match the selection
@@ -66,7 +71,7 @@ def remove_atoms(selection: list[int]) -> list[list[str]]:
             # Update the header line to match the new atom count
             frame[0] = str(int(frame[0]) - len(selection))
             new_frames.append(frame)
-            
+
     # Write out the new xyz file
     new_traj_out = open("new_traj.xyz", "w")
     for frame in new_frames:
@@ -86,18 +91,22 @@ def get_pdb_ensemble():
     template = open("template.pdb", "r").readlines()
     xyz_file = open("new_traj.xyz", "r").readlines()
     pdb_file = open("new_traj.pdb", "w")
-    
+
     # Initialize count variables
-    max_atom = int(open("template.pdb", "r").readlines()[-1].split()[1]) # Final atom number
-    atom = -1 # Account for two header lines in the xyz
+    max_atom = int(
+        open("template.pdb", "r").readlines()[-1].split()[1]
+    )  # Final atom number
+    atom = -1  # Account for two header lines in the xyz
     model = 2  # MODEL 1 was already written
-    
+
     pdb_file.write("MODEL        1\n")
-    for index,line in enumerate(xyz_file):
+    for index, line in enumerate(xyz_file):
         # If we have passed the xyz header lines
         if atom > 0:
             x, y, z = line.strip("\n").split()[1:5]
-            pdb_file.write(f"{template[atom - 1][0:32]}{x[0:6]}  {y[0:6]}  {z[0:6]}{template[atom - 1][54:80]}\n")
+            pdb_file.write(
+                f"{template[atom - 1][0:32]}{x[0:6]}  {y[0:6]}  {z[0:6]}{template[atom - 1][54:80]}\n"
+            )
             atom += 1
         # If it is the first line continue
         else:

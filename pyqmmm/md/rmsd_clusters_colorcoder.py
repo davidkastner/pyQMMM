@@ -18,7 +18,7 @@ def dat2df(dat_file, rows_to_skip=1):
     -------
     df : pd.DataFrame
         Dataframe with clustering data.
-        
+
     """
     df = pd.read_csv(
         dat_file, sep="\s+", header=None, skiprows=rows_to_skip, index_col=0

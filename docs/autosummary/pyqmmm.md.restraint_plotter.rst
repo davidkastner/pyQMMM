@@ -1,7 +1,7 @@
-pyqmmm.md.kde\_restraint\_plotter
-=================================
+pyqmmm.md.restraint\_plotter
+============================
 
-.. automodule:: pyqmmm.md.kde_restraint_plotter
+.. automodule:: pyqmmm.md.restraint_plotter
 
    
    

@@ -1,6 +1,7 @@
 name: pyqmmm
 channels:
   - conda-forge
+  - salilab
   - defaults
 dependencies:
   - python=3.8
@@ -8,12 +9,12 @@ dependencies:
   - black
   - cookiecutter
   - click
-  - jupyterlab
   - matplotlib
+  - modeller
   - numpy
   - pandas
   - pip
-  - scikit-learn
+  - plotly
   - scipy
   - seaborn
   - sphinx

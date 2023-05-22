@@ -6,7 +6,6 @@ from pathlib import Path
 import subprocess
 import sys
 import os
-import subprocess
 import textwrap
 
 
@@ -246,11 +245,13 @@ def plot(data, file_path):
     figure_formatting()
     df = data.sort_values("position").drop(["position"], axis=1)
     df = df[df.ge(0.1).all(axis=1)]  # 10% occurence cutoff
-    
+
     # Sort dataframe by occurrence in descending order and select the top 7 rows
     df = df.sort_values(by=[df.columns[0]], ascending=False).head(7)
-    
-    ax = df.plot.bar(color="darkgray", figsize=(4, 4))  # Add edgecolor and facecolor attributes
+
+    ax = df.plot.bar(
+        color="darkgray", figsize=(4, 4)
+    )  # Add edgecolor and facecolor attributes
     ax.set_ylabel("occurrence (%)", weight="bold")
     ax.set_xlabel("residue", weight="bold")
     ax.legend().set_visible(False)

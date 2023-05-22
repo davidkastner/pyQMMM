@@ -7,7 +7,7 @@ import shutil
 def pdb_ensemble_generator():
     """
     Takes a PDB trajectory and converts it to an ensemble.
-    
+
     """
     model_count = 1
     dir = "ensemble"

@@ -1,9 +1,11 @@
 """Generalizable script for plotting the PES of an xyz trajectory."""
 
 import matplotlib.pyplot as plt
+import numpy as np
 import time
 
 HARTREE_TO_KCAL = 627.509
+
 
 def parse_energy(line, software):
     """
@@ -20,6 +22,7 @@ def parse_energy(line, software):
     -------
     float
         The energy extracted from the line, in Hartrees.
+
     """
     if software == "ORCA-MEP" or software == "ORCA-IRC":
         energy_str = line.split()[5]
@@ -31,6 +34,7 @@ def parse_energy(line, software):
         raise ValueError(f"Unsupported software: {software}")
 
     return float(energy_str)
+
 
 def get_trajectory_energies(filename, software):
     """
@@ -48,9 +52,10 @@ def get_trajectory_energies(filename, software):
     tuple
         First value is a list of energies for each frame, in kcal/mol, relative to the first frame.
         Second value is the first frame energy in kcal/mol.
+
     """
     energies = []
-    with open(filename, 'r') as f:
+    with open(filename, "r") as f:
         while True:
             line = f.readline()
             if not line:
@@ -70,6 +75,7 @@ def get_trajectory_energies(filename, software):
     energies = [(e - energies[0]) * HARTREE_TO_KCAL for e in energies]
 
     return energies, first_energy
+
 
 def identify_software(line):
     """
@@ -96,9 +102,11 @@ def identify_software(line):
     else:
         raise ValueError(f"Could not identify software from line: {line}")
 
+
 def format_plot() -> None:
     """
     General plotting parameters for the Kulik Lab.
+
     """
     font = {"family": "sans-serif", "weight": "bold", "size": 10}
     plt.rc("font", **font)
@@ -115,6 +123,97 @@ def format_plot() -> None:
     plt.rcParams["ytick.right"] = True
     plt.rcParams["svg.fonttype"] = "none"
 
+
+def collect_data():
+    """
+    Collect energies from the files and decide whether to plot relative to lowest energy.
+
+    Returns
+    -------
+    dict
+        A dictionary with filenames as keys and corresponding energies as values.
+    float
+        The minimum first frame energy.
+    bool
+        Whether to plot energies relative to the lowest energy.
+
+    """
+    filenames_input = input(
+        "   > What trajectories would you like to plot (omit .xyz extension)? "
+    ).split(",")
+    filenames = [f"{name.strip()}.xyz" for name in filenames_input]
+
+    energies_by_file = {}
+    first_energies = []
+
+    for filename in filenames:
+        with open(filename, "r") as f:
+            # read two lines to get to the software info
+            f.readline()
+            software_line = f.readline()
+            software = identify_software(software_line)
+
+        energies, first_energy = get_trajectory_energies(filename, software)
+        energies_by_file[filename] = energies
+        first_energies.append(first_energy)
+
+    min_first_energy = min(first_energies)
+    plot_relative_to_lowest = (
+        len(filenames) > 1
+        and input("   > Plot energies relative absolute energies? (yes/no) ") == "yes"
+    )
+
+    return energies_by_file, min_first_energy, plot_relative_to_lowest
+
+
+def plot_data(energies_by_file, min_first_energy, plot_relative_to_lowest):
+    """
+    Plot the collected energies.
+
+    Parameters
+    ----------
+    energies_by_file : dict
+        A dictionary with filenames as keys and corresponding energies as values.
+    min_first_energy : float
+        The minimum first frame energy.
+    plot_relative_to_lowest : bool
+        Whether to plot energies relative to the lowest energy.
+    """
+    colormap = plt.get_cmap("inferno")
+    color_indices = np.linspace(0, 1, len(energies_by_file))
+
+    format_plot()
+
+    for idx, (filename, energies) in enumerate(energies_by_file.items()):
+        color = colormap(color_indices[idx])
+
+        if plot_relative_to_lowest:
+            # make energies relative to the first frame with the lowest energy
+            energies = [
+                e - (first_energies[filenames.index(filename)] - min_first_energy)
+                for e in energies
+            ]
+
+        plt.plot(
+            energies,
+            marker=".",
+            linestyle="-",
+            label=f"{filename} (max {max(energies):.2f} kcal/mol)",
+            color=color,
+        )
+
+    plt.xlabel("Frame number", weight="bold")
+    plt.ylabel("Energy (kcal/mol)", weight="bold")
+    plt.legend()
+    plot_name = "energy_plot.png"
+    plt.savefig(
+        plot_name,
+        dpi=300,
+        bbox_extra_artists=(plt.legend(bbox_to_anchor=(1.05, 1), loc="upper left"),),
+        bbox_inches="tight",
+    )
+
+
 def plot_energies():
     """
     Main function that combines previous functions to generate the plot.
@@ -127,51 +226,21 @@ def plot_energies():
     print("> Can handle an arbitrary number of xyz trajectories")
 
     start_time = time.time()  # Used to report the execution speed
-    filenames = input("   > What trajectories would you like to plot? ").split(", ")
-    xyz_count = len(filenames)
 
-    energies_by_file = {}
-    first_energies = []
-    colors = ['#9b2226', '#001219', '#ae2012', '#005f73', '#bb3e03', '#0a9396', '#ca6702', '#94d2bd', '#ee9b00', '#e9d8a6']
-
-    for filename in filenames:
-        with open(filename, 'r') as f:
-            # read two lines to get to the software info
-            f.readline()
-            software_line = f.readline()
-            software = identify_software(software_line)
-
-        energies, first_energy = get_trajectory_energies(filename, software)
-        energies_by_file[filename] = energies
-        first_energies.append(first_energy)
-
-    min_first_energy = min(first_energies)
-    plot_relative_to_lowest = len(filenames) > 1 and input("   > Plot energies relative absolute energies? (yes/no) ") == "yes"
-
-    format_plot()
-
-    for idx, (filename, energies) in enumerate(energies_by_file.items()):
-        if plot_relative_to_lowest:
-            # make energies relative to the first frame with the lowest energy
-            energies = [e - (first_energies[filenames.index(filename)] - min_first_energy) for e in energies]
-        
-        plt.plot(energies, marker='.', linestyle='-', label=f'{filename} (max {max(energies):.2f} kcal/mol)', color=colors[idx])
-    
-    plt.xlabel('Frame number', weight="bold")
-    plt.ylabel('Energy (kcal/mol)', weight="bold")
-    plt.legend()
-    plot_name = 'energy_plot.png'
-    plt.savefig(plot_name, dpi=300)
+    energies_by_file, min_first_energy, plot_relative_to_lowest = collect_data()
+    plot_data(energies_by_file, min_first_energy, plot_relative_to_lowest)
 
     total_time = round(time.time() - start_time, 3)  # Seconds to run the function
     job_summary = f"""
         --------------------------ENERGY PLOTTER END--------------------------
-        RESULT: Plotted energies for {xyz_count} number of xyz trajectories.
-        OUTPUT: Created a plot called {plot_name} in the current directory.
+        RESULT: Plotted energies for {len(energies_by_file)} number of xyz trajectories.
+        OUTPUT: Created a plot called 'energy_plot.png' in the current directory.
         TIME: Total execution time: {total_time} seconds.
         --------------------------------------------------------------------\n
         """
-    
+
     print(job_summary)
+
+
 if __name__ == "__main__":
     plot_energies()

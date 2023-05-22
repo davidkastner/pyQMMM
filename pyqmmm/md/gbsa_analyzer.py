@@ -5,6 +5,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from pandas.api.types import CategoricalDtype
 
+
 def format_plot() -> None:
     """
     General plotting parameters for the Kulik Lab.
@@ -23,6 +24,7 @@ def format_plot() -> None:
     plt.rcParams["xtick.top"] = False
     plt.rcParams["ytick.right"] = False
     plt.rcParams["svg.fonttype"] = "none"
+
 
 def get_gbsa_df(raw) -> pd.DataFrame:
     """
@@ -161,7 +163,6 @@ def get_top_hits_df(df, sub_num, num_hits, sorted_x_labels) -> pd.DataFrame:
     return df_hits
 
 
-
 def plot_single_total_gbsa(df, file_name) -> None:
     """
     Plot the total GBSA energy scores.
@@ -271,7 +272,9 @@ def analyze() -> None:
     sorted_x_labels = df_hits["Residue"].tolist()
     df_hits = get_top_hits_df(df, sub_num, num_hits, sorted_x_labels)
     plot_single_total_gbsa(df_hits, "gbsa_total.svg")
-    plot_all_gbsa(df_hits, ["VDW", "Electrostatic", "Polar", "Non-polar"], sorted_x_labels)
+    plot_all_gbsa(
+        df_hits, ["VDW", "Electrostatic", "Polar", "Non-polar"], sorted_x_labels
+    )
 
 
 if __name__ == "__main__":

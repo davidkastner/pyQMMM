@@ -108,7 +108,7 @@ def qm(
 
     """
     if plot_energy:
-        click.echo("> Combine restarts:")
+        click.echo("> Plot xyz trajectory energies:")
         click.echo("> Loading...")
         import pyqmmm.qm.energy_plotter
         pyqmmm.qm.energy_plotter.plot_energies()

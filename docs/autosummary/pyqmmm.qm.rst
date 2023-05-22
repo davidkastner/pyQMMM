@@ -29,19 +29,17 @@
 
    pyqmmm.qm.charge_spin_extractor
    pyqmmm.qm.cluster_frame_indexer
+   pyqmmm.qm.energy_plotly
+   pyqmmm.qm.energy_plotter
    pyqmmm.qm.hydrogen_atom_optimizer
    pyqmmm.qm.missing_frame_checkup
-   pyqmmm.qm.orca_energy_plotter
    pyqmmm.qm.pdb_residue_extractor
    pyqmmm.qm.pes_organizer
-   pyqmmm.qm.pes_plotter
-   pyqmmm.qm.pes_plotter_new
    pyqmmm.qm.qtaim_analyzer
    pyqmmm.qm.reaction_coordinate_collector
    pyqmmm.qm.res_name_format_extractor
    pyqmmm.qm.residue_numerator
    pyqmmm.qm.reverse_traj
-   pyqmmm.qm.rough_neb_path_generator
    pyqmmm.qm.speed_evaluator
    pyqmmm.qm.traj_atom_filter
    pyqmmm.qm.traj_atom_swapper
