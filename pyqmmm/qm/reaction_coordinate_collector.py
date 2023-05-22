@@ -1,16 +1,12 @@
 """Extract RC against energy and generate CSV."""
 
-# After performing a TeraChem PES, the coordinates are found in the xyz file.
-# Using this file we can extract reaction coordinates against energies.
-# This is can then be graphed in your plotter of choice such as XMGrace.
-# The output is a .csv file with energies in column 1 and the RC in column 2.
-
 from scipy.spatial import distance
 import numpy as np
 import os
 
 """
 Get the user's reaction coordinate definition.
+
 Returns
 -------
 atoms : list
@@ -68,45 +64,6 @@ def get_distance(atoms, xyz_file):
     return dist_list
 
 
-# '''
-# Calculates an optional y-axis reaction coordinate at each step of the scan.
-# Parameters
-# ----------
-# yaxis_atoms : list
-#     List of two atoms defining the y-axis reaction coordinate angle
-# Returns
-# -------
-# reaction_coordinates : list
-#     List of values mapping to the distance that two atoms have moved.
-# '''
-# def get_angle(atoms, xyz_file):
-#     atom_index = 0
-#     coords_list = []
-#     angle_list = []
-#     with open(xyz_file, 'r') as scan_optim:
-#         for line in scan_optim:
-#             if line[:9] == 'Converged':
-#                 atom_index = 0
-#             if atom_index in atoms:
-#                 line_elements = line.split()
-#                 coords = line_elements[1:4]
-#                 coords_list.append(list(map(float, coords)))
-
-#                 if len(coords_list) and len(coords_list) % 3 == 0:
-#                     a = np.array(coords_list[-1])
-#                     b = np.array(coords_list[-2])
-#                     c = np.array(coords_list[-3])
-#                     ba = a - b
-#                     bc = c - b
-#                     cosine_angle = np.dot(ba, bc) / (np.linalg.norm(ba) * np.linalg.norm(bc))
-#                     angle = np.arccos(cosine_angle)
-#                     angle_degrees = np.degrees(angle)
-#                     angle_list.append(angle_degrees)
-#             atom_index += 1
-
-#     return angle_list
-
-
 def get_opt_energies(xyz_file):
     """
     Loop through the xyz file and collect optimized energies.
@@ -154,6 +111,15 @@ def get_reaction_csv(xaxis_list, yaxis_list, extension):
 
 
 def reaction_coordinate_collector():
+    """
+    Extract RC against energy and generate CSV.
+    
+    After performing a TeraChem PES, the coordinates are found in the xyz file.
+    Using this file we can extract reaction coordinates against energies.
+    This is can then be graphed in your plotter of choice such as XMGrace.
+    The output is a .csv file with energies in column 1 and the RC in column 2.
+
+    """
     print("\n.-------------------------------.")
     print("| REACTION COORDINATE COLLECTOR |")
     print(".-------------------------------.\n")

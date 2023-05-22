@@ -7,9 +7,10 @@ def pdb_residue_extractor():
     print("| PDB RESIDUE EXTRACTOR |")
     print(".-----------------------.\n")
     print("You want to select a specific selection of residues from your PDB?")
+    print("--------------------------\n")
+
     pdb_name = input("Which PDB in this directory are we selecting from?: ")
     raw_mask = input("Enter the residues as a list (1,2,3,etc.)?: ")
-    print("--------------------------\n")
 
     # Create a list from the users input
     mask = raw_mask.split(",")
@@ -20,7 +21,6 @@ def pdb_residue_extractor():
     with open(new_pdb, "w") as new_mask:
         with open(pdb_name, "r") as original:
             for line in original:
-
                 # Start checking once we reach the ATOM section
                 res_index = line[22:28].strip()
                 res_type = line[:4]

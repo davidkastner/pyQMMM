@@ -16,7 +16,7 @@ def extract_residue_names(filename):
     -------
     list
         A list of formatted residue names with their indices (e.g., MET1, THR2, GLU3).
-        
+
     """
     residues = []
 

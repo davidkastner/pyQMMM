@@ -12,4 +12,8 @@ dependencies:
     - numpy
     - matplotlib
     - pandas
+    - plotly
+    - seaborn
+    - scipy
+    - modeller
     - https://github.com/revitron/revitron-sphinx-theme/archive/master.zip

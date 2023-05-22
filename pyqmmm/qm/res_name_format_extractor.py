@@ -22,7 +22,6 @@ def pdb_residue_extractor():
     with open(new_pdb, "w") as new_mask:
         with open(pdb_name, "r") as original:
             for line in original:
-
                 # Start checking once we reach the ATOM section
                 res_index = line[22:28].strip()
                 res_type = line[:4]

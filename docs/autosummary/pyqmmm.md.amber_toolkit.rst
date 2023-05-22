@@ -18,6 +18,7 @@ pyqmmm.md.amber\_toolkit
       calculate_hbonds_script
       closest_waters_script
       gbsa_script
+      get_lastframe
       run_cpptraj
       strip_waters_script
       submit_script

@@ -31,13 +31,11 @@ def get_clusters(file):
 
 
 def condense_numbering(cluster_list):
-
     seq = []
     final = []
     last = 0
 
     for index, val in enumerate(cluster_list):
-
         if last + 1 == val or index == 0:
             seq.append(val)
             last = val

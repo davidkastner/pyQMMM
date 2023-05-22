@@ -1,3 +1,5 @@
+"""Reverses a trajectory for example if it was run backwards for better convergence."""
+
 import os
 
 def read_xyz(file):
@@ -15,7 +17,7 @@ def read_xyz(file):
         A list of tuples containing the number of atoms, title, and atom lines for each frame.
     """
     frames = []
-    with open(file, 'r') as f:
+    with open(file, "r") as f:
         while True:
             line = f.readline()
             if not line:
@@ -32,6 +34,7 @@ def read_xyz(file):
             frames.append((natoms, title, atoms))
     return frames
 
+
 def write_xyz(file, frames):
     """
     Write frames to an xyz trajectory file.
@@ -43,12 +46,13 @@ def write_xyz(file, frames):
     frames : list
         A list of tuples containing the number of atoms, title, and atom lines for each frame.
     """
-    with open(file, 'w') as f:
+    with open(file, "w") as f:
         for natoms, title, atoms in frames:
-            f.write(f'{natoms}\n')
-            f.write(f'{title}\n')
+            f.write(f"{natoms}\n")
+            f.write(f"{title}\n")
             for atom_line in atoms:
-                f.write(f'{atom_line}\n')
+                f.write(f"{atom_line}\n")
+
 
 def main():
     # Prompt the user for the input file name
@@ -69,5 +73,6 @@ def main():
 
     print(f"Reversed trajectory written to {output_file}")
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()

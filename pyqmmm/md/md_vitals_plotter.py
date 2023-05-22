@@ -4,7 +4,6 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from pathlib import Path
 
-
 # Converts a dat file to csv
 def dat2df(dat_file):
     df = pd.read_csv(dat_file, sep="\s+", header=None, skiprows=1)
