@@ -3,6 +3,7 @@
 import os
 import sys
 import re
+from typing import Tuple
 
 
 def check_if_aimd() -> str:
@@ -45,7 +46,7 @@ def check_if_aimd() -> str:
     return outfile
 
 
-def get_avg_mdstep_time(outfile: str) -> tuple[int, int, int]:
+def get_avg_mdstep_time(outfile: str) -> Tuple[int]:
     """
     Calculate the avg, max, and min MD time step compute time.
 
@@ -74,14 +75,15 @@ def get_avg_mdstep_time(outfile: str) -> tuple[int, int, int]:
     avg_time = sum(time) / len(time)
     max_time = max(time)
     min_time = min(time)
+
     return avg_time, max_time, min_time
 
 
 def speed_evalutor():
     """
     Driver function for calculating the speed of AIMD from the output.
-    """
 
+    """
     print("\n.-----------------.")
     print("| SPEED EVALUATOR |")
     print(".-----------------.\n")

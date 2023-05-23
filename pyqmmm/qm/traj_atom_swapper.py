@@ -1,9 +1,10 @@
 """Swap any two atoms in an xyz."""
 
 from typing import NoReturn
+from typing import Tuple, List
 
 
-def swap_xyz(filename: str) -> tuple[list[list[str]], int]:
+def swap_xyz(filename: str) -> Tuple[List[List[str]], int]:
     """
     Swap two atoms in a spin file.
 

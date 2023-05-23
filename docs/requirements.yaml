@@ -11,9 +11,9 @@ dependencies:
     - sphinx==6.0.0
     - numpy
     - matplotlib
+    - modeller
     - pandas
     - plotly
     - seaborn
     - scipy
-    - modeller
     - https://github.com/revitron/revitron-sphinx-theme/archive/master.zip

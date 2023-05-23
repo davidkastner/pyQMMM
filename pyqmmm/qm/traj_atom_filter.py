@@ -3,6 +3,7 @@
 import os
 import sys
 import numpy
+from typing import List
 
 
 def get_selection():
@@ -26,7 +27,7 @@ def get_selection():
     return selection
 
 
-def remove_atoms(selection: list[int]) -> list[list[str]]:
+def remove_atoms(selection: List[int]) -> List[List[str]]:
     """
     Takes an atom selection as input.
     Generates a new trajectory with those atoms removed.
