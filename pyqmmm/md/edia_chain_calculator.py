@@ -5,6 +5,7 @@ import pandas as pd
 
 
 def get_edia():
+    
     # Get user input
     csv = input("Name of your EDIA CSV file without extension?: ")
     chains = input('Chains to compare (e.g., "ABCD")? ')

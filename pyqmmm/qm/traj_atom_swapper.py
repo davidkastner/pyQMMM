@@ -1,7 +1,6 @@
 """Swap any two atoms in an xyz."""
 
-from typing import NoReturn
-from typing import Tuple, List
+from typing import NoReturn, List, Tuple
 
 
 def swap_xyz(filename: str) -> Tuple[List[List[str]], int]:
@@ -49,7 +48,7 @@ def swap_xyz(filename: str) -> Tuple[List[List[str]], int]:
     return lines_lists, skipped
 
 
-def swap_spins(filename: str) -> tuple[list[list[str]], int]:
+def swap_spins(filename: str) -> Tuple[List[List[str]], int]:
     """
     Swap two atoms in the xyz file.
 
@@ -91,7 +90,7 @@ def swap_spins(filename: str) -> tuple[list[list[str]], int]:
 
 
 def write_scan(
-    filename: str, lines_lists: tuple[str, list[list[str]]], skipped: int
+    filename: str, lines_lists: Tuple[str, List[List[str]]], skipped: int
 ) -> NoReturn:
     """
     Write the lines from the scan with the switched atoms.

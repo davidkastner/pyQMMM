@@ -8,11 +8,17 @@ def get_dccm():
     """
     Read in the DCCA CSV and format the dataframe.
 
+    Returns
+    -------
+    df : pd.DataFrame
+        The results from the DCCA analysis stored in a dataframe.
+
     """
     df = pd.read_csv("cij.csv", index_col=None)
     df = df.iloc[:, 1:]
     df.columns = (x for x in range(1, len(df) + 1))
     df.index = (x for x in range(1, len(df) + 1))
+
     return df
 
 
