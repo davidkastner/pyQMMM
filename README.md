@@ -24,7 +24,7 @@ pyQMMM
 ## 1. Overview
 PyQMMM is a package for accelerating structure to simulation QM, MD, and QM/MM workflows. 
 The package contains useful tools for all stages of multiscale simulation prep.
-As the package is designed spcifically for accelerating research in the Kulik group at MIT, 
+As the package is designed to accelerate research in the Kulik group at MIT, 
 much of the functionality is built around the Amber-TeraChem interface.
 It's current purpose is to act as a utility sandbox for several in-house projects.
 
