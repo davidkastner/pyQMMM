@@ -7,6 +7,7 @@ import plotly.graph_objects as go
 def plotly_styling():
     """
     Set lab styling preferences for plotly.
+
     """
     # Generalized Plotly styling dictionary
     glob_layout = go.Layout(

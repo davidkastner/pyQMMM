@@ -19,8 +19,8 @@ def get_opt_energies(file_name):
         The optimized energy from the current convergence line of the file.
     energy_list : list
         Returns a list of the energies extracted from the .out file.
-    """
 
+    """
     energy_list = []
     with open(file_name, "r") as file:
         for line in file:
@@ -37,7 +37,6 @@ def get_relative_energies(energy_list):
     Convert energies to relative energies
 
     """
-
     # Take the smallest value as the ground state
     ground_state = energy_list[0]
     # The equation for calculating the relative energy
@@ -51,8 +50,8 @@ def get_relative_energies(energy_list):
 def plotly_styling():
     """
     Set lab styling preferences for plotly.
-    """
 
+    """
     glob_layout = go.Layout(
         font=dict(family="Arial", size=22, color="black"),
         margin=dict(l=100, r=225, t=10, b=100),
@@ -91,8 +90,8 @@ def plotly_styling():
 def get_scatter_plot(energy_list, out_name, start, end, atoms):
     """
     Generate a scatterplot to help quickly vizualize the data.
-    """
 
+    """
     # Kulik Lab color definitions
     blue = "rgba(0, 0, 255, 1)"
     red = "rgba(255, 0, 0, 1)"
@@ -145,6 +144,7 @@ def get_scatter_plot(energy_list, out_name, start, end, atoms):
 def references(name):
     """
     Stores user defined variables.
+
     """
     if name == "besd_acute":
         start = 2.202
@@ -213,7 +213,6 @@ def pes_plotter():
     > pip install -U kaleido
 
     """
-
     print("\n.-------------.")
     print("| PES PLOTTER |")
     print(".-------------.\n")

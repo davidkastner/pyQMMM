@@ -86,8 +86,8 @@ def cluster_frame_indexer():
     final_selection = condense_numbering(cluster_list)
 
     # Important output for the user
-    print(f"Total frames: {len(cluster_list)}")
-    print(f"Final selection: {final_selection}")
+    print(f"   > Total frames: {len(cluster_list)}")
+    print(f"   > Final selection: {final_selection}")
 
 
 if __name__ == "__main__":

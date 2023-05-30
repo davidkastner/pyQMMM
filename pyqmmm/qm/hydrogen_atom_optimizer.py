@@ -21,9 +21,9 @@ def get_xyz_file():
             count += 1
             current_file = file
     if count > 1:
-        print("More than one .xyz found")
+        print("   > More than one .xyz found")
         sys.exit()
-    print("Using {}".format(current_file))
+    print(f"   > Using {current_file}")
     return current_file
 
 

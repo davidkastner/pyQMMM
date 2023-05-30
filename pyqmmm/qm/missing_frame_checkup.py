@@ -10,7 +10,7 @@ def missing_frame_checkup():
     print("Checks a production file for missing frames.")
 
     # Open the production run MD file
-    print("Analyzing production output file ...\n")
+    print("   > Analyzing production output file ...\n")
     with open("constP_prod.out", "r") as prod_file:
         nsteps = []
         nstep = 0
@@ -37,7 +37,7 @@ def missing_frame_checkup():
     # Calculate the number of missing nstep progress prints
     total = int(nstlim / ntpr)
     missing = int(nstlim / ntpr - len(nsteps))
-    print(f"Out of {total} progress prints, {missing} were missing.")
+    print(f"   > Out of {total} progress prints, {missing} were missing.")
 
 
 if __name__ == "__main__":

@@ -15,6 +15,7 @@ def get_iteration_pairs():
     -------
     iteraction_pairs : dictionary
         The scan step number as the key and iterations as the value.
+
     """
     # Read in the TeraChem output, the charge, and the spin
     opt_count = 0
@@ -82,7 +83,7 @@ def get_scan_spins(final_scan_position):
     with open("./scr/1.spin", "w") as scan_spin_file:
         for index, section in enumerate(sections):
             scan_spin_file.write(section)
-            scan_spin_file.write("End scan {}\n".format(index + 1))
+            scan_spin_file.write(f"End scan {index + 1}\n")
 
     return sections
 
@@ -131,7 +132,7 @@ def get_scan_charges(final_scan_position):
     with open("./scr/1.charge", "w") as scan_charge_file:
         for index, section in enumerate(sections):
             scan_charge_file.write(section)
-            scan_charge_file.write("End scan {}\n".format(index + 1))
+            scan_charge_file.write(f"End scan {index + 1}\n")
 
     return sections
 
@@ -141,18 +142,11 @@ def pes_organizer():
     print("| PES ORGANIZER |")
     print(".---------------.\n")
     print("Use the ml_prop keyword when running your TeraChem scan.")
-    print("Execute this script from the directory where this job was run.")
-    print(
-        "By default, TeraChem scans only print the charge and spin of the final frame."
-    )
-    print(
-        "We change this by using the ml_prop keyword. Now every optimization will print."
-    )
-    print("However, we only need the charge and spin at the end of each optimization.")
-    print(
-        "This script will return the the charge and spin into a more readable format."
-    )
-    print("The coordinates are already piped nicely to scan_optim.xyz.")
+    print("Execute this script from the directory where the job was run.")
+    print("TeraChem scans only print the charge and spin of the final frame.")
+    print("With the ml_prop keyword, every optimization will print.")
+    print("However, we only need the final charge and spin.")
+    print("This script will return the charge and spin in a readable format.")
 
     final_scan_position, scan_step_pairs = get_iteration_pairs()
     get_scan_spins(final_scan_position)

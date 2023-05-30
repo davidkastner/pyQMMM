@@ -20,7 +20,7 @@ def get_files(file_pattern):
 
     file_list = glob.glob(file_pattern)
     file_list = sorted(file_list)
-    print("We found {} using the pattern {}".format(file_list, file_pattern))
+    print("   > We found {} using the pattern {}".format(file_list, file_pattern))
 
     return file_list
 
@@ -49,7 +49,7 @@ def get_selection(file):
 
 def get_atoms():
     # For which atoms would the user like to sum the spin and charge
-    my_atoms = input("What atom indexes would you like to sum (e.g., 58-76): ")
+    my_atoms = input("   > What atom indexes would you like to sum (e.g., 58-76): ")
 
     # Convert user input to a list even if it is hyphenated
     temp = [
@@ -100,7 +100,7 @@ def get_spins(atoms, file, selection):
         if index + 1 not in selection:
             net_spins.remove(net_spins_reference[index])
 
-    reverse = input("Press any key to reverse data for {}: ".format(file))
+    reverse = input("   > Press any key to reverse data for {}: ".format(file))
     if reverse:
         net_spins.reverse()
 
@@ -146,7 +146,7 @@ def get_charges(atoms, file, selection):
         if index + 1 not in selection:
             net_charges.remove(net_charges_reference[index])
 
-    reverse = input("Press any key to reverse data for {}: ".format(file))
+    reverse = input("   > Press any key to reverse data for {}: ".format(file))
     if reverse:
         net_charges.reverse()
 

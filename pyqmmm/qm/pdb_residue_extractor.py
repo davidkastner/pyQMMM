@@ -9,8 +9,8 @@ def pdb_residue_extractor():
     print("You want to select a specific selection of residues from your PDB?")
     print("--------------------------\n")
 
-    pdb_name = input("Which PDB in this directory are we selecting from?: ")
-    raw_mask = input("Enter the residues as a list (1,2,3,etc.)?: ")
+    pdb_name = input("   > Which PDB in this directory are we selecting from?: ")
+    raw_mask = input("   > Enter the residues as a list (1,2,3,etc.)?: ")
 
     # Create a list from the users input
     mask = raw_mask.split(",")
@@ -37,9 +37,8 @@ def pdb_residue_extractor():
                     break
 
     # Print important statistics for the user
-    print("We extracted {} residues for the mask".format(len(set(res_type_array))))
-    print("Your new file is named {}".format(new_pdb))
-    print("Done.")
+    print(f"   > We extracted {len(set(res_type_array))} residues for the mask")
+    print(f"   > Your new file is named {new_pdb}")
 
 
 if __name__ == "__main__":
