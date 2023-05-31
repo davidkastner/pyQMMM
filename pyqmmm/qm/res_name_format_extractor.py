@@ -10,15 +10,15 @@ def pdb_residue_extractor():
     print("--------------------------\n")
 
     # Get User input
-    pdb_name = input("Which PDB in this directory are we selecting from?: ")
-    raw_mask = input("Enter the residues as a list (1,2,3,etc.)?: ")
+    pdb_name = input("   > Which PDB in this directory are we selecting from?: ")
+    raw_mask = input("   > Enter the residues as a list (1,2,3,etc.)?: ")
 
     # Create a list from the users input
     mask = raw_mask.split(",")
 
     # The code for Mask Maker begins here
     res_type_array = []
-    new_pdb = "{}_mask.pdb".format(pdb_name[:-4])
+    new_pdb = f"{pdb_name[:-4]}_mask.pdb"
     with open(new_pdb, "w") as new_mask:
         with open(pdb_name, "r") as original:
             for line in original:
@@ -38,9 +38,8 @@ def pdb_residue_extractor():
                     break
 
     # Print important statistics for the user
-    print("We extracted {} residues for the mask".format(len(set(res_type_array))))
-    print("Your new file is named {}".format(new_pdb))
-    print("Done.")
+    print(f"   > We extracted {len(set(res_type_array))} residues for the mask")
+    print(f"   > Your new file is named {new_pdb}")
 
 
 if __name__ == "__main__":

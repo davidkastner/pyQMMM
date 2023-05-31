@@ -18,8 +18,8 @@ def swap_xyz(filename: str) -> Tuple[List[List[str]], int]:
         List of lists containing each section of the file
     skipped : int
         The number of lines thast were skipped
-    """
 
+    """
     # Initialize variables used later
     lines_list: list[str] = []
     lines_lists: list[list[str]] = []
@@ -63,8 +63,8 @@ def swap_spins(filename: str) -> Tuple[List[List[str]], int]:
         List of lists containing each section of the file
     skipped : int
         The number of lines thast were skipped
-    """
 
+    """
     # Initialize variables used later
     lines_list: list[str] = []
     lines_lists: list[list[str]] = []
@@ -103,14 +103,14 @@ def write_scan(
         List of the coordinate lines
     skipped : int
         The number of lines that were skipped
-    """
 
+    """
     # Get atoms from user and verify that the user has entered a number
     try:
-        atom1 = int(input(f"What is the first atom to switch? "))
-        atom2 = int(input(f"What is the second atom to switch? "))
+        atom1 = int(input(f"   > What is the first atom to switch? "))
+        atom2 = int(input(f"   > What is the second atom to switch? "))
     except SystemExit:
-        print("Please enter a number.")
+        print("   > Please enter a number.")
 
     # Get requested file name and its extension
     pre = filename.split(".")[0]
@@ -132,7 +132,7 @@ def pair_swapper():
     print("Sometimes atoms get switched between comparing scans.")
     print("This script gives you a way to switch then back.\n")
 
-    filename = input("What is your xyz file name (e.g., 1.xyz, 2.spin)? ")
+    filename = input("   > What is your xyz file name (e.g., 1.xyz, 2.spin)? ")
     if filename.split(".")[-1] == "xyz":
         lines_lists, skipped = swap_xyz(filename)
     if filename.split(".")[-1] == "spin":

@@ -14,8 +14,9 @@ def get_selection():
     -------
     selection : list[int]
         A list of atoms.
+
     """
-    selection = input(f"What atoms would you like to remove (e.g. 1-50,52-60)? ")
+    selection = input(f"   > What atoms would you like to remove (e.g. 1-50,52-60)? ")
 
     # Convert user input to a list even if it is hyphenated
     temp = [
@@ -29,6 +30,8 @@ def get_selection():
 
 def remove_atoms(selection: List[int]) -> List[List[str]]:
     """
+    Removes an atom and creates a new xyz.
+
     Takes an atom selection as input.
     Generates a new trajectory with those atoms removed.
     The final format is the .xyz format.
@@ -42,7 +45,7 @@ def remove_atoms(selection: List[int]) -> List[List[str]]:
     # Search the current directory for the .xyz file
     xyz_files = [f for f in os.listdir(".") if f.endswith("xyz")]
     if len(xyz_files) != 1:
-        raise ValueError("More than one .xyz file found.")
+        raise ValueError("   > More than one .xyz file found.")
     xyz_file = xyz_files[0]
 
     # Lines in the molecule plus the header lines
@@ -123,10 +126,10 @@ def traj_atom_filter():
     print("\n.------------------.")
     print("| TRAJ ATOM FILTER |")
     print(".------------------.\n")
-    print("- Requests the atoms to remove.")
-    print("- Removes the atoms from the trajectory.")
-    print("- Writes out a new trajectory.")
-    print("- Reads in a template file called template.pdb.\n")
+    print("Requests the atoms to remove.")
+    print("Removes the atoms from the trajectory.")
+    print("Writes out a new trajectory.")
+    print("Reads in a template file called template.pdb.\n")
 
     if not os.path.exists("new_traj.xyz"):
         selection = get_selection()

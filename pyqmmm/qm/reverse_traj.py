@@ -15,6 +15,7 @@ def read_xyz(file):
     -------
     frames : list
         A list of tuples containing the number of atoms, title, and atom lines for each frame.
+
     """
     frames = []
     with open(file, "r") as f:
@@ -56,7 +57,7 @@ def write_xyz(file, frames):
 
 def main():
     # Prompt the user for the input file name
-    input_file = input("Enter the name of your xyz file: ")
+    input_file = input("   > Enter the name of your xyz file: ")
 
     # Generate the output file name based on the input file name
     input_file_base, _ = os.path.splitext(input_file)
@@ -71,7 +72,7 @@ def main():
     # Write the reversed frames to the output file
     write_xyz(output_file, frames_reversed)
 
-    print(f"Reversed trajectory written to {output_file}")
+    print(f"   > Reversed trajectory written to {output_file}")
 
 
 if __name__ == "__main__":

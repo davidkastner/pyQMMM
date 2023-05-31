@@ -4,19 +4,19 @@ from scipy.spatial import distance
 import numpy as np
 import os
 
-"""
-Get the user's reaction coordinate definition.
-
-Returns
--------
-atoms : list
-    list of atoms indices
-"""
-
 
 def request_rc(rc_request):
+    """
+    Get the user's reaction coordinate definition.
+
+    Returns
+    -------
+    atoms : list
+        list of atoms indices
+
+    """
     # What atoms define your reaction coordinate
-    request = input("Atoms in your {} RC? (e.g., 1_2): ".format(rc_request))
+    request = input(f"Atoms in your {rc_request} RC? (e.g., 1_2): ")
 
     # Check if RC is requested and onvert to a list even if it is hyphenated
     if request != "":
@@ -42,6 +42,7 @@ def get_distance(atoms, xyz_file):
     -------
     reaction_coordinates : list
         List of values mapping to the distance that two atoms have moved.
+
     """
     atom_count = 0
     coords_list = []
@@ -74,6 +75,7 @@ def get_opt_energies(xyz_file):
         The optimized energy from the current convergence line of the file.
     energy_list : list
         Returns a list of the energies extracted from the .out file.
+
     """
     DE_list = []
     E_list = []
@@ -104,10 +106,11 @@ def get_reaction_csv(xaxis_list, yaxis_list, extension):
         List of distances defining each step of the reaction coordinate.
     energy_list : list
         List of all energies mapping to each step of the reacitno coordinate.
+
     """
-    with open("./{}.csv".format(extension), "w") as csv_file:
+    with open("./{extension}.csv", "w") as csv_file:
         for x, y in zip(xaxis_list, yaxis_list):
-            csv_file.write("{},{}\n".format(x, y))
+            csv_file.write(f"{x},{y}\n")
 
 
 def reaction_coordinate_collector():
@@ -133,9 +136,9 @@ def reaction_coordinate_collector():
     combined_xyz_exists = os.path.exists(combined_xyz)
     if combined_xyz_exists:
         xyz_file = combined_xyz
-        print("Will use found combined.xyz file")
+        print("   > Will use found combined.xyz file")
     else:
-        xyz_file = input("What xyz file would you like to use?")
+        xyz_file = input("   > What xyz file would you like to use?")
 
     DE_list, E_list = get_opt_energies(xyz_file)
     # Energy against first distance coordinate
