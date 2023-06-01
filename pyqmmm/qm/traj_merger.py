@@ -6,17 +6,17 @@ import pyqmmm.qm.reaction_coordinate_collector
 
 def get_xyz_filenames():
     """
-    Search the current directory for all xyz files and remove any non-trajectories.
+    Search the current directory for all xyz files and remove non-trajectories.
 
     Parameters
     ----------
     atoms : list
-        list of atoms indices
+        List of atoms indices
 
     Returns
     -------
     trajectory_list : list
-        list string names of all the trajectory xyz files in the directory.
+        List string names of all the trajectory xyz files in the directory.
     """
     # Get all xyz files and sort them
     file_list = glob.glob("*.xyz")
@@ -45,7 +45,7 @@ def get_xyz_filenames():
             xyz_filename_list.append(file)
 
     xyz_filename_list.sort()
-    print("We found these .xyz files: {}".format(xyz_filename_list))
+    print(f"   > We found these .xyz files: {xyz_filename_list}")
 
     return xyz_filename_list
 
@@ -67,7 +67,7 @@ def request_frames(xyz_filename):
     # What frames would you like from the first .xyz file?
     if xyz_filename == "combined.xyz":
         return
-    request = input("Which frames do you want from {}?: ".format(xyz_filename))
+    request = input(f"   > Which frames do you want from {xyz_filename}?: ")
     # Continue if the user did not want that file processed and pressed enter
     if request == "":
         return request
@@ -78,7 +78,7 @@ def request_frames(xyz_filename):
     ]
     frames = [b for a in temp for b in a]
 
-    print("For {} you requested frames {}.".format(xyz_filename, frames))
+    print(f"   > For {xyz_filename} you requested frames {frames}.")
 
     return frames
 
@@ -96,6 +96,7 @@ def multiframe_xyz_to_list(xyz_filename):
     -------
     trajectory_list : list
         List of lists containing the trajectory with each frame saved as an element.
+
     """
     # Variables that measure our progress in parsing the optim.xyz file
     xyz_as_list = []  # List of lists containing all frames
@@ -122,7 +123,7 @@ def multiframe_xyz_to_list(xyz_filename):
 
         xyz_as_list.append(frame_contents)
 
-    print("We found {} frames in {}.".format(len(xyz_as_list), xyz_filename))
+    print(f"   > We found {len(xyz_as_list)} frames in {xyz_filename}.")
 
     return xyz_as_list
 
@@ -150,7 +151,7 @@ def combine_xyz_files():
             if index + 1 in requested_frames
         ]
         # Ask the user if they want the frames reversed for a given xyz file
-        reverse = input("Any key to reverse {} else Return: ".format(file))
+        reverse = input(f"   > Any key to reverse {file} else Return: ")
         if reverse:
             requested_xyz_list.reverse()
             reverse = False
@@ -159,7 +160,7 @@ def combine_xyz_files():
     with open(combined_filename, "w") as combined_file:
         for entry in combined_xyz_list:
             combined_file.write(entry)
-    print("Your combined xyz was written to {}\n".format(combined_filename))
+    print(f"   > Your combined xyz was written to {combined_filename}\n")
 
 
 def xyz_merger():
@@ -185,7 +186,7 @@ def xyz_merger():
     combine_xyz_files()
 
     # STEP 2: Perform reaction coordinate analysis
-    perform_rc_analysis = input("Any key to perform analyze RC, else Return: ")
+    perform_rc_analysis = input("   > Any key to perform analyze RC, else Return: ")
     if perform_rc_analysis:
         reaction_coordinate_collector.reaction_coordinate_collector()
 

@@ -7,13 +7,14 @@ import shutil
 def check_exists():
     """
     Check to see if user's xyz file is in the current directory
+
     """
     name = input("What is the name of your .xyz ensemble (ignore extenstion)? ")
-    file_name = "{}.xyz".format(name)
+    file_name = f"{name}.xyz"
     if os.path.exists(file_name):
-        print("Found {}".format(file_name))
+        print(f"Found {file_name}")
     else:
-        print("No {}".format(dat))
+        print(f"No {dat}")
         exit()
     return file_name
 
@@ -21,6 +22,7 @@ def check_exists():
 def create_dir():
     """
     Create a new directory to store the frames
+
     """
     dir = "movie"
     if os.path.exists(dir):
@@ -33,6 +35,7 @@ def create_dir():
 def get_frames(file_name):
     """
     Break up the original xyz file.
+
     """
     current_frame = 0
     with open(file_name, "r") as ensemble:
@@ -41,12 +44,11 @@ def get_frames(file_name):
                 current_frame += 1
                 if current_frame > 1:
                     f.close()
-                f = open("./movie/{}.xyz".format(current_frame), "w")
+                f = open(f"./movie/{current_frame}.xyz")
             f.write(line)
 
 
 def xyz_movie_generator():
-    # Welcome user and print some instructions
     print("\n.---------------------.")
     print("| XYZ MOVIE GENERATOR |")
     print(".---------------------.\n")
