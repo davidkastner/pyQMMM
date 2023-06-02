@@ -55,8 +55,11 @@ def write_xyz(file, frames):
                 f.write(f"{atom_line}\n")
 
 
-def main():
-    # Prompt the user for the input file name
+def reverse_traj():
+    """
+    Uses read_xyz and write_xyz to reverse a trajectory.
+
+    """
     input_file = input("   > Enter the name of your xyz file: ")
 
     # Generate the output file name based on the input file name
@@ -68,12 +71,10 @@ def main():
 
     # Reverse the order of the frames
     frames_reversed = list(reversed(frames))
-
-    # Write the reversed frames to the output file
     write_xyz(output_file, frames_reversed)
 
     print(f"   > Reversed trajectory written to {output_file}")
 
 
 if __name__ == "__main__":
-    main()
+    reverse_traj()
