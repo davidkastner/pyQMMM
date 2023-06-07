@@ -198,7 +198,7 @@ def plot_data(energies_by_file, min_first_energy, plot_relative_to_lowest):
             energies,
             marker=".",
             linestyle="-",
-            label=f"{filename} (max {max(energies):.2f} kcal/mol)",
+            label=f"{filename} (max {round(max(energies), 2)} kcal/mol)",
             color=color,
         )
 

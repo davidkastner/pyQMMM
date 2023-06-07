@@ -2,6 +2,7 @@
 
 import os
 
+
 def read_xyz(file):
     """
     Read an xyz trajectory file and return a list of frames.

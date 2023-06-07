@@ -108,7 +108,7 @@ def get_reaction_csv(xaxis_list, yaxis_list, extension):
         List of all energies mapping to each step of the reacitno coordinate.
 
     """
-    with open("./{extension}.csv", "w") as csv_file:
+    with open(f"./{extension}.csv", "w") as csv_file:
         for x, y in zip(xaxis_list, yaxis_list):
             csv_file.write(f"{x},{y}\n")
 
@@ -116,7 +116,7 @@ def get_reaction_csv(xaxis_list, yaxis_list, extension):
 def reaction_coordinate_collector():
     """
     Extract RC against energy and generate CSV.
-    
+
     After performing a TeraChem PES, the coordinates are found in the xyz file.
     Using this file we can extract reaction coordinates against energies.
     This is can then be graphed in your plotter of choice such as XMGrace.

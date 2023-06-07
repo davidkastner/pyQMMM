@@ -20,7 +20,7 @@ def get_files(file_pattern):
 
     file_list = glob.glob(file_pattern)
     file_list = sorted(file_list)
-    print("   > We found {} using the pattern {}".format(file_list, file_pattern))
+    print(f"   > We found {file_list} using the pattern {file_pattern}")
 
     return file_list
 
@@ -35,7 +35,7 @@ def get_selection(file):
     """
 
     # For which frames would the user like
-    selection = input("What frames would you like for {}: ".format(file))
+    selection = input(f"What frames would you like for {file}: ")
 
     # Convert user input to a list even if it is hyphenated
     temp = [
@@ -92,7 +92,7 @@ def get_spins(atoms, file, selection):
 
             if line_list[0] == "End":
                 step_count += 1
-                net_spins.append("{},{}\n".format(step_count, net_spin))
+                net_spins.append(f"{step_count},{net_spin}\n")
                 net_spin = 0
 
     net_spins_reference = net_spins.copy()
@@ -100,7 +100,7 @@ def get_spins(atoms, file, selection):
         if index + 1 not in selection:
             net_spins.remove(net_spins_reference[index])
 
-    reverse = input("   > Press any key to reverse data for {}: ".format(file))
+    reverse = input(f"   > Press any key to reverse data for {file}: ")
     if reverse:
         net_spins.reverse()
 
@@ -138,7 +138,7 @@ def get_charges(atoms, file, selection):
 
             if line_list[0] == "End":
                 step_count += 1
-                net_charges.append("{},{}\n".format(step_count, net_charge))
+                net_charges.append(f"{step_count},{net_charge}\n")
                 net_charge = 0
 
     net_charges_reference = net_charges.copy()
@@ -146,7 +146,7 @@ def get_charges(atoms, file, selection):
         if index + 1 not in selection:
             net_charges.remove(net_charges_reference[index])
 
-    reverse = input("   > Press any key to reverse data for {}: ".format(file))
+    reverse = input(f"   > Press any key to reverse data for {file}: ")
     if reverse:
         net_charges.reverse()
 

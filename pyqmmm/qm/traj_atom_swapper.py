@@ -107,8 +107,8 @@ def write_scan(
     """
     # Get atoms from user and verify that the user has entered a number
     try:
-        atom1 = int(input(f"   > What is the first atom to switch? "))
-        atom2 = int(input(f"   > What is the second atom to switch? "))
+        atom1 = int(input("   > What is the first atom to switch? "))
+        atom2 = int(input("   > What is the second atom to switch? "))
     except SystemExit:
         print("   > Please enter a number.")
 

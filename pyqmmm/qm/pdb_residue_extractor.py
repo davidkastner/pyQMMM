@@ -17,7 +17,7 @@ def pdb_residue_extractor():
 
     # The code for Mask Maker begins here
     res_type_array = []
-    new_pdb = "{}_mask.pdb".format(pdb_name[:-4])
+    new_pdb = f"{pdb_name[:-4]}_mask.pdb"
     with open(new_pdb, "w") as new_mask:
         with open(pdb_name, "r") as original:
             for line in original:

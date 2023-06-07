@@ -9,7 +9,7 @@ def xyz_flipper(in_file: str) -> None:
     ----------
     in_file : str
         The name of the input filexyz trajectory to reverse.
-    
+
     Notes
     -----
     For example, this is usually scan_optim in TeraChem.
@@ -40,6 +40,7 @@ def xyz_flipper(in_file: str) -> None:
     with open(f"{in_file}_flip.xyz", "w") as f:
         for frame_lines in frames:
             f.write("".join(frame_lines))
+
 
 if __name__ == "__main__":
     xyz_flipper("scan_optim")

@@ -1,7 +1,8 @@
 """Allows you to change the starting residue of a PDB file."""
 
+
 def renumber(pdb_name, offset):
-    """"
+    """
     Creates a new PDB with shifted residue numbers.
 
     Useful when the first residue in the PDB does not match the gene.
@@ -15,7 +16,7 @@ def renumber(pdb_name, offset):
     offset: str
         By how many residues the first residue should be changed.
 
-    """"
+    """
     # Create a new pdb and read in the user's PDB
     with open(f"{pdb_name}_shifted.pdb", "w") as shifted_pdb:
         with open(f"{pdb_name}.pdb", "r") as original:

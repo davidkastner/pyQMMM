@@ -40,11 +40,9 @@
    pyqmmm.qm.res_name_format_extractor
    pyqmmm.qm.residue_numerator
    pyqmmm.qm.reverse_traj
-   pyqmmm.qm.speed_evaluator
    pyqmmm.qm.traj_atom_filter
    pyqmmm.qm.traj_atom_swapper
    pyqmmm.qm.traj_merger
    pyqmmm.qm.traj_movie_generator
-   pyqmmm.qm.waters_numerator
    pyqmmm.qm.xyz_flipper
 

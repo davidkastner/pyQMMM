@@ -13,8 +13,8 @@ pyqmmm.qm.reverse\_traj
 
    .. autosummary::
    
-      main
       read_xyz
+      reverse_traj
       write_xyz
    
    
