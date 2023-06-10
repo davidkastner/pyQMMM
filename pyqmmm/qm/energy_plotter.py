@@ -28,8 +28,10 @@ def parse_energy(line, software):
         energy_str = line.split()[5]
     elif software == "ORCA":
         energy_str = line.split()[4]
-    elif software == "TeraChem":
-        energy_str = line.split()[3]
+    elif software == "TeraChem-scan":
+        energy_str = line.split()[4]
+    elif software == "TeraChem-opt":
+        energy_str = line.split()[0]
     else:
         raise ValueError(f"Unsupported software: {software}")
 
@@ -98,7 +100,9 @@ def identify_software(line):
     elif "ORCA-job qmscript" in line:
         return "ORCA"
     elif "Converged     Job" in line:
-        return "TeraChem"
+        return "TeraChem-scan"
+    elif "TeraChem" in line:
+        return "TeraChem-opt"
     else:
         raise ValueError(f"Could not identify software from line: {line}")
 
