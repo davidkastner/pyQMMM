@@ -100,10 +100,12 @@ def md(
 @click.command()
 @click.option("--plot_energy", "-pe", is_flag=True, help="Plot the energy of a xyz traj.")
 @click.option("--flip_xyz", "-f", is_flag=True, help="Reverse and xyz trajectory.")
+@click.option("--plot_mechanism", "-pm", is_flag=True, help="Plot energies for all steps of a mechanism.")
 @click.help_option('--help', '-h', is_flag=True, help='Exiting pyQMMM.')
 def qm(
     plot_energy,
     flip_xyz,
+    plot_mechanism,
     ):
     """
     Functions for quantum mechanics (QM) simulations.
@@ -121,6 +123,12 @@ def qm(
         import pyqmmm.qm.xyz_flipper
         in_file = input("What is the name of the xyz trajectory to reverse (omit extenstion)? ")
         pyqmmm.qm.xyz_flipper.flip_xyz_trajectory(in_file)
+
+    if plot_mechanism:
+        click.echo("> Combine all mechanism energetics and plot:")
+        click.echo("> Loading...")
+        import pyqmmm.qm.mechanism_plotter
+        pyqmmm.qm.mechanism_plotter.process_xyz_files()
 
 
 if __name__ == "__main__":
