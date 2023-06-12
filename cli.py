@@ -78,7 +78,6 @@ def md(
 
         pyqmmm.md.amber_toolkit.get_lastframe(prmtop, mdcrd, output_pdb)
         
-
     elif residue_list:
         click.echo("> Extract the residues from a PDB:")
         click.echo("> Loading...")
@@ -122,7 +121,7 @@ def qm(
         click.echo("> Loading...")
         import pyqmmm.qm.xyz_flipper
         in_file = input("What is the name of the xyz trajectory to reverse (omit extenstion)? ")
-        pyqmmm.qm.xyz_flipper.flip_xyz_trajectory(in_file)
+        pyqmmm.qm.xyz_flipper.xyz_flipper(in_file)
 
     if plot_mechanism:
         click.echo("> Combine all mechanism energetics and plot:")
