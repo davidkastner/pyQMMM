@@ -197,16 +197,31 @@ def angles_and_dist_script(protein_id, h_index, oxo_index, iron_index):
         script_file.write(angles_distances)
 
 
-def gbsa_script(protein_id, ligand_name, ligand_index_minus_one, stride, cpus=16):
+def gbsa_script(protein_id, ligand_name, ligand_index, start, stride, cpus=16):
     """
-    Automated GBSA script.
+    Submit a GBSA calculation.
+
+    Parameters
+    ----------
+    protein_id : str
+        The name of the protein (e.g., taud, mc6, besd)
+    ligand_name : str
+        The name of the ligand (e.g, tau, hm1)
+    ligand_index : int
+        The index of the ligand, except subtract one if it comes after the metal
+    start : int
+        What frame to start the mmGBSA calculation on
+    stride : int
+        Every how many frames
+    cpus : int
+        How many cpus to employ, 16 may be a good number
 
     """
     gbsa_script = textwrap.dedent(
         f"""\
     #!/bin/bash
     #$ -S /bin/bash
-    #$ -N {protein_id}
+    #$ -N gbsa_{protein_id}
     #$ -l h_rt=168:00:00
     #$ -cwd
     #$ -l h_rss=16G
@@ -223,12 +238,12 @@ def gbsa_script(protein_id, ligand_name, ligand_index_minus_one, stride, cpus=16
 
     prmtop="{protein_id}_stripped.prmtop"
     struc=$(echo $prmtop | sed 's/.prmtop/{protein_id}/')
-    coords="{protein_id}_stripped.nc"
-    start="100000"
-    ligand_name="{ligand_name}"
+    coords="{protein_id}_stripped.mdcrd"
+    start="{start}"
+    ligand_name="{ligand_name.upper()}"
     entropy="1"
     igbval="2"
-    ligmask=":{ligand_index_minus_one}"
+    ligmask=":{ligand_index}"
 
     python /opt/amber_18_cuda10/bin/ante-MMPBSA.py -p $prmtop -c $struc.$ligand_name.complex.prmtop -r $struc.$ligand_name.receptor.prmtop -l $struc.$ligand_name.ligand.prmtop -n $ligmask -s :WAT
 

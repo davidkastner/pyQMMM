@@ -44,10 +44,16 @@ def md(
 
     """
     if gbsa_submit:
-        click.echo("> Prepares and submits a mmGBSA job:")
+        click.echo("> Submit a mmGBSA job:")
         click.echo("> Loading...")
-        import pyqmmm.md.gbsa_submit
-        pyqmmm.md.ggbsa_submit.submit()
+        import pyqmmm.md.amber_toolkit
+        protein_id = input("What is the id of your protein (e.g., taud, mc6)? ")
+        ligand_id = input("What is the id of your ligand (e.g., hm1, tau)? ")
+        ligand_index = input("What is the index of your ligand minus 1 if after the stripped metal? ")
+        start = 100000
+        stride = 50
+        cpus = 8
+        pyqmmm.md.amber_toolkit.gbsa_script(protein_id, ligand_id, ligand_index, start, stride, cpus)
 
     elif gbsa_analysis:
         click.echo("> Analyze a GBSA calculation output:")
