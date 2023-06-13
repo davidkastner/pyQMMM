@@ -5,7 +5,18 @@ import textwrap
 import subprocess
 
 
-def get_lastframe(prmtop, mdcrd, output_pdb):
+def get_last_frame(prmtop, mdcrd, output_pdb):
+    """
+    Get the last frame from a trajectory as a PDB.
+
+    Parameters
+    ----------
+    prmtop : str
+        The path to the prmtop file
+    mdcrd : str
+        The path to the mdcrd file
+
+    """
     command = f"cpptraj -p {prmtop} -y {mdcrd} -ya 'lastframe' -x {output_pdb}"
     try:
         process = subprocess.run(
@@ -43,7 +54,7 @@ def run_cpptraj(cpptraj_script, script_name="cpptraj_script.in"):
         os.remove(script_name)
 
 
-def submit_script(protein_id, script_name, cpus=8):
+def submit_script(protein_id, script_name, cpus):
     """
     Classic submit script for CPPTraj jobs.
 
@@ -54,19 +65,24 @@ def submit_script(protein_id, script_name, cpus=8):
         f"""\
     #!/bin/bash
     #$ -S /bin/bash
-    #$ -N {protein_id}_hbond
+    #$ -N {protein_id}_cpptraj_job
     #$ -l h_rt=168:00:00
     #$ -cwd
     #$ -l h_rss=8G
     #$ -q cpus
     #$ -pe smp {cpus}
     cd $SGE_O_WORKDIR
+
     module load amber/18
+
     cpptraj -i {script_name}
     """
     )
 
-    return submit_script
+    # Create a new file with the contents of the script and submit to queue
+    with open("jobscript.sh", "w") as script_file:
+        script_file.write(submit_script)
+    subprocess.run(["/bin/bash", "-c", "module load sge && qsub jobscript.sh"])
 
 
 def calculate_hbonds_script(protein_id, substrate_index, residue_range):
@@ -87,7 +103,9 @@ def calculate_hbonds_script(protein_id, substrate_index, residue_range):
     """
     )
 
-    return hbonds_script
+    # Create a new file with the contents of the script
+    with open("hbonds.in", "w") as script_file:
+        script_file.write(hbonds_script)
 
 
 def closest_waters_script(protein_id, centroid, all_residues):
@@ -107,25 +125,29 @@ def closest_waters_script(protein_id, centroid, all_residues):
     """
     )
 
-    return closest_waters
+    # Create a new file with the contents of the script
+    with open("closest_waters.in", "w") as script_file:
+        script_file.write(closest_waters)
 
 
-def strip_waters_script(protein_id):
+def strip_all_script(protein_id):
     """
-    Strip waters and generate a AMBER nc file
+    Strip waters, ions, and metals and generate new mdcrd and prmtop files
 
     """
-    strip_waters = textwrap.dedent(
+    strip_all = textwrap.dedent(
         f"""\
-    parm ../../../{protein_id.lower()}_solv.prmtop
-    trajin ../../../1_output/constP_prod.mdcrd
+    parm ../../{protein_id.lower()}_solv.prmtop
+    trajin ../../1_output/constP_prod.mdcrd
     strip :NA+,Na+,WAT,FE1 outprefix prmtop
-    trajout {protein_id}_stripped.nc
+    trajout {protein_id}_stripped.mdcrd
     run
     """
     )
 
-    return strip_waters
+    # Create a new file with the contents of the script
+    with open("strip.in", "w") as script_file:
+        script_file.write(strip_all)
 
 
 def basic_metrics_script(protein_id, all_residues, select_residues):
@@ -147,7 +169,9 @@ def basic_metrics_script(protein_id, all_residues, select_residues):
     """
     )
 
-    return basic_metrics
+    # Create a new file with the contents of the script
+    with open("basic_metrics.in", "w") as script_file:
+        script_file.write(basic_metrics)
 
 
 def angles_and_dist_script(protein_id, h_index, oxo_index, iron_index):
@@ -168,7 +192,9 @@ def angles_and_dist_script(protein_id, h_index, oxo_index, iron_index):
     """
     )
 
-    return angles_distances
+    # Create a new file with the contents of the script
+    with open("angles_distances.in", "w") as script_file:
+        script_file.write(angles_distances)
 
 
 def gbsa_script(protein_id, ligand_name, ligand_index_minus_one, stride, cpus=16):
@@ -228,7 +254,10 @@ def gbsa_script(protein_id, ligand_name, ligand_index_minus_one, stride, cpus=16
     """
     )
 
-    return gbsa_script
+    # Create a new file with the contents of the script and submit to queue
+    with open("gbsa.sh", "w") as script_file:
+        script_file.write(gbsa_script)
+    subprocess.run(["/bin/bash", "-c", "module load sge && qsub gbsa.sh"])
 
 
 if __name__ == "__main__":

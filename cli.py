@@ -18,15 +18,18 @@ import os
 import click
 
 @click.command()
-@click.option("--gbsa_analysis", "-g", is_flag=True, help="Extract results from GBSA analysis.")
+@click.option("--gbsa_submit", "-gs", is_flag=True, help="Prepares and submits a mmGBSA job.")
+@click.option("--gbsa_analysis", "-ga", is_flag=True, help="Extract results from GBSA analysis.")
 @click.option("--compute_hbond", "-hc", is_flag=True, help="Calculates hbonds with cpptraj.")
 @click.option("--hbond_analysis", "-ha", is_flag=True, help="Extract Hbonding patterns from MD.")
 @click.option("--last_frame", "-lf", is_flag=True, help="Get last frame from an AMBER trajectory.")
 @click.option("--residue_list", "-lr", is_flag=True, help="Get a list of all residues in a PDB.")
 @click.option("--colored_rmsd", "-cr", is_flag=True, help="Color RMSD by clusters.")
 @click.option("--restraint_plot", "-rp", is_flag=True, help="Restraint plot KDE's on one plot.")
+@click.option("--strip_all", "-sa", is_flag=True, help="Strip waters and metals.")
 @click.help_option('--help', '-h', is_flag=True, help='Exiting pyQMMM.')
 def md(
+    gbsa_submit,
     gbsa_analysis,
     compute_hbond,
     hbond_analysis,
@@ -34,12 +37,19 @@ def md(
     residue_list,
     colored_rmsd,
     restraint_plot,
+    strip_all,
     ):
     """
     Functions for molecular dynamics (MD) simulations.
 
     """
-    if gbsa_analysis:
+    if gbsa_submit:
+        click.echo("> Prepares and submits a mmGBSA job:")
+        click.echo("> Loading...")
+        import pyqmmm.md.gbsa_submit
+        pyqmmm.md.ggbsa_submit.submit()
+
+    elif gbsa_analysis:
         click.echo("> Analyze a GBSA calculation output:")
         click.echo("> Loading...")
         import pyqmmm.md.gbsa_analyzer
@@ -71,12 +81,9 @@ def md(
         click.echo("> Extracting the last frame from a MD simulation:")
         click.echo("> Loading...")
         import pyqmmm.md.amber_toolkit
-
-        prmtop = input("What is your prmtop file? ")
-        mdcrd = input("What is your trajectory file (e.g., nc or mdcrd)? ")
-        output_pdb = input("What should you output PDB be called? ")
-
-        pyqmmm.md.amber_toolkit.get_lastframe(prmtop, mdcrd, output_pdb)
+        prmtop = input("What is the path of your prmtop file? ")
+        mdcrd = input("What is the path of your trajectory file? ")
+        pyqmmm.md.amber_toolkit.get_last_frame(prmtop, mdcrd, "final_frame.pdb")
         
     elif residue_list:
         click.echo("> Extract the residues from a PDB:")
@@ -95,6 +102,16 @@ def md(
         click.echo("> Loading...")
         import pyqmmm.md.kde_restraint_plotter
         pyqmmm.md.kde_restraint_plotter.restraint_plot()
+
+    elif strip_all:
+        click.echo("> Strip waters and metals and create new traj and prmtop file:")
+        click.echo("> Loading...")
+        import pyqmmm.md.amber_toolkit
+        protein_id = input("What is the id of your protein (e.g., taud, mc6)? ")
+        cpus = 8
+        pyqmmm.md.amber_toolkit.strip_all_script(protein_id)
+        pyqmmm.md.amber_toolkit.submit_script(protein_id, "strip.in", cpus)
+
 
 @click.command()
 @click.option("--plot_energy", "-pe", is_flag=True, help="Plot the energy of a xyz traj.")
