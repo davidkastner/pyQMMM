@@ -158,7 +158,7 @@ def qm(
         click.echo("> Combine all mechanism energetics and plot:")
         click.echo("> Loading...")
         import pyqmmm.qm.mechanism_plotter
-        pyqmmm.qm.mechanism_plotter.process_xyz_files()
+        pyqmmm.qm.mechanism_plotter.generate_plot()
 
 
 if __name__ == "__main__":
