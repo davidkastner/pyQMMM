@@ -27,6 +27,7 @@ import click
 @click.option("--colored_rmsd", "-cr", is_flag=True, help="Color RMSD by clusters.")
 @click.option("--restraint_plot", "-rp", is_flag=True, help="Restraint plot KDE's on one plot.")
 @click.option("--strip_all", "-sa", is_flag=True, help="Strip waters and metals.")
+@click.option("--dssp_plot", "-dp", is_flag=True, help="Generate a DSSP plot.")
 @click.help_option('--help', '-h', is_flag=True, help='Exiting pyQMMM.')
 def md(
     gbsa_submit,
@@ -38,6 +39,7 @@ def md(
     colored_rmsd,
     restraint_plot,
     strip_all,
+    dssp_plot,
     ):
     """
     Functions for molecular dynamics (MD) simulations.
@@ -117,6 +119,12 @@ def md(
         cpus = 8
         pyqmmm.md.amber_toolkit.strip_all_script(protein_id)
         pyqmmm.md.amber_toolkit.submit_script(protein_id, "strip.in", cpus)
+
+    elif dssp_plot:
+        click.echo("> Create a DSSP plot from CPPTraj data:")
+        click.echo("> Loading...")
+        import pyqmmm.md.dssp_plotter
+        pyqmmm.md.dssp_plotter.combine_dssp_files()
 
 
 @click.command()
