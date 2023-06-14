@@ -1,4 +1,6 @@
 import matplotlib.pyplot as plt
+import matplotlib.colors as mcolors
+import numpy as np
 import glob
 import os
 import re
@@ -49,28 +51,99 @@ def format_plot() -> None:
     plt.rcParams["ytick.right"] = True
     plt.rcParams["svg.fonttype"] = "none"
 
-def plot_energies(energies, ref_energy):
+def plot_group_energies(group_files, ref_energy, offset, color):
     """
-    Plot energy values relative to a reference energy.
+    Process a group of related intermediate files and plot their energies.
 
     Parameters
     ----------
-    energies : list
-        A list of energy values from each frame.
+    group_files : list
+        A list of filenames related to a single intermediate step.
     ref_energy : float
         The reference energy value to which other energies are compared.
+    offset : int
+        The current frame offset for the x-axis.
+    color : str
+        The color to use when plotting this group's energies.
+
+    Returns
+    -------
+    offset : int
+        The updated frame offset for the x-axis.
     """
-    # Subtract the reference energy from all energy values
-    relative_energies = [energy - ref_energy for energy in energies]
+    for filename in group_files:
+        energies = read_energy_from_xyz(filename)
+        relative_energies = [energy - ref_energy for energy in energies]
+        x = list(range(offset, offset + len(relative_energies)))
+        plt.plot(x, relative_energies, '-o', markersize=5, color=color, label=os.path.splitext(filename)[0])
+        offset += len(relative_energies)
+    return offset
 
-    # Generate x values as frame numbers
-    x = list(range(len(relative_energies)))
+def read_files():
+    """
+    Read xyz files and group them by base name.
+    """
+    files = sorted(glob.glob("*.xyz"), key=lambda x: (x.split(".")[0].split("-")[0], len(x), x))
 
-    plt.plot(x, relative_energies, '-o', markersize=5, color='blue')
+    grouped_files = {}
+    for file in files:
+        group_name = re.findall(r'(R|P|IM\d+)', file)[0]  # Updated regex to capture "R", "P", "IM1", "IM2", etc.
+        if group_name not in grouped_files:
+            grouped_files[group_name] = []
+        grouped_files[group_name].append(file)
+
+    return grouped_files
+
+def process_xyz_files():
+    """
+    Process xyz files and generate plot data.
+    """
+    grouped_files = read_files()
+    plot_data = []
+    max_versions = max([len(group) for group in grouped_files.values()])  # Maximum number of versions in any group
+
+    # Process the R.xyz file first to get the reference energy
+    r_energies = read_energy_from_xyz("R.xyz")
+    ref_energy = r_energies[0]  # Reference energy is the first energy of the R scan
+    plot_data.append(('R', list(range(len(r_energies))), [energy - ref_energy for energy in r_energies], 0))  # Adding data to plot
+
+    # Initial offset is just after the R scan
+    offset = len(r_energies)
+
+    # Process each group of files, excluding 'R' which we already processed
+    total_groups = len(grouped_files) - 1  # '-1' to exclude 'R'
+    group_number = 1  # '1' to give unique color to R
+    for group_name, group in grouped_files.items():
+        if group_name == 'R':
+            continue
+        for i, filename in enumerate(sorted(group)):  # Ensure files are processed in order
+            energies = read_energy_from_xyz(filename)
+            relative_energies = [energy - ref_energy for energy in energies]
+            x = list(range(offset, offset + len(relative_energies)))
+            color = (group_number * max_versions + i) / (total_groups * max_versions)  # Save color index
+            plot_data.append((os.path.splitext(filename)[0], x, relative_energies, color))
+            offset += len(relative_energies) if 'v' not in filename else 0  # if a versioned intermediate, don't advance the offset
+        group_number += 1
+
+    return plot_data
+
+def generate_plot():
+    """
+    Generate plot using processed data.
+    """
+    plot_data = process_xyz_files()
+    format_plot()
+    colormap = plt.cm.tab20  # change colormap to 'tab20'
+
+    for (label, x, relative_energies, color_index) in plot_data:
+        plt.plot(x, relative_energies, '-o', markersize=2, color=colormap(color_index), label=label)
+
     plt.xlabel('Frame', weight="bold")
     plt.ylabel('Energy (kcal/mol)', weight="bold")
-    plot_name = "energy_plot.png"
     
+    # Legend outside the plot on the right side
+    plt.legend(bbox_to_anchor=(1.04,0.5), loc="center left", borderaxespad=0)
+
     # Save plot as PNG
     plot_name_png = "energy_plot.png"
     plt.savefig(
@@ -86,31 +159,6 @@ def plot_energies(energies, ref_energy):
         dpi=300,
         bbox_inches="tight",
     )
-
-def process_xyz_files():
-    """
-    Process xyz files and plot energy values.
-
-    This function assumes that there are files named R.xyz and P.xyz,
-    and an arbitrary number of files named IM*.xyz.
-    """
-    # Process the R.xyz file
-    r_energies = read_energy_from_xyz("R.xyz")
-    ref_energy = r_energies[0]
-
-    # Process IM*.xyz files
-    im_files = sorted(glob.glob("IM*.xyz"))
-    im_energies = []
-    for im_file in im_files:
-        im_energies.extend(read_energy_from_xyz(im_file))
-
-    # Process the P.xyz file
-    p_energies = read_energy_from_xyz("P.xyz")
-
-    # Combine all energy values and plot
-    all_energies = r_energies + im_energies + p_energies
-    format_plot()
-    plot_energies(all_energies, ref_energy)
-
+    
 if __name__ == "__main__":
-    process_xyz_files()
+    generate_plot()
