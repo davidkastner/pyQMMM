@@ -266,8 +266,8 @@ def analyze() -> None:
     print("\n.---------------.")
     print("| GBSA ANALYZER |")
     print(".---------------.\n")
-    print("This script will process a single GBSA output file:")
-    print("+ Looks for file24.dat\n")
+    print("This script will process a single GBSA output file")
+    print("Looks for file24.dat\n")
 
     # Get user input
     sub_num = int(
