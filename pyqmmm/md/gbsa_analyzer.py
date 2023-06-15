@@ -26,7 +26,7 @@ def format_plot() -> None:
     plt.rcParams["svg.fonttype"] = "none"
 
 
-def get_gbsa_df(raw) -> pd.DataFrame:
+def get_gbsa_df(raw, ignore_residues) -> pd.DataFrame:
     """
     Turn the GBSA file into a parsable pd.DataFrame.
 
@@ -88,6 +88,7 @@ def get_gbsa_df(raw) -> pd.DataFrame:
                 delta_section = True
 
     df = pd.read_csv(csv_file_name)
+    df = df[~df["Resname 2"].isin(ignore_residues)]
     df = df[df["Resid 1"] != df["Resid 2"]]
 
     return df
@@ -165,19 +166,43 @@ def get_top_hits_df(df, sub_num, num_hits, sorted_x_labels) -> pd.DataFrame:
 
 def plot_single_total_gbsa(df, file_name) -> None:
     """
-    Plot the total GBSA energy scores.
+    Plot the total GBSA energy scores for each residue.
+
+    Generates a bar plot representing the by-residue total GBSA energy.
+    The bar plot is saved as 'gbsa_total.svg' in the current directory.
+
+    Parameters
+    ----------
+    df : pd.DataFrame
+        DataFrame containing the residue information and GBSA energies.
+    file_name : str
+        Name of the file where the plot will be saved.
+
     """
     colors = "darkgrey"
     ax = df.plot.bar(x="Residue", y="Total", color=colors, figsize=(4, 4))
-    ax.set_ylabel("GBSA energy score", weight="bold")
-    ax.set_xlabel("Residue", weight="bold")
+    ax.set_ylabel("GBSA energy (kcal/mol)", weight="bold")
+    ax.set_xlabel("residue", weight="bold")
     plt.savefig(file_name, bbox_inches="tight", transparent=True)
     plt.close()
 
 
 def plot_clustered_stacked(df, y_columns, sorted_x_labels):
     """
-    Format the stacked bar plots.
+    Plot the GBSA energy by type for a single dataframe.
+
+    This function generates a stacked bar plot representing the GBSA energies.
+    for each energy type. The plot is saved as a file in the working directory.
+
+    Parameters
+    ----------
+    df_hits : pd.DataFrame
+        DataFrame containing the residue information and GBSA energies.
+    y_columns : list
+        List of column names in `df_hits` that represent different components.
+    sorted_x_labels : list
+        List of residue names in order that they appear on the x-axis.
+
     """
     format_plot()
     _, axe = plt.subplots(figsize=(4, 4))
@@ -199,8 +224,8 @@ def plot_clustered_stacked(df, y_columns, sorted_x_labels):
         width=0.3,
     )
 
-    axe.set_ylabel("GBSA energy score", weight="bold")
-    axe.set_xlabel("Residue", weight="bold")
+    axe.set_ylabel("GBSA energy (kcal/mol))", weight="bold")
+    axe.set_xlabel("residue", weight="bold")
     axe.set_xticks([tick for tick in axe.get_xticks()])
 
     return axe
@@ -209,6 +234,19 @@ def plot_clustered_stacked(df, y_columns, sorted_x_labels):
 def plot_all_gbsa(df_hits, y_columns, sorted_x_labels) -> None:
     """
     Plot the GBSA energy scores by type for a single dataframe.
+
+    Generates a stacked bar plot representing the GBSA component energies.
+    The plot is saved as a file in the working directory.
+
+    Parameters
+    ----------
+    df_hits : pd.DataFrame
+        DataFrame containing the residue information and GBSA energies.
+    y_columns : list
+        List of column names in `df_hits` that represent component energies.
+    sorted_x_labels : list
+        List of residue names in the order in which they appear on the x-axis.
+
     """
 
     series_columns = y_columns + ["Residue"]
@@ -220,37 +258,23 @@ def plot_all_gbsa(df_hits, y_columns, sorted_x_labels) -> None:
     plt.savefig("stacked_single.svg", bbox_inches="tight", transparent=True)
 
 
-def prep_gbsa_data(df_hits, df, y_columns):
-    """
-    Prepare the data for plotting the GBSA energy scores by type for a single dataframe.
-
-    """
-    format_plot()
-    residues = df_hits["Residue"].tolist()
-    series_columns = y_columns + ["Residue"]
-
-    return df_hits, series_columns
-
-
 def analyze() -> None:
     """
     Main GBSA analysis wrapper function for a single dataset.
     """
 
-    # Welcome user and print some instructions
     print("\n.---------------.")
     print("| GBSA ANALYZER |")
     print(".---------------.\n")
     print("This script will process a single GBSA output file:")
     print("+ Looks for file24.dat\n")
 
-    format_plot()
-
     # Get user input
     sub_num = int(
         input("What is the index of your substrate in your GBSA calculation?: ")
     )
     num_hits = int(input("Show me the top n residues: "))
+    ignore_residues = input("What residues would you like ignored (e.g., LS1,LS2)? ").split(',')
 
     file_extension = "*24.dat"
 
@@ -263,18 +287,24 @@ def analyze() -> None:
         return
 
     raw = raw_files[0]
-    df = get_gbsa_df(raw)
 
+    # Format plot
+    format_plot()
+
+    # Get and process GBSA dataframe
+    df = get_gbsa_df(raw, ignore_residues)
     df = update_res_names(df)
 
     # Generate plots
     df_hits = df[df["Resid 1"] == sub_num].nsmallest(num_hits, "Total", keep="all")
     sorted_x_labels = df_hits["Residue"].tolist()
     df_hits = get_top_hits_df(df, sub_num, num_hits, sorted_x_labels)
+
+    # Plot GBSA Total
     plot_single_total_gbsa(df_hits, "gbsa_total.svg")
-    plot_all_gbsa(
-        df_hits, ["VDW", "Electrostatic", "Polar", "Non-polar"], sorted_x_labels
-    )
+
+    # Plot All GBSA
+    plot_all_gbsa(df_hits, ["VDW", "Electrostatic", "Polar", "Non-polar"], sorted_x_labels)
 
 
 if __name__ == "__main__":
