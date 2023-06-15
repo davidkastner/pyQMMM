@@ -35,10 +35,19 @@ def process_data(file):
     # Create an empty list to hold the counts for each chunk
     counts_list = []
 
+    # Secondary structure options
+    para = 1
+    anti = 2
+    three_ten = 3
+    alpha = 4
+    pi = 5
+    turn = 6
+    bend = 7
+
     # Loop over the DataFrame in chunks
     for i in range(0, df.shape[0], chunk_size):
         chunk = df.iloc[i:i+chunk_size]
-        count = (chunk == 4).sum()
+        count = chunk.isin([three_ten, alpha]).sum()  # Count the number of occurrences of 3 and 4
         count = count.reindex(df.columns, fill_value=0)
         counts_list.append(count)
 
@@ -58,7 +67,7 @@ def plot_data(dfs):
     global_max = max(df.max().max() for df in dfs)
 
     for i, counts_df in enumerate(dfs):
-        fig, ax = plt.subplots(figsize=(10, 5))  # Create a subplot for each dataframe
+        fig, ax = plt.subplots(figsize=(14, 5))  # Create a subplot for each dataframe
         cax = ax.imshow(counts_df, cmap='viridis', interpolation='nearest', vmin=global_min, vmax=global_max)
 
         # Set the x-ticks and y-ticks
@@ -74,14 +83,22 @@ def plot_data(dfs):
         cbar.set_label("#Frames DSSP Helix", weight='bold')
 
         # Save each heatmap as a separate PNG file
-        ext = "png"
+        ext = "svg"
         plt.savefig(f"dssp_{i+1}.{ext}", bbox_inches="tight", format=ext, dpi=300)
         plt.close()
 
 
 def combine_dssp_files():
+    print("\n.--------------.")
+    print("| DSSP PLOTTER |")
+    print(".--------------.\n")
+    print("Plots DSSP files as a heatmap")
+    print("Looks for multiple DSSP files to in the current directory.\n")
+
     files = ["dssp_1.dat", "dssp_2.dat", "dssp_3.dat"]
+    print(f"   > Processing dssp files")
     df_list = [process_data(file) for file in files]
+    print("   > Plotting dssp.dat files")
     plot_data(df_list)
 
 
