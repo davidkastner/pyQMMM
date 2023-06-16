@@ -64,8 +64,7 @@ def calculate_rmsf_per_trajectory(topology, trajectory, reference, count):
         avg_rmsf = np.mean(rmsf_values[atoms_in_residue])
         rmsf_residues.append(avg_rmsf)
         resnames.append(residue.resname)
-        # Start index at 1 instead of 0
-        resids.append(residue.resid+1)
+        resids.append(residue.resid)
 
     # Create a DataFrame for each trajectory with the residue and RMSF
     trajectory_name = "Traj_" + str(count + 1)  # Count as trajectory name
