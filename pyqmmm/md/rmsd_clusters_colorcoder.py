@@ -28,7 +28,7 @@ def dat2df(dat_file, rows_to_skip=1):
     return df
 
 
-def get_plot(final_df, centroid_frame_ns):
+def get_plot(final_df, centroid_frame_ns, layout='wide'):
     """
     General plotting function.
 
@@ -38,8 +38,16 @@ def get_plot(final_df, centroid_frame_ns):
         Dataframe with clustering data.
     centroid_frame_ns : int
         The frame number of the computed centroid.
+    layout : str
+        'square' for square dimensions, 'wide' for default.
 
     """
+    if layout == 'square':
+        plt.figure(figsize=(8, 8))
+        filename = "clus_rmsd_square.png"
+    else:
+        filename = "clus_rmsd.png"
+
     font = {"family": "sans-serif", "weight": "bold", "size": 10}
     plt.rc("font", **font)
     plt.rcParams["axes.linewidth"] = 2.5
@@ -80,16 +88,15 @@ def get_plot(final_df, centroid_frame_ns):
     )
 
     plt.rc("axes", linewidth=2.5)
-    plt.ylabel("Active site RMSD (Å)", fontsize=16, weight="bold")
+    plt.ylabel("RMSD (Å)", fontsize=16, weight="bold")
     plt.xlabel("Time (ns)", fontsize=16, weight="bold")
     plt.tick_params(labelsize=14)
     plt.tick_params(which="both", bottom=True, top=True, left=True, right=True)
     plt.tick_params(which="minor", length=5, color="k", width=2.5)
-    plt.savefig("clus_rmsd.png", bbox_inches="tight", dpi=600)
-    plt.show()
+    plt.savefig(filename, bbox_inches="tight", dpi=600)
 
 
-def rmsd_clusters_colorcoder():
+def rmsd_clusters_colorcoder(layout='wide'):
     # Welcome user and print some instructions
     print("\n.--------------------------.")
     print("| RMSD CLUSTERS COLORCODER |")
@@ -120,9 +127,9 @@ def rmsd_clusters_colorcoder():
     final_df = pd.concat([rmsd_df, clus_df], axis=1)
     final_df.columns = ["RMSD", "Cluster"]
     final_df["Frame"] = final_df.index
-    get_plot(final_df, centroid_frame_ns)
+    get_plot(final_df, centroid_frame_ns, layout)
 
 
 # Execute the function when run as a script but not if used as a pyQM/MM module
 if __name__ == "__main__":
-    rmsd_clusters_colorcoder()
+    rmsd_clusters_colorcoder(layout="square")
