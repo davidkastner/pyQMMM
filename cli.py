@@ -28,7 +28,7 @@ import click
 @click.option("--restraint_plot", "-rp", is_flag=True, help="Restraint plot KDE's on one plot.")
 @click.option("--strip_all", "-sa", is_flag=True, help="Strip waters and metals.")
 @click.option("--dssp_plot", "-dp", is_flag=True, help="Generate a DSSP plot.")
-@click.option("--calculate_rmsf", "-cr", is_flag=True, help="Calculate the RMSF.")
+@click.option("--calculate_rmsf", "-cf", is_flag=True, help="Calculate the RMSF.")
 @click.help_option('--help', '-h', is_flag=True, help='Exiting pyQMMM.')
 def md(
     gbsa_submit,
@@ -101,11 +101,11 @@ def md(
         import pyqmmm.md.residue_lister
         pyqmmm.md.residue_lister.list_residues()
 
-    elif residue_list:
+    elif colored_rmsd:
         click.echo("> Color a MD trajectory by clusters:")
         click.echo("> Loading...")
         import pyqmmm.md.rmsd_clusters_colorcoder
-        pyqmmm.md.rmsd_clusters_colorcoder.rmsd_clusters_colorcoder()
+        pyqmmm.md.rmsd_clusters_colorcoder.rmsd_clusters_colorcoder(layout="square")
 
     elif restraint_plot:
         click.echo("> Generate single KDE plot with hyscore measurements:")
