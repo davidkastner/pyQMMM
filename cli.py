@@ -105,7 +105,8 @@ def md(
         click.echo("> Color a MD trajectory by clusters:")
         click.echo("> Loading...")
         import pyqmmm.md.rmsd_clusters_colorcoder
-        pyqmmm.md.rmsd_clusters_colorcoder.rmsd_clusters_colorcoder(layout="square")
+        yaxis_title = input("What is this the RMSD for (e.g., trajectory 1)? ")
+        pyqmmm.md.rmsd_clusters_colorcoder.rmsd_clusters_colorcoder(yaxis_title, layout="square")
 
     elif restraint_plot:
         click.echo("> Generate single KDE plot with hyscore measurements:")

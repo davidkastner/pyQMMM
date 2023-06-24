@@ -28,7 +28,7 @@ def dat2df(dat_file, rows_to_skip=1):
     return df
 
 
-def get_plot(final_df, centroid_frame_ns, layout='wide'):
+def get_plot(final_df, centroid_frame_ns, yaxis_title, layout='wide'):
     """
     General plotting function.
 
@@ -43,7 +43,7 @@ def get_plot(final_df, centroid_frame_ns, layout='wide'):
 
     """
     if layout == 'square':
-        plt.figure(figsize=(8, 8))
+        plt.figure(figsize=(5, 5))
         filename = "clus_rmsd_square.png"
     else:
         filename = "clus_rmsd.png"
@@ -85,10 +85,11 @@ def get_plot(final_df, centroid_frame_ns, layout='wide'):
         facecolors="k",
         marker="+",
         s=290,
+        linewidths=2.5,
     )
 
     plt.rc("axes", linewidth=2.5)
-    plt.ylabel("RMSD (Å)", fontsize=16, weight="bold")
+    plt.ylabel(f"{yaxis_title} RMSD (Å)", fontsize=16, weight="bold")
     plt.xlabel("Time (ns)", fontsize=16, weight="bold")
     plt.tick_params(labelsize=14)
     plt.tick_params(which="both", bottom=True, top=True, left=True, right=True)
@@ -96,7 +97,7 @@ def get_plot(final_df, centroid_frame_ns, layout='wide'):
     plt.savefig(filename, bbox_inches="tight", dpi=600)
 
 
-def rmsd_clusters_colorcoder(layout='wide'):
+def rmsd_clusters_colorcoder(yaxis_title, layout='wide'):
     # Welcome user and print some instructions
     print("\n.--------------------------.")
     print("| RMSD CLUSTERS COLORCODER |")
@@ -127,9 +128,9 @@ def rmsd_clusters_colorcoder(layout='wide'):
     final_df = pd.concat([rmsd_df, clus_df], axis=1)
     final_df.columns = ["RMSD", "Cluster"]
     final_df["Frame"] = final_df.index
-    get_plot(final_df, centroid_frame_ns, layout)
+    get_plot(final_df, centroid_frame_ns, yaxis_title, layout)
 
 
 # Execute the function when run as a script but not if used as a pyQM/MM module
 if __name__ == "__main__":
-    rmsd_clusters_colorcoder(layout="square")
+    rmsd_clusters_colorcoder(yaxis_title="trajectory 1", layout="square")
