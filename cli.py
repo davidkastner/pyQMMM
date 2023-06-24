@@ -29,6 +29,7 @@ import click
 @click.option("--strip_all", "-sa", is_flag=True, help="Strip waters and metals.")
 @click.option("--dssp_plot", "-dp", is_flag=True, help="Generate a DSSP plot.")
 @click.option("--calculate_rmsf", "-cf", is_flag=True, help="Calculate the RMSF.")
+@click.option("--add_bfactor", "-bf", is_flag=True, help="Adds data as the b-factor for a PDB file.")
 @click.help_option('--help', '-h', is_flag=True, help='Exiting pyQMMM.')
 def md(
     gbsa_submit,
@@ -42,6 +43,7 @@ def md(
     strip_all,
     dssp_plot,
     calculate_rmsf,
+    add_bfactor,
     ):
     """
     Functions for molecular dynamics (MD) simulations.
@@ -146,6 +148,12 @@ def md(
             "../../3_md/7/1_output/constP_prod.crd",
         ]
         pyqmmm.md.rmsf_calculator.calculate_rmsf(topology, trajectories, reference)
+
+    elif add_bfactor:
+        click.echo("> Adds values from a csv as the bfactor data of a PDB:")
+        click.echo("> Loading...")
+        import pyqmmm.md.bfactor_adder
+        pyqmmm.md.bfactor_adder.add_bfactor()
 
 
 @click.command()
