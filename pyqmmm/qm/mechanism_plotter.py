@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
+import matplotlib.cm
 import numpy as np
 import glob
 import os
@@ -127,13 +128,21 @@ def process_xyz_files():
 
     return plot_data
 
-def generate_plot():
+def generate_plot(color_scheme):
     """
     Generate plot using processed data.
     """
     plot_data = process_xyz_files()
     format_plot()
-    colormap = plt.cm.tab20  # change colormap to 'tab20'
+    all_cmap_names = set(matplotlib.cm.cmaps_listed.keys()) | set(matplotlib.cm.datad.keys())
+
+    if color_scheme == "":
+        colormap = lambda x: 'blue'  # if no input, use 'blue' for all
+    elif color_scheme in all_cmap_names:
+        colormap = plt.get_cmap(color_scheme)  # use the specified colormap if it exists
+    else:
+        print(f"Unrecognized color scheme {color_scheme}. Defaulting to 'tab20'")
+        colormap = plt.cm.tab20  # default to 'tab20' if the colormap isn't recognized
 
     for (label, x, relative_energies, color_index) in plot_data:
         plt.plot(x, relative_energies, '-o', markersize=2, color=colormap(color_index), label=label)
@@ -161,4 +170,5 @@ def generate_plot():
     )
     
 if __name__ == "__main__":
-    generate_plot()
+    color_scheme = input("What color scheme would you like (e.g., tab20, viridis)? ")
+    generate_plot(color_scheme)
