@@ -28,8 +28,6 @@ import click
 @click.option("--restraint_plot", "-rp", is_flag=True, help="Restraint plot KDE's on one plot.")
 @click.option("--strip_all", "-sa", is_flag=True, help="Strip waters and metals.")
 @click.option("--dssp_plot", "-dp", is_flag=True, help="Generate a DSSP plot.")
-@click.option("--calculate_rmsf", "-cf", is_flag=True, help="Calculate the RMSF.")
-@click.option("--add_bfactor", "-bf", is_flag=True, help="Adds data as the b-factor for a PDB file.")
 @click.help_option('--help', '-h', is_flag=True, help='Exiting pyQMMM.')
 def md(
     gbsa_submit,
@@ -42,8 +40,6 @@ def md(
     restraint_plot,
     strip_all,
     dssp_plot,
-    calculate_rmsf,
-    add_bfactor,
     ):
     """
     Functions for molecular dynamics (MD) simulations.
@@ -103,12 +99,11 @@ def md(
         import pyqmmm.md.residue_lister
         pyqmmm.md.residue_lister.list_residues()
 
-    elif colored_rmsd:
+    elif residue_list:
         click.echo("> Color a MD trajectory by clusters:")
         click.echo("> Loading...")
         import pyqmmm.md.rmsd_clusters_colorcoder
-        yaxis_title = input("What is this the RMSD for (e.g., trajectory 1)? ")
-        pyqmmm.md.rmsd_clusters_colorcoder.rmsd_clusters_colorcoder(yaxis_title, layout="square")
+        pyqmmm.md.rmsd_clusters_colorcoder.rmsd_clusters_colorcoder()
 
     elif restraint_plot:
         click.echo("> Generate single KDE plot with hyscore measurements:")
@@ -130,30 +125,6 @@ def md(
         click.echo("> Loading...")
         import pyqmmm.md.dssp_plotter
         pyqmmm.md.dssp_plotter.combine_dssp_files()
-
-    elif calculate_rmsf:
-        click.echo("> Create the rmsf for a series of trajectories:")
-        click.echo("> Loading...")
-        import pyqmmm.md.rmsf_calculator
-        protein = input("What is the name of your protein? ")
-        topology = f"../../3_md/1/{protein}_dry.prmtop"
-        reference = "../../3_md/1/xtal.pdb"
-        trajectories = [
-            "../../3_md/1/1_output/constP_prod.crd",
-            "../../3_md/2/1_output/constP_prod.crd",
-            "../../3_md/3/1_output/constP_prod.crd",
-            "../../3_md/4/1_output/constP_prod.crd",
-            "../../3_md/5/1_output/constP_prod.crd",
-            "../../3_md/6/1_output/constP_prod.crd",
-            "../../3_md/7/1_output/constP_prod.crd",
-        ]
-        pyqmmm.md.rmsf_calculator.calculate_rmsf(topology, trajectories, reference)
-
-    elif add_bfactor:
-        click.echo("> Adds values from a csv as the bfactor data of a PDB:")
-        click.echo("> Loading...")
-        import pyqmmm.md.bfactor_adder
-        pyqmmm.md.bfactor_adder.add_bfactor()
 
 
 @click.command()
@@ -187,7 +158,8 @@ def qm(
         click.echo("> Combine all mechanism energetics and plot:")
         click.echo("> Loading...")
         import pyqmmm.qm.mechanism_plotter
-        pyqmmm.qm.mechanism_plotter.generate_plot()
+        color_scheme = input("What color scheme would you like (e.g., tab20, viridis)? ")
+        pyqmmm.qm.mechanism_plotter.generate_plot(color_scheme)
 
 
 if __name__ == "__main__":
