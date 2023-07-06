@@ -89,7 +89,7 @@ def get_plot(final_df, centroid_frame_ns, yaxis_title, layout='wide'):
     )
 
     plt.rc("axes", linewidth=2.5)
-    plt.ylabel(f"{yaxis_title} RMSD (Å)", fontsize=16, weight="bold")
+    plt.ylabel(f"{yaxis_title}", fontsize=16, weight="bold")
     plt.xlabel("Time (ns)", fontsize=16, weight="bold")
     plt.tick_params(labelsize=14)
     plt.tick_params(which="both", bottom=True, top=True, left=True, right=True)
