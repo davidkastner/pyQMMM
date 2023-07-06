@@ -145,7 +145,7 @@ def generate_plot(color_scheme):
         colormap = plt.cm.tab20  # default to 'tab20' if the colormap isn't recognized
 
     for (label, x, relative_energies, color_index) in plot_data:
-        plt.plot(x, relative_energies, '-o', markersize=2, color=colormap(color_index), label=label)
+        plt.plot(x, relative_energies, '-o', markersize=1, color=colormap(color_index), label=label)
 
     plt.xlabel('Frame', weight="bold")
     plt.ylabel('Energy (kcal/mol)', weight="bold")
