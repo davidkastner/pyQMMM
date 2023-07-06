@@ -99,11 +99,12 @@ def md(
         import pyqmmm.md.residue_lister
         pyqmmm.md.residue_lister.list_residues()
 
-    elif residue_list:
+    elif colored_rmsd:
         click.echo("> Color a MD trajectory by clusters:")
         click.echo("> Loading...")
         import pyqmmm.md.rmsd_clusters_colorcoder
-        pyqmmm.md.rmsd_clusters_colorcoder.rmsd_clusters_colorcoder()
+        yaxis_title = "RMSD (Å)"
+        pyqmmm.md.rmsd_clusters_colorcoder.rmsd_clusters_colorcoder(yaxis_title, layout='wide')
 
     elif restraint_plot:
         click.echo("> Generate single KDE plot with hyscore measurements:")
