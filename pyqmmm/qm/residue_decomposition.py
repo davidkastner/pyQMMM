@@ -6,10 +6,40 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 def natural_sort(s):
+    """
+    Splits the input string on digits and returns a list with 
+    integers for digit components and lower-case strings for others.
+
+    Parameters
+    ----------
+    s : str
+        Input string to be split.
+
+    Returns
+    -------
+    list
+        List of integers and lower-case strings.
+
+    """
     return [int(text) if text.isdigit() else text.lower()
             for text in re.split(r'(\d+)', s)]
 
+
 def get_energy(filename):
+    """
+    Extracts the final energy from the input file.
+
+    Parameters
+    ----------
+    filename : str
+        Path to the file.
+
+    Returns
+    -------
+    float
+        Final energy found in the file, or None if not found.
+
+    """
     final_energy = None
     with open(filename, 'r') as file:
         for line in file:
@@ -17,7 +47,24 @@ def get_energy(filename):
                 final_energy = float(line.split()[2])
     return final_energy
 
+
 def process_directory(path, ignore):
+    """
+    Processes directories, finding 'qmscript.out' files and retrieving energies.
+
+    Parameters
+    ----------
+    path : str
+        Directory to process.
+    ignore : list
+        List of directory names to ignore.
+
+    Returns
+    -------
+    dict
+        Dictionary of {dir_name: energy} pairs.
+    
+    """
     energies = {}
     paths_to_process = []
     for root, dirs, files in os.walk(path):
@@ -31,7 +78,17 @@ def process_directory(path, ignore):
             energies[dir_name] = energy
     return energies
 
+
 def plot_data(df):
+    """
+    Plots data from the DataFrame.
+
+    Parameters
+    ----------
+    df : pandas.DataFrame
+        DataFrame containing the data to plot.
+
+    """
     color_codes = [
         "#FF5733",  # Bright Red Orange
         "#8AD7A5",  # Soft Mint Green
@@ -89,6 +146,11 @@ def format_plot() -> None:
     plt.rcParams["svg.fonttype"] = "none"
 
 def residue_decomposition():
+    """
+    Performs the residue decomposition analysis, reading in energy 
+    data from files, processing, plotting and saving the results.
+    
+    """
     ignore = ['0_prep']
     kcal_per_hartree = 627.509  # Replace with the correct conversion factor
 
