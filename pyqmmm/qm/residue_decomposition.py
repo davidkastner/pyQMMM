@@ -4,6 +4,7 @@ import os
 import re
 import pandas as pd
 import matplotlib.pyplot as plt
+from matplotlib.ticker import AutoMinorLocator
 
 def natural_sort(s):
     """
@@ -107,7 +108,7 @@ def plot_data(df):
         "#D99058"   # Lion
     ]
     fig, ax = plt.subplots()
-    ax.axhline(0, color='grey', linewidth=1.5, zorder=1)  # Increased linewidth to 1.5
+    ax.axhline(0, color='silver', linewidth=1.5, zorder=1)  # Increased linewidth to 1.5
 
     for i, (index, row) in enumerate(df.iterrows()):
         legend_label = index.split('_')[1] if '_' in index else index
@@ -118,9 +119,10 @@ def plot_data(df):
             
     # Position the legend outside the plot on the right-hand side
     ax.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
-    ax.set_xlabel('pathway intermediate', weight="bold")
+    ax.set_xlabel('pathway intermediates', weight="bold")
     ax.set_ylabel('relative energy (kcal/mol)', weight="bold")
     plt.xticks(rotation=90)
+    ax.yaxis.set_minor_locator(AutoMinorLocator(2))  # This will add 1 minor tick between each pair of major ticks
     plt.tight_layout()
     plt.savefig('energies_plot.svg', bbox_inches='tight')
     plt.savefig('energies_plot.png', dpi=300, bbox_inches='tight')
@@ -132,6 +134,8 @@ def format_plot() -> None:
     """
     font = {"family": "sans-serif", "weight": "bold", "size": 10}
     plt.rc("font", **font)
+    plt.rcParams["ytick.minor.size"] = 4
+    plt.rcParams["ytick.minor.width"] = 2
     plt.rcParams["xtick.major.pad"] = 5
     plt.rcParams["ytick.major.pad"] = 5
     plt.rcParams["axes.linewidth"] = 2
@@ -170,7 +174,8 @@ def residue_decomposition():
     df = df.subtract(df.iloc[:, 0], axis=0)
 
     # Remove prefix from column names for x-axis labels
-    df.columns = [name.split('_')[1] if '_' in name else name for name in df.columns]
+    df.columns = [name.split('_', 1)[1] if '_' in name else name for name in df.columns]
+    df.columns = ['${\mathrm{TS}}_{\mathrm{' + name[:-3] + '}}$' if name.endswith('_TS') else name for name in df.columns]
 
     format_plot()
     plot_data(df)
