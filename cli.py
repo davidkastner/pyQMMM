@@ -28,7 +28,6 @@ import click
 @click.option("--restraint_plot", "-rp", is_flag=True, help="Restraint plot KDE's on one plot.")
 @click.option("--strip_all", "-sa", is_flag=True, help="Strip waters and metals.")
 @click.option("--dssp_plot", "-dp", is_flag=True, help="Generate a DSSP plot.")
-@click.option("--residue_decomp", "-rd", is_flag=True, help="Analyze residue decomposition analysis.")
 @click.help_option('--help', '-h', is_flag=True, help='Exiting pyQMMM.')
 def md(
     gbsa_submit,
@@ -41,7 +40,6 @@ def md(
     restraint_plot,
     strip_all,
     dssp_plot,
-    residue_decomp,
     ):
     """
     Functions for molecular dynamics (MD) simulations.
@@ -129,22 +127,18 @@ def md(
         import pyqmmm.md.dssp_plotter
         pyqmmm.md.dssp_plotter.combine_dssp_files()
 
-    if residue_decomp:
-        click.echo("> Analyze residue decomposition jobs:")
-        click.echo("> Loading...")
-        import pyqmmm.qm.residue_decomposition
-        pyqmmm.qm.residue_decomposition.residue_decomposition()
-
 
 @click.command()
 @click.option("--plot_energy", "-pe", is_flag=True, help="Plot the energy of a xyz traj.")
 @click.option("--flip_xyz", "-f", is_flag=True, help="Reverse and xyz trajectory.")
 @click.option("--plot_mechanism", "-pm", is_flag=True, help="Plot energies for all steps of a mechanism.")
+@click.option("--residue_decomp", "-rd", is_flag=True, help="Analyze residue decomposition analysis.")
 @click.help_option('--help', '-h', is_flag=True, help='Exiting pyQMMM.')
 def qm(
     plot_energy,
     flip_xyz,
     plot_mechanism,
+    residue_decomp,
     ):
     """
     Functions for quantum mechanics (QM) simulations.
@@ -169,6 +163,12 @@ def qm(
         import pyqmmm.qm.mechanism_plotter
         color_scheme = input("What color scheme would you like (e.g., tab20, viridis)? ")
         pyqmmm.qm.mechanism_plotter.generate_plot(color_scheme)
+
+    if residue_decomp:
+        click.echo("> Analyze residue decomposition jobs:")
+        click.echo("> Loading...")
+        import pyqmmm.qm.residue_decomposition
+        pyqmmm.qm.residue_decomposition.residue_decomposition()
 
 if __name__ == "__main__":
     # Run the command-line interface when this script is executed
