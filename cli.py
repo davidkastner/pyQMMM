@@ -176,10 +176,11 @@ def qm(
         click.echo("> Replace PDB atoms with QM optimized atoms:")
         click.echo("> Loading...")
         import pyqmmm.qm.replace_pdb
-        pdb_file_path = "WT.pdb"
+        protein = input("   > What is the name of your protein (e.g., DAH, TAUD)? ")
+        pdb_file_path = f"{protein}.pdb"
         xyz_file_path = "scr/optim.xyz"
-        info_file_path = "info.csv"
-        output_file_path = "./WT_optim.pdb"
+        info_file_path = "../info.csv"
+        output_file_path = f"./{protein}_optim.pdb"
         pyqmmm.qm.replace_pdb.replace_coordinates_in_pdb(pdb_file_path, xyz_file_path, info_file_path, output_file_path)
 
 
