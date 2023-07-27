@@ -133,12 +133,14 @@ def md(
 @click.option("--flip_xyz", "-f", is_flag=True, help="Reverse and xyz trajectory.")
 @click.option("--plot_mechanism", "-pm", is_flag=True, help="Plot energies for all steps of a mechanism.")
 @click.option("--residue_decomp", "-rd", is_flag=True, help="Analyze residue decomposition analysis.")
+@click.option("--qm_replace_pdb", "-qr", is_flag=True, help="Replace QM optimized atoms in a pdb.")
 @click.help_option('--help', '-h', is_flag=True, help='Exiting pyQMMM.')
 def qm(
     plot_energy,
     flip_xyz,
     plot_mechanism,
     residue_decomp,
+    qm_replace_pdb,
     ):
     """
     Functions for quantum mechanics (QM) simulations.
@@ -169,6 +171,17 @@ def qm(
         click.echo("> Loading...")
         import pyqmmm.qm.residue_decomposition
         pyqmmm.qm.residue_decomposition.residue_decomposition()
+
+    if qm_replace_pdb:
+        click.echo("> Replace PDB atoms with QM optimized atoms:")
+        click.echo("> Loading...")
+        import pyqmmm.qm.replace_pdb
+        pdb_file_path = "WT.pdb"
+        xyz_file_path = "scr/optim.xyz"
+        info_file_path = "info.csv"
+        output_file_path = "./WT_optim.pdb"
+        pyqmmm.qm.replace_pdb.replace_coordinates_in_pdb(pdb_file_path, xyz_file_path, info_file_path, output_file_path)
+
 
 if __name__ == "__main__":
     # Run the command-line interface when this script is executed
