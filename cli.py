@@ -28,6 +28,7 @@ import click
 @click.option("--restraint_plot", "-rp", is_flag=True, help="Restraint plot KDE's on one plot.")
 @click.option("--strip_all", "-sa", is_flag=True, help="Strip waters and metals.")
 @click.option("--dssp_plot", "-dp", is_flag=True, help="Generate a DSSP plot.")
+@click.option("--rmsf", "-rmsf", is_flag=True, help="Calculates the RMSF.")
 @click.help_option('--help', '-h', is_flag=True, help='Exiting pyQMMM.')
 def md(
     gbsa_submit,
@@ -40,6 +41,7 @@ def md(
     restraint_plot,
     strip_all,
     dssp_plot,
+    rmsf,
     ):
     """
     Functions for molecular dynamics (MD) simulations.
@@ -126,6 +128,23 @@ def md(
         click.echo("> Loading...")
         import pyqmmm.md.dssp_plotter
         pyqmmm.md.dssp_plotter.combine_dssp_files()
+
+    elif rmsf:
+        click.echo("> Calculates the RMSF:")
+        click.echo("> Loading...")
+        import pyqmmm.md.rmsf_calculator
+        protein = input("What is the name of your protein? ")
+        topology = f"1/{protein}_dry.prmtop"
+        reference_file = "1/xtal.pdb"
+        trajectories = ["1/1_output/constP_prod.crd",
+                        "2/1_output/constP_prod.crd",
+                        "3/1_output/constP_prod.crd",
+                        "4/1_output/constP_prod.crd",
+                        "5/1_output/constP_prod.crd",
+                        "6/1_output/constP_prod.crd",
+                        "7/1_output/constP_prod.crd",
+                        ]
+        pyqmmm.md.rmsf_calculator.calculate_rmsf(topology, trajectories, reference_file)
 
 
 @click.command()
