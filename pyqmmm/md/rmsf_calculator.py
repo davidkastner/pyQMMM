@@ -121,6 +121,7 @@ def calculate_rmsf(topology, trajectories, reference_file=None):
 
     # Calculate average RMSF across trajectories
     rmsf_residue_df['Avg. RMSF'] = rmsf_residue_df.iloc[:, 2:].mean(axis=1)
+    rmsf_residue_df['Avg. Std. Dev'] = rmsf_residue_df.iloc[:, 2:-1].std(axis=1)
 
     # Save to file per-residue RMSF values to a CSV
     out_file = "rmsf.csv"
