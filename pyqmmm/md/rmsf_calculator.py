@@ -139,4 +139,15 @@ def calculate_rmsf(topology, trajectories, reference_file=None):
 
 if __name__ == "__main__":
     # Run the command-line interface when this script is executed
-    calculate_rmsf("xtal.pdb")
+    protein = input("What is the name of your protein? ")
+    topology = f"1/{protein}_dry.prmtop"
+    reference_file = "1/xtal.pdb"
+    trajectories = ["1/1_output/constP_prod.crd",
+                    "2/1_output/constP_prod.crd",
+                    "3/1_output/constP_prod.crd",
+                    "4/1_output/constP_prod.crd",
+                    "5/1_output/constP_prod.crd",
+                    "6/1_output/constP_prod.crd",
+                    "7/1_output/constP_prod.crd",
+                    ]
+    calculate_rmsf(topology, trajectories, reference_file="xtal.pdb")
