@@ -105,7 +105,7 @@ def plot_data(df):
         "#F4D03F",  # Naples Yellow
         "#64C4ED",  # Baby Blue Eyes
         "#E67F83",  # English Vermillion
-        "#D99058"   # Lion
+        "#D99058",   # Lion
     ]
     fig, ax = plt.subplots()
     ax.axhline(0, color='silver', linewidth=1.5, zorder=1)  # Increased linewidth to 1.5
