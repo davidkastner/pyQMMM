@@ -98,14 +98,20 @@ def plot_data(df):
         "#4A8F79",  # Vintage Teal
         "#F08080",  # Light Coral
         "#50B4B7",  # Aqua Marine
-        "#8B7765",  # Antique Bronze
+        "#A9A9A9",  # Dark Gray
         "#6D9EEB",  # Dodger Blue
         "#C27BA0",  # Antique Fuchsia
         "#1D2951",  # Oxford Blue
         "#F4D03F",  # Naples Yellow
         "#64C4ED",  # Baby Blue Eyes
         "#E67F83",  # English Vermillion
-        "#D99058",   # Lion
+        "#D99058",  # Lion
+        "#228B22",  # Forest Green
+        "#FF69B4",  # Bright Pink
+        "#32CD32",  # Lime Green
+        "#4169E1",  # Royal Blue
+        "#DC143C",  # Crimson
+        "#D2691E",  # Chocolate Brown
     ]
     fig, ax = plt.subplots()
     ax.axhline(0, color='silver', linewidth=1.5, zorder=1)  # Increased linewidth to 1.5
