@@ -153,6 +153,7 @@ def md(
 @click.option("--plot_mechanism", "-pm", is_flag=True, help="Plot energies for all steps of a mechanism.")
 @click.option("--residue_decomp", "-rd", is_flag=True, help="Analyze residue decomposition analysis.")
 @click.option("--qm_replace_pdb", "-qr", is_flag=True, help="Replace QM optimized atoms in a pdb.")
+@click.option("--bond_valence", "-bv", is_flag=True, help="Replace QM optimized atoms in a pdb.")
 @click.help_option('--help', '-h', is_flag=True, help='Exiting pyQMMM.')
 def qm(
     plot_energy,
@@ -160,6 +161,7 @@ def qm(
     plot_mechanism,
     residue_decomp,
     qm_replace_pdb,
+    bond_valence,
     ):
     """
     Functions for quantum mechanics (QM) simulations.
@@ -201,6 +203,21 @@ def qm(
         info_file_path = "../info.csv"
         output_file_path = f"./{protein}_optim.pdb"
         pyqmmm.qm.replace_pdb.replace_coordinates_in_pdb(pdb_file_path, xyz_file_path, info_file_path, output_file_path)
+
+    if bond_valence:
+        click.echo("> Calculates and plots the bond valence for a mechanism:")
+        click.echo("> Loading...")
+        import pyqmmm.qm.bond_valence
+        try:
+            # Check if the CSV file exists
+            with open("bond_valence.csv"):
+                print("   > CSV file found. Plotting the data.")
+                pyqmmm.qm.bond_valence.plot_bond_valence()
+        except FileNotFoundError:
+            print("   > CSV file not found. Running Multiwfn analysis.")
+            atom_pairs = [(145, 146), (65, 145), (66, 145), (12, 145), (32, 145), (145, 149)]
+            pyqmmm.qm.bond_valence.calculate_bond_valence(atom_pairs, 4)
+            pyqmmm.qm.bond_valence.plot_bond_valence()
 
 
 if __name__ == "__main__":
