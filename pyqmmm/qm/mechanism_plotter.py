@@ -132,6 +132,7 @@ def generate_plot(color_scheme):
     """
     Generate plot using processed data.
     """
+    plt.figure(figsize=(7,4))
     plot_data = process_xyz_files()
     format_plot()
     all_cmap_names = set(matplotlib.cm.cmaps_listed.keys()) | set(matplotlib.cm.datad.keys())
