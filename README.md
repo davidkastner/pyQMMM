@@ -10,7 +10,7 @@ pyQMMM
 1. **Overview**
 2. **Installation**
     * Download the package from GitHub
-    * Creating python environment
+    * Creating a python environment
     * Developer install of pyQMMM
     * Supporting installations
 3. **What is included?**
