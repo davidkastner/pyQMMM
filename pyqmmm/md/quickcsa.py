@@ -3,7 +3,7 @@
 import os
 import sys
 import shutil
-
+from typing import List
 
 def clean_dir() -> str:
     """
@@ -24,10 +24,10 @@ def clean_dir() -> str:
 
     """
     # Asks the user for the name of the pdb that they would like to process
-    pdb_name = input("What is the name of your pdb (e.g., 1OS7, 6EDH, etc.)? ")
+    pdb_name = input("   > What is the name of your pdb (e.g., 1OS7, 6EDH, etc.)? ")
     extension = pdb_name[-4:]
     if extension != ".pdb":
-        pdb_name = "{}.pdb".format(pdb_name)
+        pdb_name = f"{pdb_name}.pdb"
 
     # Directory and required file names for the file system
     file_system = ["./1_input", "./2_temp", "./3_out"]
@@ -66,13 +66,13 @@ def file_mover(file_system_exists, pdb_name) -> None:
                 file_already_moved = True
 
         if file_already_moved == False:
-            if os.path.isfile("./{}".format(file)):
-                shutil.move("./{}".format(file), "./1_input/{}".format(file))
+            if os.path.isfile(f"./{file}"):
+                shutil.move(f"./{file}", f"./1_input/{file}")
             else:
-                print("{} is not in your current directory".format(file))
+                print(f"{file} is not in your current directory")
 
 
-def get_mask_res(type) -> List[]:
+def get_mask_res(type) -> List:
     """
     Create a list of the residues that should belong to the holo/apo regions.
 
@@ -87,12 +87,21 @@ def get_mask_res(type) -> List[]:
         An array of all the residues that the user wants included in their mask.
     """
     try:
-        with open("./1_input/{}_list".format(type)) as mask_res_file:
-            mask_list = mask_res_file.read().strip().split(",")
-    except SystemExit:
-        print("File {}_list does not exist".format(type))
+        with open(f"./1_input/{type}_list") as mask_res_file:
+            mask_str = mask_res_file.read().strip()
+            mask_list = []
+
+            for part in mask_str.split(","):
+                if "-" in part:
+                    start, end = map(int, part.split("-"))
+                    mask_list.extend(range(start, end+1))
+                else:
+                    mask_list.append(int(part))
+    except FileNotFoundError:
+        print(f"   > File {type}_list does not exist")
         sys.exit()
 
+    mask_list = [str(num) for num in mask_list]
     return mask_list
 
 
@@ -110,13 +119,13 @@ def mask_maker(mask, pdb_name, type) -> None:
         Tell function if it is the holo or apo mask.
     """
 
-    print("Creating the {} mask".format(type))
+    print(f"   > Creating the {type} mask")
     # Create a list from the users input
     # The code for Mask Maker begins here
     res_type_array = []
-    new_pdb = "{}_mask".format(type)
-    with open("./2_temp/{}".format(new_pdb), "w") as new_mask:
-        with open("./1_input/{}".format(pdb_name), "r") as original:
+    new_pdb = f"{type}_mask"
+    with open(f"./2_temp/{new_pdb}", "w") as new_mask:
+        with open(f"./1_input/{pdb_name}", "r") as original:
             for line in original:
                 # Start checking once we reach the ATOM section
                 res_index = line[22:28].strip()
@@ -133,11 +142,11 @@ def mask_maker(mask, pdb_name, type) -> None:
                     break
 
     # Print important statistics for the user
-    print(f"Extracted {len(set(res_type_array))} residues")
-    print("Your new file is named {}\n".format(new_pdb))
+    print(f"   > Extracted {len(set(res_type_array))} residues")
+    print(f"   > Your new file is named {new_pdb}\n")
     
     # Make temporary empty link files
-    open("./2_temp/{}_link_atoms".format(type), "w")  # TODO: add section
+    open(f"./2_temp/{type}_link_atoms", "w")  # TODO: add section
 
 
 def collect_charges(type) -> None:
@@ -150,8 +159,8 @@ def collect_charges(type) -> None:
         Tell function if it is the holo or apo mask.
     """
     # Open the mask atoms and link atoms files
-    mask_atoms = open("./2_temp/{}_mask".format(type), "r").readlines()
-    link_atoms = open("./2_temp/{}_link_atoms".format(type), "r").readlines()
+    mask_atoms = open(f"./2_temp/{type}_mask", "r").readlines()
+    link_atoms = open(f"./2_temp/{type}_link_atoms", "r").readlines()
 
     # Initialize variables and lists
     prev_res_index = 0
@@ -159,7 +168,7 @@ def collect_charges(type) -> None:
     res_list = []
     tot_charge_link = []
     res_list_link = []
-    mull_charges = open("./1_input/{}_charge.xls".format(type), "r").readlines()
+    mull_charges = open(f"./1_input/{type}_charge.xls", "r").readlines()
 
     # Loop through each atom in mask file and get residue name and its index
     for index, line in enumerate(mask_atoms):
@@ -198,18 +207,18 @@ def collect_charges(type) -> None:
 
     # Create files for link and mulliken residue data
     # Write residues to files
-    mull = open("./2_temp/{}.mullres".format(type), "w")
-    link = open("./2_temp/{}.linkres".format(type), "w")
+    mull = open(f"./2_temp/{type}.mullres", "w")
+    link = open(f"./2_temp/{type}.linkres", "w")
 
     for idx, res in enumerate(res_list):
-        mull.write("{} {}\n".format(res, tot_charge[idx]))
-        link.write("{} {}\n".format(res, tot_charge_link[idx]))
+        mull.write(f"{res} {tot_charge[idx]}\n")
+        link.write(f"{res} {tot_charge_link[idx]}\n")
 
     mull.close()
     link.close()
 
 
-def get_res_diff() -> List[]:
+def get_res_diff() -> List:
     """
     Calculate the charge difference for the apo and holo residue list files.
 
@@ -291,17 +300,17 @@ def charge_diff() -> None:
 
     # Write the final charge differences out to a new file
     for res in range(len(apo_mull)):
-        diff_all.write("{} {}\n".format(res_list[res], diff_charge[res]))
-        diff_link_all.write("{} {}\n".format(res_list_link[res], diff_charge_link[res]))
+        diff_all.write(f"{res_list[res]} {diff_charge[res]}\n")
+        diff_link_all.write(f"{res_list_link[res]} {diff_charge_link[res]}\n")
 
     # Check if the absolute value is greater than our cutoff of 0.05
     cutoff = 0.05
     for res in range(len(apo_mull)):
         if abs(diff_charge[res]) >= cutoff:
-            diff_cutoff.write("{} {}\n".format(res_list[res], diff_charge[res]))
+            diff_cutoff.write(f"{res_list[res]} {diff_charge[res]}\n")
         if abs(diff_charge_link[res]) >= cutoff:
             diff_link_cutoff.write(
-                "{} {}\n".format(res_list_link[res], diff_charge_link[res])
+                f"{res_list_link[res]} {diff_charge_link[res]}\n"
             )
 
 
@@ -322,7 +331,7 @@ def quick_csa_intro() -> None:
     print("   - Holo list file should be called holo_list")
     print("+ The TeraChem charge output files")
     print("   - Apo file should be called apo_charge.xls")
-    print("   - Holo file should be called holo_cahrge.xls\n")
+    print("   - Holo file should be called holo_charge.xls\n")
 
 
 def quick_csa() -> None:
