@@ -29,6 +29,7 @@ import click
 @click.option("--strip_all", "-sa", is_flag=True, help="Strip waters and metals.")
 @click.option("--dssp_plot", "-dp", is_flag=True, help="Generate a DSSP plot.")
 @click.option("--rmsf", "-rmsf", is_flag=True, help="Calculates the RMSF.")
+@click.option("--quick_csa", "-csa", is_flag=True, help="Performs charge shift analysis.")
 @click.help_option('--help', '-h', is_flag=True, help='Exiting pyQMMM.')
 def md(
     gbsa_submit,
@@ -42,6 +43,7 @@ def md(
     strip_all,
     dssp_plot,
     rmsf,
+    quick_csa,
     ):
     """
     Functions for molecular dynamics (MD) simulations.
@@ -145,6 +147,12 @@ def md(
                         "7/1_output/constP_prod.crd",
                         ]
         pyqmmm.md.rmsf_calculator.calculate_rmsf(topology, trajectories, reference_file)
+    
+    elif quick_csa:
+        click.echo("> Charge shift analysis:")
+        click.echo("> Loading...")
+        import pyqmmm.md.quickcsa
+        pyqmmm.md.quickcsa.quick_csa()
 
 
 @click.command()
