@@ -250,7 +250,7 @@ def get_res_diff() -> List:
     return res_diff
 
 
-def charge_diff() -> None:
+def charge_diff(cutoff) -> None:
     """
     Calculate the difference in the charges for the apo and holo residue lists.
 
@@ -304,7 +304,6 @@ def charge_diff() -> None:
         diff_link_all.write(f"{res_list_link[res]} {diff_charge_link[res]}\n")
 
     # Check if the absolute value is greater than our cutoff of 0.05
-    cutoff = 0.05
     for res in range(len(apo_mull)):
         if abs(diff_charge[res]) >= cutoff:
             diff_cutoff.write(f"{res_list[res]} {diff_charge[res]}\n")
@@ -324,14 +323,14 @@ def quick_csa_intro() -> None:
     print(".----------------------.\n")
     print("Calculate the charge shift from apo and holo charge data.")
     print("Quick CSA looks for the following files in the current directory:\n")
-    print("+ The complete PDB of the protein of interest")
-    print("   - Quick CSA will look for the extension .pdb")
-    print("+ A list of the residues for the apo and holo regions")
-    print("   - Apo list file should be called apo_list")
-    print("   - Holo list file should be called holo_list")
-    print("+ The TeraChem charge output files")
-    print("   - Apo file should be called apo_charge.xls")
-    print("   - Holo file should be called holo_charge.xls\n")
+    print("  + The PDB of the protein of interest used to run the QM/MM")
+    print("  + A list of the residues for the apo and holo regions")
+    print("    - Apo list file should be called apo_list")
+    print("    - Holo list file should be called holo_list")
+    print("  + The TeraChem charge output files")
+    print("    - Apo file should be called apo_charge.xls")
+    print("    - Holo file should be called holo_charge.xls")
+    print("  + The tuorials folder has example files\n")
 
 
 def quick_csa() -> None:
@@ -358,7 +357,8 @@ def quick_csa() -> None:
 
     # Create the final output file with the charge differences for all residues
     # Create output files for only the residues with a charge differences > 0.050.
-    charge_diff()
+    cutoff = float(input("What charge shift threshold would you like (e.g., 0.05)? "))
+    charge_diff(cutoff)
 
     # Print the user's results
     print("RESULTS")
