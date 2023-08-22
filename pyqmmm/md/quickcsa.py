@@ -306,10 +306,10 @@ def charge_diff(cutoff) -> None:
     # Check if the absolute value is greater than our cutoff of 0.05
     for res in range(len(apo_mull)):
         if abs(diff_charge[res]) >= cutoff:
-            diff_cutoff.write(f"{res_list[res]} {diff_charge[res]}\n")
+            diff_cutoff.write(f"{res_list[res]} {round(diff_charge[res],4)}\n")
         if abs(diff_charge_link[res]) >= cutoff:
             diff_link_cutoff.write(
-                f"{res_list_link[res]} {diff_charge_link[res]}\n"
+                f"{res_list_link[res]} {round(diff_charge_link[res],2)}\n"
             )
 
 
