@@ -31,7 +31,7 @@ much of the functionality is built around the Amber-TeraChem interface.
 It's current purpose is to act as a utility sandbox for several in-house projects.
 
 ## 2. Tutorials
-To improve the usuability of the pyQMMM package, I will add tutorials.
+To improve the usuability of the pyQMMM package, this section will contain video-style tutorials.
 You can also find additional information and README's in the tutorials folder.
 
 [![Video Tutorial](https://raw.githubusercontent.com/davidkastner/pyQMMM/main/docs/_static/thumbnail.jpg)](https://www.youtube.com/watch?v=Zck8fznmTPA&t=27s&ab_channel=DavidW.Kastner)
