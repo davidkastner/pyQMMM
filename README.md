@@ -34,6 +34,8 @@ It's current purpose is to act as a utility sandbox for several in-house project
 To improve the usuability of the pyQMMM package, this section will contain video-style tutorials.
 You can also find additional information and README's in the tutorials folder.
 
+### quickCSA
+
 [![Video Tutorial](https://raw.githubusercontent.com/davidkastner/pyQMMM/main/docs/_static/thumbnail.jpg)](https://www.youtube.com/watch?v=Zck8fznmTPA&t=27s&ab_channel=DavidW.Kastner)
 
 ## 3. Installation
