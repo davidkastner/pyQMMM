@@ -57,7 +57,7 @@ Installing all dependencies together has shown to produce more robust installati
 cd pyQMMM
 conda env create -f environment.yml
 conda activate pyqmmm
-source activate qa  #Alternatively used on some clusters
+source activate pyqmmm  #Alternatively used on some clusters
 ```
 
 ### Developer install of pyQMMM
