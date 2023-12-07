@@ -108,7 +108,8 @@ def md(
         click.echo("> Loading...")
         import pyqmmm.md.rmsd_clusters_colorcoder
         yaxis_title = "RMSD (Å)"
-        pyqmmm.md.rmsd_clusters_colorcoder.rmsd_clusters_colorcoder(yaxis_title, layout='wide')
+        cluster_count = int(input("How many cluster would you like plotted? "))
+        pyqmmm.md.rmsd_clusters_colorcoder.rmsd_clusters_colorcoder(yaxis_title, cluster_count, layout='wide')
 
     elif restraint_plot:
         click.echo("> Generate single KDE plot with hyscore measurements:")
