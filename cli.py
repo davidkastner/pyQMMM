@@ -163,6 +163,7 @@ def md(
 @click.option("--residue_decomp", "-rd", is_flag=True, help="Analyze residue decomposition analysis.")
 @click.option("--qm_replace_pdb", "-qr", is_flag=True, help="Replace QM optimized atoms in a pdb.")
 @click.option("--bond_valence", "-bv", is_flag=True, help="Replace QM optimized atoms in a pdb.")
+@click.option("--orca_scan", "-os", is_flag=True, help="Plots an ORCA scan.")
 @click.help_option('--help', '-h', is_flag=True, help='Exiting pyQMMM.')
 def qm(
     plot_energy,
@@ -171,6 +172,7 @@ def qm(
     residue_decomp,
     qm_replace_pdb,
     bond_valence,
+    orca_scan,
     ):
     """
     Functions for quantum mechanics (QM) simulations.
@@ -227,7 +229,13 @@ def qm(
             atom_pairs = [(145, 146), (65, 145), (66, 145), (12, 145), (32, 145), (145, 149)]
             pyqmmm.qm.bond_valence.calculate_bond_valence(atom_pairs, 4)
             pyqmmm.qm.bond_valence.plot_bond_valence()
+    if orca_scan:
+        import pyqmmm.qm.orca_scan_plotter
+        atom_1 = input("   > What is your first atom being scanned? ")
+        atom_2 = input("   > What is your second atom being scanned? ")
 
+        df = pyqmmm.qm.orca_scan_plotter.read_orca_output("orca.out")
+        pyqmmm.qm.orca_scan_plotter.plot_energy(df, atom_1, atom_2)
 
 if __name__ == "__main__":
     # Run the command-line interface when this script is executed
