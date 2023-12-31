@@ -183,12 +183,12 @@ def plot_data(energies_by_file, min_first_energy, plot_relative_to_lowest):
     plot_relative_to_lowest : bool
         Whether to plot energies relative to the lowest energy.
     """
-    color_scheme = input("What color scheme would you like (e.g. inferno, viridis, tab10)? ")
+    color_scheme = input("   > What color scheme would you like (e.g. inferno, viridis, tab10)? ")
     colormap = plt.get_cmap(color_scheme)
     color_indices = np.linspace(0, 1, len(energies_by_file))
 
     format_plot()
-
+    plt.figure(figsize=(5, 4))
     for idx, (filename, energies) in enumerate(energies_by_file.items()):
         color = colormap(color_indices[idx])
 
@@ -213,7 +213,7 @@ def plot_data(energies_by_file, min_first_energy, plot_relative_to_lowest):
     plot_name = "energy_plot.png"
     plt.savefig(
         plot_name,
-        dpi=300,
+        dpi=600,
         bbox_extra_artists=(plt.legend(bbox_to_anchor=(1.05, 1), loc="upper left"),),
         bbox_inches="tight",
     )
