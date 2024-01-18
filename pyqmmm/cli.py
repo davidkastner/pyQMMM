@@ -1,27 +1,19 @@
 """Command-line interface (CLI) entry point."""
 
 def welcome():
-    print("\n  ╔══════════════════════════════════════════╗")
-    print("  ║ .--------------------------------------. ║")
-    print("  ║ |               $$    $                | ║")
-    print("  ║ |            $$$$$    $$$              | ║")
-    print("  ║ |        $$$$$$$$$    $$$$      $$     | ║")
-    print("  ║ |    $$$$$$    $$$    $$$$$   $$$$     | ║")
-    print("  ║ |    $$$              $$$$$$ $$$$$     | ║")
-    print("  ║ |    $$$       $$$    $$$ $$$$$$$$     | ║")
-    print("  ║ |    $$$       $$$    $$$  $$$  $$     | ║")
-    print("  ║ |    $$$  $$$$        $$$       $$     | ║")
-    print("  ║ |    $$$$$$$$      $$           $$     | ║")
-    print("  ║ |    $$$       $$$$$$           $$     | ║")
-    print("  ║ |           $$$$$                      | ║")
-    print("  ║ |      $$$$$$$$$$$$$$$      $$$$       | ║")
-    print("  ║ |                  $$$   $$$$          | ║")
-    print("  ║ |                 $$$$$$$              | ║")
-    print("  ║ |                $$$                   | ║")
-    print("  ║ |                                      | ║")
-    print("  ║ |          WELCOME TO PYQMMM           | ║")
-    print("  ║ '--------------------------------------' ║")
-    print("  ╚══════════════════════════════════════════╝\n")
+    print("\n ╔════════════════════════════════════════════════╗")
+    print(" ║ .--------------------------------------------. ║")
+    print(" ║ |                                            | ║")
+    print(" ║ |                ___  __  __ __  __ __  __   | ║")
+    print(" ║ |   _ __  _   _ / _ \|  \/  |  \/  |  \/  |  | ║")
+    print(" ║ |  | '_ \| | | | | | | |\/| | |\/| | |\/| |  | ║")
+    print(" ║ |  | |_) | |_| | |_| | |  | | |  | | |  | |  | ║")
+    print(" ║ |  | .__/ \__, |\__\_\_|  |_|_|  |_|_|  |_|  | ║")
+    print(" ║ |  |_|    |___/                              | ║")
+    print(" ║ |                                            | ║")
+    print(" ║ |            WELCOME TO pyQMMM               | ║")
+    print(" ║ '--------------------------------------------' ║")
+    print(" ╚════════════════════════════════════════════════╝\n")
 
     print("Default programmed actions for the pyQMMM package.")
     print("GitHub: https://github.com/davidkastner/pyqmmm")
@@ -35,7 +27,6 @@ welcome()
 
 import os
 import click
-import pyqmmm
 
 @click.group()
 def cli():
@@ -264,10 +255,4 @@ def qm(
 
 if __name__ == "__main__":
     # Run the command-line interface when this script is executed
-    job = input("Would you like to run an MD or QM task? (md/qm) ")
-    if job == "md":
-        md()
-    elif job == "qm":
-        qm()
-    else:
-        print(f"{job} is not a valid response.")
+    cli()
