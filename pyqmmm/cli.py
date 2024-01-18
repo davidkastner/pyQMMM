@@ -1,10 +1,28 @@
 """Command-line interface (CLI) entry point."""
 
 def welcome():
-    # Print first to welcome the user while it waits to load the modules
-    print("\n.---------------------------.")
-    print("| WELCOME TO THE PYQMMM CLI |")
-    print(".---------------------------.")
+    print("\n  ╔══════════════════════════════════════════╗")
+    print("  ║ .--------------------------------------. ║")
+    print("  ║ |               $$    $                | ║")
+    print("  ║ |            $$$$$    $$$              | ║")
+    print("  ║ |        $$$$$$$$$    $$$$      $$     | ║")
+    print("  ║ |    $$$$$$    $$$    $$$$$   $$$$     | ║")
+    print("  ║ |    $$$              $$$$$$ $$$$$     | ║")
+    print("  ║ |    $$$       $$$    $$$ $$$$$$$$     | ║")
+    print("  ║ |    $$$       $$$    $$$  $$$  $$     | ║")
+    print("  ║ |    $$$  $$$$        $$$       $$     | ║")
+    print("  ║ |    $$$$$$$$      $$           $$     | ║")
+    print("  ║ |    $$$       $$$$$$           $$     | ║")
+    print("  ║ |           $$$$$                      | ║")
+    print("  ║ |      $$$$$$$$$$$$$$$      $$$$       | ║")
+    print("  ║ |                  $$$   $$$$          | ║")
+    print("  ║ |                 $$$$$$$              | ║")
+    print("  ║ |                $$$                   | ║")
+    print("  ║ |                                      | ║")
+    print("  ║ |          WELCOME TO PYQMMM           | ║")
+    print("  ║ '--------------------------------------' ║")
+    print("  ╚══════════════════════════════════════════╝\n")
+
     print("Default programmed actions for the pyQMMM package.")
     print("GitHub: https://github.com/davidkastner/pyqmmm")
     print("Documenation: https://pyqmmm.readthedocs.io\n")
