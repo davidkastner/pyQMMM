@@ -1,23 +1,30 @@
 """Command-line interface (CLI) entry point."""
 
-# Print first to welcome the user while it waits to load the modules
-print("\n.---------------------------.")
-print("| WELCOME TO THE PYQMMM CLI |")
-print(".---------------------------.")
-print("Default programmed actions for the pyQMMM package.")
-print("GitHub: https://github.com/davidkastner/pyqmmm")
-print("Documenation: https://pyqmmm.readthedocs.io\n")
-print("""
-    The overall command-line interface (CLI) entry point.
-    The CLI interacts with the rest of the package.
-    The CLI is advantagous as it summarizes the scope of the package,
-    and improves long-term maintainability and readability.\n
-    """)
+def welcome():
+    # Print first to welcome the user while it waits to load the modules
+    print("\n.---------------------------.")
+    print("| WELCOME TO THE PYQMMM CLI |")
+    print(".---------------------------.")
+    print("Default programmed actions for the pyQMMM package.")
+    print("GitHub: https://github.com/davidkastner/pyqmmm")
+    print("Documenation: https://pyqmmm.readthedocs.io\n")
+    print("The overall command-line interface (CLI) entry point.")
+    print("The CLI interacts with the rest of the package.")
+    print("• Run MD scripts: pyqmmm md -flag")
+    print("• Run QM scripts: pyqmmm qm -flag.\n")
+
+welcome()
 
 import os
 import click
+import pyqmmm
 
-@click.command()
+@click.group()
+def cli():
+    """CLI entry point"""
+    pass
+
+@cli.command()
 @click.option("--gbsa_submit", "-gs", is_flag=True, help="Prepares and submits a mmGBSA job.")
 @click.option("--gbsa_analysis", "-ga", is_flag=True, help="Extract results from GBSA analysis.")
 @click.option("--compute_hbond", "-hc", is_flag=True, help="Calculates hbonds with cpptraj.")
@@ -156,7 +163,7 @@ def md(
         pyqmmm.md.quickcsa.quick_csa()
 
 
-@click.command()
+@cli.command()
 @click.option("--plot_energy", "-pe", is_flag=True, help="Plot the energy of a xyz traj.")
 @click.option("--flip_xyz", "-f", is_flag=True, help="Reverse and xyz trajectory.")
 @click.option("--plot_mechanism", "-pm", is_flag=True, help="Plot energies for all steps of a mechanism.")

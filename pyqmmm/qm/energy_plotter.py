@@ -188,7 +188,7 @@ def plot_data(energies_by_file, min_first_energy, plot_relative_to_lowest):
     color_indices = np.linspace(0, 1, len(energies_by_file))
 
     format_plot()
-    plt.figure(figsize=(5, 4))
+    plt.figure(figsize=(4, 4))
     for idx, (filename, energies) in enumerate(energies_by_file.items()):
         color = colormap(color_indices[idx])
 

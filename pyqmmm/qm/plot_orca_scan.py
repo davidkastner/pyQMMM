@@ -55,18 +55,29 @@ def read_orca_output(file_name):
 def plot_energy(df, atom_1, atom_2):
     format_plot()
     
-    plt.figure(figsize=(4, 4))
-    plt.plot(df['Distance'], df['Relative Energy'], marker='o', color='b')
-    plt.xlabel(f"{atom_1}···{atom_2} distance (Å)", weight="bold")
-    plt.ylabel("relative energy (kcal/mol)", weight="bold")
+    # Create a figure with adjustable size
+    fig = plt.figure(figsize=(4, 4))  # Start with a larger figure size
+    ax = fig.add_subplot(111)
 
-    # Set x-axis limits explicitly based on the data range
+    # Plot the data
+    ax.plot(df['Distance'], df['Relative Energy'], marker='o', color='b')
+    ax.set_xlabel(f"{atom_1}···{atom_2} distance (Å)", weight="bold")
+    ax.set_ylabel("relative energy (kcal/mol)", weight="bold")
+
+    # Set x-axis and y-axis limits explicitly based on the data range
     x_min, x_max = df['Distance'].min(), df['Distance'].max()
+    y_min, y_max = df['Relative Energy'].min(), df['Relative Energy'].max()
     x_range = x_max - x_min
-    plt.xlim(x_max + 0.05 * x_range, x_min - 0.05 * x_range)
+    y_range = y_max - y_min
+    ax.set_xlim(x_min - 0.05 * x_range, x_max + 0.05 * x_range)
+    ax.set_ylim(y_min - 0.05 * y_range, y_max + 0.05 * y_range)
+
+    # Adjust the aspect ratio of the plot area to be square based on data ranges
+    ratio = x_range / y_range
+    ax.set_aspect(ratio, adjustable='box')
 
     plt.savefig("energy_scan.png", bbox_inches="tight", dpi=600)
-    plt.show()
+    plt.savefig("energy_scan.svg", bbox_inches="tight", format="svg")
 
 if __name__ == "__main__":
     atom_1 = input("   > What is your first atom being scanned? ")
