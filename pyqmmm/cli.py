@@ -21,7 +21,7 @@ def welcome():
     print("The overall command-line interface (CLI) entry point.")
     print("The CLI interacts with the rest of the package.")
     print("• Run MD scripts: pyqmmm md -flag")
-    print("• Run QM scripts: pyqmmm qm -flag.\n")
+    print("• Run QM scripts: pyqmmm qm -flag\n")
 
 welcome()
 
