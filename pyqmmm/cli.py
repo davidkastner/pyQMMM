@@ -46,6 +46,7 @@ def cli():
 @click.option("--dssp_plot", "-dp", is_flag=True, help="Generate a DSSP plot.")
 @click.option("--rmsf", "-rmsf", is_flag=True, help="Calculates the RMSF.")
 @click.option("--quick_csa", "-csa", is_flag=True, help="Performs charge shift analysis.")
+@click.option("--cc_coupling", "-cc", is_flag=True, help="Plots the results from cc coupling analysis.")
 @click.help_option('--help', '-h', is_flag=True, help='Exiting pyQMMM.')
 def md(
     gbsa_submit,
@@ -60,6 +61,7 @@ def md(
     dssp_plot,
     rmsf,
     quick_csa,
+    cc_coupling,
     ):
     """
     Functions for molecular dynamics (MD) simulations.
@@ -170,6 +172,15 @@ def md(
         click.echo("> Loading...")
         import pyqmmm.md.quickcsa
         pyqmmm.md.quickcsa.quick_csa()
+
+    elif cc_coupling:
+        import pyqmmm.md.cc_coupling
+        pyqmmm.md.cc_coupling.heatmap(
+            data="cacovar.dat",
+            delete=[],
+            out_file="matrix_geom",
+        )
+
 
 @cli.command()
 @click.option("--plot_energy", "-pe", is_flag=True, help="Plot the energy of a xyz traj.")
