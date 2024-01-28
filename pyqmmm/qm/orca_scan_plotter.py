@@ -1,5 +1,12 @@
+"""
+Plots the results of an ORCA scan.
+
+This script was difficult to write because of a strange matplotlib issue.
+No matter how I entered the data, maplotlib would autosort the x-axis.
+To fix this, I had to manually set the axes and add padding.
+"""
+
 import matplotlib.pyplot as plt
-import pandas as pd
 
 HARTREE_TO_KCAL_MOL = 627.509
 
@@ -27,8 +34,10 @@ def read_orca_output(file_name):
         lines = file.readlines()
     
     start_reading = False
-    data = []
+    distances = []
+    relative_energies = []
     first_energy_kcal_mol = None
+
     for line in lines:
         if "The Calculated Surface using the 'Actual Energy'" in line:
             start_reading = True
@@ -43,45 +52,45 @@ def read_orca_output(file_name):
                     if first_energy_kcal_mol is None:
                         first_energy_kcal_mol = energy_kcal_mol
                     relative_energy = energy_kcal_mol - first_energy_kcal_mol
-                    data.append((distance, relative_energy))
+                    distances.append(distance)
+                    relative_energies.append(relative_energy)
                 except ValueError:
                     break
             else:
                 break
-    df = pd.DataFrame(data, columns=['Distance', 'Relative Energy'])
 
-    return df
+    return distances, relative_energies
 
-def plot_energy(df, atom_1, atom_2):
+def plot_energy(distances, relative_energies, atom_1, atom_2):
     format_plot()
-    
+
     # Create a figure with adjustable size
-    fig = plt.figure(figsize=(4, 4))  # Start with a larger figure size
-    ax = fig.add_subplot(111)
+    fig, ax = plt.subplots(figsize=(4, 4))
 
-    # Plot the data
-    ax.plot(df['Distance'], df['Relative Energy'], marker='o', color='b')
+    # Plot the data using lists
+    ax.scatter(distances, relative_energies, marker='o', color='b')
+
+    # Set the x-axis limits based on the first and last values in the distances list
+    x_range = max(distances) - min(distances)
+    padding = x_range * 0.06
+
+    # Check if its ascending or descending to add padding
+    if distances[0] < distances[-1]:
+        ax.set_xlim([distances[0] - padding, distances[-1] + padding])
+    else: 
+        ax.set_xlim([distances[0] + padding, distances[-1] - padding])
+    
     ax.set_xlabel(f"{atom_1}···{atom_2} distance (Å)", weight="bold")
-    ax.set_ylabel("relative energy (kcal/mol)", weight="bold")
-
-    # Set x-axis and y-axis limits explicitly based on the data range
-    x_min, x_max = df['Distance'].min(), df['Distance'].max()
-    y_min, y_max = df['Relative Energy'].min(), df['Relative Energy'].max()
-    x_range = x_max - x_min
-    y_range = y_max - y_min
-    ax.set_xlim(x_min - 0.05 * x_range, x_max + 0.05 * x_range)
-    ax.set_ylim(y_min - 0.05 * y_range, y_max + 0.05 * y_range)
-
-    # Adjust the aspect ratio of the plot area to be square based on data ranges
-    ratio = x_range / y_range
-    ax.set_aspect(ratio, adjustable='box')
+    ax.set_ylabel("Relative energy (kcal/mol)", weight="bold")
 
     plt.savefig("energy_scan.png", bbox_inches="tight", dpi=600)
     plt.savefig("energy_scan.svg", bbox_inches="tight", format="svg")
 
+# Main execution
 if __name__ == "__main__":
     atom_1 = input("   > What is your first atom being scanned? ")
     atom_2 = input("   > What is your second atom being scanned? ")
 
-    df = read_orca_output("orca.out")
-    plot_energy(df, atom_1, atom_2)
+    distances, relative_energies = read_orca_output("orca.out")
+    print(f"   > Start distance: {distances[0]}, End distance: {distances[-1]}\n")
+    plot_energy(distances, relative_energies, atom_1, atom_2)
