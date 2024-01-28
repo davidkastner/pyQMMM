@@ -3,11 +3,11 @@ import pandas as pd
 import seaborn as sns
 from typing import List
 import matplotlib.pyplot as plt
+from matplotlib import patches
 
 def format_plot() -> None:
     """
     General plotting parameters for the Kulik Lab.
-
     """
     font = {"family": "sans-serif", "weight": "bold", "size": 10}
     plt.rc("font", **font)
@@ -24,14 +24,10 @@ def format_plot() -> None:
     plt.rcParams["ytick.right"] = True
     plt.rcParams["svg.fonttype"] = "none"
 
-def heatmap(data: str, residues: List[str], delete: List[int] = [], 
-            out_file: str = "heatmap", v=[-0.4, 0.4]) -> None:
-    
+def heatmap(data: str, delete: List[int] = [], out_file: str = "heatmap", v=[-0.4, 0.4]) -> None:
     """
     Generates formatted heat maps.
-
     Uses the Kulik Lab figure formatting standards.
-
     Parameters
     ----------
     data: str
@@ -40,22 +36,10 @@ def heatmap(data: str, residues: List[str], delete: List[int] = [],
         A list of the amino acids you would like removed indexed at zero.
     out_file: str
         The name you would like the image saved as.
-
-    Examples
-    --------
-    heatmap(data="cacovar.dat", protein="mc6sa", delete=[0,15,16,27,28,29], out_file="matrix_geom.svg")
-
     """
 
-    # General styling variables
-    light_gray = "#8e8e8e"
-    dark_gray = "#7e7e7e"
-    
     # Sort the delete list
     delete.sort()
-    
-    # Delete residues
-    residues = [item for index, item in enumerate(residues) if index not in delete]
 
     # Identify matrix format and read in
     contents = open(data, "r").readlines()
@@ -72,15 +56,11 @@ def heatmap(data: str, residues: List[str], delete: List[int] = [],
     np.fill_diagonal(matrix, 0)  # Set the diagonal to zero as they are trivial
 
     df = pd.DataFrame(matrix)
-    # Remove specific rows and columns from non-residues
 
-    # Drop rows and columns
+    # Remove specific rows and columns from non-residues
     if len(delete) > 0:
         df = df.drop(delete, axis=0)
         df = df.drop(delete, axis=1)
-
-    df.columns = residues
-    df.index = residues
 
     # Apply base Kulik plot parameters
     format_plot()
@@ -93,38 +73,44 @@ def heatmap(data: str, residues: List[str], delete: List[int] = [],
         df,
         cmap=cmap,
         vmin=v[0],
-        vmax=v[1],
-        xticklabels=True,
-        yticklabels=True,
-        linewidth=0.03,
-        linecolor=light_gray,
+        vmax=v[1]
     )
-    ax.get_yaxis().set_tick_params(direction="out")
+
+    # Set labels at every 25th point, starting from 25
+    label_interval = 25
+    tick_positions = [i for i in range(0, len(df.columns), label_interval)]
+    labels = [i if i != 0 else '' for i in tick_positions]  # Replace 0 with an empty string
+
+    ax.set_xticks(tick_positions)
+    ax.set_yticks(tick_positions)
+    ax.set_xticklabels(labels)
+    ax.set_yticklabels(labels)
+
     plt.ylabel("residues", fontsize=10, weight="bold")
     plt.xlabel("residues", fontsize=10, weight="bold")
-    plt.tick_params(axis="y", which="major", labelsize=8, rotation=0, length=0)
-    plt.tick_params(axis="x", which="major", labelsize=8, rotation=90, length=0)
+    plt.tick_params(axis="y", which="major", direction='in', labelsize=8, rotation=0, length=6)
+    plt.tick_params(axis="x", which="major", direction='in', labelsize=8, rotation=90, length=6)
     ax.xaxis.tick_top()  # x axis on top
     ax.xaxis.set_label_position("top")
-    # Add lines every five residues
-    ax.hlines([5, 10, 15, 20, 25], colors=dark_gray, *ax.get_xlim(), linewidth=1.5)
-    ax.vlines([5, 10, 15, 20, 25], colors=dark_gray, *ax.get_ylim(), linewidth=1.5)
-    # Add broders
-    ax.hlines([0, len(residues)], colors="k", *ax.get_xlim(), linewidth=3.5)
-    ax.vlines([0, len(residues)], colors="k", *ax.get_ylim(), linewidth=3.5)
+
+    # Add a black frame as a rectangle patch
+    frame_linewidth = 3
+    rect = patches.Rectangle((-0.5 - frame_linewidth/2, -0.5 - frame_linewidth/2), 
+                             len(df.columns) + frame_linewidth, 
+                             len(df.index) + frame_linewidth, 
+                             linewidth=frame_linewidth, 
+                             edgecolor='black', 
+                             facecolor='none')
+    ax.add_patch(rect)
 
     extensions = ["png", "svg"]
     for ext in extensions:
-        plt.savefig(f"{out_file}.{ext}", bbox_inches="tight", format=ext, dpi=300)
+        plt.savefig(f"{out_file}.{ext}", format=ext, dpi=300)
     plt.close()
 
 if __name__ == "__main__":
-    pdb_path = f"../1_cluster/1/rep.c0.pdb"
-    residues = qa.process.get_protein_sequence(pdb_path)
-    delete = []
     heatmap(
         data="cacovar.dat",
-        residues=residues,
-        delete=delete,
-        out_file="matrix_geom.png",
+        delete=[],
+        out_file="matrix_geom",
     )
