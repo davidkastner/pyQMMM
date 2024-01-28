@@ -247,7 +247,7 @@ def plot(data, file_path):
     df = df[df.ge(0.1).all(axis=1)]  # 10% occurence cutoff
 
     # Sort dataframe by occurrence in descending order and select the top 7 rows
-    df = df.sort_values(by=[df.columns[0]], ascending=False).head(7)
+    df = df.sort_values(by=[df.columns[0]], ascending=False).head(15)
 
     ax = df.plot.bar(
         color="darkgray", figsize=(4, 4)

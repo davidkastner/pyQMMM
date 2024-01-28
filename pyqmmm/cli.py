@@ -171,7 +171,6 @@ def md(
         import pyqmmm.md.quickcsa
         pyqmmm.md.quickcsa.quick_csa()
 
-
 @cli.command()
 @click.option("--plot_energy", "-pe", is_flag=True, help="Plot the energy of a xyz traj.")
 @click.option("--flip_xyz", "-f", is_flag=True, help="Reverse and xyz trajectory.")
@@ -245,13 +244,14 @@ def qm(
             atom_pairs = [(145, 146), (65, 145), (66, 145), (12, 145), (32, 145), (145, 149)]
             pyqmmm.qm.bond_valence.calculate_bond_valence(atom_pairs, 4)
             pyqmmm.qm.bond_valence.plot_bond_valence()
+            
     if orca_scan:
         import pyqmmm.qm.orca_scan_plotter
         atom_1 = input("   > What is your first atom being scanned? ")
         atom_2 = input("   > What is your second atom being scanned? ")
-
-        df = pyqmmm.qm.orca_scan_plotter.read_orca_output("orca.out")
-        pyqmmm.qm.orca_scan_plotter.plot_energy(df, atom_1, atom_2)
+        distances, relative_energies = pyqmmm.qm.orca_scan_plotter.read_orca_output("orca.out")
+        print(f"   > Start distance: {distances[0]}, End distance: {distances[-1]}\n")
+        pyqmmm.qm.orca_scan_plotter.plot_energy(distances, relative_energies, atom_1, atom_2)
 
 if __name__ == "__main__":
     # Run the command-line interface when this script is executed
