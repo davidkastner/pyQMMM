@@ -47,6 +47,7 @@ def cli():
 @click.option("--rmsf", "-rmsf", is_flag=True, help="Calculates the RMSF.")
 @click.option("--quick_csa", "-csa", is_flag=True, help="Performs charge shift analysis.")
 @click.option("--cc_coupling", "-cc", is_flag=True, help="Plots the results from cc coupling analysis.")
+@click.option("--compare_distances", "-cd", is_flag=True, help="Plots distance metrics together.")
 @click.help_option('--help', '-h', is_flag=True, help='Exiting pyQMMM.')
 def md(
     gbsa_submit,
@@ -62,6 +63,7 @@ def md(
     rmsf,
     quick_csa,
     cc_coupling,
+    compare_distances,
     ):
     """
     Functions for molecular dynamics (MD) simulations.
@@ -180,6 +182,11 @@ def md(
             delete=[],
             out_file="matrix_geom",
         )
+
+    elif compare_distances:
+        import pyqmmm.md.compare_distances
+        files = input("What distance files would you like to plot? ").split(",")
+        pyqmmm.md.compare_distances.get_plot(files)
 
 
 @cli.command()
