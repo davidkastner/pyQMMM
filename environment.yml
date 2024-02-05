@@ -7,8 +7,6 @@ dependencies:
   - python=3.8
   - ambertools
   - biopandas
-  - black
-  - cookiecutter
   - click
   - matplotlib
   - mdanalysis
@@ -19,10 +17,6 @@ dependencies:
   - plotly
   - scipy
   - seaborn
-  - sphinx
-  - sphinx-autoapi
-  - sphinx_rtd_theme
   - xtb
   - crest
-  - pip:
-    - https://github.com/revitron/revitron-sphinx-theme/archive/master.zip
+
