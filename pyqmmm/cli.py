@@ -20,8 +20,8 @@ def welcome():
     print("Documenation: https://pyqmmm.readthedocs.io\n")
     print("The overall command-line interface (CLI) entry point.")
     print("The CLI interacts with the rest of the package.")
-    print("• Run MD scripts: pyqmmm md -flag")
-    print("• Run QM scripts: pyqmmm qm -flag\n")
+    print("• MD scripts overview: pyqmmm md --help")
+    print("• QM scripts overview: pyqmmm qm --help\n")
 
 welcome()
 
