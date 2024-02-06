@@ -183,7 +183,10 @@ def plot_single_total_gbsa(df, file_name) -> None:
     ax = df.plot.bar(x="Residue", y="Total", color=colors, figsize=(4, 4))
     ax.set_ylabel("GBSA energy (kcal/mol)", weight="bold")
     ax.set_xlabel("residue", weight="bold")
-    plt.savefig(file_name, bbox_inches="tight", transparent=True)
+    
+    extensions = ["png", "svg"]
+    for ext in extensions:
+        plt.savefig(f"{file_name}.{ext}", bbox_inches="tight", format=ext, transparent=True)
     plt.close()
 
 
@@ -255,7 +258,10 @@ def plot_all_gbsa(df_hits, y_columns, sorted_x_labels) -> None:
         y_columns,
         sorted_x_labels,
     )
-    plt.savefig("stacked_single.svg", bbox_inches="tight", transparent=True)
+
+    extensions = ["png", "svg"]
+    for ext in extensions:
+        plt.savefig(f"stacked_single.{ext}", bbox_inches="tight", format=ext, transparent=True)
 
 
 def analyze() -> None:
@@ -301,7 +307,7 @@ def analyze() -> None:
     df_hits = get_top_hits_df(df, sub_num, num_hits, sorted_x_labels)
 
     # Plot GBSA Total
-    plot_single_total_gbsa(df_hits, "gbsa_total.svg")
+    plot_single_total_gbsa(df_hits, "gbsa_total")
 
     # Plot All GBSA
     plot_all_gbsa(df_hits, ["VDW", "Electrostatic", "Polar", "Non-polar"], sorted_x_labels)
