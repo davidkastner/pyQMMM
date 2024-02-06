@@ -256,7 +256,10 @@ def plot(data, file_path):
     ax.set_xlabel("residue", weight="bold")
     ax.legend().set_visible(False)
     ax.tick_params(axis="x", labelrotation=90)
-    plt.savefig(file_path + "hbond.svg", format="svg", dpi=600, bbox_inches="tight")
+
+    extensions = ["png", "svg"]
+    for ext in extensions:
+        plt.savefig(file_path + f"hbond.{ext}", format=ext, dpi=600, bbox_inches="tight")
 
 
 def plot_multi(data, file_path):
@@ -282,12 +285,16 @@ def plot_multi(data, file_path):
     ax.set_xlabel("residue", weight="bold")
     ax.legend(bbox_to_anchor=(1.34, 1.02), frameon=False)
     ax.tick_params(axis="x", labelrotation=90)
-    plt.savefig(
-        file_path + "hbond_comparison.png",
-        bbox_inches="tight",
-        transparent=False,
-        dpi=600,
-    )
+
+    extensions = ["png", "svg"]
+    for ext in extensions:
+        plt.savefig(
+            file_path + f"hbond_comparison.{ext}",
+            bbox_inches="tight",
+            transparent=False,
+            dpi=600,
+            format=ext, 
+        )
 
 
 def analyze_hbonds(file_paths, names, substrate):

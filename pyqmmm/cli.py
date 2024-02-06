@@ -206,6 +206,7 @@ def md(
 @click.option("--qm_replace_pdb", "-qr", is_flag=True, help="Replace QM optimized atoms in a pdb.")
 @click.option("--bond_valence", "-bv", is_flag=True, help="Replace QM optimized atoms in a pdb.")
 @click.option("--orca_scan", "-os", is_flag=True, help="Plots an ORCA scan.")
+@click.option("--orca_neb_restart", "-rneb", is_flag=True, help="Prepare to restart an ORCA NEB.")
 @click.help_option('--help', '-h', is_flag=True, help='Exiting pyQMMM.')
 def qm(
     plot_energy,
@@ -215,6 +216,7 @@ def qm(
     qm_replace_pdb,
     bond_valence,
     orca_scan,
+    orca_neb_restart,
     ):
     """
     Functions for quantum mechanics (QM) simulations.
@@ -279,6 +281,12 @@ def qm(
         distances, relative_energies = pyqmmm.qm.orca_scan_plotter.read_orca_output("orca.out")
         print(f"   > Start distance: {distances[0]}, End distance: {distances[-1]}\n")
         pyqmmm.qm.orca_scan_plotter.plot_energy(distances, relative_energies, atom_1, atom_2)
+
+    if orca_neb_restart:
+        import pyqmmm.qm.orca_restart_prepare
+        pyqmmm.qm.orca_neb_restart.create_delete_folder()
+        files_in_directory = [f for f in os.listdir() if f != 'delete']
+        pyqmmm.qm.orca_neb_restart.move_files(files_in_directory)
 
 if __name__ == "__main__":
     # Run the command-line interface when this script is executed
