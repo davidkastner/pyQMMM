@@ -283,7 +283,7 @@ def qm(
         pyqmmm.qm.orca_scan_plotter.plot_energy(distances, relative_energies, atom_1, atom_2)
 
     if orca_neb_restart:
-        import pyqmmm.qm.orca_restart_prepare
+        import pyqmmm.qm.orca_neb_restart
         pyqmmm.qm.orca_neb_restart.create_delete_folder()
         files_in_directory = [f for f in os.listdir() if f != 'delete']
         pyqmmm.qm.orca_neb_restart.move_files(files_in_directory)
