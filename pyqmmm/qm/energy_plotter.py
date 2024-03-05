@@ -2,10 +2,31 @@
 
 import matplotlib.pyplot as plt
 import numpy as np
+import csv
 import time
 
 HARTREE_TO_KCAL = 627.509
 
+def write_energies_to_csv(energies_by_file, energies_hartrees_by_file, filename="energy_plot_data.csv"):
+    """
+    Write the energies to a CSV file.
+
+    Parameters
+    ----------
+    energies_by_file : dict
+        A dictionary with filenames as keys and corresponding energies as values in kcal/mol.
+    energies_hartrees_by_file : dict
+        A dictionary with filenames as keys and corresponding energies as values in Hartrees.
+    filename : str
+        The name of the output CSV file.
+    """
+    with open(filename, "w", newline="") as csvfile:
+        writer = csv.writer(csvfile)
+        writer.writerow(["Filename", "Frame", "Energy (Hartrees)", "Energy (kcal/mol)"])
+        for file, energies_kcal in energies_by_file.items():
+            for frame, energy_kcal in enumerate(energies_kcal):
+                energy_hartrees = energies_hartrees_by_file[file][frame]
+                writer.writerow([file, frame, energy_hartrees, energy_kcal])
 
 def parse_energy(line, software):
     """
@@ -54,9 +75,10 @@ def get_trajectory_energies(filename, software):
     tuple
         First value is a list of energies for each frame, in kcal/mol, relative to the first frame.
         Second value is the first frame energy in kcal/mol.
+        Third value is a list of absolute energies in Hartrees.
 
     """
-    energies = []
+    energies_hartrees = []
     with open(filename, "r") as f:
         while True:
             line = f.readline()
@@ -67,16 +89,16 @@ def get_trajectory_energies(filename, software):
             # next line should contain energy
             energy_line = f.readline().strip()
             # parse and append energy
-            energies.append(parse_energy(energy_line, software))
+            energies_hartrees.append(parse_energy(energy_line, software))
             # skip atom lines
             for _ in range(atom_count):
                 f.readline()
 
     # convert energies to kcal/mol and subtract first energy to make it relative
-    first_energy = energies[0] * HARTREE_TO_KCAL
-    energies = [(e - energies[0]) * HARTREE_TO_KCAL for e in energies]
+    first_energy = energies_hartrees[0] * HARTREE_TO_KCAL
+    energies_kcal = [(e - energies_hartrees[0]) * HARTREE_TO_KCAL for e in energies_hartrees]
 
-    return energies, first_energy
+    return energies_kcal, first_energy, energies_hartrees
 
 
 def identify_software(line):
@@ -135,11 +157,13 @@ def collect_data():
     Returns
     -------
     dict
-        A dictionary with filenames as keys and corresponding energies as values.
+        A dictionary with filenames as keys and corresponding energies as values in kcal/mol.
     float
         The minimum first frame energy.
     bool
         Whether to plot energies relative to the lowest energy.
+    dict
+        A dictionary with filenames as keys and corresponding absolute energies as values in Hartrees.
 
     """
     filenames_input = input(
@@ -148,6 +172,7 @@ def collect_data():
     filenames = [f"{name.strip()}.xyz" for name in filenames_input]
 
     energies_by_file = {}
+    energies_hartrees_by_file = {}
     first_energies = []
 
     for filename in filenames:
@@ -157,17 +182,18 @@ def collect_data():
             software_line = f.readline()
             software = identify_software(software_line)
 
-        energies, first_energy = get_trajectory_energies(filename, software)
-        energies_by_file[filename] = energies
+        energies_kcal, first_energy, energies_hartrees = get_trajectory_energies(filename, software)
+        energies_by_file[filename] = energies_kcal
+        energies_hartrees_by_file[filename] = energies_hartrees
         first_energies.append(first_energy)
 
     min_first_energy = min(first_energies)
     plot_relative_to_lowest = (
         len(filenames) > 1
-        and input("   > Plot energies relative absolute energies? (yes/no) ") == "yes"
+        and input("   > Plot energies relative to absolute energies? (yes/no) ") == "yes"
     )
 
-    return energies_by_file, min_first_energy, plot_relative_to_lowest
+    return energies_by_file, min_first_energy, plot_relative_to_lowest, energies_hartrees_by_file
 
 
 def plot_data(energies_by_file, min_first_energy, plot_relative_to_lowest):
@@ -222,7 +248,6 @@ def plot_data(energies_by_file, min_first_energy, plot_relative_to_lowest):
 def plot_energies():
     """
     Main function that combines previous functions to generate the plot.
-
     """
     print("\n.---------------------------.")
     print("| WELCOME TO ENERGY PLOTTER |")
@@ -232,14 +257,15 @@ def plot_energies():
 
     start_time = time.time()  # Used to report the execution speed
 
-    energies_by_file, min_first_energy, plot_relative_to_lowest = collect_data()
+    energies_by_file, min_first_energy, plot_relative_to_lowest, energies_hartrees_by_file = collect_data()
+    write_energies_to_csv(energies_by_file, energies_hartrees_by_file)  # Write energies to CSV
     plot_data(energies_by_file, min_first_energy, plot_relative_to_lowest)
 
     total_time = round(time.time() - start_time, 3)  # Seconds to run the function
     job_summary = f"""
         --------------------------ENERGY PLOTTER END--------------------------
         RESULT: Plotted energies for {len(energies_by_file)} number of xyz trajectories.
-        OUTPUT: Created a plot called 'energy_plot.png' in the current directory.
+        OUTPUT: Created a plot called 'energy_plot.png' and a CSV file called 'energy_plot_data.csv' in the current directory.
         TIME: Total execution time: {total_time} seconds.
         --------------------------------------------------------------------\n
         """
