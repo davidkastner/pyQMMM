@@ -237,15 +237,19 @@ def plot_data(energies_by_file, min_first_energy, plot_relative_to_lowest):
     plt.ylabel("Energy (kcal/mol)", weight="bold")
 
     # Legend is useful when plotting more than one trajectory
+    plot_name = "energy_plot.png"
     if len(energies_by_file) > 1:
         plt.legend()
-    plot_name = "energy_plot.png"
-    plt.savefig(
-        plot_name,
-        dpi=600,
-        bbox_extra_artists=(plt.legend(bbox_to_anchor=(1.05, 1), loc="upper left"),),
-        bbox_inches="tight",
-    )
+        plt.savefig(
+            plot_name,
+            dpi=600,
+            bbox_extra_artists=(plt.legend(bbox_to_anchor=(1.05, 1), loc="upper left"),),
+            bbox_inches="tight")
+    else:
+        plt.savefig(
+            plot_name,
+            dpi=600,
+            bbox_inches="tight")
 
 
 def plot_energies():
