@@ -118,7 +118,7 @@ make html
 ```
 git status
 git pull
-git add -A .
+git add -A
 git commit -m "Change a specific functionality"
 git push -u origin main
 ```
