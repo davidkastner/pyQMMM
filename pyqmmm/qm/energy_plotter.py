@@ -209,14 +209,14 @@ def plot_data(energies_by_file, min_first_energy, plot_relative_to_lowest):
     plot_relative_to_lowest : bool
         Whether to plot energies relative to the lowest energy.
     """
-    color_scheme = input("   > What color scheme would you like (e.g. inferno, viridis, tab10)? ")
-    colormap = plt.get_cmap(color_scheme)
-    color_indices = np.linspace(0, 1, len(energies_by_file))
 
     format_plot()
-    plt.figure(figsize=(4, 4))
+    fig, ax = plt.subplots(figsize=(4, 4))
+    
+    max_energy = float('-inf')
+    max_energy_info = (0, 0)  # To store filename and frame for highest energy point
+
     for idx, (filename, energies) in enumerate(energies_by_file.items()):
-        color = colormap(color_indices[idx])
 
         if plot_relative_to_lowest:
             # make energies relative to the first frame with the lowest energy
@@ -225,31 +225,42 @@ def plot_data(energies_by_file, min_first_energy, plot_relative_to_lowest):
                 for e in energies
             ]
 
-        plt.plot(
+        # Plotting the energy line
+        ax.plot(
+            range(len(energies)),
             energies,
-            marker=".",
+            marker="o",
             linestyle="-",
             label=f"{filename} (max {round(max(energies), 2)} kcal/mol)",
-            color=color,
+            color='b',
         )
 
-    plt.xlabel("Frame number", weight="bold")
-    plt.ylabel("Energy (kcal/mol)", weight="bold")
+        # Check for overall maximum energy to annotate
+        local_max_energy = max(energies)
+        if local_max_energy > max_energy:
+            max_energy = local_max_energy
+            max_energy_frame = energies.index(local_max_energy)
+            max_energy_info = (filename, max_energy_frame)
 
-    # Legend is useful when plotting more than one trajectory
-    plot_name = "energy_plot.png"
-    if len(energies_by_file) > 1:
-        plt.legend()
-        plt.savefig(
-            plot_name,
-            dpi=600,
-            bbox_extra_artists=(plt.legend(bbox_to_anchor=(1.05, 1), loc="upper left"),),
-            bbox_inches="tight")
-    else:
-        plt.savefig(
-            plot_name,
-            dpi=600,
-            bbox_inches="tight")
+    # Annotate the highest point across all plots
+    ax.annotate(f"{max_energy:.1f}", (max_energy_info[1], max_energy),
+                textcoords="offset points", xytext=(0, 10), ha='center', va='bottom')
+
+    # Extend y-axis to fit annotation
+    y_lim = ax.get_ylim()
+    ax.set_ylim(y_lim[0], y_lim[1] + (y_lim[1] - y_lim[0]) * 0.1)  # Adding 10% padding at the top
+
+    ax.set_xlabel("NEB frames", weight="bold")
+    ax.set_ylabel("Relative energy (kcal/mol)", weight="bold")
+
+    # Save the figure with enough padding
+    plt.legend()
+    plt.savefig(
+        "energy_plot.png",
+        dpi=600,
+        bbox_extra_artists=(plt.legend(bbox_to_anchor=(1.05, 1), loc="upper left"),),
+        bbox_inches="tight"
+    )
 
 
 def plot_energies():
