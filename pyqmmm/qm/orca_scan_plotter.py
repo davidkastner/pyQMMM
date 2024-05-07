@@ -68,17 +68,28 @@ def plot_energy(distances, relative_energies, atom_1, atom_2):
     fig, ax = plt.subplots(figsize=(4, 4))
 
     # Plot the data using lists
+    ax.plot(distances, relative_energies, color='b')
     ax.scatter(distances, relative_energies, marker='o', color='b')
 
-    # Set the x-axis limits based on the first and last values in the distances list
-    x_range = max(distances) - min(distances)
-    padding = x_range * 0.06
+    # Find and annotate the highest energy point
+    max_energy_index = relative_energies.index(max(relative_energies))
+    max_energy = relative_energies[max_energy_index]
+    max_distance = distances[max_energy_index]
+    ax.annotate(f"{max_energy:.1f}", (max_distance, max_energy),
+                textcoords="offset points", xytext=(0, 5), ha='center', va='bottom')
 
-    # Check if its ascending or descending to add padding
+    # Set the x-axis and y-axis limits with padding
+    x_range = max(distances) - min(distances)
+    y_range = max(relative_energies) - min(relative_energies)
+    x_padding = x_range * 0.06
+    y_padding = y_range * 0.15  # Adjusted to give more room
+
+    # Check if it's ascending or descending to add padding
+    ax.set_ylim([min(relative_energies) - y_padding, max(relative_energies) + y_padding])
     if distances[0] < distances[-1]:
-        ax.set_xlim([distances[0] - padding, distances[-1] + padding])
+        ax.set_xlim([distances[0] - x_padding, distances[-1] + x_padding])
     else: 
-        ax.set_xlim([distances[0] + padding, distances[-1] - padding])
+        ax.set_xlim([distances[0] + x_padding, distances[-1] - x_padding])
     
     ax.set_xlabel(f"{atom_1}···{atom_2} distance (Å)", weight="bold")
     ax.set_ylabel("Relative energy (kcal/mol)", weight="bold")
@@ -94,3 +105,4 @@ if __name__ == "__main__":
     distances, relative_energies = read_orca_output("orca.out")
     print(f"   > Start distance: {distances[0]}, End distance: {distances[-1]}\n")
     plot_energy(distances, relative_energies, atom_1, atom_2)
+
