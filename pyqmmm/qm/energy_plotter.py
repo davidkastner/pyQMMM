@@ -255,12 +255,15 @@ def plot_data(energies_by_file, min_first_energy, plot_relative_to_lowest):
 
     # Save the figure with enough padding
     plt.legend()
-    plt.savefig(
-        "energy_plot.png",
-        dpi=600,
-        bbox_extra_artists=(plt.legend(bbox_to_anchor=(1.05, 1), loc="upper left"),),
-        bbox_inches="tight"
-    )
+    extensions = ["png", "svg"]
+    for ext in extensions:
+        plt.savefig(
+            f"energy_plot.{ext}",
+            dpi=600,
+            bbox_extra_artists=(plt.legend(bbox_to_anchor=(1.05, 1), loc="upper left"),),
+            bbox_inches="tight",
+            format=ext,
+        )
 
 
 def plot_energies():
