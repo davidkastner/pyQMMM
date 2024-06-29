@@ -196,7 +196,7 @@ def collect_data():
     return energies_by_file, min_first_energy, plot_relative_to_lowest, energies_hartrees_by_file
 
 
-def plot_data(energies_by_file, min_first_energy, plot_relative_to_lowest):
+def plot_data(energies_by_file, min_first_energy, plot_relative_to_lowest, dim_list):
     """
     Plot the collected energies.
 
@@ -211,7 +211,7 @@ def plot_data(energies_by_file, min_first_energy, plot_relative_to_lowest):
     """
 
     format_plot()
-    fig, ax = plt.subplots(figsize=(4, 4))
+    fig, ax = plt.subplots(figsize=(dim_list[0], dim_list[1]))
     
     max_energy = float('-inf')
     max_energy_info = (0, 0)  # To store filename and frame for highest energy point
@@ -278,9 +278,18 @@ def plot_energies():
 
     start_time = time.time()  # Used to report the execution speed
 
+    dim = input("   > What dimensions would you like the plot (e.g. 5,4)? ")
+    if dim:
+        x_dim = int(dim.split(",")[0])
+        y_dim = int(dim.split(",")[1])
+        dim_list = [x_dim, y_dim]
+    else:
+        dim_list = [4, 4]
+
+
     energies_by_file, min_first_energy, plot_relative_to_lowest, energies_hartrees_by_file = collect_data()
     write_energies_to_csv(energies_by_file, energies_hartrees_by_file)  # Write energies to CSV
-    plot_data(energies_by_file, min_first_energy, plot_relative_to_lowest)
+    plot_data(energies_by_file, min_first_energy, plot_relative_to_lowest, dim_list)
 
     total_time = round(time.time() - start_time, 3)  # Seconds to run the function
     job_summary = f"""
