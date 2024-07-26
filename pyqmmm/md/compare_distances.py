@@ -46,7 +46,6 @@ def get_colors(files):
 
 
 def get_plot(files):
-
     colors = get_colors(files)
     legend = []
     for index,file in enumerate(files):
