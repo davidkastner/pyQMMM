@@ -208,6 +208,7 @@ def md(
 @click.option("--orca_scan", "-os", is_flag=True, help="Plots an ORCA scan.")
 @click.option("--orca_neb_restart", "-rneb", is_flag=True, help="Prepare to restart an ORCA NEB.")
 @click.option("--create_neb_mep", "-mep", is_flag=True, help="Creates MEP_trj from out.")
+@click.option("--combine_nebs", "-cneb", is_flag=True, help="Combines NEBs into a single trajectory.")
 @click.help_option('--help', '-h', is_flag=True, help='Exiting pyQMMM.')
 def qm(
     plot_energy,
@@ -219,6 +220,7 @@ def qm(
     orca_scan,
     orca_neb_restart,
     create_neb_mep,
+    combine_nebs,
     ):
     """
     Functions for quantum mechanics (QM) simulations.
@@ -293,6 +295,10 @@ def qm(
     if create_neb_mep:
         import pyqmmm.qm.create_mep_trj
         pyqmmm.qm.create_mep_trj.create_neb_mep_trj_from_out()
+
+    if combine_nebs:
+        import pyqmmm.qm.combine_nebs
+        pyqmmm.qm.combine_nebs.get_combined_trajectory()
 
 
 if __name__ == "__main__":
