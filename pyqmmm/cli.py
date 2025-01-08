@@ -207,7 +207,10 @@ def md(
 @click.option("--bond_valence", "-bv", is_flag=True, help="Replace QM optimized atoms in a pdb.")
 @click.option("--orca_scan", "-os", is_flag=True, help="Plots an ORCA scan.")
 @click.option("--orca_neb_restart", "-rneb", is_flag=True, help="Prepare to restart an ORCA NEB.")
-@click.option("--combine_nebs", "-cneb", is_flag=True, help="Combines and plots NEBs as a single trajectory.")
+@click.option("--combine_nebs", "-cneb", is_flag=True, help="Combines and NEBs.")
+@click.option("--plot_combine_nebs", "-pcneb", is_flag=True, help="Combines and plots NEBs as a single trajectory.")
+@click.option("--extract_energies", "-ee", is_flag=True, help="Extract electronic energies")
+@click.option("--extract_gibbs", "-eg", is_flag=True, help="Extract Gibbs free energies")
 @click.help_option('--help', '-h', is_flag=True, help='Exiting pyQMMM.')
 def qm(
     plot_energy,
@@ -219,6 +222,9 @@ def qm(
     orca_scan,
     orca_neb_restart,
     combine_nebs,
+    plot_combine_nebs,
+    extract_energies,
+    extract_gibbs,
     ):
     """
     Functions for quantum mechanics (QM) simulations.
@@ -291,9 +297,20 @@ def qm(
         pyqmmm.qm.orca_neb_restart.move_files(files_in_directory)
 
     if combine_nebs:
+        import pyqmmm.qm.combine_nebs
+        pyqmmm.qm.combine_nebs.combine_trajectories()
+
+    if plot_combine_nebs:
         import pyqmmm.qm.plot_combined_nebs
         pyqmmm.qm.plot_combined_nebs.plot_energies()
 
+    if extract_gibbs:
+        import pyqmmm.qm.extract_gibbs_free_energies
+        pyqmmm.qm.extract_gibbs_free_energies.extract()
+
+    if extract_energies:
+        import pyqmmm.qm.extract_electronic_energies
+        pyqmmm.qm.extract_electronic_energies.extract()
 
 if __name__ == "__main__":
     # Run the command-line interface when this script is executed
