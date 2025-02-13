@@ -53,6 +53,8 @@ def parse_energy(line, software):
         energy_str = line.split()[4]
     elif software == "TeraChem-opt":
         energy_str = line.split()[0]
+    elif software == "TeraChem-NEB":  # <-- ADDED BLOCK
+        energy_str = line.split()[0]
     else:
         raise ValueError(f"Unsupported software: {software}")
 
@@ -125,6 +127,9 @@ def identify_software(line):
         return "TeraChem-scan"
     elif "TeraChem" in line:
         return "TeraChem-opt"
+    # BELOW IS THE ONLY OTHER CHANGE: check if line is purely a float => TeraChem NEB
+    elif line.strip().replace('.', '', 1).replace('-', '', 1).isdigit():
+        return "TeraChem-NEB"
     else:
         raise ValueError(f"Could not identify software from line: {line}")
 
