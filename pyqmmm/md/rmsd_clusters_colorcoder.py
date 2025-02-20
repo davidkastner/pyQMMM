@@ -33,6 +33,8 @@ def get_plot(final_df, centroid_time_ns, yaxis_title, cluster_count, layout='wid
 
     max_cluster_index = max(cluster_count, final_df["Cluster"].max())
     other_label_added = False
+    use_hollow_circles = final_df.shape[0] > 5000
+    circle_size = 18 if not use_hollow_circles else 9
 
     for cluster in range(max_cluster_index + 1):
         indicesToKeep = final_df["Cluster"] == cluster
@@ -46,8 +48,8 @@ def get_plot(final_df, centroid_time_ns, yaxis_title, cluster_count, layout='wid
             final_df.loc[indicesToKeep, "Time_ns"],
             final_df.loc[indicesToKeep, "RMSD"],
             edgecolors=color,
-            s=9,
-            facecolors="none",
+            s=circle_size,
+            facecolors="none" if use_hollow_circles else color,
             label=label
         )
         
