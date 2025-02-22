@@ -24,11 +24,9 @@ CADDKit
 
 
 ## 1. Overview
-CADDKit is a package for accelerating structure to simulation QM, MD, and QM/MM workflows. 
-The package contains useful tools for all stages of multiscale simulation preparation.
-As the package is designed to accelerate research in the Kulik group at MIT, 
-much of the functionality is built around the Amber-TeraChem interface.
-It's current purpose is to act as a utility sandbox for several in-house projects.
+CADDKit is a package for accelerating insights gained from structure function relationship (SFR) with an emphasis on QM, MD, and QM/MM workflows. 
+The package contains useful tools for all stages of the computer-aided drug design workflow.
+The functionality is built around the Amber-TeraChem interface.
 
 ## 2. Tutorials
 To improve the usuability of the CADDKit package, this section will contain video-style tutorials.
@@ -153,9 +151,5 @@ git pull
 ```
 
 #### Copyright
-&copy; 2022,  Kulik group at MIT
+&copy; 2025,  David W. Kastner
 
-
-#### Acknowledgements
-Author: David W. Kastner
-[MolSSi template](https://github.com/molssi/cookiecutter-cms) version 1.6.

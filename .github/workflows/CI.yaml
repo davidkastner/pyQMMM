@@ -1,8 +1,6 @@
 name: CI
 
 on:
-  # GitHub has started calling new repo's first branch "main" https://github.com/github/renaming
-  # The cookiecutter uses the "--initial-branch" flag when it runs git-init
   push:
     branches:
       - "main"
@@ -10,9 +8,6 @@ on:
     branches:
       - "main"
   schedule:
-    # Weekly tests run on main by default:
-    #   Scheduled workflows run on the latest commit on the default or base branch.
-    #   (from https://help.github.com/en/actions/reference/events-that-trigger-workflows#scheduled-events-schedule)
     - cron: "0 0 * * 0"
 
 jobs:
@@ -34,24 +29,24 @@ jobs:
           df -h
           ulimit -a
 
-      # More info on options: https://github.com/marketplace/actions/provision-with-micromamba
-      - uses: mamba-org/provision-with-micromamba@main
+      - name: Setup Micromamba
+        uses: mamba-org/setup-micromamba@v1
         with:
+          micromamba-version: latest
           environment-file: devtools/conda-envs/test_env.yaml
           environment-name: test
-          channels: conda-forge,defaults
-          extra-specs: |
+          create-args: >-
             python=${{ matrix.python-version }}
+          channels: conda-forge,defaults
+          init-shell: bash
 
       - name: Install package
-        # conda setup requires this special shell
         shell: bash -l {0}
         run: |
           python -m pip install . --no-deps
           micromamba list
 
       - name: Run tests
-        # conda setup requires this special shell
         shell: bash -l {0}
         run: |
           pytest -v --cov=caddkit --cov-report=xml --color=yes caddkit/tests/
