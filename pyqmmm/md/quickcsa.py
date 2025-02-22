@@ -1,96 +1,90 @@
-"""Performs charge shift analysis (CSA) form TeraChem output."""
+"""Performs charge shift analysis (CSA) from TeraChem output.
+This script sums the atom-wise partial charges for each residue in the QM region
+(for both holo and apo structures) and then calculates the difference (holo minus apo)
+for those residues common to both. In advanced CSA for metalloenzymes, some coordinating
+residues are mutated to alanine in the apo structure, so the reference for apo charge
+calculation is provided via <pdbname>_apo.pdb. Results are saved as CSV files.
+"""
 
 import os
 import sys
 import shutil
+import csv
 from typing import List
 
 def clean_dir() -> str:
     """
-    Searches the current directory for files, prints missing file alerts.
-
-    Cleans the directory into a three-folder system: 1_input, 2_temp, and 3_out.
-
-    Parameters
-    ----------
-    pdb_name : str
-        The name of the PDB that the user would like processed.
+    Searches the current directory for required files and organizes them into a 
+    three-folder system: 1_input, 2_temp, and 3_out. Prompts the user for the PDB filename.
 
     Returns
     -------
-    pdb_name: str
-        The name of the PDB that the user would like processed.
-
-
+    pdb_name : str
+        The name of the PDB file (with .pdb extension) as provided by the user.
     """
-    # Asks the user for the name of the pdb that they would like to process
     pdb_name = input("   > What is the name of your pdb (e.g., 1OS7, 6EDH, etc.)? ")
-    extension = pdb_name[-4:]
-    if extension != ".pdb":
+    if not pdb_name.endswith(".pdb"):
         pdb_name = f"{pdb_name}.pdb"
 
-    # Directory and required file names for the file system
     file_system = ["./1_input", "./2_temp", "./3_out"]
-    # Create the three file system for the user for cleaner file management
-    file_system_exists = False
-    for dir in file_system:
-        if os.path.isdir(dir):
-            file_system_exists = True
-        else:
-            os.mkdir(dir)
-    file_mover(file_system_exists, pdb_name)
+    for directory in file_system:
+        if not os.path.isdir(directory):
+            os.mkdir(directory)
+    file_mover(True, pdb_name)
 
     return pdb_name
 
-
 def file_mover(file_system_exists, pdb_name) -> None:
     """
-    Check the current directory for the five required files and move them.
+    Checks the current directory for the required files and moves them into the 
+    1_input folder. For the advanced CSA, the apo reference PDB (pdbname_apo.pdb) 
+    is also required.
 
     Parameters
     ----------
-    file_system_exists : boolean
-        The path of the user's full PDB.
+    file_system_exists : bool
+        Indicator if the folder structure already exists.
+    pdb_name : str
+        The name of the holo PDB file.
     """
+    # Build the name for the apo reference PDB
+    base = pdb_name[:-4]
+    apo_ref = f"{base}_apo.pdb"
     required_files = [
         pdb_name,
+        apo_ref,
         "apo_list",
         "holo_list",
         "apo_charge.xls",
         "holo_charge.xls",
     ]
     for file in required_files:
-        file_already_moved = False
-        if file_system_exists:
-            if os.path.isfile("./1_input/{}".format(file)):
-                file_already_moved = True
-
-        if file_already_moved == False:
-            if os.path.isfile(f"./{file}"):
-                shutil.move(f"./{file}", f"./1_input/{file}")
-            else:
-                print(f"{file} is not in your current directory")
-
+        if file_system_exists and os.path.isfile(f"./1_input/{file}"):
+            continue
+        if os.path.isfile(f"./{file}"):
+            shutil.move(f"./{file}", f"./1_input/{file}")
+        else:
+            print(f"{file} is not in your current directory")
 
 def get_mask_res(type) -> List:
     """
-    Create a list of the residues that should belong to the holo/apo regions.
+    Reads the residue list file for the specified type (apo or holo) and returns a list 
+    of residue numbers (as strings) that define the QM region.
 
     Parameters
     ----------
     type : str
-        Tell function if it is the holo or apo list.
+        Specifies whether to use the 'apo' or 'holo' list file.
 
     Returns
     -------
-    mask_list : List[]
-        An array of all the residues that the user wants included in their mask.
+    mask_list : List[str]
+        List of residue numbers (as strings) included in the QM region.
     """
     try:
         with open(f"./1_input/{type}_list") as mask_res_file:
             mask_str = mask_res_file.read().strip()
             mask_list = []
-
             for part in mask_str.split(","):
                 if "-" in part:
                     start, end = map(int, part.split("-"))
@@ -104,79 +98,78 @@ def get_mask_res(type) -> List:
     mask_list = [str(num) for num in mask_list]
     return mask_list
 
-
 def mask_maker(mask, pdb_name, type) -> None:
     """
-    Create the apo and holo masks from the original PDB file.
+    Creates the apo or holo mask file from the appropriate reference PDB.
+    For the holo structure, the reference is pdb_name; for the apo structure, it is 
+    pdb_name_apo.pdb. Only the residues specified in the mask (from apo_list/holo_list) 
+    are extracted.
 
     Parameters
     ----------
-    raw_mask : str
-        A list of residues that the user wants pulled from the original PDB.
+    mask : List[str]
+        List of residue numbers (as strings) to be extracted.
     pdb_name : str
-        The name of the user's original PDB file from which we create the mask.
+        The name of the holo PDB file.
     type : str
-        Tell function if it is the holo or apo mask.
+        Indicates whether the mask is for 'apo' or 'holo'.
     """
-
     print(f"   > Creating the {type} mask")
-    # Create a list from the users input
-    # The code for Mask Maker begins here
     res_type_array = []
     new_pdb = f"{type}_mask"
+    # Select the correct reference PDB for reading atoms.
+    if type == "apo":
+        # Use the apo reference PDB (e.g., 1OS7_apo.pdb)
+        ref = f"{pdb_name[:-4]}_apo.pdb"
+    else:
+        ref = pdb_name
+
     with open(f"./2_temp/{new_pdb}", "w") as new_mask:
-        with open(f"./1_input/{pdb_name}", "r") as original:
+        with open(f"./1_input/{ref}", "r") as original:
             for line in original:
-                # Start checking once we reach the ATOM section
+                # Process only ATOM records
                 res_index = line[22:28].strip()
                 res_type = line[:4]
                 if res_type == "ATOM" and res_index in mask:
                     new_mask.write(line)
                     res_type_array.append(res_index)
                     continue
-                # We don't won't to count chain breaks as a discarded residue
-                if line[:3] == "TER":
+                if line.startswith("TER"):
                     continue
-                # We don't want to include the last line so we watch for END
-                if line[:3] == "END":
+                if line.startswith("END"):
                     break
 
-    # Print important statistics for the user
     print(f"   > Extracted {len(set(res_type_array))} residues")
     print(f"   > Your new file is named {new_pdb}\n")
     
-    # Make temporary empty link files
-    open(f"./2_temp/{type}_link_atoms", "w")  # TODO: add section
-
+    # Create temporary empty link file (placeholder)
+    open(f"./2_temp/{type}_link_atoms", "w").close()
 
 def collect_charges(type) -> None:
     """
-    Collect the charges from the charge.xls file.
+    Collects and sums the partial charges for each residue from the TeraChem charge file.
+    It uses the mask file (generated from the correct reference PDB) to map atoms to residues.
+    Also processes link atom charges by adding the link atom charge to the following residue.
 
     Parameters
     ----------
     type : str
-        Tell function if it is the holo or apo mask.
+        Specifies whether processing 'apo' or 'holo' data.
     """
-    # Open the mask atoms and link atoms files
     mask_atoms = open(f"./2_temp/{type}_mask", "r").readlines()
     link_atoms = open(f"./2_temp/{type}_link_atoms", "r").readlines()
+    mull_charges = open(f"./1_input/{type}_charge.xls", "r").readlines()
 
-    # Initialize variables and lists
     prev_res_index = 0
     tot_charge = []
     res_list = []
     tot_charge_link = []
     res_list_link = []
-    mull_charges = open(f"./1_input/{type}_charge.xls", "r").readlines()
 
-    # Loop through each atom in mask file and get residue name and its index
     for index, line in enumerate(mask_atoms):
         mask_atom_info = line.split()
         res_name = mask_atom_info[3]
         res_index = int(mask_atom_info[4])
-
-        # For each new residue, record the current residue and set as previous
         if res_index > prev_res_index:
             res_name_index = res_name + str(res_index)
             res_list.append(res_name_index)
@@ -185,19 +178,15 @@ def collect_charges(type) -> None:
             tot_charge_link.append(0.0)
             prev_res_index = res_index
 
-        # Create running list of all charges in charge.xls
         curr_mull_charges = float(mull_charges[index].split()[2])
         tot_charge[-1] += curr_mull_charges
         tot_charge_link[-1] += curr_mull_charges
 
-    # Get residue name and index for each line
     for index, line in enumerate(link_atoms):
         mask_atom_info = line.split()
         res_name = mask_atom_info[3]
         res_index = int(mask_atom_info[4])
         res_combo = res_name + str(res_index + 1)
-
-        # If the same residues types are side-by-side get the link atom charge
         if res_combo in res_list:
             res_combo_index = res_list.index(res_combo)
             curr_link_index = res_combo_index + len(mask_atoms) - 1
@@ -205,168 +194,147 @@ def collect_charges(type) -> None:
             tot_charge_link[res_combo_index] += link_atom_charge
             res_list_link[res_combo_index] = res_combo + "*"
 
-    # Create files for link and mulliken residue data
-    # Write residues to files
-    mull = open(f"./2_temp/{type}.mullres", "w")
-    link = open(f"./2_temp/{type}.linkres", "w")
-
-    for idx, res in enumerate(res_list):
-        mull.write(f"{res} {tot_charge[idx]}\n")
-        link.write(f"{res} {tot_charge_link[idx]}\n")
-
-    mull.close()
-    link.close()
-
+    # Write out the residue charges as space-separated files (which will later be read)
+    with open(f"./2_temp/{type}.mullres", "w") as mull, open(f"./2_temp/{type}.linkres", "w") as link:
+        for idx, res in enumerate(res_list):
+            mull.write(f"{res} {tot_charge[idx]}\n")
+            link.write(f"{res} {tot_charge_link[idx]}\n")
 
 def get_res_diff() -> List:
     """
-    Calculate the charge difference for the apo and holo residue list files.
+    Computes the set difference between the residues present in the holo and apo mullres files.
+    These are residues that are in the holo structure but missing in the apo (e.g. substrate).
 
     Returns
     -------
-    res_diff : list
-        A list of the residues that were removed in the holo structure.
+    res_diff : List[str]
+        A list of residue labels (from the holo structure) that are present in holo but not apo.
     """
     holo_mull = open("./2_temp/holo.mullres", "r").readlines()
     apo_mull = open("./2_temp/apo.mullres", "r").readlines()
 
-    # Loop thorugh the mullres files and get the holo residues
-    holo_residues = []
-    for line in holo_mull:
-        holo_res = line.strip("\n").split()[0]
-        holo_residues.append(holo_res)
+    holo_residues = [line.strip().split()[0] for line in holo_mull]
+    apo_residues = [line.strip().split()[0] for line in apo_mull]
 
-    # Loop thorugh the mullres files and get the apo residues
-    apo_residues = []
-    for line in apo_mull:
-        apo_res = line.strip("\n").split()[0]
-        apo_residues.append(apo_res)
-
-    # Get the difference between the two lists
     holo_residues_set = set(holo_residues)
     apo_residues_set = set(apo_residues)
     res_diff = list(holo_residues_set.difference(apo_residues_set))
 
     return res_diff
 
-
 def charge_diff(cutoff) -> None:
     """
-    Calculate the difference in the charges for the apo and holo residue lists.
+    Calculates the difference in summed charges (holo minus apo) for residues that are common 
+    to both structures, based on the mullres and linkres files. Results are saved as CSV files.
+    The residue name in the output is taken from the holo structure.
 
     Parameters
     ----------
-    ns_res_list : list
-        A list of the residues that were removed in the holo structure.
+    cutoff : float
+        Minimum absolute charge difference to report in the filtered output.
     """
-    # Get the differences in the charges for the holo and apo structures
-    res_diff = get_res_diff()
-    # Open recently created holo and apo charge files
-    holo_mull = open("./2_temp/holo.mullres", "r").readlines()
-    holo_link = open("./2_temp/holo.linkres", "r").readlines()
-    apo_mull = open("./2_temp/apo.mullres", "r").readlines()
-    apo_link = open("./2_temp/apo.linkres", "r").readlines()
+    # Read the mullres files into dictionaries keyed by residue number
+    def read_res_file(filename: str) -> dict:
+        res_dict = {}
+        with open(filename, "r") as f:
+            for line in f:
+                parts = line.strip().split()
+                if len(parts) < 2:
+                    continue
+                res_label = parts[0]      # e.g. "HIS45" or "ALA45"
+                charge = float(parts[1])
+                # Extract residue number from the label
+                res_num = ''.join(ch for ch in res_label if ch.isdigit())
+                res_dict[res_num] = (res_label, charge)
+        return res_dict
 
-    # Initialize variables
-    diff_charge = []
-    res_list = []
-    diff_charge_link = []
-    res_list_link = []
-    n = 0
+    holo_mull_dict = read_res_file("./2_temp/holo.mullres")
+    apo_mull_dict = read_res_file("./2_temp/apo.mullres")
+    holo_link_dict = read_res_file("./2_temp/holo.linkres")
+    apo_link_dict = read_res_file("./2_temp/apo.linkres")
 
-    # Calculate the differences in the charges for the holo and apo
-    for idx, line in enumerate(holo_mull):
-        holo_mull_res, holo_mull_charge = line.strip("\n").split()
-        holo_link_res, holo_link_charge = holo_link[idx].strip("\n").split()
-        if holo_mull_res in res_diff:
-            n -= 1
-        else:
-            _, apo_mull_charge = apo_mull[idx + n].strip("\n").split()
-            _, apo_link_charge = apo_link[idx + n].strip("\n").split()
-            diff = float(holo_mull_charge) - float(apo_mull_charge)
-            diff_link = float(holo_link_charge) - float(apo_link_charge)
-            res_list.append(holo_mull_res)
-            res_list_link.append(holo_link_res)
-            diff_charge.append(diff)
-            diff_charge_link.append(diff_link)
+    common_keys = sorted(set(holo_mull_dict.keys()).intersection(set(apo_mull_dict.keys())), key=lambda x: int(x))
 
-    # Create final files with the differences in charges for all residues
-    diff_all = open("./3_out/all.diffmullres", "w")
-    diff_link_all = open("./3_out/all.difflinkmullres", "w")
+    all_diff_mull = []
+    cutoff_diff_mull = []
+    all_diff_link = []
+    cutoff_diff_link = []
 
-    # Create final files with the differences in charges for differences > 0.05
-    diff_cutoff = open("./3_out/cutoff.diffmullres", "w")
-    diff_link_cutoff = open("./3_out/cutoff.difflinkmullres", "w")
+    for key in common_keys:
+        holo_label, holo_charge = holo_mull_dict[key]
+        _, apo_charge = apo_mull_dict[key]
+        diff = holo_charge - apo_charge
+        all_diff_mull.append((holo_label, diff))
+        if abs(diff) >= cutoff:
+            cutoff_diff_mull.append((holo_label, round(diff, 4)))
 
-    # Write the final charge differences out to a new file
-    for res in range(len(apo_mull)):
-        diff_all.write(f"{res_list[res]} {diff_charge[res]}\n")
-        diff_link_all.write(f"{res_list_link[res]} {diff_charge_link[res]}\n")
+        # Process link-res data similarly
+        if key in holo_link_dict and key in apo_link_dict:
+            holo_label_link, holo_charge_link = holo_link_dict[key]
+            _, apo_charge_link = apo_link_dict[key]
+            diff_link = holo_charge_link - apo_charge_link
+            all_diff_link.append((holo_label_link, diff_link))
+            if abs(diff_link) >= cutoff:
+                cutoff_diff_link.append((holo_label_link, round(diff_link, 2)))
 
-    # Check if the absolute value is greater than our cutoff of 0.05
-    for res in range(len(apo_mull)):
-        if abs(diff_charge[res]) >= cutoff:
-            diff_cutoff.write(f"{res_list[res]} {round(diff_charge[res],4)}\n")
-        if abs(diff_charge_link[res]) >= cutoff:
-            diff_link_cutoff.write(
-                f"{res_list_link[res]} {round(diff_charge_link[res],2)}\n"
-            )
+    # Write CSV output for mulliken differences
+    with open("./3_out/all_diff_mullres.csv", "w", newline="") as csvfile:
+        writer = csv.writer(csvfile)
+        writer.writerow(["Residue", "Charge Difference"])
+        writer.writerows(all_diff_mull)
+    with open("./3_out/cutoff_diff_mullres.csv", "w", newline="") as csvfile:
+        writer = csv.writer(csvfile)
+        writer.writerow(["Residue", "Charge Difference"])
+        writer.writerows(cutoff_diff_mull)
 
+    # Write CSV output for link-corrected differences
+    with open("./3_out/all_diff_linkmullres.csv", "w", newline="") as csvfile:
+        writer = csv.writer(csvfile)
+        writer.writerow(["Residue", "Charge Difference"])
+        writer.writerows(all_diff_link)
+    with open("./3_out/cutoff_diff_linkmullres.csv", "w", newline="") as csvfile:
+        writer = csv.writer(csvfile)
+        writer.writerow(["Residue", "Charge Difference"])
+        writer.writerows(cutoff_diff_link)
 
 def quick_csa_intro() -> None:
     """
-    Introduces the user to Quick CSA and provides information on how it is run.
-    Contains information about the required files and the naming conventions.
+    Introduces the user to Quick CSA and describes the required input files and naming conventions.
     """
     print("\n.----------------------.")
     print("| WELCOME TO QUICK CSA |")
     print(".----------------------.\n")
     print("Calculate the charge shift from apo and holo charge data.")
-    print("Quick CSA looks for the following files in the current directory:\n")
-    print("  + The PDB of the protein of interest used to run the QM/MM")
-    print("  + A list of the residues for the apo and holo regions")
-    print("    - Apo list file should be called apo_list")
-    print("    - Holo list file should be called holo_list")
-    print("  + The TeraChem charge output files")
-    print("    - Apo file should be called apo_charge.xls")
-    print("    - Holo file should be called holo_charge.xls")
-    print("  + The tuorials folder has example files\n")
-
+    print("Quick CSA expects the following files in the current directory:\n")
+    print("  + The PDB of the protein used for QM/MM calculations (e.g., 1OS7.pdb)")
+    print("  + The apo reference PDB (e.g., 1OS7_apo.pdb)")
+    print("  + Residue list files for the QM regions (apo_list and holo_list)")
+    print("  + TeraChem charge output files (apo_charge.xls and holo_charge.xls)")
+    print("  + Example files in the tutorials folder\n")
 
 def quick_csa() -> None:
     """
-    The central handler funtion for the Quick CSA program.
-    This function is also provided as a module in the pyQM/MM package.
+    The central handler for the Quick CSA program. Organizes input files, creates masks using 
+    the appropriate PDB references, collects charges, computes charge differences, and outputs the results.
     """
-    # Introduce user to Quick CSA
     quick_csa_intro()
 
-    # Get the user's full PDB
     print("CALCULATION")
     print("-----------")
     pdb_name = clean_dir()
 
-    # Get mask arrays from user-provided input difflinkmullres
-    mask_list = ["apo", "holo"]
-    for mask_name in mask_list:
+    # For both apo and holo, create masks and collect charges
+    for mask_name in ["apo", "holo"]:
         mask = get_mask_res(mask_name)
-        # Create apo and holo mask files
         mask_maker(mask, pdb_name, mask_name)
-        # Create list of residues with their associated charges for apo and holo_link
         collect_charges(mask_name)
 
-    # Create the final output file with the charge differences for all residues
-    # Create output files for only the residues with a charge differences > 0.050.
     cutoff = float(input("What charge shift threshold would you like (e.g., 0.05)? "))
     charge_diff(cutoff)
 
-    # Print the user's results
     print("RESULTS")
     print("-------")
-    with open("./3_out/cutoff.diffmullres", "r") as results:
-        print(results.read())
+    print("CSV files with all and cutoff differences have been saved to the './3_out/' directory.")
 
-
-# Execute the Quick CSA when run as a script but not if used as a pyQM/MM module
 if __name__ == "__main__":
     quick_csa()
