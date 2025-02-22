@@ -54,7 +54,7 @@ jobs:
         # conda setup requires this special shell
         shell: bash -l {0}
         run: |
-          pytest -v --cov=pyqmmm --cov-report=xml --color=yes pyqmmm/tests/
+          pytest -v --cov=caddkit --cov-report=xml --color=yes caddkit/tests/
 
       - name: CodeCov
         uses: codecov/codecov-action@v1

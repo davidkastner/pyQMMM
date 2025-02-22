@@ -1,7 +1,7 @@
-pyqmmm.qm.pes\_organizer
+caddkit.qm.pes\_organizer
 ========================
 
-.. automodule:: pyqmmm.qm.pes_organizer
+.. automodule:: caddkit.qm.pes_organizer
 
    
    

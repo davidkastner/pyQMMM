@@ -1,7 +1,7 @@
-pyqmmm.qm.traj\_movie\_generator
+caddkit.qm.traj\_movie\_generator
 ================================
 
-.. automodule:: pyqmmm.qm.traj_movie_generator
+.. automodule:: caddkit.qm.traj_movie_generator
 
    
    

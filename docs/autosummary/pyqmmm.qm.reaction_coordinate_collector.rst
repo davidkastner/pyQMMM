@@ -1,7 +1,7 @@
-pyqmmm.qm.reaction\_coordinate\_collector
+caddkit.qm.reaction\_coordinate\_collector
 =========================================
 
-.. automodule:: pyqmmm.qm.reaction_coordinate_collector
+.. automodule:: caddkit.qm.reaction_coordinate_collector
 
    
    

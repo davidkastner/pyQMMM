@@ -1,7 +1,7 @@
-pyqmmm.md.hbond\_analyzer
+caddkit.md.hbond\_analyzer
 =========================
 
-.. automodule:: pyqmmm.md.hbond_analyzer
+.. automodule:: caddkit.md.hbond_analyzer
 
    
    

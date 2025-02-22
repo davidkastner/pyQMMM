@@ -1,7 +1,7 @@
-pyqmmm.qm.energy\_plotter
+caddkit.qm.energy\_plotter
 =========================
 
-.. automodule:: pyqmmm.qm.energy_plotter
+.. automodule:: caddkit.qm.energy_plotter
 
    
    

@@ -1,7 +1,7 @@
-pyqmmm.md.ppm2png\_converter
+caddkit.md.ppm2png\_converter
 ============================
 
-.. automodule:: pyqmmm.md.ppm2png_converter
+.. automodule:: caddkit.md.ppm2png_converter
 
    
    

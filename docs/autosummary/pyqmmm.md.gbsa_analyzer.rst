@@ -1,7 +1,7 @@
-pyqmmm.md.gbsa\_analyzer
+caddkit.md.gbsa\_analyzer
 ========================
 
-.. automodule:: pyqmmm.md.gbsa_analyzer
+.. automodule:: caddkit.md.gbsa_analyzer
 
    
    

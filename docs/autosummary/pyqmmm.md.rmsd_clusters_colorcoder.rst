@@ -1,7 +1,7 @@
-pyqmmm.md.rmsd\_clusters\_colorcoder
+caddkit.md.rmsd\_clusters\_colorcoder
 ====================================
 
-.. automodule:: pyqmmm.md.rmsd_clusters_colorcoder
+.. automodule:: caddkit.md.rmsd_clusters_colorcoder
 
    
    

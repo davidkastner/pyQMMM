@@ -1,7 +1,7 @@
-pyqmmm.qm.pdb\_residue\_extractor
+caddkit.qm.pdb\_residue\_extractor
 =================================
 
-.. automodule:: pyqmmm.qm.pdb_residue_extractor
+.. automodule:: caddkit.qm.pdb_residue_extractor
 
    
    

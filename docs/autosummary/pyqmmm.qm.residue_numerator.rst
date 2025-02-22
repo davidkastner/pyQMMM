@@ -1,7 +1,7 @@
-pyqmmm.qm.residue\_numerator
+caddkit.qm.residue\_numerator
 ============================
 
-.. automodule:: pyqmmm.qm.residue_numerator
+.. automodule:: caddkit.qm.residue_numerator
 
    
    

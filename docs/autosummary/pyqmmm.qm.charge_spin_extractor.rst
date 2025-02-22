@@ -1,7 +1,7 @@
-pyqmmm.qm.charge\_spin\_extractor
+caddkit.qm.charge\_spin\_extractor
 =================================
 
-.. automodule:: pyqmmm.qm.charge_spin_extractor
+.. automodule:: caddkit.qm.charge_spin_extractor
 
    
    

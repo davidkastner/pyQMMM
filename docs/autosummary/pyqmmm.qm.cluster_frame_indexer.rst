@@ -1,7 +1,7 @@
-pyqmmm.qm.cluster\_frame\_indexer
+caddkit.qm.cluster\_frame\_indexer
 =================================
 
-.. automodule:: pyqmmm.qm.cluster_frame_indexer
+.. automodule:: caddkit.qm.cluster_frame_indexer
 
    
    

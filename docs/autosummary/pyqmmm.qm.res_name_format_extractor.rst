@@ -1,7 +1,7 @@
-pyqmmm.qm.res\_name\_format\_extractor
+caddkit.qm.res\_name\_format\_extractor
 ======================================
 
-.. automodule:: pyqmmm.qm.res_name_format_extractor
+.. automodule:: caddkit.qm.res_name_format_extractor
 
    
    

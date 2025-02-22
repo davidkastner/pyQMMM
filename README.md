@@ -1,11 +1,11 @@
 ![Graphical Summary of README](docs/_static/header.jpg)
-pyQMMM
+CADDKit
 ==============================
 [//]: # (Badges)
-[![GitHub Actions Build Status](https://github.com/davidkastner/pyqmmm/workflows/CI/badge.svg)](https://github.com/davidkastner/pyqmmm/actions?query=workflow%3ACI)
-[![Documentation Status](https://readthedocs.org/projects/pyqmmm/badge/?version=latest)](https://pyqmmm.readthedocs.io/en/latest/?badge=latest)
+[![GitHub Actions Build Status](https://github.com/davidkastner/caddkit/workflows/CI/badge.svg)](https://github.com/davidkastner/caddkit/actions?query=workflow%3ACI)
+[![Documentation Status](https://readthedocs.org/projects/caddkit/badge/?version=latest)](https://caddkit.readthedocs.io/en/latest/?badge=latest)
 
-# PyQMMM Package
+# CADDKit Package
 ## Table of Contents
 1. **Overview**
 2. **Tutorials**
@@ -13,7 +13,7 @@ pyQMMM
 3. **Installation**
     * Download the package from GitHub
     * Creating a python environment
-    * Developer install of pyQMMM
+    * Developer install of CADDKit
     * Supporting installations
 4. **What is included?**
     * File structure
@@ -24,19 +24,19 @@ pyQMMM
 
 
 ## 1. Overview
-PyQMMM is a package for accelerating structure to simulation QM, MD, and QM/MM workflows. 
+CADDKit is a package for accelerating structure to simulation QM, MD, and QM/MM workflows. 
 The package contains useful tools for all stages of multiscale simulation preparation.
 As the package is designed to accelerate research in the Kulik group at MIT, 
 much of the functionality is built around the Amber-TeraChem interface.
 It's current purpose is to act as a utility sandbox for several in-house projects.
 
 ## 2. Tutorials
-To improve the usuability of the pyQMMM package, this section will contain video-style tutorials.
+To improve the usuability of the CADDKit package, this section will contain video-style tutorials.
 You can also find additional information and README's in the tutorials folder.
 
 ### quickCSA
 
-[![Video Tutorial](https://raw.githubusercontent.com/davidkastner/pyQMMM/main/docs/_static/thumbnail.jpg)](https://www.youtube.com/watch?v=Zck8fznmTPA&t=27s&ab_channel=DavidW.Kastner)
+[![Video Tutorial](https://raw.githubusercontent.com/davidkastner/CADDKit/main/docs/_static/thumbnail.jpg)](https://www.youtube.com/watch?v=Zck8fznmTPA&t=27s&ab_channel=DavidW.Kastner)
 
 ## 3. Installation
 Install the package by running the follow commands inside the downloaded repository. 
@@ -45,7 +45,7 @@ It is good practice to do this inside of a virtual environment.
 
 ### Download the package from GitHub
 ```
-git clone git@github.com:davidkastner/pyQMMM.git
+git clone git@github.com:davidkastner/CADDKit.git
 ```
 
 ### Creating python environment
@@ -54,29 +54,29 @@ Compatibility is automatically tested for python versions 3.8 and higher.
 Installing all dependencies together has shown to produce more robust installations.
 
 ```
-cd pyQMMM
+cd CADDKit
 conda env create -f environment.yml
-conda activate pyqmmm
-source activate pyqmmm  #Alternatively used on some clusters
+conda activate caddkit
+source activate caddkit  #Alternatively used on some clusters
 ```
 
-### Developer install of pyQMMM
+### Developer install of CADDKit
 ```
-cd pyqmmm
+cd caddkit
 python -m pip install -e .
 ```
 
 ### Supporting installations
-To have complete access to all pyQMMM functionality, you should also install following dependencies. 
-This should be done inside you pyqmmm virtual environment. 
-pyQMMM contains automated workflows for modelling in missing loops using Modeller.
+To have complete access to all CADDKit functionality, you should also install following dependencies. 
+This should be done inside you caddkit virtual environment. 
+CADDKit contains automated workflows for modelling in missing loops using Modeller.
 
 ```
 conda install -c salilab modeller
 ```
 
 ## 4. What's included?
-pyQMMM is built as both a library and a collection of pre-built scripts.
+CADDKit is built as both a library and a collection of pre-built scripts.
 The scripts aim to accelerate data processesing and automation of calculations.
 If a script is not already included for procedure, many of the functions may be useful in building a procedure.
 
@@ -86,7 +86,7 @@ If a script is not already included for procedure, many of the functions may be 
 .
 |── cli.py      # Command-line interface entry point
 ├── docs        # Readthedocs documentation site
-├── pyqmmm      # Directory containing pyQMMM modules
+├── caddkit      # Directory containing CADDKit modules
 │   ├── md      # Processes for setting MD optimizations prior to QM/MM
 │   └── qm      # Processes for running and anlayzing QM cluster model jobs 
 └── ...
@@ -97,13 +97,13 @@ The contents of the library are designed to be navigated through the commandline
 Add the following line to your bash.rc
 
 ```
-alias pyqmmm='python /the/path/to/pyQMMM/cli.py'
+alias caddkit='python /the/path/to/CADDKit/cli.py'
 ```
 
 
 ## 5. Documentation
 Accurate documentation will always be a high priority for the project.
-You can find documentation at the project's [ReadtheDocs](https://pyqmmm.readthedocs.io/).
+You can find documentation at the project's [ReadtheDocs](https://caddkit.readthedocs.io/).
 
 ### Update the ReadTheDocs
 

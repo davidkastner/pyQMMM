@@ -1,7 +1,7 @@
-pyqmmm.qm.traj\_atom\_swapper
+caddkit.qm.traj\_atom\_swapper
 =============================
 
-.. automodule:: pyqmmm.qm.traj_atom_swapper
+.. automodule:: caddkit.qm.traj_atom_swapper
 
    
    

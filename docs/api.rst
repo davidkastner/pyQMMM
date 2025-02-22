@@ -5,5 +5,5 @@ API Documentation
    :toctree: autosummary
    :recursive:
 
-   pyqmmm.md
-   pyqmmm.qm
+   caddkit.md
+   caddkit.qm

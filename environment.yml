@@ -1,4 +1,4 @@
-name: pyqmmm
+name: caddkit
 channels:
   - conda-forge
   - salilab

@@ -1,7 +1,7 @@
-pyqmmm.qm.hydrogen\_atom\_optimizer
+caddkit.qm.hydrogen\_atom\_optimizer
 ===================================
 
-.. automodule:: pyqmmm.qm.hydrogen_atom_optimizer
+.. automodule:: caddkit.qm.hydrogen_atom_optimizer
 
    
    

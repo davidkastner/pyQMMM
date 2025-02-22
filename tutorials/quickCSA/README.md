@@ -1,6 +1,6 @@
 # Quick Charge Shift Analysis (CSA)
 
-[![Video Tutorial](https://raw.githubusercontent.com/davidkastner/pyQMMM/main/docs/_static/thumbnail.jpg)](https://www.youtube.com/watch?v=Zck8fznmTPA&t=27s&ab_channel=DavidW.Kastner)
+[![Video Tutorial](https://raw.githubusercontent.com/davidkastner/CADDKit/main/docs/_static/thumbnail.jpg)](https://www.youtube.com/watch?v=Zck8fznmTPA&t=27s&ab_channel=DavidW.Kastner)
 
 ## Table of Contents
 1. **Overview**
