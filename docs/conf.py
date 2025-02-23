@@ -13,17 +13,19 @@
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 
 # Incase the project was not installed
-import revitron_sphinx_theme
-import caddkit
 import os
 import sys
-sys.path.insert(0, os.path.abspath('..'))
+import datetime
 
+sys.path.insert(0, os.path.abspath('..'))
+master_doc = 'index'
 
 # -- Project information -----------------------------------------------------
 
 project = 'CADDKit'
-copyright = ("2022, David W. Kastner")
+copyright = '{}, <a href="https://kastner.io/en/">David W. Kastner</a>'.format(
+    datetime.datetime.now().year
+)
 author = 'David W. Kastner'
 
 # The short X.Y version
@@ -53,11 +55,14 @@ extensions = [
     "revitron_sphinx_theme",
 ]
 
+autosummary_generate = False
+
 autosummary_generate = True
 autoapi_type = 'python'
 autoapi_dirs = ['../caddkit']
-autoapi_ignore = ["*/tests/*",
-                  "*_version.py"]
+autoapi_ignore = ["*/tests/*", "*_version.py"]
+autodoc_member_order = "bysource"
+autodoc_mock_imports = ["click"]
 
 autoapi_options = ['members',
                    'undoc-members',
@@ -68,6 +73,17 @@ autoapi_options = ['members',
 napoleon_google_docstring = False
 napoleon_use_param = False
 napoleon_use_ivar = True
+
+napoleon_google_docstring = True
+napoleon_include_init_with_doc = True
+napoleon_include_private_with_doc = False
+napoleon_include_special_with_doc = True
+napoleon_use_admonition_for_examples = False
+napoleon_use_admonition_for_notes = True
+napoleon_use_admonition_for_references = True
+napoleon_use_ivar = False
+napoleon_use_param = True
+napoleon_use_rtype = True
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -102,12 +118,12 @@ pygments_style = 'default'
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = "revitron_sphinx_theme"
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
 # documentation.
-#
+
+html_theme = "revitron_sphinx_theme"
 html_theme_options = {
     'color_scheme': '',
     'canonical_url': '',
@@ -124,7 +140,6 @@ html_theme_options = {
 }
 
 html_logo = '_static/logo-white.svg'
-html_title = 'CADDKit'
 html_favicon = '_static/favicon.ico'
 
 html_context = {
@@ -139,8 +154,9 @@ html_context = {
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = ['_static']
-html_logo = '_static/logo-white.svg'
+html_static_path = ["_static"]
+html_css_files = ['custom.css']
+html_js_files = []
 
 # Custom sidebar templates, must be a dictionary that maps document names
 # to template names.
@@ -150,7 +166,7 @@ html_logo = '_static/logo-white.svg'
 # default: ``['localtoc.html', 'relations.html', 'sourcelink.html',
 # 'searchbox.html']``.
 #
-# html_sidebars = {}
+html_sidebars = {}
 
 
 # -- Options for HTMLHelp output ---------------------------------------------
