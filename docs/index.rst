@@ -2,6 +2,8 @@
    sphinx-quickstart on Thu Mar 15 13:55:56 2018.
 
 .. image:: _static/logo-white.svg
+   :width: 200px
+   :height: 200px
 
 CADDKit Docs
 =========================================================
