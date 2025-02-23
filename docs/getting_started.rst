@@ -6,11 +6,9 @@ Introduction
 
 Overview
 ^^^^^^^^
-CADDKit is a package of useful utility functions for accelerating structure to simulation workflows for QM/MM simulations. 
-The package contains useful tools for all stages of the QM/MM workflow, form MD, to QM, to multiscale QM/MM.
-As the package is designed spcifically for accelerating research in the Kulik group at MIT, 
-much of the functionality is built around the Amber-TeraChem interface. 
-However, we aim for software agnostic functionality. 
+CADDKit is a package for accelerating insights gained from structure function relationship (SFR) with an emphasis on QM, MD, and QM/MM workflows. 
+The package contains useful tools for all stages of the computer-aided drug design workflow.
+The functionality is built around the Amber-TeraChem interface.
 
 The initial limited goal of the package is serve as a repository sandbox for useful scripts used in my molecular modelling workflows.
 However, eventually, I would hope to grow CADDKit into a robust tool for automating the job preparation and analysis of QM/MM simulations.
@@ -38,7 +36,6 @@ This should be done inside you caddkit virtual environment.
     conda install -c conda-forge matplotlib
     conda install -c anaconda pandas
     conda install -c anaconda configparser
-    conda install -c salilab modeller
 
 File Structure
 --------------
