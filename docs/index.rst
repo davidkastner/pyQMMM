@@ -2,15 +2,15 @@
    sphinx-quickstart on Thu Mar 15 13:55:56 2018.
 
 .. image:: _static/logo-white.svg
-   :width: 200px
-   :height: 200px
+   :width: 300px
+   :height: 300px
 
 CADDKit Docs
 =========================================================
 
 .. container:: .large
 
-   CADDKit is a Python package designed to analyze and visualize `ab initio` and classical molecular trajectories. 
+   CADDKit is a Python package designed to accelerate computer-aided drug design efforts (CADD). 
    The file formats `XYZ <https://www.cgl.ucsf.edu/chimera/docs/UsersGuide/xyz.html>`_
    and `PDB <https://www.cgl.ucsf.edu/chimera/docs/UsersGuide/tutorials/pdbintro.html>`_
    are currently supported.
