@@ -1,37 +1,64 @@
 """Command-line interface (CLI) entry point."""
 
-def welcome():
-    print("\n ╔════════════════════════════════════════════════╗")
-    print(" ║ .--------------------------------------------. ║")
-    print(" ║ |                                            | ║")
-    print(" ║ |                ___  __  __ __  __ __  __   | ║")
-    print(" ║ |   _ __  _   _ / _ \|  \/  |  \/  |  \/  |  | ║")
-    print(" ║ |  | '_ \| | | | | | | |\/| | |\/| | |\/| |  | ║")
-    print(" ║ |  | |_) | |_| | |_| | |  | | |  | | |  | |  | ║")
-    print(" ║ |  | .__/ \__, |\__\_\_|  |_|_|  |_|_|  |_|  | ║")
-    print(" ║ |  |_|    |___/                              | ║")
-    print(" ║ |                                            | ║")
-    print(" ║ |            WELCOME TO CADDKit               | ║")
-    print(" ║ '--------------------------------------------' ║")
-    print(" ╚════════════════════════════════════════════════╝\n")
-
-    print("Default programmed actions for the CADDKit package.")
-    print("GitHub: https://github.com/davidkastner/caddkit")
-    print("Documenation: https://caddkit.readthedocs.io\n")
-    print("The overall command-line interface (CLI) entry point.")
-    print("The CLI interacts with the rest of the package.")
-    print("• MD scripts overview: caddkit md --help")
-    print("• QM scripts overview: caddkit qm --help\n")
-
-welcome()
-
 import os
 import click
+
+def welcome():
+    click.secho("\n")
+    click.secho(r" ╔═════════════════════════════════════════════════════════╗")
+    click.secho(r" ║  ____     ______  ____    ____    __  __      __        ║")
+    click.secho(r" ║ /\  _`\  /\  _  \/\  _`\ /\  _`\ /\ \/\ \  __/\ \__     ║")
+    click.secho(r" ║ \ \ \/\_\\ \ \L\ \ \ \/\ \ \ \/\ \ \ \/'/'/\_\ \ ,_\    ║")
+    click.secho(r" ║  \ \ \/_/_\ \  __ \ \ \ \ \ \ \ \ \ \ , < \/\ \ \ \/    ║")
+    click.secho(r" ║   \ \ \L\ \\ \ \/\ \ \ \_\ \ \ \_\ \ \ \\`\\ \ \ \ \_   ║")
+    click.secho(r" ║    \ \____/ \ \_\ \_\ \____/\ \____/\ \_\ \_\ \_\ \__\  ║")
+    click.secho(r" ║     \/___/   \/_/\/_/\/___/  \/___/  \/_/\/_/\/_/\/__/  ║")
+    click.secho(r" ║                                                         ║")
+    click.secho(r" ║                           CADDKit                       ║")
+    click.secho(r" ║                       [caddkit.rtfd.io]                 ║")
+    click.secho(r" ╚══════════════════════════════╗╔═════════════════════════╝")
+    click.secho(r"                        ╔═══════╝╚═══════╗                  ")
+    click.secho(r"                        ║  David Kastner ║                  ")
+    click.secho(r"                        ╚═══════╗╔═══════╝                  ")
+    click.secho(r"          ╔═════════════════════╝╚══════════════════╗       ")
+    click.secho(r"          ║  Code: github.com/davidkastner/caddkit  ║       ")
+    click.secho(r"          ║  Docs: caddkit.readthedocs.io           ║       ")
+    click.secho(r"          ║     - IO: caddkit io --help             ║       ")
+    click.secho(r"          ║     - MD: caddkit md --help             ║       ")
+    click.secho(r"          ║     - QM: caddkit qm --help             ║       ")
+    click.secho(r"          ║     - QMMM: caddkit qmmmm --help        ║       ")
+    click.secho(r"          ╚═════════════════════════════════════════╝       ")
+
+welcome()
 
 @click.group()
 def cli():
     """CLI entry point"""
     pass
+
+
+@cli.command()
+@click.option("--ppm2png", "-p2p", is_flag=True, help="Converts PPM files to PNG.")
+@click.option("--delete_xyz_atoms", "-dxa", is_flag=True, help="Deletes atoms from xyz trajectory.")
+def io(
+    ppm2png,
+    delete_xyz_atoms,
+    ):
+    """
+    Tools for useful manipulations of common file types.
+
+    """
+    if ppm2png:
+        click.echo("Converting all PPM in current directory to PNGs:")
+        click.echo("Loading...")
+        import caddkit.io.ppm2png_converter
+        caddkit.io.ppm2png_converter.ppm2png_converter()
+    elif delete_xyz_atoms:
+        click.echo("Deleting requested atoms from the xyz file:")
+        click.echo("Loading...")
+        import caddkit.io.delete_atoms_from_xyz
+        caddkit.io.delete_atoms_from_xyz.main()  
+
 
 @cli.command()
 @click.option("--gbsa_submit", "-gs", is_flag=True, help="Prepares and submits a mmGBSA job.")
@@ -45,7 +72,6 @@ def cli():
 @click.option("--strip_all", "-sa", is_flag=True, help="Strip waters and metals.")
 @click.option("--dssp_plot", "-dp", is_flag=True, help="Generate a DSSP plot.")
 @click.option("--rmsf", "-rmsf", is_flag=True, help="Calculates the RMSF.")
-@click.option("--quick_csa", "-csa", is_flag=True, help="Performs charge shift analysis.")
 @click.option("--cc_coupling", "-cc", is_flag=True, help="Plots the results from cc coupling analysis.")
 @click.option("--compare_distances", "-cd", is_flag=True, help="Plots distance metrics together.")
 @click.option("--plot_rmsd", "-rmsd", is_flag=True, help="Plots the RMSD from CPPTraj.")
@@ -72,8 +98,8 @@ def md(
 
     """
     if gbsa_submit:
-        click.echo("> Submit a mmGBSA job:")
-        click.echo("> Loading...")
+        click.echo("Submit a mmGBSA job:")
+        click.echo("Loading...")
         import caddkit.md.amber_toolkit
         protein_id = input("What is the id of your protein (e.g., taud, mc6)? ")
         ligand_id = input("What is the id of your ligand (e.g., hm1, tau)? ")
@@ -84,14 +110,14 @@ def md(
         caddkit.md.amber_toolkit.gbsa_script(protein_id, ligand_id, ligand_index, start, stride, cpus)
 
     elif gbsa_analysis:
-        click.echo("> Analyze a GBSA calculation output:")
-        click.echo("> Loading...")
+        click.echo("Analyze a GBSA calculation output:")
+        click.echo("Loading...")
         import caddkit.md.gbsa_analyzer
         caddkit.md.gbsa_analyzer.analyze()
 
     elif compute_hbond:
-        click.echo("> Compute all hbonds between the protein and the substrate using CPPTraj:")
-        click.echo("> Loading...")
+        click.echo("Compute all hbonds between the protein and the substrate using CPPTraj:")
+        click.echo("Loading...")
         import caddkit.md.hbond_analyzer
         import caddkit.md.amber_toolkit
         protein_id = input("What is the name of your protein (e.g., DAH)? ")
@@ -102,46 +128,46 @@ def md(
         caddkit.md.hbond_analyzer.compute_hbonds(hbonds_script, submit_script, "hbonds.in")
 
     elif hbond_analysis:
-        click.echo("> Extract and plot hbonding patterns from an MD simulation:")
-        click.echo("> Loading...")
+        click.echo("Extract and plot hbonding patterns from an MD simulation:")
+        click.echo("Loading...")
         import caddkit.md.hbond_analyzer
         # Include more than one path in the list to perform multiple analyses
         file_paths = ["./"]
         names = ["unrestrained"]
-        substrate = input("   > What is the resid of your substrate? (e.g., DCA) ")
+        substrate = input("   What is the resid of your substrate? (e.g., DCA) ")
         caddkit.md.hbond_analyzer.analyze_hbonds(file_paths, names, substrate)
 
     elif last_frame:
-        click.echo("> Extracting the last frame from a MD simulation:")
-        click.echo("> Loading...")
+        click.echo("Extracting the last frame from a MD simulation:")
+        click.echo("Loading...")
         import caddkit.md.amber_toolkit
         prmtop = input("What is the path of your prmtop file? ")
         mdcrd = input("What is the path of your trajectory file? ")
         caddkit.md.amber_toolkit.get_last_frame(prmtop, mdcrd, "final_frame.pdb")
         
     elif residue_list:
-        click.echo("> Extract the residues from a PDB:")
-        click.echo("> Loading...")
+        click.echo("Extract the residues from a PDB:")
+        click.echo("Loading...")
         import caddkit.md.residue_lister
         caddkit.md.residue_lister.list_residues()
 
     elif colored_rmsd:
-        click.echo("> Color a MD trajectory by clusters:")
-        click.echo("> Loading...")
+        click.echo("Color a MD trajectory by clusters:")
+        click.echo("Loading...")
         import caddkit.md.rmsd_clusters_colorcoder
         yaxis_title = "RMSD (Å)"
         cluster_count = int(input("How many cluster would you like plotted? "))
         caddkit.md.rmsd_clusters_colorcoder.rmsd_clusters_colorcoder(yaxis_title, cluster_count, layout='wide')
 
     elif restraint_plot:
-        click.echo("> Generate single KDE plot with hyscore measurements:")
-        click.echo("> Loading...")
+        click.echo("Generate single KDE plot with hyscore measurements:")
+        click.echo("Loading...")
         import caddkit.md.kde_restraint_plotter
         caddkit.md.kde_restraint_plotter.restraint_plot()
 
     elif strip_all:
-        click.echo("> Strip waters and metals and create new traj and prmtop file:")
-        click.echo("> Loading...")
+        click.echo("Strip waters and metals and create new traj and prmtop file:")
+        click.echo("Loading...")
         import caddkit.md.amber_toolkit
         protein_id = input("What is the id of your protein (e.g., taud, mc6)? ")
         cpus = 8
@@ -149,14 +175,14 @@ def md(
         caddkit.md.amber_toolkit.submit_script(protein_id, "strip.in", cpus)
 
     elif dssp_plot:
-        click.echo("> Create a DSSP plot from CPPTraj data:")
-        click.echo("> Loading...")
+        click.echo("Create a DSSP plot from CPPTraj data:")
+        click.echo("Loading...")
         import caddkit.md.dssp_plotter
         caddkit.md.dssp_plotter.combine_dssp_files()
 
     elif rmsf:
-        click.echo("> Calculates the RMSF:")
-        click.echo("> Loading...")
+        click.echo("Calculates the RMSF:")
+        click.echo("Loading...")
         import caddkit.md.rmsf_calculator
         protein = input("What is the name of your protein? ")
         topology = f"1/{protein}_dry.prmtop"
@@ -171,12 +197,6 @@ def md(
                         ]
         caddkit.md.rmsf_calculator.calculate_rmsf(topology, trajectories, reference_file)
     
-    elif quick_csa:
-        click.echo("> Charge shift analysis:")
-        click.echo("> Loading...")
-        import caddkit.md.quickcsa
-        caddkit.md.quickcsa.quick_csa()
-
     elif cc_coupling:
         import caddkit.md.cc_coupling
         caddkit.md.cc_coupling.heatmap(
@@ -231,36 +251,36 @@ def qm(
 
     """
     if plot_energy:
-        click.echo("> Plot xyz trajectory energies:")
-        click.echo("> Loading...")
+        click.echo("Plot xyz trajectory energies:")
+        click.echo("Loading...")
         import caddkit.qm.energy_plotter
         caddkit.qm.energy_plotter.plot_energies()
 
     if flip_xyz:
-        click.echo("> Reverse an xyz trajectory:")
-        click.echo("> Loading...")
+        click.echo("Reverse an xyz trajectory:")
+        click.echo("Loading...")
         import caddkit.qm.xyz_flipper
         in_file = input("What is the name of the xyz trajectory to reverse (omit extenstion)? ")
         caddkit.qm.xyz_flipper.xyz_flipper(in_file)
 
     if plot_mechanism:
-        click.echo("> Combine all mechanism energetics and plot:")
-        click.echo("> Loading...")
+        click.echo("Combine all mechanism energetics and plot:")
+        click.echo("Loading...")
         import caddkit.qm.mechanism_plotter
         color_scheme = input("What color scheme would you like (e.g., tab20, viridis)? ")
         caddkit.qm.mechanism_plotter.generate_plot(color_scheme)
 
     if residue_decomp:
-        click.echo("> Analyze residue decomposition jobs:")
-        click.echo("> Loading...")
+        click.echo("Analyze residue decomposition jobs:")
+        click.echo("Loading...")
         import caddkit.qm.residue_decomposition
         caddkit.qm.residue_decomposition.residue_decomposition()
 
     if qm_replace_pdb:
-        click.echo("> Replace PDB atoms with QM optimized atoms:")
-        click.echo("> Loading...")
+        click.echo("Replace PDB atoms with QM optimized atoms:")
+        click.echo("Loading...")
         import caddkit.qm.replace_pdb
-        protein = input("   > What is the name of your protein (e.g., DAH, TAUD)? ")
+        protein = input("   What is the name of your protein (e.g., DAH, TAUD)? ")
         pdb_file_path = f"{protein}.pdb"
         xyz_file_path = "scr/optim.xyz"
         info_file_path = "../info.csv"
@@ -268,26 +288,26 @@ def qm(
         caddkit.qm.replace_pdb.replace_coordinates_in_pdb(pdb_file_path, xyz_file_path, info_file_path, output_file_path)
 
     if bond_valence:
-        click.echo("> Calculates and plots the bond valence for a mechanism:")
-        click.echo("> Loading...")
+        click.echo("Calculates and plots the bond valence for a mechanism:")
+        click.echo("Loading...")
         import caddkit.qm.bond_valence
         try:
             # Check if the CSV file exists
             with open("bond_valence.csv"):
-                print("   > CSV file found. Plotting the data.")
+                print("   CSV file found. Plotting the data.")
                 caddkit.qm.bond_valence.plot_bond_valence()
         except FileNotFoundError:
-            print("   > CSV file not found. Running Multiwfn analysis.")
+            print("   CSV file not found. Running Multiwfn analysis.")
             atom_pairs = [(145, 146), (65, 145), (66, 145), (12, 145), (32, 145), (145, 149)]
             caddkit.qm.bond_valence.calculate_bond_valence(atom_pairs, 4)
             caddkit.qm.bond_valence.plot_bond_valence()
             
     if orca_scan:
         import caddkit.qm.orca_scan_plotter
-        atom_1 = input("   > What is your first atom being scanned? ")
-        atom_2 = input("   > What is your second atom being scanned? ")
+        atom_1 = input("   What is your first atom being scanned? ")
+        atom_2 = input("   What is your second atom being scanned? ")
         distances, relative_energies = caddkit.qm.orca_scan_plotter.read_orca_output("orca.out")
-        print(f"   > Start distance: {distances[0]}, End distance: {distances[-1]}\n")
+        print(f"   Start distance: {distances[0]}, End distance: {distances[-1]}\n")
         caddkit.qm.orca_scan_plotter.plot_energy(distances, relative_energies, atom_1, atom_2)
 
     if orca_neb_restart:
@@ -311,6 +331,23 @@ def qm(
     if extract_energies:
         import caddkit.qm.extract_electronic_energies
         caddkit.qm.extract_electronic_energies.extract()
+
+
+@cli.command()
+@click.option("--quick_csa", "-csa", is_flag=True, help="Performs charge shift analysis.")
+def qmmm(
+    quick_csa,
+    ):
+    """
+    Functions for multiscale QM/MM simulations.
+
+    """
+    if quick_csa:
+        click.echo("Charge shift analysis:")
+        click.echo("Loading...")
+        import caddkit.qmmm.quickcsa
+        caddkit.qmmm.quickcsa.quick_csa()
+    
 
 if __name__ == "__main__":
     # Run the command-line interface when this script is executed
