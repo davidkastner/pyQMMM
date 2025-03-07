@@ -88,7 +88,6 @@ def md(
     strip_all,
     dssp_plot,
     rmsf,
-    quick_csa,
     cc_coupling,
     compare_distances,
     plot_rmsd,
