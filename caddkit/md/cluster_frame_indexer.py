@@ -58,7 +58,7 @@ def condense_numbering(cluster_list):
     return final_selection
 
 
-def cluster_frame_indexer():
+def main():
     """
     Condenses the frame indices of a clustered MD run into a single string.
 
@@ -91,4 +91,4 @@ def cluster_frame_indexer():
 
 
 if __name__ == "__main__":
-    cluster_frame_indexer()
+    main()

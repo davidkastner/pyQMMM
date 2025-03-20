@@ -75,6 +75,7 @@ def io(
 @click.option("--cc_coupling", "-cc", is_flag=True, help="Plots the results from cc coupling analysis.")
 @click.option("--compare_distances", "-cd", is_flag=True, help="Plots distance metrics together.")
 @click.option("--plot_rmsd", "-rmsd", is_flag=True, help="Plots the RMSD from CPPTraj.")
+@click.option("--cluster_frames", "-cf", is_flag=True, help="Gets frames for largest CPPTraj cluster.")
 @click.help_option('--help', '-h', is_flag=True, help='Exiting CADDKit.')
 def md(
     gbsa_submit,
@@ -91,6 +92,7 @@ def md(
     cc_coupling,
     compare_distances,
     plot_rmsd,
+    cluster_frames,
     ):
     """
     Functions for molecular dynamics (MD) simulations.
@@ -215,6 +217,9 @@ def md(
         layout = "wide"
         caddkit.md.rmsd_plotter.rmsd_plotter(yaxis_title, layout)
 
+    elif cluster_frames:
+        import caddkit.md.cluster_frame_indexer
+        caddkit.md.cluster_frame_indexer.main()
 
 
 @cli.command()
