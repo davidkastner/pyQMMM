@@ -5,7 +5,7 @@ from MDAnalysis.analysis import align, rms
 import numpy as np
 import pandas as pd
 import time
-import os
+import multiprocessing as mp
 from pathlib import Path
 import warnings
 
@@ -40,8 +40,8 @@ def calculate_rmsf_per_trajectory(topology, trajectory, reference, count):
     print(f"   > Reading: {trajectory}")
     u = mda.Universe(topology, trajectory, dt=0.2, format="TRJ")
 
-    # Use 'all' to select all atoms
-    aligner = align.AlignTraj(u, reference, select="all", in_memory=True)
+    # Use 'all' to select all atoms or 'backbone' for backbone atoms
+    aligner = align.AlignTraj(u, reference, select="backbone and resid 3-14 19-26 29 30", in_memory=True)
     # Perform trajectory alignment
     aligner.run()
 
@@ -67,7 +67,7 @@ def calculate_rmsf_per_trajectory(topology, trajectory, reference, count):
         resids.append(residue.resid)
 
     # Create a DataFrame for each trajectory with the residue and RMSF
-    trajectory_name = "Traj_" + str(count + 1)  # Count as trajectory name
+    trajectory_name = Path(trajectory).parts[0]  # Count as trajectory name
     df = pd.DataFrame({
         'ResID': resids,
         'ResName': resnames,
@@ -76,54 +76,31 @@ def calculate_rmsf_per_trajectory(topology, trajectory, reference, count):
 
     return df
 
-def calculate_rmsf(topology, trajectories, reference_file=None):
+def main(topology, trajectories, reference_file):
     """
-    Calculate the RMSF with MDAnalysis.
-
-    The script works with analyzing the RMSF across multiple replicates.
-    It expects the .crd extension from CCPTraj,
-    which needs to be labeled as TRJ for MDAnalysis.
-
-    Parameters
-    ----------
-    reference_file : str
-        The path to a PDB file that you would like to use as a reference.
-
+    Calculate the RMSF with MDAnalysis in parallel.
     """
-    # Greet the user
     print("\n.-----------------.")
     print("| RMSF Calculator |")
     print(".-----------------.\n")
     print("Calculates the RMSF by residue.\n")
-    start_time = time.time()  # Used to report the executation speed
+    start_time = time.time()  # Track execution time
 
-    rmsf_df = pd.DataFrame()
-    # Separate DataFrame for per-residue RMSF
-    rmsf_residue_df = pd.DataFrame()
+    # Load the reference structure once (shared across processes)
+    reference = mda.Universe(reference_file) if reference_file else mda.Universe(topology, trajectories[0], dt=0.2, format="TRJ")
 
-    # Use the provided reference structure if available
-    if reference_file:
-        reference = mda.Universe(reference_file)
-    # Otherwise use the first frame of the first trajectory as reference
-    else:
-        mda.Universe(topology, trajectories[0], dt=0.2, format="TRJ")
-    
-    # Iterate over trajectories
-    rmsf_residue_df = pd.DataFrame()
-    for count, trajectory in enumerate(trajectories):
-        df = calculate_rmsf_per_trajectory(topology, trajectory, reference, count)
+    # Use multiprocessing to calculate RMSF for each trajectory
+    with mp.Pool(processes=mp.cpu_count()) as pool:
+        results = pool.starmap(calculate_rmsf_per_trajectory, [(topology, traj, reference, count) for count, traj in enumerate(trajectories)])
 
-        # Concatenate current trajectory DataFrame with the total DataFrame
-        if rmsf_residue_df.empty:
-            rmsf_residue_df = df
-        else:
-            rmsf_residue_df = pd.merge(rmsf_residue_df, df, on=['ResID', 'ResName'])
+    # Combine results
+    rmsf_residue_df = pd.concat(results, axis=1).T.drop_duplicates().T  # Merge all results
 
     # Calculate average RMSF across trajectories
     rmsf_residue_df['Avg. RMSF'] = rmsf_residue_df.iloc[:, 2:].mean(axis=1)
     rmsf_residue_df['Avg. Std. Dev'] = rmsf_residue_df.iloc[:, 2:-1].std(axis=1)
 
-    # Save to file per-residue RMSF values to a CSV
+    # Save to CSV
     out_file = "rmsf.csv"
     rmsf_residue_df.to_csv(out_file, index=False)
 
@@ -131,7 +108,7 @@ def calculate_rmsf(topology, trajectories, reference_file=None):
     print(
         f"""
         \t-------------------------CHARGE MATRICES END--------------------------
-        \tRESULT: Computed the RMSF for {count+1} trajectories.
+        \tRESULT: Computed the RMSF for {len(trajectories)} trajectories in parallel.
         \tOUTPUT: Saved results in {out_file}.
         \tTIME: Total execution time: {total_time} seconds.
         \t--------------------------------------------------------------------\n
@@ -142,13 +119,14 @@ if __name__ == "__main__":
     # Run the command-line interface when this script is executed
     protein = input("What is the name of your protein? ")
     topology = f"1/{protein}_dry.prmtop"
-    reference_file = "1/xtal.pdb"
+    reference_file = f"1/{protein}_dry.pdb"
     trajectories = ["1/1_output/constP_prod.crd",
+                    "1u/1_output/constP_prod.crd",
                     "2/1_output/constP_prod.crd",
                     "3/1_output/constP_prod.crd",
-                    "4/1_output/constP_prod.crd",
-                    "5/1_output/constP_prod.crd",
-                    "6/1_output/constP_prod.crd",
                     "7/1_output/constP_prod.crd",
+                    "8u/1_output/constP_prod.crd",
+                    "13/1_output/constP_prod.crd",
+                    "15/1_output/constP_prod.crd",
                     ]
-    calculate_rmsf(topology, trajectories, reference_file="xtal.pdb")
+    main(topology, trajectories, reference_file)

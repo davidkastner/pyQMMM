@@ -54,7 +54,7 @@ def condense_numbering(cluster_list):
             else:
                 final.append(str(seq[0]))
 
-    final_selection = ", ".join(map(str, final))
+    final_selection = ",".join(map(str, final))
     return final_selection
 
 
