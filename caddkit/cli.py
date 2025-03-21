@@ -56,8 +56,8 @@ def io(
     elif delete_xyz_atoms:
         click.echo("Deleting requested atoms from the xyz file:")
         click.echo("Loading...")
-        import caddkit.io.delete_atoms_from_xyz
-        caddkit.io.delete_atoms_from_xyz.main()  
+        import caddkit.io.delete_xyz_trj_atoms
+        caddkit.io.delete_xyz_trj_atoms.main()  
 
 
 @cli.command()
@@ -187,16 +187,47 @@ def md(
         import caddkit.md.rmsf_calculator
         protein = input("What is the name of your protein? ")
         topology = f"1/{protein}_dry.prmtop"
-        reference_file = "1/xtal.pdb"
+        reference_file = f"1/{protein}_dry.pdb"
         trajectories = ["1/1_output/constP_prod.crd",
+                        "7u/1_output/constP_prod.crd",
                         "2/1_output/constP_prod.crd",
                         "3/1_output/constP_prod.crd",
-                        "4/1_output/constP_prod.crd",
-                        "5/1_output/constP_prod.crd",
-                        "6/1_output/constP_prod.crd",
                         "7/1_output/constP_prod.crd",
+                        "8u/1_output/constP_prod.crd",
+                        "13/1_output/constP_prod.crd",
+                        "15/1_output/constP_prod.crd",
                         ]
-        caddkit.md.rmsf_calculator.calculate_rmsf(topology, trajectories, reference_file)
+        # trajectories = ["2u/1_output/constP_prod.crd",
+        #         "3u/1_output/constP_prod.crd",
+        #         "4u/1_output/constP_prod.crd",
+        #         "5u/1_output/constP_prod.crd",
+        #         "6u/1_output/constP_prod.crd",
+        #         "7u/1_output/constP_prod.crd",
+        #         "9u/1_output/constP_prod.crd",
+        #         "10u/1_output/constP_prod.crd",
+        #         "11u/1_output/constP_prod.crd",
+        #         "12u/1_output/constP_prod.crd",
+        #         "13u/1_output/constP_prod.crd",
+        #         "14u/1_output/constP_prod.crd",
+        #         "15u/1_output/constP_prod.crd",
+        #         "16u/1_output/constP_prod.crd",
+        #         ]
+        # topology = f"2u/{protein}_dry.prmtop"
+        # reference_file = f"2u/{protein}_dry.pdb"
+        # trajectories = ["2u/1_output/constP_prod.crd",
+        #                 "3u_same-as-folded-16/1_output/constP_prod.crd",
+        #                 "4u/1_output/constP_prod.crd",
+        #                 "5u/1_output/constP_prod.crd",
+        #                 "6u/1_output/constP_prod.crd",
+        #                 "7u_same-as-folded-17/1_output/constP_prod.crd",
+        #                 "9u_same-as-folded-18/1_output/constP_prod.crd",
+        #                 "10u/1_output/constP_prod.crd",
+        #                 "11u_same-as-folded-19/1_output/constP_prod.crd",
+        #                 "12u/1_output/constP_prod.crd",
+        #                 "13u/1_output/constP_prod.crd",
+        #                 "14u/1_output/constP_prod.crd",
+        #                 ]
+        caddkit.md.rmsf_calculator.main(topology, trajectories, reference_file)
     
     elif cc_coupling:
         import caddkit.md.cc_coupling
