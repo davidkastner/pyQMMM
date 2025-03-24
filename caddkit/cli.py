@@ -40,9 +40,13 @@ def cli():
 @cli.command()
 @click.option("--ppm2png", "-p2p", is_flag=True, help="Converts PPM files to PNG.")
 @click.option("--delete_xyz_atoms", "-dxa", is_flag=True, help="Deletes atoms from xyz trajectory.")
+@click.option("--translate_pdb_to_center", "-tc", is_flag=True, help="Translates PDB traj to new center.")
+@click.option("--xyz2pdb", "-x2p", is_flag=True, help="Converts an xyz file or traj to a PDB.")
 def io(
     ppm2png,
     delete_xyz_atoms,
+    translate_pdb_to_center,
+    xyz2pdb,
     ):
     """
     Tools for useful manipulations of common file types.
@@ -58,6 +62,22 @@ def io(
         click.echo("Loading...")
         import caddkit.io.delete_xyz_trj_atoms
         caddkit.io.delete_xyz_trj_atoms.main()  
+    elif translate_pdb_to_center:
+        click.echo("Translates PDB traj to a new center")
+        click.echo("Loading...")
+        import caddkit.io.translate_pdb_to_center
+        input_pdb = input("What is the name of the PDB you would like to center? ") + ".pdb"
+        center_point = int(input("What atom would you like to make the new center of your trajectory (atom number)? ")) # Indexed at 1
+        output_pdb = "centered_pdb.pdb"
+        caddkit.io.translate_pdb_to_center.translate_pdb(input_pdb, output_pdb, center_point)
+    elif xyz2pdb:
+        click.echo("Converts an xyz file to a PDB")
+        click.echo("Loading...")
+        import caddkit.io.xyz2pdb
+        xyz_traj = input("What is the name or your xyz trajectory without the extension? ") + ".xyz"
+        template = input("What is the name or your PDB template without the extension? ") + ".pdb"
+        output_pdb = "pdb_trajectory.pdb"
+        caddkit.io.xyz2pdb.xyz2pdb_traj(xyz_traj, output_pdb, template)
 
 
 @cli.command()
