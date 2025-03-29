@@ -39,12 +39,14 @@ def cli():
 
 @cli.command()
 @click.option("--ppm2png", "-p2p", is_flag=True, help="Converts PPM files to PNG.")
-@click.option("--delete_xyz_atoms", "-dxa", is_flag=True, help="Deletes atoms from xyz trajectory.")
+@click.option("--delete_xyz_atoms", "-dxa", is_flag=True, help="Deletes atoms from XYZ trajectory.")
+@click.option("--delete_pdb_atoms", "-dpa", is_flag=True, help="Deletes atoms from PDB trajectory.")
 @click.option("--translate_pdb_to_center", "-tc", is_flag=True, help="Translates PDB traj to new center.")
 @click.option("--xyz2pdb", "-x2p", is_flag=True, help="Converts an xyz file or traj to a PDB.")
 def io(
     ppm2png,
     delete_xyz_atoms,
+    delete_pdb_atoms,
     translate_pdb_to_center,
     xyz2pdb,
     ):
@@ -57,11 +59,45 @@ def io(
         click.echo("Loading...")
         import caddkit.io.ppm2png_converter
         caddkit.io.ppm2png_converter.ppm2png_converter()
+
     elif delete_xyz_atoms:
         click.echo("Deleting requested atoms from the xyz file:")
         click.echo("Loading...")
         import caddkit.io.delete_xyz_trj_atoms
-        caddkit.io.delete_xyz_trj_atoms.main()  
+        import sys
+        import glob
+        in_files = glob.glob("delete.in")
+        if len(in_files) == 0:
+            print("Error: There should be a delete.in in the current directory indicating which atoms to delete.\n")
+            print("As an example, its contents could look like this:")
+            print("  1-8,104-106,166 # Asn")
+            print("  9-16,107-109,168 # Asn")
+            print("  59-69,134,135   # Phe\n")
+            sys.exit(1)
+        xyz_name = input("What is the name of the XYZ file you want to delete atoms from without the extension? ")
+        xyz_input = f"{xyz_name}.xyz"
+        xyz_output = f"{xyz_name}_stripped.xyz"
+        caddkit.io.delete_xyz_trj_atoms.main(in_files, xyz_input, xyz_output)
+
+    elif delete_pdb_atoms:
+        click.echo("Deleting requested atoms from the PDB file:")
+        click.echo("Loading...")
+        import caddkit.io.delete_pdb_trj_atoms
+        import sys
+        import glob
+        in_files = glob.glob("delete.in")
+        if len(in_files) == 0:
+            print("Error: There should be a delete.in in the current directory indicating which atoms to delete.\n")
+            print("As an example, its contents could look like this:")
+            print("  1-8,104-106,166 # Asn")
+            print("  9-16,107-109,168 # Asn")
+            print("  59-69,134,135   # Phe\n")
+            sys.exit(1)
+        pdb_name = input("What is the name of the PDB file you want to delete atoms from without the extension? ")
+        pdb_input = f"{pdb_name}.pdb"
+        pdb_output = f"{pdb_name}_stripped.pdb"
+        caddkit.io.delete_pdb_trj_atoms.main(in_files, pdb_input, pdb_output)
+
     elif translate_pdb_to_center:
         click.echo("Translates PDB traj to a new center")
         click.echo("Loading...")
@@ -70,6 +106,7 @@ def io(
         center_point = int(input("What atom would you like to make the new center of your trajectory (atom number)? ")) # Indexed at 1
         output_pdb = "centered_pdb.pdb"
         caddkit.io.translate_pdb_to_center.translate_pdb(input_pdb, output_pdb, center_point)
+
     elif xyz2pdb:
         click.echo("Converts an xyz file to a PDB")
         click.echo("Loading...")
