@@ -92,6 +92,7 @@ def io(
 @click.option("--strip_all", "-sa", is_flag=True, help="Strip waters and metals.")
 @click.option("--dssp_plot", "-dp", is_flag=True, help="Generate a DSSP plot.")
 @click.option("--rmsf", "-rmsf", is_flag=True, help="Calculates the RMSF.")
+@click.option("--plot_rmsf", "-prmsf", is_flag=True, help="Plots RMSF.")
 @click.option("--cc_coupling", "-cc", is_flag=True, help="Plots the results from cc coupling analysis.")
 @click.option("--compare_distances", "-cd", is_flag=True, help="Plots distance metrics together.")
 @click.option("--plot_rmsd", "-rmsd", is_flag=True, help="Plots the RMSD from CPPTraj.")
@@ -109,6 +110,7 @@ def md(
     strip_all,
     dssp_plot,
     rmsf,
+    plot_rmsf,
     cc_coupling,
     compare_distances,
     plot_rmsd,
@@ -208,15 +210,33 @@ def md(
         protein = input("What is the name of your protein? ")
         topology = f"1/{protein}_dry.prmtop"
         reference_file = f"1/{protein}_dry.pdb"
+        # trajectories = ["1/1_output/constP_prod.crd",
+        #                 "7u/1_output/constP_prod.crd",
+        #                 "2/1_output/constP_prod.crd",
+        #                 "3/1_output/constP_prod.crd",
+        #                 "7/1_output/constP_prod.crd",
+        #                 "8u/1_output/constP_prod.crd",
+        #                 "13/1_output/constP_prod.crd",
+        #                 "15/1_output/constP_prod.crd",
+        #                 ]
+        # trajectories = ["1/1_output/constP_prod.crd",
+        #         "2/1_output/constP_prod.crd",
+        #         "3/1_output/constP_prod.crd",
+        #         "4/1_output/constP_prod.crd",
+        #         "5/1_output/constP_prod.crd",
+        #         "6/1_output/constP_prod.crd",
+        #         "7/1_output/constP_prod.crd",
+        #         "2n/1_output/constP_prod.crd",
+        #         ]
         trajectories = ["1/1_output/constP_prod.crd",
-                        "7u/1_output/constP_prod.crd",
-                        "2/1_output/constP_prod.crd",
-                        "3/1_output/constP_prod.crd",
-                        "7/1_output/constP_prod.crd",
-                        "8u/1_output/constP_prod.crd",
-                        "13/1_output/constP_prod.crd",
-                        "15/1_output/constP_prod.crd",
-                        ]
+                "2/1_output/constP_prod.crd",
+                "3/1_output/constP_prod.crd",
+                "4/1_output/constP_prod.crd",
+                "5/1_output/constP_prod.crd",
+                "6/1_output/constP_prod.crd",
+                "7/1_output/constP_prod.crd",
+                "4n/1_output/constP_prod.crd",
+                ]
         # trajectories = ["2u/1_output/constP_prod.crd",
         #         "3u/1_output/constP_prod.crd",
         #         "4u/1_output/constP_prod.crd",
@@ -249,6 +269,10 @@ def md(
         #                 ]
         caddkit.md.rmsf_calculator.main(topology, trajectories, reference_file)
     
+    elif plot_rmsf:
+        import caddkit.md.rmsf_plotter
+        caddkit.md.rmsf_plotter.main()
+
     elif cc_coupling:
         import caddkit.md.cc_coupling
         caddkit.md.cc_coupling.heatmap(
