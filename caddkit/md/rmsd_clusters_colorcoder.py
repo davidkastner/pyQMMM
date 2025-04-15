@@ -103,5 +103,6 @@ def rmsd_clusters_colorcoder(yaxis_title, cluster_count, layout='wide'):
     get_plot(final_df, centroid_time_ns, yaxis_title, cluster_count, layout)
 
 if __name__ == "__main__":
-    cluster_count = int(input("How many clusters would you like plotted? "))
-    rmsd_clusters_colorcoder("trajectory 1", cluster_count, "square")
+    yaxis_title = "RMSD (Å)"
+    cluster_count = int(input("How many cluster would you like plotted? "))
+    rmsd_clusters_colorcoder(yaxis_title, cluster_count, layout='wide')
