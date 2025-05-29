@@ -1,7 +1,7 @@
-caddkit.qm.energy\_plotly
+pyqmmm.qm.energy\_plotly
 ========================
 
-.. automodule:: caddkit.qm.energy_plotly
+.. automodule:: pyqmmm.qm.energy_plotly
 
    
    

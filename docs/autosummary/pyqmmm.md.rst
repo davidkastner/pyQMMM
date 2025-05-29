@@ -1,7 +1,7 @@
-﻿caddkit.md
+﻿pyqmmm.md
 =========
 
-.. automodule:: caddkit.md
+.. automodule:: pyqmmm.md
 
    
    
@@ -27,17 +27,17 @@
    :toctree:
    :recursive:
 
-   caddkit.md.amber_toolkit
-   caddkit.md.dccm_plot_formator
-   caddkit.md.edia_chain_calculator
-   caddkit.md.gbsa_analyzer
-   caddkit.md.hbond_analyzer
-   caddkit.md.hbond_compare
-   caddkit.md.md_vitals_plotter
-   caddkit.md.modeller_automator
-   caddkit.md.pdb_ensemble_generator
-   caddkit.md.ppm2png_converter
-   caddkit.md.residue_lister
-   caddkit.md.restraint_plotter
-   caddkit.md.rmsd_clusters_colorcoder
+   pyqmmm.md.amber_toolkit
+   pyqmmm.md.dccm_plot_formator
+   pyqmmm.md.edia_chain_calculator
+   pyqmmm.md.gbsa_analyzer
+   pyqmmm.md.hbond_analyzer
+   pyqmmm.md.hbond_compare
+   pyqmmm.md.md_vitals_plotter
+   pyqmmm.md.modeller_automator
+   pyqmmm.md.pdb_ensemble_generator
+   pyqmmm.md.ppm2png_converter
+   pyqmmm.md.residue_lister
+   pyqmmm.md.restraint_plotter
+   pyqmmm.md.rmsd_clusters_colorcoder
 

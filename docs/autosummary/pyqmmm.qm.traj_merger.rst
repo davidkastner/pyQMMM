@@ -1,7 +1,7 @@
-caddkit.qm.traj\_merger
+pyqmmm.qm.traj\_merger
 ======================
 
-.. automodule:: caddkit.qm.traj_merger
+.. automodule:: pyqmmm.qm.traj_merger
 
    
    

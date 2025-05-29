@@ -29,7 +29,7 @@ def compute_hbonds(cpptraj_script, submit_script, script_name):
 
     See Also
     --------
-    caddkit.md.hbonding_analyzer.analyze_hbonds()
+    pyqmmm.md.hbonding_analyzer.analyze_hbonds()
 
     """
     # Check if hbond.gnu exists in the current directory

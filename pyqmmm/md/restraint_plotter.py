@@ -334,7 +334,7 @@ def restraint_plots():
     print("This the goal of RESTRAINT PLOTS is to:")
     print("+ Vizualize a simulation against two order parameters.")
     print("+ Compare the results to the experimentally expected values.")
-    print("+ An example config file can be found in CADDKit/tutorials/restraint_plotter.\n")
+    print("+ An example config file can be found in pyQMMM/tutorials/restraint_plotter.\n")
 
     # Uncomment the following line if you want to ask the user for input.
     # show_crosshairs = input('Would you like crosshairs (y/n)?  ') == 'y'

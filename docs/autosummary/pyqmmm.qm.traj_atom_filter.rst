@@ -1,7 +1,7 @@
-caddkit.qm.traj\_atom\_filter
+pyqmmm.qm.traj\_atom\_filter
 ============================
 
-.. automodule:: caddkit.qm.traj_atom_filter
+.. automodule:: pyqmmm.qm.traj_atom_filter
 
    
    

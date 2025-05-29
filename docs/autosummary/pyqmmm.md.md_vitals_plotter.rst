@@ -1,7 +1,7 @@
-caddkit.md.md\_vitals\_plotter
+pyqmmm.md.md\_vitals\_plotter
 =============================
 
-.. automodule:: caddkit.md.md_vitals_plotter
+.. automodule:: pyqmmm.md.md_vitals_plotter
 
    
    

@@ -1,7 +1,7 @@
-caddkit.md.hbond\_compare
+pyqmmm.md.hbond\_compare
 ========================
 
-.. automodule:: caddkit.md.hbond_compare
+.. automodule:: pyqmmm.md.hbond_compare
 
    
    

@@ -1,5 +1,5 @@
 """
-Unit and regression test for the caddkit package.
+Unit and regression test for the pyqmmm package.
 """
 
 # Import package, test suite, and other packages as needed
@@ -7,9 +7,9 @@ import sys
 
 import pytest
 
-import caddkit
+import pyqmmm
 
 
-def test_caddkit_imported():
+def test_pyqmmm_imported():
     """Sample test, will always pass so long as import statement worked."""
-    assert "caddkit" in sys.modules
+    assert "pyqmmm" in sys.modules

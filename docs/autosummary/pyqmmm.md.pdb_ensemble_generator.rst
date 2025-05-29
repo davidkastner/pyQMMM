@@ -1,7 +1,7 @@
-caddkit.md.pdb\_ensemble\_generator
+pyqmmm.md.pdb\_ensemble\_generator
 ==================================
 
-.. automodule:: caddkit.md.pdb_ensemble_generator
+.. automodule:: pyqmmm.md.pdb_ensemble_generator
 
    
    

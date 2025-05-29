@@ -1,7 +1,7 @@
-caddkit.md.residue\_lister
+pyqmmm.md.residue\_lister
 =========================
 
-.. automodule:: caddkit.md.residue_lister
+.. automodule:: pyqmmm.md.residue_lister
 
    
    

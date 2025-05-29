@@ -1,7 +1,7 @@
-caddkit.md.edia\_chain\_calculator
+pyqmmm.md.edia\_chain\_calculator
 =================================
 
-.. automodule:: caddkit.md.edia_chain_calculator
+.. automodule:: pyqmmm.md.edia_chain_calculator
 
    
    

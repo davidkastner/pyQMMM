@@ -1,7 +1,7 @@
-caddkit.qm.reverse\_traj
+pyqmmm.qm.reverse\_traj
 =======================
 
-.. automodule:: caddkit.qm.reverse_traj
+.. automodule:: pyqmmm.qm.reverse_traj
 
    
    

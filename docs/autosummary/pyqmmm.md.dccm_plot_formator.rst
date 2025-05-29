@@ -1,7 +1,7 @@
-caddkit.md.dccm\_plot\_formator
+pyqmmm.md.dccm\_plot\_formator
 ==============================
 
-.. automodule:: caddkit.md.dccm_plot_formator
+.. automodule:: pyqmmm.md.dccm_plot_formator
 
    
    

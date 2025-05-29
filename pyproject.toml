@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 # Self-descriptive entries which should always be present
 # https://packaging.python.org/en/latest/specifications/declaring-project-metadata/
 [project]
-name = "caddkit"
+name = "pyqmmm"
 description = "Python package for working with multiscale simulation data."
 dynamic = ["version"]
 readme = "README.md"
@@ -26,8 +26,8 @@ requires-python = ">=3.8"
 
 # Update the urls once the hosting is set up.
 #[project.urls]
-#"Source" = "https://github.com/<username>/caddkit/"
-#"Documentation" = "https://caddkit.readthedocs.io/"
+#"Source" = "https://github.com/<username>/pyqmmm/"
+#"Documentation" = "https://pyqmmm.readthedocs.io/"
 
 [project.optional-dependencies]
 test = [
@@ -37,7 +37,7 @@ test = [
 
 # CLI entry point
 [project.scripts]
-caddkit = "caddkit.cli:cli"
+pyqmmm = "pyqmmm.cli:cli"
 
 [tool.setuptools]
 # This subkey is a beta stage development and keys may change in the future, see https://setuptools.pypa.io/en/latest/userguide/pyproject_config.html for more details
@@ -66,7 +66,7 @@ where = ["."]
 
 # Ref https://setuptools.pypa.io/en/latest/userguide/datafiles.html#package-data
 [tool.setuptools.package-data]
-caddkit = [
+pyqmmm = [
     "py.typed"
 ]
 
@@ -86,4 +86,4 @@ match = ["*"]
 default-tag = "1.0.0"
 
 [tool.versioningit.write]
-file = "caddkit/_version.py"
+file = "pyqmmm/_version.py"

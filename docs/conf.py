@@ -22,7 +22,7 @@ master_doc = 'index'
 
 # -- Project information -----------------------------------------------------
 
-project = 'CADDKit'
+project = 'pyQMMM'
 copyright = '{}, <a href="https://kastner.io/en/">David W. Kastner</a>'.format(
     datetime.datetime.now().year
 )
@@ -59,7 +59,7 @@ autosummary_generate = False
 
 autosummary_generate = True
 autoapi_type = 'python'
-autoapi_dirs = ['../caddkit']
+autoapi_dirs = ['../pyqmmm']
 autoapi_ignore = ["*/tests/*", "*_version.py"]
 autodoc_member_order = "bysource"
 autodoc_mock_imports = ["click"]
@@ -134,7 +134,7 @@ html_theme_options = {
     'navigation_depth': 4,
     'includehidden': True,
     'titles_only': False,
-    'github_url': 'https://github.com/davidkastner/CADDKit',
+    'github_url': 'https://github.com/davidkastner/pyQMMM',
     'logo_mobile': '_static/logo-white.svg',
     'color_scheme': 'dark'
 }
@@ -146,7 +146,7 @@ html_context = {
     'landing_page': {
         'menu': [{
             'title': 'Developer Guide',
-            'url': 'caddkit.html'
+            'url': 'pyqmmm.html'
         }]
     }
 }
@@ -172,7 +172,7 @@ html_sidebars = {}
 # -- Options for HTMLHelp output ---------------------------------------------
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'caddkitdoc'
+htmlhelp_basename = 'pyqmmmdoc'
 
 
 # -- Options for LaTeX output ------------------------------------------------
@@ -199,8 +199,8 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'caddkit.tex', 'CADDKit Documentation',
-     'caddkit', 'manual'),
+    (master_doc, 'pyqmmm.tex', 'pyQMMM Documentation',
+     'pyqmmm', 'manual'),
 ]
 
 
@@ -209,7 +209,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, 'caddkit', 'CADDKit Documentation',
+    (master_doc, 'pyqmmm', 'pyQMMM Documentation',
      [author], 1)
 ]
 
@@ -220,8 +220,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'caddkit', 'CADDKit Documentation',
-     author, 'caddkit', 'Python package for manipulating QM and MD trajectories',
+    (master_doc, 'pyqmmm', 'pyQMMM Documentation',
+     author, 'pyqmmm', 'Python package for manipulating QM and MD trajectories',
      'Miscellaneous'),
 ]
 

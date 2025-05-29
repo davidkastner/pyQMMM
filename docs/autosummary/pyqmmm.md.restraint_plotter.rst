@@ -1,7 +1,7 @@
-caddkit.md.restraint\_plotter
+pyqmmm.md.restraint\_plotter
 ============================
 
-.. automodule:: caddkit.md.restraint_plotter
+.. automodule:: pyqmmm.md.restraint_plotter
 
    
    

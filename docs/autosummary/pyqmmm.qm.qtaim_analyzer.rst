@@ -1,7 +1,7 @@
-caddkit.qm.qtaim\_analyzer
+pyqmmm.qm.qtaim\_analyzer
 =========================
 
-.. automodule:: caddkit.qm.qtaim_analyzer
+.. automodule:: pyqmmm.qm.qtaim_analyzer
 
    
    

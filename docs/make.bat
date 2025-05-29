@@ -9,7 +9,7 @@ if "%SPHINXBUILD%" == "" (
 )
 set SOURCEDIR=.
 set BUILDDIR=_build
-set SPHINXPROJ=caddkit
+set SPHINXPROJ=pyqmmm
 
 if "%1" == "" goto help
 

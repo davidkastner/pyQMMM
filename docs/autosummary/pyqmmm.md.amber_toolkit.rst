@@ -1,7 +1,7 @@
-caddkit.md.amber\_toolkit
+pyqmmm.md.amber\_toolkit
 ========================
 
-.. automodule:: caddkit.md.amber_toolkit
+.. automodule:: pyqmmm.md.amber_toolkit
 
    
    

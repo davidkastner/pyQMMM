@@ -1,7 +1,7 @@
-caddkit.qm.xyz\_flipper
+pyqmmm.qm.xyz\_flipper
 ======================
 
-.. automodule:: caddkit.qm.xyz_flipper
+.. automodule:: pyqmmm.qm.xyz_flipper
 
    
    
