@@ -1,7 +1,6 @@
 name: pyqmmm
 channels:
   - conda-forge
-  - salilab
   - defaults
 dependencies:
   - python=3.8
