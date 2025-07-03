@@ -1,132 +1,210 @@
-"""Calculate the RMSF across replicates using MDAnalysis"""
+#!/usr/bin/env python3
+"""
+Calculate the RMSF across replicates using MDAnalysis.
 
-import MDAnalysis as mda
-from MDAnalysis.analysis import align, rms
+INPUT-FILE FORMAT (first non-comment line is now optional CPU count)
+
+    # How many cores to use
+    cpus = 48
+
+    # Topology and static reference
+    /abs/path/to/system.prmtop
+    /abs/path/to/reference.pdb
+
+    # Trajectories  (nickname  full/path/to/trajectory.crd)
+    rep1 /abs/path/to/rep1/constP_prod.crd
+    rep2 /abs/path/to/rep2/constP_prod.crd
+    …
+"""
+
+# ──────────────────────────────────────────────────────────────────────────────
+# Standard libs
+# ──────────────────────────────────────────────────────────────────────────────
+from pathlib import Path
+import multiprocessing as mp
+import warnings
+import textwrap
+import re
+import sys
+import os
+import time
+
+# ──────────────────────────────────────────────────────────────────────────────
+# Third-party libs
+# ──────────────────────────────────────────────────────────────────────────────
 import numpy as np
 import pandas as pd
-import time
-import multiprocessing as mp
-from pathlib import Path
-import warnings
+import MDAnalysis as mda
+from MDAnalysis.analysis import align, rms
 
-# Ignore MDAnalysis UserWarnings
-warnings.filterwarnings('ignore', category=UserWarning, module='MDAnalysis')
+# ──────────────────────────────────────────────────────────────────────────────
+# Pretty printing helpers
+# ──────────────────────────────────────────────────────────────────────────────
+RESET = "\033[0m"
+RED   = "\033[1;31m"
+GRN   = "\033[1;32m"
+BLU   = "\033[1;34m"
+YLW   = "\033[1;33m"
 
-def calculate_rmsf_per_trajectory(topology, trajectory, reference, count):
-    """
-    Calculate the RMSF per trajectory.
+def die(msg: str, code: int = 1) -> None:
+    print(f"{RED}❌ {msg}{RESET}", file=sys.stderr)
+    sys.exit(code)
 
-    Calculates the RMSF for each residue in a given trajectory.
-    Aligns the trajectory to a reference, calculates the RMSF,
-    and returns a DataFrame with the residue IDs, names, and RMSF values.
+warnings.filterwarnings("ignore", category=UserWarning, module="MDAnalysis")
 
-    Parameters
-    ----------
-    topology : str
-        Path to the topology file.
-    trajectory : str
-        Path to the trajectory file.
-    reference : MDAnalysis.core.universe.Universe
-        The reference structure to which the trajectory is aligned.
-    count : int
-        The index of the trajectory, used for naming in the resulting DataFrame.
-
-    Returns
-    -------
-    df : pandas.DataFrame
-        DataFrame containing resIDs, residue names, and RMSFs for a trajectory.
-
-    """
-    print(f"   > Reading: {trajectory}")
+# ──────────────────────────────────────────────────────────────────────────────
+# Core calculation
+# ──────────────────────────────────────────────────────────────────────────────
+def calculate_rmsf_per_trajectory(topology: str, trajectory: str,
+                                  reference: mda.Universe,
+                                  column_name: str) -> pd.DataFrame:
+    """Compute per-residue RMSF for a single trajectory."""
+    print(f"   > Reading  : {trajectory}")
     u = mda.Universe(topology, trajectory, dt=0.2, format="TRJ")
 
-    # Use 'all' to select all atoms or 'backbone' for backbone atoms
-    aligner = align.AlignTraj(u, reference, select="backbone and resid 3-14 19-26 29 30", in_memory=True)
-    # Perform trajectory alignment
-    aligner.run()
+    align.AlignTraj(
+        u, reference,
+        select="backbone and resid 3-14 19-26 29 30",
+        in_memory=True
+    ).run()
 
-    print(f"   > Computing the RMSF: {trajectory}")
-    R = rms.RMSF(u.select_atoms("all")).run()
-    rmsf_values = R.results.rmsf
+    print(f"   > Computing: {trajectory}")
+    rmsf_values = rms.RMSF(u.select_atoms("all")).run().results.rmsf
 
-    # Calculate average RMSF per residue and store residue info
-    rmsf_residues = []
-    resnames = []
-    resids = []
-    min_index = min(u.atoms.indices)
-    for residue in u.atoms.residues:
-        # Adjust indices
-        atoms_in_residue = [index - min_index for index in residue.atoms.indices]
-        # Check if the index is within the rmsf_values range
-        if max(atoms_in_residue) >= len(rmsf_values):
-            print(f"Skipping residue {residue.resname}{residue.resid}")
+    rmsf_res, resnames, resids = [], [], []
+    offset = min(u.atoms.indices)
+
+    for res in u.atoms.residues:
+        idx = [i - offset for i in res.atoms.indices]
+        if max(idx) >= len(rmsf_values):
+            print(f"Skipping residue {res.resname}{res.resid}")
             continue
-        avg_rmsf = np.mean(rmsf_values[atoms_in_residue])
-        rmsf_residues.append(avg_rmsf)
-        resnames.append(residue.resname)
-        resids.append(residue.resid)
+        rmsf_res.append(np.mean(rmsf_values[idx]))
+        resnames.append(res.resname)
+        resids.append(res.resid)
 
-    # Create a DataFrame for each trajectory with the residue and RMSF
-    trajectory_name = Path(trajectory).parts[0]  # Count as trajectory name
-    df = pd.DataFrame({
-        'ResID': resids,
-        'ResName': resnames,
-        trajectory_name: rmsf_residues
-    })
-
-    return df
-
-def main(topology, trajectories, reference_file):
-    """
-    Calculate the RMSF with MDAnalysis in parallel.
-    """
-    print("\n.-----------------.")
-    print("| RMSF Calculator |")
-    print(".-----------------.\n")
-    print("Calculates the RMSF by residue.\n")
-    start_time = time.time()  # Track execution time
-
-    # Load the reference structure once (shared across processes)
-    reference = mda.Universe(reference_file) if reference_file else mda.Universe(topology, trajectories[0], dt=0.2, format="TRJ")
-
-    # Use multiprocessing to calculate RMSF for each trajectory
-    with mp.Pool(processes=mp.cpu_count()) as pool:
-        results = pool.starmap(calculate_rmsf_per_trajectory, [(topology, traj, reference, count) for count, traj in enumerate(trajectories)])
-
-    # Combine results
-    rmsf_residue_df = pd.concat(results, axis=1).T.drop_duplicates().T  # Merge all results
-
-    # Calculate average RMSF across trajectories
-    rmsf_residue_df['Avg. RMSF'] = rmsf_residue_df.iloc[:, 2:].mean(axis=1)
-    rmsf_residue_df['Avg. Std. Dev'] = rmsf_residue_df.iloc[:, 2:-1].std(axis=1)
-
-    # Save to CSV
-    out_file = "rmsf.csv"
-    rmsf_residue_df.to_csv(out_file, index=False)
-
-    total_time = round(time.time() - start_time, 3)
-    print(
-        f"""
-        \t-------------------------CHARGE MATRICES END--------------------------
-        \tRESULT: Computed the RMSF for {len(trajectories)} trajectories in parallel.
-        \tOUTPUT: Saved results in {out_file}.
-        \tTIME: Total execution time: {total_time} seconds.
-        \t--------------------------------------------------------------------\n
-        """
+    return pd.DataFrame(
+        dict(ResID=resids, ResName=resnames, **{column_name: rmsf_res})
     )
 
+# ──────────────────────────────────────────────────────────────────────────────
+# Input-file parser
+# ──────────────────────────────────────────────────────────────────────────────
+_CPU_RE = re.compile(r"cpus?\s*(?:=)?\s*(\d+)", re.I)
+
+def parse_rmsf_input_file(file_path: Path):
+    """
+    Returns
+    -------
+    n_cpus : int | None
+    topology : str
+    reference : str
+    trajectories : list[tuple[str, str]]
+    """
+    n_cpus = None
+    topology = reference = None
+    trajs   = []
+
+    for raw in file_path.read_text().splitlines():
+        line = raw.split("#", 1)[0].strip()
+        if not line:
+            continue
+
+        # 1) Optional CPU line
+        m = _CPU_RE.fullmatch(line.replace(" ", ""))
+        if m and n_cpus is None:
+            n_cpus = int(m.group(1))
+            continue
+
+        # 2) Topology / reference
+        if line.endswith(".prmtop"):
+            if topology:
+                die("Multiple .prmtop entries in input file.")
+            topology = line
+            continue
+
+        if line.endswith(".pdb"):
+            if reference:
+                die("Multiple .pdb entries in input file.")
+            reference = line
+            continue
+
+        # 3) Trajectory lines
+        parts = line.split(maxsplit=1)
+        if len(parts) != 2:
+            die(f"Trajectory line must be 'name path':\n{raw}")
+        name, path = parts
+        trajs.append((name, path))
+
+    if not (topology and reference):
+        die("Input must contain one .prmtop line and one .pdb line.")
+
+    return n_cpus, topology, reference, trajs
+
+# ──────────────────────────────────────────────────────────────────────────────
+# Example generator
+# ──────────────────────────────────────────────────────────────────────────────
+def print_example_input() -> None:
+    print(textwrap.dedent(f"""{BLU}
+        # Example rmsf.in
+        cpus = 48
+        /abs/path/to/system.prmtop
+        /abs/path/to/reference.pdb
+        rep1 /abs/path/to/rep1/constP_prod.crd
+        rep2 /abs/path/to/rep2/constP_prod.crd
+        {RESET}"""))
+
+# ──────────────────────────────────────────────────────────────────────────────
+# Main driver
+# ──────────────────────────────────────────────────────────────────────────────
+def main() -> None:
+    print(f"{GRN}\n.-----------------.")
+    print("| RMSF Calculator |")
+    print(f".-----------------.{RESET}\n")
+    print("Calculates the RMSF by residue.\n")
+
+    in_files = list(Path(".").glob("*.in"))
+    if not in_files:
+        die("No .in file found in current directory.\n", code=0)
+
+    in_file = in_files[0]
+    print(f"{BLU}📄 Using input file: {in_file}{RESET}")
+
+    n_cpus, top, ref, trajs = parse_rmsf_input_file(in_file)
+
+    # ── path check ──────────────────────────────────────────────────────────
+    missing = [p for p in (top, ref, *(p for _, p in trajs)) if not Path(p).is_file()]
+    if missing:
+        die("Missing file(s):\n  " + "\n  ".join(missing))
+
+    # ── CPU logic ───────────────────────────────────────────────────────────
+    if n_cpus is None:
+        n_cpus = int(os.getenv("NSLOTS", mp.cpu_count()))
+    n_cpus = max(1, min(n_cpus, mp.cpu_count()))
+    print(f"{GRN}🧠 Using {n_cpus} CPU cores{RESET}")
+
+    # ── Analysis ────────────────────────────────────────────────────────────
+    t0 = time.time()
+    reference = mda.Universe(ref)
+    args = [(top, path, reference, name) for name, path in trajs]
+
+    with mp.Pool(processes=n_cpus) as pool:
+        dfs = pool.starmap(calculate_rmsf_per_trajectory, args)
+
+    df = pd.concat(dfs, axis=1).T.drop_duplicates().T
+    df["Avg. RMSF"] = df.iloc[:, 2:].mean(axis=1)
+    df["Std. Dev"]  = df.iloc[:, 2:-1].std(axis=1)
+    df.to_csv("rmsf.csv", index=False)
+
+    dt = time.time() - t0
+    print(f"""\n{YLW}------------------------- RMSF SUMMARY -------------------------
+RESULT : Computed RMSF for {len(trajs)} trajectories
+OUTPUT : rmsf.csv
+TIME   : {dt:.2f} s
+-----------------------------------------------------------------{RESET}\n""")
+
 if __name__ == "__main__":
-    # Run the command-line interface when this script is executed
-    protein = input("What is the name of your protein? ")
-    topology = f"1/{protein}_dry.prmtop"
-    reference_file = f"1/{protein}_dry.pdb"
-    trajectories = ["1/1_output/constP_prod.crd",
-                    "1u/1_output/constP_prod.crd",
-                    "2/1_output/constP_prod.crd",
-                    "3/1_output/constP_prod.crd",
-                    "7/1_output/constP_prod.crd",
-                    "8u/1_output/constP_prod.crd",
-                    "13/1_output/constP_prod.crd",
-                    "15/1_output/constP_prod.crd",
-                    ]
-    main(topology, trajectories, reference_file)
+    try:
+        main()
+    except KeyboardInterrupt:
+        die("Interrupted by user.", code=130)

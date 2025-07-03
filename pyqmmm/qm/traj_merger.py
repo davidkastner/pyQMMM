@@ -1,7 +1,7 @@
 """Combine frames into a single file."""
 
 import glob
-import pyqmmm.qm.reaction_coordinate_collector
+import caddkit.qm.reaction_coordinate_collector
 
 
 def get_xyz_filenames():

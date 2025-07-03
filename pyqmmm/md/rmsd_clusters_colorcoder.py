@@ -9,12 +9,24 @@ def dat2df(dat_file, rows_to_skip=1):
     df = df.iloc[1:, :]
     return df
 
-def get_plot(final_df, centroid_time_ns, yaxis_title, cluster_count, layout='wide'):
+def get_plot(final_df, centroid_time_ns, yaxis_title, cluster_count, layout='wide', show_legend=True):
+    # Determine plot size and output filename
     if layout == 'square':
-        plt.figure(figsize=(5, 5))
+        figsize = (5, 5)
         filename = "clus_rmsd_square.png"
+    elif "," in layout:
+        try:
+            w, h = map(float, layout.split(","))
+            figsize = (w, h)
+            filename = f"clus_rmsd_{int(w)}x{int(h)}.png"
+        except ValueError:
+            print("Invalid layout format. Use 'square' or 'width,height' like '5,4'.")
+            return
     else:
+        figsize = (6, 4)
         filename = "clus_rmsd.png"
+
+    plt.figure(figsize=figsize)
 
     font = {"family": "sans-serif", "weight": "bold", "size": 10}
     plt.rc("font", **font)
@@ -28,7 +40,8 @@ def get_plot(final_df, centroid_time_ns, yaxis_title, cluster_count, layout='wid
     plt.rcParams["mathtext.default"] = "regular"
 
     colors = ["#e63946", "#a8dadc", "#457b9d", "#1d3557", "#808080"] if cluster_count < 5 else [
-        "#001219", "#005f73", "#0a9396", "#94d2bd", "#e9d8a6", "#ee9b00", "#ca6702", "#bb3e03", "#ae2012", "#9b2226", "#808080"
+        "#001219", "#005f73", "#0a9396", "#94d2bd", "#e9d8a6", "#ee9b00",
+        "#ca6702", "#bb3e03", "#ae2012", "#9b2226", "#808080"
     ]
 
     max_cluster_index = max(cluster_count, final_df["Cluster"].max())
@@ -69,15 +82,23 @@ def get_plot(final_df, centroid_time_ns, yaxis_title, cluster_count, layout='wid
     
     plt.ylabel(f"{yaxis_title}", fontsize=16, weight="bold")
     plt.xlabel("time (ns)", fontsize=16, weight="bold")
-    plt.tick_params(labelsize=14)
-    plt.legend(loc='center left', bbox_to_anchor=(1, 0.5), frameon=False)
+    plt.tick_params(
+        axis='both',
+        which='major',
+        direction='in',
+        length=10,
+        width=2.5,
+        top=True,
+        right=True,
+        labelsize=14
+    )
+
+    if show_legend:
+        plt.legend(loc='center left', bbox_to_anchor=(1, 0.5), frameon=False)
+
     plt.savefig(filename, bbox_inches="tight", dpi=600)
 
-def rmsd_clusters_colorcoder(yaxis_title, cluster_count, layout='wide'):
-    print("\n.--------------------------.")
-    print("| RMSD CLUSTERS COLORCODER |")
-    print(".--------------------------.\n")
-
+def rmsd_clusters_colorcoder(yaxis_title, cluster_count, layout='wide', show_legend=True):
     expected_dat = ["rmsd.dat", "cnumvtime.dat", "summary.dat"]
     for dat in expected_dat:
         data_file = Path(dat)
@@ -100,9 +121,11 @@ def rmsd_clusters_colorcoder(yaxis_title, cluster_count, layout='wide'):
     final_df.columns = ["RMSD", "Cluster"]
     final_df["Time_ns"] = final_df.index * time_per_frame
     
-    get_plot(final_df, centroid_time_ns, yaxis_title, cluster_count, layout)
+    get_plot(final_df, centroid_time_ns, yaxis_title, cluster_count, layout, show_legend)
 
 if __name__ == "__main__":
-    yaxis_title = "RMSD (Å)"
-    cluster_count = int(input("How many cluster would you like plotted? "))
-    rmsd_clusters_colorcoder(yaxis_title, cluster_count, layout='wide')
+    cluster_count = int(input("How many clusters would you like plotted? "))
+    layout = input("Enter layout (e.g., 'square', '5,4', or press enter for default): ").strip() or "wide"
+    legend_input = input("Show legend? (y/n): ").strip().lower()
+    show_legend = legend_input != 'n'
+    rmsd_clusters_colorcoder("trajectory 1", cluster_count, layout, show_legend)
