@@ -132,7 +132,7 @@ def io(
 @click.option("--compare_distances", "-cd", is_flag=True, help="Plots distance metrics together.")
 @click.option("--plot_rmsd", "-rmsd", is_flag=True, help="Plots the RMSD from CPPTraj.")
 @click.option("--cluster_frames", "-cf", is_flag=True, help="Gets frames for largest CPPTraj cluster.")
-@click.help_option('--help', '-h', is_flag=True, help='Exiting pyQMMM.')
+@click.help_option('--help', '-h', is_flag=True, help='Exiting pyqmmm.')
 def md(
     gbsa_submit,
     gbsa_analysis,
@@ -215,7 +215,10 @@ def md(
         import pyqmmm.md.rmsd_clusters_colorcoder
         yaxis_title = "RMSD (Å)"
         cluster_count = int(input("How many cluster would you like plotted? "))
-        pyqmmm.md.rmsd_clusters_colorcoder.rmsd_clusters_colorcoder(yaxis_title, cluster_count, layout='wide')
+        layout = input("Enter layout (e.g., 'square', '5,4', or press enter for default): ").strip() or "wide"
+        legend_input = input("Show legend? (y/n): ").strip().lower()
+        show_legend = legend_input != 'n'
+        pyqmmm.md.rmsd_clusters_colorcoder.rmsd_clusters_colorcoder(yaxis_title, cluster_count, layout, show_legend)
 
     elif restraint_plot:
         click.echo("Generate single KDE plot with hyscore measurements:")
@@ -239,70 +242,8 @@ def md(
         pyqmmm.md.dssp_plotter.combine_dssp_files()
 
     elif rmsf:
-        click.echo("Calculates the RMSF:")
-        click.echo("Loading...")
         import pyqmmm.md.rmsf_calculator
-        protein = input("What is the name of your protein? ")
-        topology = f"1/{protein}_dry.prmtop"
-        reference_file = f"1/{protein}_dry.pdb"
-        # trajectories = ["1/1_output/constP_prod.crd",
-        #                 "7u/1_output/constP_prod.crd",
-        #                 "2/1_output/constP_prod.crd",
-        #                 "3/1_output/constP_prod.crd",
-        #                 "7/1_output/constP_prod.crd",
-        #                 "8u/1_output/constP_prod.crd",
-        #                 "13/1_output/constP_prod.crd",
-        #                 "15/1_output/constP_prod.crd",
-        #                 ]
-        # trajectories = ["1/1_output/constP_prod.crd",
-        #         "2/1_output/constP_prod.crd",
-        #         "3/1_output/constP_prod.crd",
-        #         "4/1_output/constP_prod.crd",
-        #         "5/1_output/constP_prod.crd",
-        #         "6/1_output/constP_prod.crd",
-        #         "7/1_output/constP_prod.crd",
-        #         "2n/1_output/constP_prod.crd",
-        #         ]
-        trajectories = ["1/1_output/constP_prod.crd",
-                "2/1_output/constP_prod.crd",
-                "3/1_output/constP_prod.crd",
-                "4/1_output/constP_prod.crd",
-                "5/1_output/constP_prod.crd",
-                "6/1_output/constP_prod.crd",
-                "7/1_output/constP_prod.crd",
-                "4n/1_output/constP_prod.crd",
-                ]
-        # trajectories = ["2u/1_output/constP_prod.crd",
-        #         "3u/1_output/constP_prod.crd",
-        #         "4u/1_output/constP_prod.crd",
-        #         "5u/1_output/constP_prod.crd",
-        #         "6u/1_output/constP_prod.crd",
-        #         "7u/1_output/constP_prod.crd",
-        #         "9u/1_output/constP_prod.crd",
-        #         "10u/1_output/constP_prod.crd",
-        #         "11u/1_output/constP_prod.crd",
-        #         "12u/1_output/constP_prod.crd",
-        #         "13u/1_output/constP_prod.crd",
-        #         "14u/1_output/constP_prod.crd",
-        #         "15u/1_output/constP_prod.crd",
-        #         "16u/1_output/constP_prod.crd",
-        #         ]
-        # topology = f"2u/{protein}_dry.prmtop"
-        # reference_file = f"2u/{protein}_dry.pdb"
-        # trajectories = ["2u/1_output/constP_prod.crd",
-        #                 "3u_same-as-folded-16/1_output/constP_prod.crd",
-        #                 "4u/1_output/constP_prod.crd",
-        #                 "5u/1_output/constP_prod.crd",
-        #                 "6u/1_output/constP_prod.crd",
-        #                 "7u_same-as-folded-17/1_output/constP_prod.crd",
-        #                 "9u_same-as-folded-18/1_output/constP_prod.crd",
-        #                 "10u/1_output/constP_prod.crd",
-        #                 "11u_same-as-folded-19/1_output/constP_prod.crd",
-        #                 "12u/1_output/constP_prod.crd",
-        #                 "13u/1_output/constP_prod.crd",
-        #                 "14u/1_output/constP_prod.crd",
-        #                 ]
-        pyqmmm.md.rmsf_calculator.main(topology, trajectories, reference_file)
+        pyqmmm.md.rmsf_calculator.main()
     
     elif plot_rmsf:
         import pyqmmm.md.rmsf_plotter
@@ -345,7 +286,7 @@ def md(
 @click.option("--plot_combine_nebs", "-pcneb", is_flag=True, help="Combines and plots NEBs as a single trajectory.")
 @click.option("--extract_energies", "-ee", is_flag=True, help="Extract electronic energies")
 @click.option("--extract_gibbs", "-eg", is_flag=True, help="Extract Gibbs free energies")
-@click.help_option('--help', '-h', is_flag=True, help='Exiting pyQMMM.')
+@click.help_option('--help', '-h', is_flag=True, help='Exiting pyqmmm.')
 def qm(
     plot_energy,
     flip_xyz,
