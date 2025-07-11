@@ -282,6 +282,7 @@ def md(
 @click.option("--bond_valence", "-bv", is_flag=True, help="Replace QM optimized atoms in a pdb.")
 @click.option("--orca_scan", "-os", is_flag=True, help="Plots an ORCA scan.")
 @click.option("--orca_neb_restart", "-rneb", is_flag=True, help="Prepare to restart an ORCA NEB.")
+@click.option("--orca_clean_irc", "-circ", is_flag=True, help="Removes remaining files from an IRC calc.")
 @click.option("--combine_nebs", "-cneb", is_flag=True, help="Combines and NEBs.")
 @click.option("--plot_combine_nebs", "-pcneb", is_flag=True, help="Combines and plots NEBs as a single trajectory.")
 @click.option("--extract_energies", "-ee", is_flag=True, help="Extract electronic energies")
@@ -296,6 +297,7 @@ def qm(
     bond_valence,
     orca_scan,
     orca_neb_restart,
+    orca_clean_irc,
     combine_nebs,
     plot_combine_nebs,
     extract_energies,
@@ -370,6 +372,10 @@ def qm(
         pyqmmm.qm.orca_neb_restart.create_delete_folder()
         files_in_directory = [f for f in os.listdir() if f != 'delete']
         pyqmmm.qm.orca_neb_restart.move_files(files_in_directory)
+
+    if orca_clean_irc:
+        import pyqmmm.qm.orca_clean_irc
+        pyqmmm.qm.orca_clean_irc.main()
 
     if combine_nebs:
         import pyqmmm.qm.combine_nebs
