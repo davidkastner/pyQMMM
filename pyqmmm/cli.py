@@ -42,13 +42,15 @@ def cli():
 @click.option("--translate_pdb_to_center", "-tc", is_flag=True, help="Translates PDB traj to new center.")
 @click.option("--xyz2pdb", "-x2p", is_flag=True, help="Converts an xyz file or traj to a PDB.")
 @click.option("--repo2markdown", "-r2m", is_flag=True, help="Converts python package to markdown file.")
+@click.option("--submit_clustering", "-sc", is_flag=True, help="Submits clustering jobs to queue.")
 def io(
     ppm2png,
     delete_xyz_atoms,
     delete_pdb_atoms,
     translate_pdb_to_center,
     xyz2pdb,
-    repo2markdown
+    repo2markdown,
+    submit_clustering
     ):
     """
     Tools for useful manipulations of common file types.
@@ -121,6 +123,12 @@ def io(
         click.echo("Loading...")
         import pyqmmm.io.repo2markdown
         pyqmmm.io.repo2markdown.main()
+
+    elif submit_clustering:
+        click.echo("Submits clustering calculations to queue")
+        click.echo("Loading...")
+        import pyqmmm.io.submit_clustering
+        pyqmmm.io.submit_clustering.main()
 
 
 @cli.command()
