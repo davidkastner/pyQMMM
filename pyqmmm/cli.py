@@ -41,12 +41,14 @@ def cli():
 @click.option("--delete_pdb_atoms", "-dpa", is_flag=True, help="Deletes atoms from PDB trajectory.")
 @click.option("--translate_pdb_to_center", "-tc", is_flag=True, help="Translates PDB traj to new center.")
 @click.option("--xyz2pdb", "-x2p", is_flag=True, help="Converts an xyz file or traj to a PDB.")
+@click.option("--repo2markdown", "-r2m", is_flag=True, help="Converts python package to markdown file.")
 def io(
     ppm2png,
     delete_xyz_atoms,
     delete_pdb_atoms,
     translate_pdb_to_center,
     xyz2pdb,
+    repo2markdown
     ):
     """
     Tools for useful manipulations of common file types.
@@ -113,6 +115,12 @@ def io(
         template = input("What is the name or your PDB template without the extension? ") + ".pdb"
         output_pdb = "pdb_trajectory.pdb"
         pyqmmm.io.xyz2pdb.xyz2pdb_traj(xyz_traj, output_pdb, template)
+
+    elif repo2markdown:
+        click.echo("Converts a Python package to a single markdown file")
+        click.echo("Loading...")
+        import pyqmmm.io.repo2markdown
+        pyqmmm.io.repo2markdown.main()
 
 
 @cli.command()
