@@ -303,6 +303,7 @@ def md(
 @click.option("--plot_combine_nebs", "-pcneb", is_flag=True, help="Combines and plots NEBs as a single trajectory.")
 @click.option("--extract_energies", "-ee", is_flag=True, help="Extract electronic energies")
 @click.option("--extract_gibbs", "-eg", is_flag=True, help="Extract Gibbs free energies")
+@click.option("--neb_doubler", "-nd", is_flag=True, help="Doubles the number of frames in an NEB")
 @click.help_option('--help', '-h', is_flag=True, help='Exiting pyqmmm.')
 def qm(
     plot_energy,
@@ -318,6 +319,7 @@ def qm(
     plot_combine_nebs,
     extract_energies,
     extract_gibbs,
+    neb_doubler,
     ):
     """
     Functions for quantum mechanics (QM) simulations.
@@ -408,6 +410,10 @@ def qm(
     if extract_energies:
         import pyqmmm.qm.extract_electronic_energies
         pyqmmm.qm.extract_electronic_energies.extract()
+
+    if neb_doubler:
+        import pyqmmm.qm.neb_doubler
+        pyqmmm.qm.neb_doubler.main()
 
 
 @cli.command()
