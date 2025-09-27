@@ -43,6 +43,8 @@ def cli():
 @click.option("--xyz2pdb", "-x2p", is_flag=True, help="Converts an xyz file or traj to a PDB.")
 @click.option("--repo2markdown", "-r2m", is_flag=True, help="Converts python package to markdown file.")
 @click.option("--submit_clustering", "-sc", is_flag=True, help="Submits clustering jobs to queue.")
+@click.option("--bfactor_chg", "-bchg", is_flag=True, help="Transfer charge to bfactor.")
+@click.option("--bfactor_csv", "-bcsv", is_flag=True, help="Transfer value to bfactor from csv.")
 def io(
     ppm2png,
     delete_xyz_atoms,
@@ -50,7 +52,9 @@ def io(
     translate_pdb_to_center,
     xyz2pdb,
     repo2markdown,
-    submit_clustering
+    submit_clustering,
+    bfactor_chg,
+    bfactor_csv,
     ):
     """
     Tools for useful manipulations of common file types.
@@ -129,6 +133,18 @@ def io(
         click.echo("Loading...")
         import pyqmmm.io.submit_clustering
         pyqmmm.io.submit_clustering.main()
+
+    elif bfactor_chg:
+        click.echo("Transfers charges from chg file to bfactor")
+        click.echo("Loading...")
+        import pyqmmm.io.bfactor_chg
+        pyqmmm.io.bfactor_chg.main()
+
+    elif bfactor_csv:
+        click.echo("Transfers value from csv file to bfactor")
+        click.echo("Loading...")
+        import pyqmmm.io.bfactor_csv
+        pyqmmm.io.bfactor_csv.main()
 
 
 @cli.command()
